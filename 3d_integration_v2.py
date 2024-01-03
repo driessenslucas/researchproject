@@ -356,6 +356,8 @@ class RCMazeEnv(gym.Env):
       #set sensor_color_directon with front being light blue, left being yellow and right being green
       sensor_colors = {'front': (0.0, 1.0, 1.0), 'left': (1.0, 1.0, 0.0), 'right': (0.0, 1.0, 0.0)}
       
+      ## to do fix orientation of the sensors !!!NOT WOKRING YET!!!!
+      
       print(self.car_orientation)
       if self.car_orientation == 'E':
          self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors['front'], orientation='front')
@@ -409,34 +411,35 @@ class RCMazeEnv(gym.Env):
       # Translate to the car's position
       glTranslate(x, y, 0.5)  # 0.5 to raise the line to the middle of the wall's height
       
+      # Rotation logic based on car and sensor orientation
       if self.car_orientation == 'S':
          if orientation == 'front':
-            glRotatef(0, 0, 0, 1)
+               glRotatef(0, 0, 0, 1)
          elif orientation == 'left':
-            glRotatef(90, 0, 0, 1)
+               glRotatef(90, 0, 0, 1)
          elif orientation == 'right':
-            glRotatef(270, 0, 0, 1)
+               glRotatef(270, 0, 0, 1)
       elif self.car_orientation == 'E':
          if orientation == 'front':
-            glRotatef(270, 0, 0, 1)
+               glRotatef(270, 0, 0, 1)
          elif orientation == 'left':
-            glRotatef(0, 0, 0, 1)
+               glRotatef(0, 0, 0, 1)
          elif orientation == 'right':
-            glRotatef(180, 0, 0, 1)
+               glRotatef(180, 0, 0, 1)
       elif self.car_orientation == 'N':
          if orientation == 'front':
-            glRotatef(180, 0, 0, 1)
+               glRotatef(180, 0, 0, 1)
          elif orientation == 'left':
-            glRotatef(270, 0, 0, 1)
+               glRotatef(90, 0, 0, 1)
          elif orientation == 'right':
-            glRotatef(90, 0, 0, 1)
+               glRotatef(270, 0, 0, 1)
       elif self.car_orientation == 'W':
          if orientation == 'front':
-            glRotatef(90, 0, 0, 1)
+               glRotatef(90, 0, 0, 1)
          elif orientation == 'left':
-            glRotatef(180, 0, 0, 1)
+               glRotatef(180, 0, 0, 1)
          elif orientation == 'right':
-            glRotatef(0, 0, 0, 1)
+               glRotatef(0, 0, 0, 1)
       
       # Rotate the line to lay flat on the x-axis
       glRotatef(90, 0, 1, 0)  # Rotate 90 degrees around the y-axis to lay flat
