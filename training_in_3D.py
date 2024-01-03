@@ -312,35 +312,35 @@ class RCMazeEnv(gym.Env):
       camera_distance = 5.0  # Distance behind the car
       camera_height = 4.0  # Height above the car
 
-      # Calculate the camera position based on the car's orientation
-      if self.car_orientation == 'N':  # Facing North
-         camera_x = self.car_position[0]
-         camera_y = self.car_position[1] + camera_distance
-         camera_z = camera_height
-      elif self.car_orientation == 'S':  # Facing South
-         camera_x = self.car_position[0]
-         camera_y = self.car_position[1] - camera_distance
-         camera_z = camera_height
-      elif self.car_orientation == 'E':  # Facing East
-         camera_x = self.car_position[0] - camera_distance
-         camera_y = self.car_position[1]
-         camera_z = camera_height
-      elif self.car_orientation == 'W':  # Facing West
-         camera_x = self.car_position[0] + camera_distance
-         camera_y = self.car_position[1]
-         camera_z = camera_height
+      # # Calculate the camera position based on the car's orientation
+      # if self.car_orientation == 'N':  # Facing North
+      #    camera_x = self.car_position[0]
+      #    camera_y = self.car_position[1] + camera_distance
+      #    camera_z = camera_height
+      # elif self.car_orientation == 'S':  # Facing South
+      #    camera_x = self.car_position[0]
+      #    camera_y = self.car_position[1] - camera_distance
+      #    camera_z = camera_height
+      # elif self.car_orientation == 'E':  # Facing East
+      #    camera_x = self.car_position[0] - camera_distance
+      #    camera_y = self.car_position[1]
+      #    camera_z = camera_height
+      # elif self.car_orientation == 'W':  # Facing West
+      #    camera_x = self.car_position[0] + camera_distance
+      #    camera_y = self.car_position[1]
+      #    camera_z = camera_height
 
-      # The point where the camera should be pointed: the car's position
-      look_at_x = self.car_position[0]
-      look_at_y = self.car_position[1]
-      look_at_z = 0  # Assuming the car is at ground level (z=0)
+      # # The point where the camera should be pointed: the car's position
+      # look_at_x = self.car_position[0]
+      # look_at_y = self.car_position[1]
+      # look_at_z = 0  # Assuming the car is at ground level (z=0)
 
-      # Set up the camera
-      glMatrixMode(GL_MODELVIEW)
-      glLoadIdentity()
-      gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
-               look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
-               0, 0, 1)  # Up vector (x, y, z), assuming Z is up
+      # # Set up the camera
+      # glMatrixMode(GL_MODELVIEW)
+      # glLoadIdentity()
+      # gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
+      #          look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
+      #          0, 0, 1)  # Up vector (x, y, z), assuming Z is up
 
       # Render the maze
       for y in range(self.maze_size_y):
@@ -353,27 +353,27 @@ class RCMazeEnv(gym.Env):
                   
       # Render the car's sensor readings
       car_x, car_y = self.car_position
-      #set sensor_color_directon with front being light blue, left being yellow and right being green
-      sensor_colors = {'front': (0.0, 1.0, 1.0), 'left': (1.0, 1.0, 0.0), 'right': (0.0, 1.0, 0.0)}
-      
-      print(self.car_orientation)
-      if self.car_orientation == 'E':
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors['front'], orientation='front')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'], sensor_colors['left'], orientation='left')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'], sensor_colors['right'], orientation='right')
+      sensor_colors = (0.0, 1.0, 1.0)  # Cyan color for sensor lines
+      if self.car_orientation == 'N':
+         # For North, 'left' is to the West, 'right' is to the East
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors, orientation='front')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'], sensor_colors, orientation='left')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'], sensor_colors, orientation='right')
       elif self.car_orientation == 'S':
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'],  sensor_colors['front'], orientation='front')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'],  sensor_colors['left'], orientation='right')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'],  sensor_colors['right'], orientation='left')
-      elif self.car_orientation == 'N':
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'],  sensor_colors['front'], orientation='right')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'],  sensor_colors['left'], orientation='front')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'],  sensor_colors['right'], orientation='back')
+         # For South, 'left' is to the East, 'right' is to the West
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors, orientation='back')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'], sensor_colors, orientation='right')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'], sensor_colors, orientation='left')
+      elif self.car_orientation == 'E':
+         # For East, 'left' is to the North, 'right' is to the South
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors, orientation='right')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'], sensor_colors, orientation='front')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'], sensor_colors, orientation='back')
       elif self.car_orientation == 'W':
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'],  sensor_colors['front'], orientation='left')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'],  sensor_colors['left'], orientation='back')
-         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'],  sensor_colors['right'], orientation='front')
-
+         # For West, 'left' is to the South, 'right' is to the North
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['front'], sensor_colors, orientation='left')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['left'], sensor_colors, orientation='back')
+         self.draw_sensor_line(car_x, car_y, self.sensor_readings['right'], sensor_colors, orientation='front')
 
 
       # Draw the car
@@ -409,34 +409,15 @@ class RCMazeEnv(gym.Env):
       # Translate to the car's position
       glTranslate(x, y, 0.5)  # 0.5 to raise the line to the middle of the wall's height
       
-      if self.car_orientation == 'S':
-         if orientation == 'front':
-            glRotatef(0, 0, 0, 1)
-         elif orientation == 'left':
-            glRotatef(90, 0, 0, 1)
-         elif orientation == 'right':
-            glRotatef(270, 0, 0, 1)
-      elif self.car_orientation == 'E':
-         if orientation == 'front':
-            glRotatef(270, 0, 0, 1)
-         elif orientation == 'left':
-            glRotatef(0, 0, 0, 1)
-         elif orientation == 'right':
-            glRotatef(180, 0, 0, 1)
-      elif self.car_orientation == 'N':
-         if orientation == 'front':
-            glRotatef(180, 0, 0, 1)
-         elif orientation == 'left':
-            glRotatef(270, 0, 0, 1)
-         elif orientation == 'right':
-            glRotatef(90, 0, 0, 1)
-      elif self.car_orientation == 'W':
-         if orientation == 'front':
-            glRotatef(90, 0, 0, 1)
-         elif orientation == 'left':
-            glRotatef(180, 0, 0, 1)
-         elif orientation == 'right':
-            glRotatef(0, 0, 0, 1)
+      # Rotate the line based on the car's orientation
+      if orientation == 'left':
+         glRotatef(90, 0, 0, 1)  # Rotate 90 degrees around the z-axis for left
+      elif orientation == 'right':
+         glRotatef(-90, 0, 0, 1)  # Rotate -90 degrees for right
+      elif orientation == 'front':
+         pass  # No rotation needed for front
+      elif orientation == 'back':
+         glRotatef(180, 0, 0, 1)  # Rotate 180 degrees for back
       
       # Rotate the line to lay flat on the x-axis
       glRotatef(90, 0, 1, 0)  # Rotate 90 degrees around the y-axis to lay flat
@@ -529,53 +510,104 @@ class DQAgent:
         
 # set main
 if __name__ == "__main__":
-   import time
    env = RCMazeEnv()
    state = env.reset()
 
    env.init_opengl()
    env.run_opengl()
-   
+
+   # Model parameters
    REPLAY_MEMORY_CAPACITY = 20000
+   # MIN_REPLAY_MEMORY_SIZE = 1_000  # Minimum number of steps in a memory to start training
    POSSIBLE_ACTIONS = env.possible_actions
 
+   # state = state[0]
    # create DQN agent
-   test_agent = DQAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, inputShape=state.shape, outputShape=len(POSSIBLE_ACTIONS))
+   agent = DQAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, inputShape=state.shape, outputShape=len(POSSIBLE_ACTIONS))
 
 
-   from keras.models import load_model
-   test_agent.policy_model = load_model('/home/lucasdriessens/Documents/researchproject/researchprojecttest/modelsDQN/DQN_RCmaze_v2.h5')
+   # reset the parameters
+   DISCOUNT = 0.90
+   BATCH_SIZE = 64  # How many steps (samples) to use for training
+   UPDATE_TARGET_INTERVAL = 500
+   EPSILON = 0.99 # Exploration percentage
+   MIN_EPSILON = 0.01
+   DECAY = 0.9999
+   EPISODE_AMOUNT = 100
 
+   # Fill the replay memory with the first batch of samples
+   updateCounter = 0
+   rewardHistory = []
+   epsilonHistory = []
 
-   done = False
-   rewards = []
-   
-   desired_fps = 5.0
-   frame_duration = 1.0 / desired_fps
+   np.set_printoptions(precision=3, suppress=True)
 
-   last_time = time.time()
-   done = False
+   for episode in range(EPISODE_AMOUNT):
+      episodeReward = 0
+      stepCounter = 0  # count the number of successful steps within the episode
 
+      state = env.reset()
+      done = False
+      epsilonHistory.append(EPSILON)
 
-   while not done:
-      current_time = time.time()
-      elapsed = current_time - last_time
-      if elapsed >= frame_duration:
-         
+      while not done:
          glutMainLoopEvent()
-         qValues = test_agent.policy_network_predict(np.array([state]))
-         action = np.argmax(qValues[0])
-         state, reward, done = env.step(action)
-         rewards.append(reward)
-         env.render()
          
-         last_time = current_time
-       
-         if done:
-            print('done in ', len(rewards), 'steps')
-            break
-   # env.close()
-   print(sum(rewards))
-   # env.close_opengl()
-   # env.close_pygame()
+
+         if random.random() <= EPSILON:
+               action = random.sample(POSSIBLE_ACTIONS, 1)[0]
+         else:
+               qValues = agent.policy_network_predict(state.reshape(1,-1))
+               action = np.argmax(qValues[0])
+
+         newState, reward, done = env.step(action)
+
+         stepCounter +=1
+
+         # store step in replay memory
+         step = (state, action, reward, newState, done)
+         agent.addToReplayMemory(step)
+         state = newState
+         episodeReward += reward
+         env.render()
+         # When enough steps in replay memory -> train policy network
+         if len(agent.memory) >= (BATCH_SIZE):
+               EPSILON = DECAY * EPSILON
+               if EPSILON < MIN_EPSILON:
+                  EPSILON = MIN_EPSILON
+               # sample minibatch from replay memory
+               
+               miniBatch = agent.sampleFromReplayMemory(BATCH_SIZE)
+               miniBatch_states = np.asarray(list(zip(*miniBatch))[0],dtype=float)
+               miniBatch_actions = np.asarray(list(zip(*miniBatch))[1], dtype = int)
+               miniBatch_rewards = np.asarray(list(zip(*miniBatch))[2], dtype = float)
+               miniBatch_next_state = np.asarray(list(zip(*miniBatch))[3],dtype=float)
+               miniBatch_done = np.asarray(list(zip(*miniBatch))[4],dtype=bool)
+               
+               # current state q values1tch_states)
+               y = agent.policy_network_predict(miniBatch_states)
+
+               next_state_q_values = agent.target_network_predict(miniBatch_next_state)
+               max_q_next_state = np.max(next_state_q_values,axis=1)
+
+               for i in range(BATCH_SIZE):
+                  if miniBatch_done[i]:
+                     y[i,miniBatch_actions[i]] = miniBatch_rewards[i]
+                  else:
+                     y[i,miniBatch_actions[i]] = miniBatch_rewards[i] + DISCOUNT *  max_q_next_state[i]
+
+               agent.policy_model.fit(miniBatch_states, y, batch_size=2048, verbose = 0)
+               
+               #todo: add early stopping
+            
+         else:
+               continue
+         if updateCounter == UPDATE_TARGET_INTERVAL:
+               agent.update_target_network()
+               updateCounter = 0
+         updateCounter += 1
+      print('episodeReward for episode ', episode, '= ', episodeReward, 'with epsilon = ', EPSILON)
+      rewardHistory.append(episodeReward)
+   env.close_pygame()
+   env.close()
 
