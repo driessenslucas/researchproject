@@ -277,6 +277,9 @@ class RCMazeEnv(gym.Env):
       glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 10, 1])
       glLightfv(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1])
       glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1, 1])
+      
+      glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+      glEnable(GL_COLOR_MATERIAL)
 
       # Set up camera (you may want to make this adjustable)
       gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
@@ -343,7 +346,7 @@ class RCMazeEnv(gym.Env):
       for y in range(self.maze_size_y):
          for x in range(self.maze_size_x):
                if self.maze[y][x] == 1:
-                  self.draw_cube(x, y, color=(0.0, 0.0, 0.0))
+                  self.draw_cube(x, y, color=(0.5, 0.5, 0.5))
                elif (x, y) == self.goal:
                   #set color to green
                   self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
