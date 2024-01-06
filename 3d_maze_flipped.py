@@ -288,7 +288,7 @@ class RCMazeEnv(gym.Env):
       
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
-      gluPerspective(60, 1, 0.1, 100)  # Adjust field of view angle, aspect ratio, near and far planes
+      gluPerspective(90, 1, 0.1, 100)  # Adjust field of view angle, aspect ratio, near and far planes
       glMatrixMode(GL_MODELVIEW)
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       
@@ -313,26 +313,27 @@ class RCMazeEnv(gym.Env):
       camera_height = 4.0  # Height above the car
 
       # Calculate the camera position based on the car's orientation
+      # Adjust the Y-coordinate due to the vertically flipped maze
       if self.car_orientation == 'N':  # Facing North
          camera_x = self.car_position[0]
-         camera_y = self.car_position[1] + camera_distance
+         camera_y = (self.maze_size_y - self.car_position[1] - 1) + camera_distance
          camera_z = camera_height
       elif self.car_orientation == 'S':  # Facing South
          camera_x = self.car_position[0]
-         camera_y = self.car_position[1] - camera_distance
+         camera_y = (self.maze_size_y - self.car_position[1] - 1) - camera_distance
          camera_z = camera_height
       elif self.car_orientation == 'E':  # Facing East
-         camera_x = self.car_position[0] - camera_distance
-         camera_y = self.car_position[1]
+         camera_x = self.car_position[0] + camera_distance
+         camera_y = self.maze_size_y - self.car_position[1] - 1
          camera_z = camera_height
       elif self.car_orientation == 'W':  # Facing West
-         camera_x = self.car_position[0] + camera_distance
-         camera_y = self.car_position[1]
+         camera_x = self.car_position[0] - camera_distance
+         camera_y = self.maze_size_y - self.car_position[1] - 1
          camera_z = camera_height
 
       # The point where the camera should be pointed: the car's position
       look_at_x = self.car_position[0]
-      look_at_y = self.car_position[1]
+      look_at_y = self.maze_size_y - self.car_position[1] - 1
       look_at_z = 0  # Assuming the car is at ground level (z=0)
 
       # Set up the camera
@@ -341,6 +342,7 @@ class RCMazeEnv(gym.Env):
       gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 1)  # Up vector (x, y, z), assuming Z is up
+      
 
       # Render the maze
       for y in range(self.maze_size_y):
@@ -373,31 +375,27 @@ class RCMazeEnv(gym.Env):
       # Set the color
       glColor3fv(color)
 
-      # Draw a cube at position (x, y)
+      # Draw a cube at position (x, y), flipping y coordinate
       glPushMatrix()
-      glTranslate(x, y, 0)  # Adjust this to position your cube correctly in 3D
-      glScalef(1, 1, 1)  # Adjust the size of your cube ## adjust the last number to change the height of the walls
-      glutSolidCube(1)  # You may want to adjust the size
-      
+      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
+      glScalef(1, 1, 1)  # Adjust the size of your cube
+      glutSolidCube(1)  # Adjust the size if needed
       glPopMatrix()
       
-
-   
    def get_sensor_rotation_angle(self, sensor_orientation):
-      print('direction: ', self.car_orientation, 'sensor: ', sensor_orientation)
+      print('direction: ', self.car_orientation)
       # Rotation logic based on car's orientation and sensor's relative position
       rotation_mapping = {
          'N': {'front': 0, 'left': 90, 'right': -90},
-         'S': {'front': 180, 'left': -90, 'right': 90},
-         'E': {'front': 0, 'left': -90, 'right': 90},
-         'W': {'front': 90, 'left': 180, 'right': 0}
+         'S': {'front': -90, 'left': 0, 'right': 180},
+         'E': {'front': 0, 'left': 90, 'right': -90},
+         'W': {'front': 180, 'left': -90, 'right': 90}
       }
+
 
       # Calculate total rotation angle
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
-      
-   
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
       close_threshold = 0.5
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
@@ -406,27 +404,25 @@ class RCMazeEnv(gym.Env):
       rotation_angle = self.get_sensor_rotation_angle(sensor_orientation)
 
       glPushMatrix()
-      glTranslate(car_x, car_y, 0.5)  # Raise to half-wall height
-      glRotatef(rotation_angle, 0, 0, 1)  # Rotate based on calculated angle
-      glRotatef(90, 0, 1, 0)  # Lay flat on the x-axis
+      glTranslate(car_x, self.maze_size_y - car_y - 1, 0.5)  # Adjust for vertical flipping
+      glRotatef(rotation_angle, 0, 0, 1)
+      glRotatef(90, 0, 1, 0)
 
       # Draw sensor line
-      distance = min(distance, 0.5)  # Cap distance at 0.5
+      distance = min(distance, 0.5)  # Cap distance
       glutSolidCylinder(0.05, distance, 5, 5)
 
       glPopMatrix()
 
-      
-      
    def draw_car(self, x, y, color):
-            # Set the color
+      # Set the color
       glColor3fv(color)
 
-      # Draw a cube at position (x, y)
+      # Draw a cube at position (x, y), flipping y coordinate
       glPushMatrix()
-      glTranslate(x, y, 0)  # Adjust this to position your cube correctly in 3D
+      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
       glScalef(1, 1, 1)  # Adjust the size of your cube
-      glutSolidCube(0.5)  # You may want to adjust the size
+      glutSolidCube(0.5)  # Adjust the size if needed
       glPopMatrix()
 
    def close_opengl(self):
