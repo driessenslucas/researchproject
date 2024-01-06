@@ -303,10 +303,8 @@ class RCMazeEnv(gym.Env):
         # but do NOT call glutMainLoop()
         glutDisplayFunc(self.render)
         glutIdleFunc(self.render)  # Update rendering in idle time
-        
 
    def render(self):
-      
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       camera_distance = 0.5 # Distance from the camera to the car
@@ -338,14 +336,9 @@ class RCMazeEnv(gym.Env):
       # Set up the camera
       glMatrixMode(GL_MODELVIEW)
       glLoadIdentity()
-      
-      
       gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 2)  # Up vector (x, y, z), assuming Z is up
-
-      
-      
 
       # Render the maze
       for y in range(self.maze_size_y):
