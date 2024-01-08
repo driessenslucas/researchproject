@@ -27,6 +27,23 @@
 
 ## Table of Contents
 
+- [Research Project](#research-project)
+  - [Author Information](#author-information)
+  - [Description](#description)
+    - [Main Research Question](#main-research-question)
+    - [Sub Research Questions](#sub-research-questions)
+  - [Table of Contents](#table-of-contents)
+  - [Progress](#progress)
+    - [2021-02-01](#2021-02-01)
+    - [2021-04-02](#2021-04-02)
+  - [Subquestion 1](#subquestion-1)
+    - [OpenAI Gym](#openai-gym)
+      - [Installation](#installation)
+      - [First test environment](#first-test-environment)
+      - [second test environment](#second-test-environment)
+    - [After being able to solve the environment I decided to make the rendered environment in 3D using PyOpenGL](#after-being-able-to-solve-the-environment-i-decided-to-make-the-rendered-environment-in-3d-using-pyopengl)
+  - [Sources](#sources)
+
 ## Progress
 
 ### 2021-02-01
