@@ -77,9 +77,6 @@ pip install gym==0.23.0
 
 #### First test environment
 
-<details>
-<summary> env.py </summary>
-
 ```python
 import numpy as np
 
@@ -332,8 +329,6 @@ class RCMazeEnv(gym.Env):
         pygame.quit()
 ```
 
-</details>
-
 **Conclusions first test environment**
 
 - This environment was solved using a Q-agent
@@ -351,11 +346,7 @@ I also changed the maze layout to make it more challenging.
 
 **DQN agent**
 
-<details>
-<summary>DQNAgent.py</summary>
-
 ```python
-
 class DQNAgent:
     def __init__(self, replayCapacity, inputShape, outputShape):
         ## Initialize replay memory
@@ -414,15 +405,11 @@ class DQNAgent:
 
 ```
 
-</details>
-
 **Maze environment**
 
-<details>
-<summary>env.py</summary>
-
 ```python
-class RCMazeEnv(gym.Env):
+    ## The following additions were made:
+ class RCMazeEnv(gym.Env):
     def __init__(self, maze_size_x=12, maze_size_y=12):
         self.maze_size_x = maze_size_x
         self.maze_size_y = maze_size_y
@@ -437,14 +424,11 @@ class RCMazeEnv(gym.Env):
         self.previous_steps = 0
         self.visited_positions = set()
         self.reset()
-
-
     def generate_maze(self):
         # For simplicity, create a static maze with walls
         # '1' represents a wall, and '0' represents an open path
         maze = np.zeros((self.maze_size_y, self.maze_size_x), dtype=int)
         # Add walls to the maze (this can be customized)
-
 
         layout = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -464,7 +448,6 @@ class RCMazeEnv(gym.Env):
         maze = np.array(layout)
 
         return maze
-
     def reset(self):
         self.car_position = (1, 1)
         self.car_orientation = 'N'
@@ -475,7 +458,6 @@ class RCMazeEnv(gym.Env):
         self.visited_positions.clear()  # Clear the visited positions
         self.visited_positions.add(self.car_position)
         return self.get_state()
-
     def step(self, action):
         if action == 0:
             self.move_forward()
@@ -489,7 +471,6 @@ class RCMazeEnv(gym.Env):
         self.steps += 1
         done = self.is_done()
         return self.get_state(), reward, done
-
 
     def move_forward(self):
         x, y = self.car_position
@@ -686,8 +667,6 @@ class RCMazeEnv(gym.Env):
         pygame.quit()
 ```
 
-</details>
-
 **Conclusions second test environment**
 
 - The DQN is able to solve the environment in 34 steps, which is a great improvement over the Q-agent. The car now goes straight to the goal, so this is something I can work with.
@@ -708,12 +687,9 @@ pip install PyOpenGL PyOpenGL_accelerate
 
 **Maze environment 3D**
 
-<details>
-<summary>env_v1.py</summary>
-
 ```python
+    ## The following additions were made:
 
-class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12):
       self.maze_size_x = maze_size_x
       self.maze_size_y = maze_size_y
@@ -728,10 +704,8 @@ class RCMazeEnv(gym.Env):
       self.previous_steps = 0
       self.visited_positions = set()
       self.reset()
-
-def generate_maze(self): # For simplicity, create a static maze with walls # '1' represents a wall, and '0' represents an open path
+ def generate_maze(self): # For simplicity, create a static maze with walls # '1' represents a wall, and '0' represents an open path
     maze = np.zeros((self.maze_size_y, self.maze_size_x), dtype=int) # Add walls to the maze (this can be customized)
-
     layout = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -745,13 +719,9 @@ def generate_maze(self): # For simplicity, create a static maze with walls # '1'
         [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
         [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-
-
     maze = np.array(layout)
-
     return maze
-
-def reset(self):
+ def reset(self):
     self.car_position = (1, 1)
     self.car_orientation = 'N'
     self.update_sensor_readings()
@@ -761,22 +731,15 @@ def reset(self):
     self.visited_positions.clear() # Clear the visited positions
     self.visited_positions.add(self.car_position)
     return self.get_state()
-
-def step(self, action):
+ def step(self, action):
     if action == 0:
         self.move_forward()
     elif action == 1:
         self.turn_left()
     elif action == 2:
         self.turn_right()
-        self.update_sensor_readings()
-        self.visited_positions.add(self.car_position)
-        reward = self.compute_reward()
-        self.steps += 1
-        done = self.is_done()
     return self.get_state(), reward, done
-
-def move_forward(self):
+ def move_forward(self):
     x, y = self.car_position
     if self.car_orientation == 'N' and y > 0 and self.maze[y - 1][x] != 1:
     self.car_position = (x, y - 1)
@@ -786,27 +749,22 @@ def move_forward(self):
     self.car_position = (x + 1, y)
     elif self.car_orientation == 'W' and x > 0 and self.maze[y][x - 1] != 1:
     self.car_position = (x - 1, y)
-
-def turn_left(self):
+ def turn_left(self):
     orientations = ['N', 'W', 'S', 'E']
     idx = orientations.index(self.car_orientation)
     self.car_orientation = orientations[(idx + 1) % 4]
-
-def turn_right(self):
+ def turn_right(self):
     orientations = ['N', 'E', 'S', 'W']
     idx = orientations.index(self.car_orientation)
     self.car_orientation = orientations[(idx + 1) % 4]
-
-def update_sensor_readings(self): # Simple sensor implementation: counts steps to the nearest wall
+ def update_sensor_readings(self): # Simple sensor implementation: counts steps to the nearest wall
     self.sensor_readings['front'] = self.distance_to_wall('front')
     self.sensor_readings['left'] = self.distance_to_wall('left')
     self.sensor_readings['right'] = self.distance_to_wall('right')
-
-def distance_to_wall(self, direction):
+ def distance_to_wall(self, direction):
     x, y = self.car_position
     distance = 0
     max_distance = self.maze_size_x if direction in ['left', 'right'] else self.maze_size_y
-
     if direction == 'front':
         if self.car_orientation == 'N':
             while y - distance >= 0 and self.maze[y - distance][x] != 1:
@@ -846,18 +804,13 @@ def distance_to_wall(self, direction):
         elif self.car_orientation == 'W':
             while y - distance >= 0 and self.maze[y - distance][x] != 1:
                 distance += 1
-
         # Normalize the measured distance
     normalized_distance = (max_distance - distance - 1) / (max_distance - 1)
-
     # Ensure the value is within the range [0, 1]
     normalized_distance = max(0, min(normalized_distance, 1))
-
     return normalized_distance
-
-def compute_reward(self): # Initialize reward
+ def compute_reward(self): # Initialize reward
     reward = 0
-
     # Check for collision or out of bounds
     if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
         reward -= 20
@@ -869,46 +822,34 @@ def compute_reward(self): # Initialize reward
         if self.steps > 1000:
             reward -= 200
         return reward  # Return immediately as this is the terminal state
-
     # Calculate the Euclidean distance to the goal
     distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
-
     # Define a maximum reward when the car is at the goal
     max_reward_at_goal = 50
-
     # Reward based on proximity to the goal
     reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
-
     # # Reward or penalize based on movement towards or away from the goal
     if distance_to_goal < self.previous_distance:
         reward += 50  # Positive reward for moving closer to the goal
     elif distance_to_goal > self.previous_distance:
         reward -= 25  # Negative reward for moving farther from the goal
-
     if self.car_position in self.visited_positions:
         # Apply a penalty for revisiting the same position
         reward -= 10
-
     # Penalize for each step taken to encourage efficiency
     reward -= 2
-
     # Update the previous_distance for the next step
     self.previous_distance = distance_to_goal
     return reward
-
-def is_done(self):
+ def is_done(self):
     #is done if it reaches the goal or goes out of bounds or takes more than 3000 steps
     return self.car_position == self.goal or self.steps > 3000 or self.car_position[0] < 0 or self.car_position[1] < 0 or self.car_position[0] > 11 or self.car_position[1] > 11
-
-def get_state(self):
+ def get_state(self):
     car_position = [float(coord) for coord in self.car_position]
     sensor_readings = [float(value) for value in self.sensor_readings.values()]
-
     state = car_position + [self.car_orientation] + sensor_readings
-
     # cast state to this ['1.0' '1.0' 'N' '1.0' '1.0' '10.0']
     state = np.array(state, dtype=str)
-
     #get the orientation and convert do label encoding
     if state[2] == 'N':
         state[2] = 0
@@ -918,21 +859,16 @@ def get_state(self):
         state[2] = 2
     elif state[2] == 'W':
         state[2] = 3
-
     state = np.array(state, dtype=float)
-
     return state
-
-def init_opengl(self): # Initialize OpenGL context
+ def init_opengl(self): # Initialize OpenGL context
     glutInit()
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(1200, 1200)
     glutCreateWindow("RC Maze Environment")
-
     # Set up OpenGL environment
     glEnable(GL_DEPTH_TEST)
     glClearColor(0.0, 0.0, 0.0, 0.0)  # Clear to a grey color
-
     # Set up lighting (optional)
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
@@ -959,11 +895,11 @@ def init_opengl(self): # Initialize OpenGL context
     # Set the rendering function
     glutDisplayFunc(self.render)
 
-def run_opengl(self): # Set up the rendering context and callbacks # but do NOT call glutMainLoop()
+ def run_opengl(self): # Set up the rendering context and callbacks # but do NOT call glutMainLoop()
     glutDisplayFunc(self.render)
     glutIdleFunc(self.render) # Update rendering in idle time
 
-def render(self):
+ def render(self):
 
     # Clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -977,15 +913,12 @@ def render(self):
                 #set color to green
                 self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
 
-
     # Draw the car
     car_x, car_y = self.car_position
     self.draw_cube(car_x, car_y, color=(1, 0, 0))
-
     # Swap buffers
     glutSwapBuffers()
-
-def draw_cube(self, x, y, color): # Set the color
+ def draw_cube(self, x, y, color): # Set the color
     glColor3fv(color)
 
     # Draw a cube at position (x, y), flipping y coordinate
@@ -995,12 +928,10 @@ def draw_cube(self, x, y, color): # Set the color
     glutSolidCube(1)  # Adjust the size if needed
     glPopMatrix()
 
-def close_opengl(self): # Close the OpenGL context
+ def close_opengl(self): # Close the OpenGL context
     glutLeaveMainLoop()
 
 ```
-
-</details>
 
 - This environment is just a 3d rendering of the previous environment with nothing much added.
 
@@ -1009,27 +940,8 @@ def close_opengl(self): # Close the OpenGL context
 
 **Maze environment 3D version 2**
 
-<details>
-<summary>env_v2.py</summary>
-
 ```python
-class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12):
-      self.maze_size_x = maze_size_x
-      self.maze_size_y = maze_size_y
-      self.maze = self.generate_maze()
-      self.car_position = (1, 1)
-      self.possible_actions = range(3)
-      self.car_orientation = 'N'
-      self.sensor_readings = {'front': 0, 'left': 0, 'right': 0}
-      self.steps = 0
-      self.previous_distance = 0
-      self.goal = (10, 10)
-      self.previous_steps = 0
-      self.visited_positions = set()
-      self.reset()
-
-
+    ## The following additions were made:
    def generate_maze(self):
       # For simplicity, create a static maze with walls
       # '1' represents a wall, and '0' represents an open path
@@ -1050,12 +962,8 @@ class RCMazeEnv(gym.Env):
          [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
          [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-
-
       maze = np.array(layout)
-
       return maze
-
    def reset(self):
       self.car_position = (1, 1)
       self.car_orientation = 'N'
@@ -1066,7 +974,6 @@ class RCMazeEnv(gym.Env):
       self.visited_positions.clear()  # Clear the visited positions
       self.visited_positions.add(self.car_position)
       return self.get_state()
-
    def step(self, action):
       if action == 0:
          self.move_forward()
@@ -1081,7 +988,6 @@ class RCMazeEnv(gym.Env):
       done = self.is_done()
       return self.get_state(), reward, done
 
-
    def move_forward(self):
       x, y = self.car_position
       if self.car_orientation == 'N' and y > 0 and self.maze[y - 1][x] != 1:
@@ -1093,28 +999,23 @@ class RCMazeEnv(gym.Env):
       elif self.car_orientation == 'W' and x > 0 and self.maze[y][x - 1] != 1:
          self.car_position = (x - 1, y)
 
-
    def turn_left(self):
       orientations = ['N', 'W', 'S', 'E']
       idx = orientations.index(self.car_orientation)
       self.car_orientation = orientations[(idx + 1) % 4]
-
    def turn_right(self):
       orientations = ['N', 'E', 'S', 'W']
       idx = orientations.index(self.car_orientation)
       self.car_orientation = orientations[(idx + 1) % 4]
-
    def update_sensor_readings(self):
       # Simple sensor implementation: counts steps to the nearest wall
       self.sensor_readings['front'] = self.distance_to_wall('front')
       self.sensor_readings['left'] = self.distance_to_wall('left')
       self.sensor_readings['right'] = self.distance_to_wall('right')
-
    def distance_to_wall(self, direction):
       x, y = self.car_position
       distance = 0
       max_distance = self.maze_size_x if direction in ['left', 'right'] else self.maze_size_y
-
       if direction == 'front':
          if self.car_orientation == 'N':
                while y - distance >= 0 and self.maze[y - distance][x] != 1:
@@ -1154,23 +1055,17 @@ class RCMazeEnv(gym.Env):
          elif self.car_orientation == 'W':
                while y - distance >= 0 and self.maze[y - distance][x] != 1:
                   distance += 1
-
          # Normalize the measured distance
       normalized_distance = (max_distance - distance - 1) / (max_distance - 1)
-
       # Ensure the value is within the range [0, 1]
       normalized_distance = max(0, min(normalized_distance, 1))
-
       return normalized_distance
-
    def compute_reward(self):
       # Initialize reward
       reward = 0
-
       # Check for collision or out of bounds
       if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
          reward -= 20
-
       # Check if goal is reached
       if self.car_position == self.goal:
          reward += 500
@@ -1178,46 +1073,34 @@ class RCMazeEnv(gym.Env):
          if self.steps > 1000:
                reward -= 200
          return reward  # Return immediately as this is the terminal state
-
       # Calculate the Euclidean distance to the goal
       distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
-
       # Define a maximum reward when the car is at the goal
       max_reward_at_goal = 50
-
       # Reward based on proximity to the goal
       reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
-
       # # Reward or penalize based on movement towards or away from the goal
       if distance_to_goal < self.previous_distance:
          reward += 50  # Positive reward for moving closer to the goal
       elif distance_to_goal > self.previous_distance:
          reward -= 25  # Negative reward for moving farther from the goal
-
       if self.car_position in self.visited_positions:
          # Apply a penalty for revisiting the same position
          reward -= 10
-
       # Penalize for each step taken to encourage efficiency
       reward -= 2
-
       # Update the previous_distance for the next step
       self.previous_distance = distance_to_goal
       return reward
-
    def is_done(self):
       #is done if it reaches the goal or goes out of bounds or takes more than 3000 steps
       return self.car_position == self.goal or self.steps > 3000 or self.car_position[0] < 0 or self.car_position[1] < 0 or self.car_position[0] > 11 or self.car_position[1] > 11
-
    def get_state(self):
       car_position = [float(coord) for coord in self.car_position]
       sensor_readings = [float(value) for value in self.sensor_readings.values()]
-
       state = car_position + [self.car_orientation] + sensor_readings
-
       # cast state to this ['1.0' '1.0' 'N' '1.0' '1.0' '10.0']
       state = np.array(state, dtype=str)
-
       #get the orientation and convert do label encoding
       if state[2] == 'N':
          state[2] = 0
@@ -1227,37 +1110,29 @@ class RCMazeEnv(gym.Env):
          state[2] = 2
       elif state[2] == 'W':
          state[2] = 3
-
       state = np.array(state, dtype=float)
-
       return state
-
    def init_opengl(self):
       # Initialize OpenGL context
       glutInit()
       glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
       glutInitWindowSize(1200, 1200)
       glutCreateWindow("RC Maze Environment")
-
       # Set up OpenGL environment
       glEnable(GL_DEPTH_TEST)
       glClearColor(0.0, 0.0, 0.0, 0.0)  # Clear to a grey color
-
       # Set up lighting (optional)
       glEnable(GL_LIGHTING)
       glEnable(GL_LIGHT0)
       glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 10, 1])
       glLightfv(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1])
       glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1, 1])
-
       glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
       glEnable(GL_COLOR_MATERIAL)
-
       # Set up camera (you may want to make this adjustable)
       gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
           self.maze_size_x / 2, self.maze_size_y / 2, 0,  # Look at point (center of the maze)
           0, 1, 0)  # Up vector
-
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
       gluPerspective(60, 1, 0.1, 100)  # Adjust field of view angle, aspect ratio, near and far planes
@@ -1266,21 +1141,16 @@ class RCMazeEnv(gym.Env):
 
 
 
-
         # Set the rendering function
       glutDisplayFunc(self.render)
-
    def run_opengl(self):
         # Set up the rendering context and callbacks
         # but do NOT call glutMainLoop()
         glutDisplayFunc(self.render)
         glutIdleFunc(self.render)  # Update rendering in idle time
-
    def render(self):
-
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
       camera_distance = 5.0  # Distance behind the car
       camera_height = 10.0  # Height above the car
 
@@ -1321,19 +1191,15 @@ class RCMazeEnv(gym.Env):
                elif (x, y) == self.goal:
                   #set color to green
                   self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
-
       # Draw the car
       car_x, car_y = self.car_position
       self.draw_car(car_x, car_y, color=(1.0, 0.0, 0.0))
-
       # Swap buffers
       glutSwapBuffers()
-
 
    def draw_cube(self, x, y, color):
       # Set the color
       glColor3fv(color)
-
       # Draw a cube at position (x, y)
       glPushMatrix()
       glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
@@ -1353,332 +1219,23 @@ class RCMazeEnv(gym.Env):
       glScalef(1, 1, 1)  # Adjust the size of your cube
       glutSolidCube(0.5)  # Adjust the size if needed
       glPopMatrix()
-
    def close_opengl(self):
       # Close the OpenGL context
       glutLeaveMainLoop()
 ```
 
-</details>
-
-- In the second version the camera is now following the car in third person which gives a nice view of the environment.
+- In the second version the camera is now following the car in third person which gives a nice overview of the environment.
 
 - Video:
   - ![3D-environment](./video/3D_v2.gif)
 
 **Maze environment 3D version 3**
 
-<details>
-<summary>env_v3.py</summary>
-
 ```python
-class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12):
-      self.maze_size_x = maze_size_x
-      self.maze_size_y = maze_size_y
-      self.maze = self.generate_maze()
-      self.car_position = (1, 1)
-      self.possible_actions = range(3)
-      self.car_orientation = 'N'
-      self.sensor_readings = {'front': 0, 'left': 0, 'right': 0}
-      self.steps = 0
-      self.previous_distance = 0
-      self.goal = (10, 10)
-      self.previous_steps = 0
-      self.visited_positions = set()
-      self.reset()
-
-
-   def generate_maze(self):
-      # For simplicity, create a static maze with walls
-      # '1' represents a wall, and '0' represents an open path
-      maze = np.zeros((self.maze_size_y, self.maze_size_x), dtype=int)
-      # Add walls to the maze (this can be customized)
-
-
-      layout = [
-         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-         [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-         [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],
-         [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1],
-         [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-         [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-         [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-
-
-      maze = np.array(layout)
-
-      return maze
-
-   def reset(self):
-      self.car_position = (1, 1)
-      self.car_orientation = 'N'
-      self.update_sensor_readings()
-      self.steps = 0
-      self.previous_distance = 0
-      self.previous_steps = 0
-      self.visited_positions.clear()  # Clear the visited positions
-      self.visited_positions.add(self.car_position)
-      return self.get_state()
-
-   def step(self, action):
-      if action == 0:
-         self.move_forward()
-      elif action == 1:
-         self.turn_left()
-      elif action == 2:
-         self.turn_right()
-      self.update_sensor_readings()
-      self.visited_positions.add(self.car_position)
-      reward = self.compute_reward()
-      self.steps += 1
-      done = self.is_done()
-      return self.get_state(), reward, done
-
-
-   def move_forward(self):
-      x, y = self.car_position
-      if self.car_orientation == 'N' and y > 0 and self.maze[y - 1][x] != 1:
-         self.car_position = (x, y - 1)
-      elif self.car_orientation == 'S' and y < self.maze_size_y - 1 and self.maze[y + 1][x] != 1:
-         self.car_position = (x, y + 1)
-      elif self.car_orientation == 'E' and x < self.maze_size_x - 1 and self.maze[y][x + 1] != 1:
-         self.car_position = (x + 1, y)
-      elif self.car_orientation == 'W' and x > 0 and self.maze[y][x - 1] != 1:
-         self.car_position = (x - 1, y)
-
-
-   def turn_left(self):
-      orientations = ['N', 'W', 'S', 'E']
-      idx = orientations.index(self.car_orientation)
-      self.car_orientation = orientations[(idx + 1) % 4]
-
-   def turn_right(self):
-      orientations = ['N', 'E', 'S', 'W']
-      idx = orientations.index(self.car_orientation)
-      self.car_orientation = orientations[(idx + 1) % 4]
-
-   def update_sensor_readings(self):
-      # Simple sensor implementation: counts steps to the nearest wall
-      self.sensor_readings['front'] = self.distance_to_wall('front')
-      self.sensor_readings['left'] = self.distance_to_wall('left')
-      self.sensor_readings['right'] = self.distance_to_wall('right')
-
-   def distance_to_wall(self, direction):
-      x, y = self.car_position
-      distance = 0
-      max_distance = self.maze_size_x if direction in ['left', 'right'] else self.maze_size_y
-
-      if direction == 'front':
-         if self.car_orientation == 'N':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-      elif direction == 'left':
-         if self.car_orientation == 'N':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-      elif direction == 'right':
-         if self.car_orientation == 'N':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-
-         # Normalize the measured distance
-      normalized_distance = (max_distance - distance - 1) / (max_distance - 1)
-
-      # Ensure the value is within the range [0, 1]
-      normalized_distance = max(0, min(normalized_distance, 1))
-
-      return normalized_distance
-
-   def compute_reward(self):
-      # Initialize reward
-      reward = 0
-
-      # Check for collision or out of bounds
-      if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
-         reward -= 20
-
-      # Check if goal is reached
-      if self.car_position == self.goal:
-         reward += 500
-         # Additional penalty if it takes too many steps to reach the goal
-         if self.steps > 1000:
-               reward -= 200
-         return reward  # Return immediately as this is the terminal state
-
-      # Calculate the Euclidean distance to the goal
-      distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
-
-      # Define a maximum reward when the car is at the goal
-      max_reward_at_goal = 50
-
-      # Reward based on proximity to the goal
-      reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
-
-      # # Reward or penalize based on movement towards or away from the goal
-      if distance_to_goal < self.previous_distance:
-         reward += 50  # Positive reward for moving closer to the goal
-      elif distance_to_goal > self.previous_distance:
-         reward -= 25  # Negative reward for moving farther from the goal
-
-      if self.car_position in self.visited_positions:
-         # Apply a penalty for revisiting the same position
-         reward -= 10
-
-      # Penalize for each step taken to encourage efficiency
-      reward -= 2
-
-      # Update the previous_distance for the next step
-      self.previous_distance = distance_to_goal
-      return reward
-
-   def is_done(self):
-      #is done if it reaches the goal or goes out of bounds or takes more than 3000 steps
-      return self.car_position == self.goal or self.steps > 3000 or self.car_position[0] < 0 or self.car_position[1] < 0 or self.car_position[0] > 11 or self.car_position[1] > 11
-
-   def get_state(self):
-      car_position = [float(coord) for coord in self.car_position]
-      sensor_readings = [float(value) for value in self.sensor_readings.values()]
-
-      state = car_position + [self.car_orientation] + sensor_readings
-
-      # cast state to this ['1.0' '1.0' 'N' '1.0' '1.0' '10.0']
-      state = np.array(state, dtype=str)
-
-      #get the orientation and convert do label encoding
-      if state[2] == 'N':
-         state[2] = 0
-      elif state[2] == 'E':
-         state[2] = 1
-      elif state[2] == 'S':
-         state[2] = 2
-      elif state[2] == 'W':
-         state[2] = 3
-
-      state = np.array(state, dtype=float)
-
-      return state
-
-   def init_opengl(self):
-      # Initialize OpenGL context
-      glutInit()
-      glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-      glutInitWindowSize(1200, 1200)
-      glutCreateWindow("RC Maze Environment")
-
-      # Set up OpenGL environment
-      glEnable(GL_DEPTH_TEST)
-      glClearColor(0.0, 0.0, 0.0, 0.0)  # Clear to a grey color
-
-      # Set up lighting (optional)
-      glEnable(GL_LIGHTING)
-      glEnable(GL_LIGHT0)
-      glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 10, 1])
-      glLightfv(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1])
-      glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1, 1])
-
-      glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
-      glEnable(GL_COLOR_MATERIAL)
-
-      # Set up camera (you may want to make this adjustable)
-      gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
-          self.maze_size_x / 2, self.maze_size_y / 2, 0,  # Look at point (center of the maze)
-          0, 1, 0)  # Up vector
-
-      glMatrixMode(GL_PROJECTION)
-      glLoadIdentity()
+    ## The following additions were made:
       gluPerspective(90, 1, 0.1, 100)  # Adjust field of view angle, aspect ratio, near and far planes
-      glMatrixMode(GL_MODELVIEW)
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-
-
-
-        # Set the rendering function
-      glutDisplayFunc(self.render)
-
-   def run_opengl(self):
-        # Set up the rendering context and callbacks
-        # but do NOT call glutMainLoop()
-        glutDisplayFunc(self.render)
-        glutIdleFunc(self.render)  # Update rendering in idle time
-
-   def render(self):
-      # Clear buffers
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       camera_distance = 0.5 # Distance from the camera to the car
       camera_height = 1.5  # Height of the camera above the car
-
-      # Assuming self.car_orientation is 'N' and you want to be behind the car (to the 'S')
-      if self.car_orientation == 'N':  # Car is facing North
-         camera_x = self.car_position[0]
-         camera_y = (self.maze_size_y - self.car_position[1] - 1) - camera_distance  # Move camera to South
-         camera_z = camera_height
-      elif self.car_orientation == 'S':  # Car is facing South
-         camera_x = self.car_position[0]
-         camera_y = (self.maze_size_y - self.car_position[1] - 1) + camera_distance  # Move camera to North
-         camera_z = camera_height
-      elif self.car_orientation == 'E':  # Car is facing East
-         camera_x = self.car_position[0] - camera_distance  # Move camera to West
-         camera_y = self.maze_size_y - self.car_position[1] - 1
-         camera_z = camera_height
-      elif self.car_orientation == 'W':  # Car is facing West
-         camera_x = self.car_position[0] + camera_distance  # Move camera to East
-         camera_y = self.maze_size_y - self.car_position[1] - 1
-         camera_z = camera_height
-
-      # The point where the camera should be pointed: the car's position
-      look_at_x = self.car_position[0]
-      look_at_y = self.maze_size_y - self.car_position[1] - 1
-      look_at_z = 1  # Assuming the car is at ground level (z=0)
-
-      # Set up the camera
-      glMatrixMode(GL_MODELVIEW)
-      glLoadIdentity()
-      gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
-               look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
-               0, 0, 2)  # Up vector (x, y, z), assuming Z is up
-
-      # Render the maze
-      for y in range(self.maze_size_y):
-         for x in range(self.maze_size_x):
-               if self.maze[y][x] == 1:
-                  self.draw_cube(x, y, color=(0.5, 0.5, 0.5))
-               elif (x, y) == self.goal:
-                  #set color to green
-                  self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
 
       # Render the car's sensor readings
       car_x, car_y = self.car_position
@@ -1690,25 +1247,9 @@ class RCMazeEnv(gym.Env):
          self.draw_sensor_line(car_x, car_y, self.sensor_readings[sensor],
                                  sensor_colors[sensor], sensor)
 
-      # Draw the car
-      car_x, car_y = self.car_position
-      self.draw_car(car_x, car_y, color=(1.0, 0.0, 0.0))
-
-      # Swap buffers
-      glutSwapBuffers()
-
-
-   def draw_cube(self, x, y, color):
-      # Set the color
-      glColor3fv(color)
-
       # Draw a cube at position (x, y), flipping y coordinate
-      glPushMatrix()
-      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
       glScalef(2, 2, 5)  # Adjust the size of your cube
       glutSolidCube(0.5)  # Adjust the size if needed
-      glPopMatrix()
-
    def get_sensor_rotation_angle(self, sensor_orientation):
       print('direction: ', self.car_orientation)
       # Rotation logic based on car's orientation and sensor's relative position
@@ -1740,24 +1281,7 @@ class RCMazeEnv(gym.Env):
       glutSolidCylinder(0.05, distance, 5, 5)
 
       glPopMatrix()
-
-   def draw_car(self, x, y, color):
-      # Set the color
-      glColor3fv(color)
-
-      # Draw a cube at position (x, y), flipping y coordinate
-      glPushMatrix()
-      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
-      glScalef(1, 1, 1)  # Adjust the size of your cube
-      glutSolidCube(0.5)  # Adjust the size if needed
-      glPopMatrix()
-
-   def close_opengl(self):
-      # Close the OpenGL context
-      glutLeaveMainLoop()
 ```
-
-</details>
 
 - In the 'final' version there are 'vision cones' which represent the sensors measuring the distance to the walls. Also the walls are higher here which makes it a fun way to follow the car.
 

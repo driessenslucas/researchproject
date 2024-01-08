@@ -17,8 +17,6 @@ import matplotlib.pyplot as plt
 import collections
 
 # Import Tensorflow libraries
-
-
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation
@@ -501,7 +499,7 @@ if __name__ == "__main__":
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('./models/DQN_RCmaze_v2.h5')
+   test_agent.policy_model = load_model('./models/D-DQN_RCmaze.h5')
 
 
    done = False
