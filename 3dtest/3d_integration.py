@@ -270,7 +270,7 @@ class RCMazeEnv(gym.Env):
 
       # Set up OpenGL environment
       glEnable(GL_DEPTH_TEST)
-      glClearColor(0.5, 0.5, 0.5, 0.0)  # Clear to a grey color
+      glClearColor(0.0, 0.0, 0.0, 0.0)  # Clear to a grey color
 
       # Set up lighting (optional)
       glEnable(GL_LIGHTING)
@@ -278,6 +278,10 @@ class RCMazeEnv(gym.Env):
       glLightfv(GL_LIGHT0, GL_POSITION, [0, 10, 10, 1])
       glLightfv(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1])
       glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1, 1])
+      
+      glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+      glEnable(GL_COLOR_MATERIAL)
+      
 
       # Set up camera (you may want to make this adjustable)
       gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
@@ -309,9 +313,11 @@ class RCMazeEnv(gym.Env):
       for y in range(self.maze_size_y):
          for x in range(self.maze_size_x):
                if self.maze[y][x] == 1:
-                  self.draw_cube(x, y, color=(0, 0, 0))
+                  self.draw_cube(x, y, color=(0.5, 0.5, 0.5))
                elif (x, y) == self.goal:
-                  self.draw_cube(x, y, color=(0, 1, 0))
+                  #set color to green
+                  self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
+                  
 
       # Draw the car
       car_x, car_y = self.car_position
@@ -325,11 +331,11 @@ class RCMazeEnv(gym.Env):
       # Set the color
       glColor3fv(color)
 
-      # Draw a cube at position (x, y)
+      # Draw a cube at position (x, y), flipping y coordinate
       glPushMatrix()
-      glTranslate(x, y, 0)  # Adjust this to position your cube correctly in 3D
+      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
       glScalef(1, 1, 1)  # Adjust the size of your cube
-      glutSolidCube(1)  # You may want to adjust the size
+      glutSolidCube(1)  # Adjust the size if needed
       glPopMatrix()
 
    def close_opengl(self):

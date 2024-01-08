@@ -428,7 +428,7 @@ class RCMazeEnv(gym.Env):
         
  
 
-class DQAgent:
+class DQNAgent:
     def __init__(self, replayCapacity, inputShape, outputShape):
         ## Initialize replay memory
         self.capacity = replayCapacity
@@ -497,7 +497,7 @@ if __name__ == "__main__":
    POSSIBLE_ACTIONS = env.possible_actions
 
    # create DQN agent
-   test_agent = DQAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, inputShape=state.shape, outputShape=len(POSSIBLE_ACTIONS))
+   test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, inputShape=state.shape, outputShape=len(POSSIBLE_ACTIONS))
 
 
    from keras.models import load_model
