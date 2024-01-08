@@ -1327,7 +1327,7 @@ class RCMazeEnv(gym.Env):
       glutLeaveMainLoop()
 ```
 
-</detials>
+</details>
 
 - In the second version the camera is now following the car in third person which gives a nice view of the environment.
 
