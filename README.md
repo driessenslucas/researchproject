@@ -318,7 +318,7 @@ class RCMazeEnv(gym.Env):
 - After testing it is clear that it is able to solve the enivronment. But not at all efficient, the car gets stuck multiple times and will take go backwards often. (This is probably caused by the over engineered reward function.)
 
 - Video:
-  - [Q-agent](./video/Q-agent.gif)
+  - ![Q-agent](./video/Q-agent.gif)
 
 #### second test environment
 
@@ -395,7 +395,7 @@ class DQNAgent:
 
 </details>
 
-**maze environment**
+**Maze environment**
 
 <details>
 <summary>env.py</summary>
@@ -672,6 +672,7 @@ class RCMazeEnv(gym.Env):
 - The DQN is able to solve the environment in 34 steps, which is a great improvement over the Q-agent. The car now goes straight to the goal, so this is something I can work with.
 
 - Video:
+  - ![DQN-agent](./video/DQN-agent.gif)
 
 ### After being able to solve the environment I decided to make the rendered environment in 3D using PyOpenGL
 
@@ -974,6 +975,9 @@ def close_opengl(self): # Close the OpenGL context
 </details>
 
 - This environment is just a 3d rendering of the previous environment with nothing much added.
+
+- Video:
+  - ![3D-environment](./video/3D_v1.gif)
 
 **Maze environment 3D version 2**
 
@@ -1331,10 +1335,13 @@ class RCMazeEnv(gym.Env):
 
 - In the second version the camera is now following the car in third person which gives a nice view of the environment.
 
-**Maze environment 3D final version**
+- Video:
+  - ![3D-environment](./video/3D_v2.gif)
+
+**Maze environment 3D version 3**
 
 <details>
-<summary>env_final.py</summary>
+<summary>env_v3.py</summary>
 
 ```python
 class RCMazeEnv(gym.Env):
@@ -1724,7 +1731,10 @@ class RCMazeEnv(gym.Env):
 
 </details>
 
-- In the final version there are 'vision cones' which represent the sensors measuring the distance to the walls. Also the walls are higher here which makes it a fun way to follow the car.
+- In the 'final' version there are 'vision cones' which represent the sensors measuring the distance to the walls. Also the walls are higher here which makes it a fun way to follow the car.
+
+- Video:
+  - ![3D-environment](./video/3D_v3.gif)
 
 ## Sources
 
