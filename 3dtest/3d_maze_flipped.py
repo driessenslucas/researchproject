@@ -501,7 +501,7 @@ if __name__ == "__main__":
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('/home/lucasdriessens/Documents/researchproject/researchprojecttest/modelsDQN/DQN_RCmaze_v2.h5')
+   test_agent.policy_model = load_model('./models/DQN_RCmaze_v2.h5')
 
 
    done = False
