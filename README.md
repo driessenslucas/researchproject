@@ -36,7 +36,7 @@
 
 ### 2021-04-02
 
-- [] start subquestion 1
+- [ ] start subquestion 1
 
 ## Subquestion 1
 
