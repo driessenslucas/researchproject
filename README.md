@@ -54,6 +54,9 @@ pip install gym==0.23.0
 
 #### first test environment
 
+<details>
+<summary> env.py </summary>
+
 ```python
 import numpy as np
 
@@ -306,6 +309,8 @@ class RCMazeEnv(gym.Env):
         pygame.quit()
 ```
 
+</details>
+
 **conclusions first test environment**
 
 - this environment was solved using a Q-agent
@@ -322,7 +327,77 @@ I also changed the maze layout to make it more challenging.
 
 The DQN is able to solve the environment in 34 steps, which is a great improvement over the Q-agent. The car now goes straight to the goal, so this is something I can work with.
 
+**DQN agent**
+
+<details>
+<summary>DQNAgent.py</summary>
+
+```python
+
+class DQNAgent:
+    def __init__(self, replayCapacity, inputShape, outputShape):
+        ## Initialize replay memory
+        self.capacity = replayCapacity
+        self.memory = collections.deque(maxlen=self.capacity)
+        self.populated = False
+        ## Policiy model
+        self.inputShape = inputShape
+        self.outputShape = outputShape
+        self.policy_model = self.buildNetwork()
+
+        ## Target model
+        self.target_model = self.buildNetwork()
+        self.target_model.set_weights(self.policy_model.get_weights())
+
+    def addToReplayMemory(self, step):
+        self.step = step
+        self.memory.append(self.step)
+
+    def sampleFromReplayMemory(self, batchSize):
+        self.batchSize = batchSize
+        if self.batchSize > len(self.memory):
+            self.populated = False
+            return self.populated
+        else:
+            return random.sample(self.memory, self.batchSize)
+
+
+    def buildNetwork(self):
+        model = Sequential()
+        model.add(Dense(32, input_shape=self.inputShape, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(32, activation='relu'))
+        model.add(Dense(self.outputShape, activation='linear'))
+        model.compile(loss='mse', optimizer=Adam(learning_rate=0.001), metrics=['MeanSquaredError'])
+        return model
+
+    def policy_network_fit(self,batch, batchSize):
+        self.batchSize = batchSize
+        self.batch = batch
+
+
+    def policy_network_predict(self, state):
+        self.state = state
+        self.qPolicy = self.policy_model.predict(self.state)
+        return self.qPolicy
+
+    def target_network_predict(self, state):
+        self.state = state
+        self.qTarget = self.target_model.predict(self.state)
+        return self.qTarget
+
+    def update_target_network(self):
+        self.target_model.set_weights(self.policy_model.get_weights())
+
+```
+
+</details>
+
 **maze environment**
+
+<details>
+<summary>env.py</summary>
 
 ```python
 class RCMazeEnv(gym.Env):
@@ -589,6 +664,8 @@ class RCMazeEnv(gym.Env):
         pygame.quit()
 ```
 
+</details>
+
 **Conclusions second test environment**
 
 - The DQN is able to solve the environment in 34 steps, which is a great improvement over the Q-agent. The car now goes straight to the goal, so this is something I can work with.
@@ -602,7 +679,7 @@ For this I needed to change the environment yet again. The rendering took a lot 
 **Maze environment 3D**
 
 <details>
-<summary>Click to see the environment code</summary>
+<summary>env_v1.py</summary>
 
 ```python
 
@@ -900,7 +977,7 @@ def close_opengl(self): # Close the OpenGL context
 **Maze environment 3D version 2**
 
 <details>
-<summary>maze env. v2</summary>
+<summary>env_v2.py</summary>
 
 ```python
 class RCMazeEnv(gym.Env):
@@ -1256,7 +1333,7 @@ class RCMazeEnv(gym.Env):
 **Maze environment 3D final version**
 
 <details>
-<summary>Maze env. final version</summary>
+<summary>env_final.py</summary>
 
 ```python
 class RCMazeEnv(gym.Env):
