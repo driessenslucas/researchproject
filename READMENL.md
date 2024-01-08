@@ -1,5 +1,12 @@
 # Research Project
 
+## Author Information
+
+**Namm:** Lucas Driessens  
+**Instituut:** HOWEST Kortrijk  
+**Vak:** Research Project
+**Datum:** 2024-08-01
+
 ## Description
 
 ### Main Research Question

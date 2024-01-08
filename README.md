@@ -1,10 +1,17 @@
 # Research Project
 
+## Author Information
+
+**Name:** Lucas Driessens  
+**Institution:** HOWEST Kortrijk  
+**Course:** Research Project  
+**Date:** 2024-08-01
+
 ## Description
 
 ### Main Research Question
 
-> In which ways can reinforcement learning be applied to control an RF-car? (through a maze)
+> In which ways can reinforcement learning be applied to control an RF-car? (to let it drive through a maze)
 
 ### Sub Research Questions
 
