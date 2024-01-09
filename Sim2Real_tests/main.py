@@ -26,6 +26,10 @@ tqdm.pandas()
 
 import requests
 
+
+## TODO: let the decisions be made based on real sensor readings instead of the simulated ones. In other words, read out sensors and replace the distance_to_wall function with the real sensor readings
+## TODO: Change the rendering of the sensors to be based on the real sensor readings.
+
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
