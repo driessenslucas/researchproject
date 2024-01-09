@@ -48,18 +48,23 @@
 
 ## Progress
 
-### 2024-02-01
+### 2024-01-04
 
 - [x] Create repository
 - [x] Create README.md
 
-### 2024-04-02
+### 2024-01-04
 
 - [x] Start subquestion 1
 
-### 2024-06-03
+### 2024-01-08
 
 - [x] Build 3d environment using PyOpenGL
+
+### 2024-01-09
+
+- [x] Build RC-car
+- [x] Control RC-car with esp32 over WIFI  
 
 ## Subquestion 1
 
