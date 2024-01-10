@@ -95,8 +95,9 @@ class RCMazeEnv(gym.Env):
       self.steps += 1
       done = self.is_done()
       #print each sensor reading and the car orientation
-      print('sensor readings: ', self.sensor_readings)
-      print('car orientation: ', self.car_orientation)
+      # print('sensor readings: ', self.sensor_readings)
+      # print('car orientation: ', self.car_orientation)
+      print('car position: ', self.car_position)
       return self.get_state(), reward, done
 
    
@@ -521,7 +522,7 @@ if __name__ == "__main__":
    done = False
    rewards = []
    
-   desired_fps = 2.0
+   desired_fps = 5.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()

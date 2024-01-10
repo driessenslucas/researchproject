@@ -17,12 +17,6 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.legacy import Adam
-#set gpu (if you want)
-physical_devices = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-from IPython.display import HTML
-from tqdm import tqdm
-tqdm.pandas()
 
 import requests
 
@@ -93,16 +87,16 @@ class RCMazeEnv(gym.Env):
       if action == 0:
          self.move_forward()
          self.move_car('forward')
-         time.sleep(1.2)
+         # time.sleep(0.6)
       elif action == 1:
          self.turn_left()
          self.move_car('left')
-         time.sleep(1.2)
+         time.sleep(0.1)
       elif action == 2:
          self.turn_right()
          self.move_car('right')
          #wait 1 second
-         time.sleep(1.2)
+         time.sleep(0.1)
       self.update_sensor_readings()
       self.visited_positions.add(self.car_position)
       reward = self.compute_reward()
@@ -115,26 +109,21 @@ class RCMazeEnv(gym.Env):
     
    def move_car(self, direction):
       if direction == 'forward':
-        # do call to http://{self.esp_ip}/forward
-        #print('forward')
-        #api call
-        ip = f'http://{self.esp_ip}/forward'
-        print(ip)
-        requests.get(ip)
+        #call to esp
+        url = f'http://{self.esp_ip}/forward'
+        requests.get(url)
       elif direction == 'left':
         # do call to http://{self.esp_ip}/left
         #print('left')
-        #api call
-        ip = f'http://{self.esp_ip}/left'
-        print(ip)
-        requests.get(ip)
+        #call to esp
+        url = f'http://{self.esp_ip}/left'
+        requests.get(url)
       elif direction == 'right':
         # do call to http://{self.esp_ip}/right
         #print('right')
-        #api call
-        ip = f'http://{self.esp_ip}/right'
-        print(ip)
-        requests.get(ip)
+        #call to esp
+        url = f'http://{self.esp_ip}/right'
+        requests.get(url)
    
    def move_forward(self):
       x, y = self.car_position
@@ -537,6 +526,7 @@ class DQNAgent:
 # set main
 if __name__ == "__main__":
    import time
+   time.sleep(10)
    env = RCMazeEnv()
    state = env.reset()
 
@@ -557,7 +547,7 @@ if __name__ == "__main__":
    done = False
    rewards = []
    
-   desired_fps = 2.0
+   desired_fps = 5.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()
