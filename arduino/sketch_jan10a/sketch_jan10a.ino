@@ -19,6 +19,126 @@ int M2 = 4;
 
 int turnDuration = 160;
 
+int carX = 1;
+int carY = 1;
+
+int path[][2] = {
+  {1, 1},
+  {2, 1},
+  {3, 1},
+  {4, 1},
+  {5, 1},
+  {6, 1},
+  {7, 1},
+  {8, 1},
+  {8, 1},
+  {8, 2},
+  {8, 3},
+  {8, 3},
+  {9, 3},
+  {10, 3},
+  {10, 3},
+  {10, 4},
+  {10, 5},
+  {10, 5},
+  {9, 5},
+  {8, 5},
+  {7, 5},
+  {6, 5},
+  {6, 5},
+  {6, 6},
+  {6, 7},
+  {6, 8},
+  {6, 8},
+  {7, 8},
+  {8, 8},
+  {9, 8},
+  {10, 8},
+  {10, 8},
+  {10, 9},
+  {10, 10}
+};
+
+// Variable to keep track of the current step in the path
+int currentStep = 0;
+
+// Define the layout of the maze
+int layout[12][12] = {
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+    {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
+    {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1},
+    {1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1},
+    {1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1},
+    {1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1},
+    {1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+};
+//void drawMaze() {
+//    ssd1306_clearScreen();
+//    int viewSize = 5; // Define the size of the zoomed-in view
+//
+//    // Calculate the top-left corner of the view
+//    int startX = max(0, min(carX - viewSize / 2, 12 - viewSize));
+//    int startY = max(0, min(carY - viewSize / 2, 12 - viewSize));
+//
+//    for (int y = startY; y < startY + viewSize; y++) {
+//        for (int x = startX; x < startX + viewSize; x++) {
+//            int screenX = (x - startX) * 6;
+//            int screenY = (y - startY) * 8;
+//
+//            if (layout[y][x] == 1) {
+//                // Draw wall as '#'
+//                ssd1306_printFixed(screenX, screenY, "#", STYLE_NORMAL);
+//            } else {
+//                // Draw empty space
+//                ssd1306_printFixed(screenX, screenY, " ", STYLE_NORMAL);
+//            }
+//        }
+//    }
+//
+//    // Draw the car at its current position
+//    int carScreenX = (carX - startX) * 6;
+//    int carScreenY = (carY - startY) * 8;
+//    ssd1306_printFixed(carScreenX, carScreenY, "o", STYLE_NORMAL);
+//}
+void drawMaze() {
+    ssd1306_clearScreen();
+    ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
+    String ip = WiFi.localIP().toString();
+    ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
+    int viewSize = 8; // Define the size of the zoomed-in view
+
+    // Calculate the top-left corner of the view
+    int startX = max(0, min(carX - viewSize / 2, 12 - viewSize));
+    int startY = max(0, min(carY - viewSize / 2, 12 - viewSize));
+
+    // Calculate the starting position of the maze on the screen
+    int mazeStartX = max(0, 128 - (viewSize * 6)); // Adjusted to the right side
+
+    for (int y = startY; y < startY + viewSize; y++) {
+        for (int x = startX; x < startX + viewSize; x++) {
+            int screenX = mazeStartX + (x - startX) * 6; // Adjusted for maze position
+            int screenY = (y - startY) * 8;
+
+            if (layout[y][x] == 1) {
+                // Draw wall as '#'
+                ssd1306_printFixed(screenX, screenY, "#", STYLE_NORMAL);
+            } else {
+                // Draw empty space
+                ssd1306_printFixed(screenX, screenY, " ", STYLE_NORMAL);
+            }
+        }
+    }
+
+    // Draw the car at its current position
+    int carScreenX = mazeStartX + (carX - startX) * 6; // Adjusted for maze position
+    int carScreenY = (carY - startY) * 8;
+    ssd1306_printFixed(carScreenX, carScreenY, "o", STYLE_NORMAL);
+}
 void setup() {
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
@@ -74,9 +194,12 @@ void setup() {
     else if (error == OTA_END_ERROR) Serial.println("End Failed");
   });
   ArduinoOTA.begin();
+  drawMaze();
+  currentStep = 0; // Start from the beginning of the path
 }
 
 void loop() {
+
   ArduinoOTA.handle();
   WiFiClient client = server.available(); // Listen for incoming clients
 
@@ -116,22 +239,38 @@ void loop() {
         // Check the request route
         if (currentLine.endsWith("GET /forward")) {
           Serial.println("moving forward");
-          ssd1306_printFixed(0, 32, "moving forward", STYLE_NORMAL);
+//          ssd1306_printFixed(0, 32, "moving forward", STYLE_NORMAL);
           move_forward();
+          currentStep++;
+          carX = path[currentStep][0];
+          carY = path[currentStep][1];
+          drawMaze();
+          
         } else if (currentLine.endsWith("GET /left")) {
           Serial.println("moving left");
-          ssd1306_printFixed(0, 32, "moving left", STYLE_NORMAL);
+//          ssd1306_printFixed(0, 32, "moving left", STYLE_NORMAL);
           move_left();
+          currentStep++;
+          carX = path[currentStep][0];
+          carY = path[currentStep][1];
+          drawMaze();
+          
         } else if (currentLine.endsWith("GET /right")) {
           Serial.println("moving right");
-          ssd1306_printFixed(0, 32, "moving right", STYLE_NORMAL);
+//          ssd1306_printFixed(0, 32, "moving right", STYLE_NORMAL);
           move_right();
+          currentStep++;
+          carX = path[currentStep][0];
+          carY = path[currentStep][1];
+          drawMaze();
+          
         } 
       }
     }
     client.stop();
   }
 }
+
 void move_forward() {
   // Forward movement code
   analogWrite(E1, 255); // Set speed
@@ -139,7 +278,7 @@ void move_forward() {
   digitalWrite(M1, HIGH); // Move forward
   digitalWrite(M2, LOW); // Move forward
 
-  delay(333);
+  delay(1000);
 
   // Stop motors after turning
   analogWrite(E1, 0);

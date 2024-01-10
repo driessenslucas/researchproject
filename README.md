@@ -34,9 +34,11 @@
     - [Sub Research Questions](#sub-research-questions)
   - [Table of Contents](#table-of-contents)
   - [Progress](#progress)
-    - [2024-02-01](#2024-02-01)
-    - [2024-04-02](#2024-04-02)
-    - [2024-06-03](#2024-06-03)
+    - [2024-01-04](#2024-01-04)
+    - [2024-01-04](#2024-01-04-1)
+    - [2024-01-08](#2024-01-08)
+    - [2024-01-09](#2024-01-09)
+    - [2024-01-10](#2024-01-10)
   - [Subquestion 1](#subquestion-1)
     - [OpenAI Gym](#openai-gym)
       - [Installation](#installation)
@@ -64,7 +66,12 @@
 ### 2024-01-09
 
 - [x] Build RC-car
-- [x] Control RC-car with esp32 over WIFI  
+- [x] Control RC-car with esp32 over WIFI
+
+### 2024-01-10
+
+- [x] Test driving RC-car over wifi
+- [x] Test controlling rc-car with DQN-agent (working but not with actual sensor data, just copying the movent of the virtual car)
 
 ## Subquestion 1
 
