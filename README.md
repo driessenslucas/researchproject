@@ -11,7 +11,7 @@
 
 ### Main Research Question
 
-> In which ways can reinforcement learning be applied to control an RF-car? (to let it drive through a maze)
+> Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)
 
 ### Sub Research Questions
 
@@ -19,11 +19,15 @@
 
 2. Which reinforcement learning techniques can I best use in this application?
 
-3. Can the simulation be transferred to the real world?
+3. Can the simulation be transferred to the real world? Difference between how the car moves in the simulation and in the real world.
 
 4. Does the simulation have any useful contributions? In terms of training time or performance?
 
-5. How can I transfer my trained model to my physical RC car? (sim2real)
+5. How can I transfer my trained model to my physical RC car? (sim2real) How do I adjust the agent, environment and model to work in the real world?
+
+6. How can Real-time learning be implemented?
+
+7. Extra: How can I make the car drive through an unknown maze?
 
 ## Table of Contents
 

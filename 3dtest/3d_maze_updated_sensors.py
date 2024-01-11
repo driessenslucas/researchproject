@@ -4,26 +4,14 @@ from gym import spaces
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-import pygame
 import random 
 import matplotlib.pyplot as plt
 import collections
 # Import Tensorflow libraries
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.legacy import Adam
-#set gpu (if you want)
-physical_devices = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-from IPython.display import HTML
-from tqdm import tqdm
-tqdm.pandas()
-
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
@@ -522,7 +510,7 @@ if __name__ == "__main__":
    done = False
    rewards = []
    
-   desired_fps = 5.0
+   desired_fps = 3.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()

@@ -11,7 +11,7 @@
 
 ### Main Research Question
 
-> Op welke manieren kan reinforcement learning worden toegepast om een RF-auto te besturen?
+> is het is mogelijk een in een simulatie getrained RL-agent over te zetten naar de echte wereld (case : doolhof)
 
 ### Sub Research Questions
 

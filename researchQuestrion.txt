@@ -1,0 +1,1 @@
+is het is mogelijk een in een simulatie getrained RL-agent over te zetten naar de echte wereld (case : doolhof)

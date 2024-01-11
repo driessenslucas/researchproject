@@ -77,34 +77,7 @@ int layout[12][12] = {
     {1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
-//void drawMaze() {
-//    ssd1306_clearScreen();
-//    int viewSize = 5; // Define the size of the zoomed-in view
-//
-//    // Calculate the top-left corner of the view
-//    int startX = max(0, min(carX - viewSize / 2, 12 - viewSize));
-//    int startY = max(0, min(carY - viewSize / 2, 12 - viewSize));
-//
-//    for (int y = startY; y < startY + viewSize; y++) {
-//        for (int x = startX; x < startX + viewSize; x++) {
-//            int screenX = (x - startX) * 6;
-//            int screenY = (y - startY) * 8;
-//
-//            if (layout[y][x] == 1) {
-//                // Draw wall as '#'
-//                ssd1306_printFixed(screenX, screenY, "#", STYLE_NORMAL);
-//            } else {
-//                // Draw empty space
-//                ssd1306_printFixed(screenX, screenY, " ", STYLE_NORMAL);
-//            }
-//        }
-//    }
-//
-//    // Draw the car at its current position
-//    int carScreenX = (carX - startX) * 6;
-//    int carScreenY = (carY - startY) * 8;
-//    ssd1306_printFixed(carScreenX, carScreenY, "o", STYLE_NORMAL);
-//}
+
 void drawMaze() {
     ssd1306_clearScreen();
     ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
@@ -157,10 +130,9 @@ void setup() {
   ssd1306_128x64_i2c_init();
   //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
   ssd1306_clearScreen();
-  ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
+  ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
   String ip = WiFi.localIP().toString();
   ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
-  ssd1306_printFixed(0, 24, "Current action:", STYLE_NORMAL);
 
   Serial.println("");
   Serial.println("WiFi connected");
