@@ -1,26 +1,29 @@
 version: '3'
 
 services:
-  mjpg-streamer:
+  mjpgstreamer:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - '8500:8080'
     volumes:
-      - mydata:/usr/www # Named volume
-    # Or for bind mount:
-    # - ./localfolder:/usr/www
-    command:
-      [
-        'dumb-init',
-        '--',
-        'mjpg_streamer',
-        '-i',
-        'input_uvc.so',
-        '-o',
-        'output_http.so -w /usr/www -p 8080',
-      ]
+      - mydata:/usr/www
+    devices:
+      - '/dev/video0:/dev/video0'
+    networks:
+      - mynetwork
 
+  mazecnn:
+    build:
+      context: ./maze-cnn
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    networks:
+      - mynetwork
 volumes:
   mydata:
+
+networks:
+  mynetwork:
