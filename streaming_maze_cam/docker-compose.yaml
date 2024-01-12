@@ -16,7 +16,7 @@ services:
 
   mazecnn:
     build:
-      context: ./maze-cnn
+      context: ./maze_cnn
       dockerfile: Dockerfile
     ports:
       - '5000:5000'
