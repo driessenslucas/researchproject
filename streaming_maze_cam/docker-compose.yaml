@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  mjpg-streamer:
+    image: ailispaw/barge:armhf
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8500:8080'
+    command:
+      [
+        'dumb-init',
+        '--',
+        'mjpg_streamer',
+        '-i',
+        'input_uvc.so',
+        '-o',
+        'output_http.so -w /usr/www -p 8080',
+      ]
