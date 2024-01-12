@@ -21,6 +21,8 @@ def index():
     # Route to render the HTML template
     return render_template('index.html')
 
+## add something for pygame display
+
 @app.route('/video')
 def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -77,3 +79,50 @@ if __name__ == '__main__':
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
+
+
+## possible pygame integration
+# import pygame
+# import cv2
+# import numpy as np
+# from flask import Flask, Response, render_template
+
+# # Initialize Pygame
+# pygame.init()
+# window_size = (640, 480)
+# screen = pygame.display.set_mode(window_size)
+
+# app = Flask(__name__)
+
+# def generate_frames():
+#     running = True
+#     while running:
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 running = False
+
+#         # Your Pygame logic here
+#         # For example, fill screen with a color
+#         screen.fill((255, 0, 0))
+#         pygame.display.flip()
+
+#         # Capture Pygame frame
+#         view = pygame.surfarray.array3d(screen)
+#         view = view.transpose([1, 0, 2])  # Transpose it to the correct format
+#         frame = cv2.cvtColor(view, cv2.COLOR_RGB2BGR)  # Convert from RGB to BGR
+#         ret, buffer = cv2.imencode('.jpg', frame)
+#         frame = buffer.tobytes()
+
+#         yield (b'--frame\r\n'
+#                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+# @app.route('/')
+# def index():
+#     return render_template('index.html')
+
+# @app.route('/video')
+# def video():
+#     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+# if __name__ == '__main__':
+#     app.run(debug=True, host="0.0.0.0")
