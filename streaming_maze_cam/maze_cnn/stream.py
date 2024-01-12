@@ -1,10 +1,10 @@
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 import cv2
 
 app = Flask(__name__)
 
 def generate_frames():
-    cap = cv2.VideoCapture("http://mjpgstreamer:8500/?action=stream")
+    cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream")
 
     while True:
         success, frame = cap.read()
@@ -15,6 +15,11 @@ def generate_frames():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/')
+def index():
+    # Route to render the HTML template
+    return render_template('index.html')
 
 @app.route('/video')
 def video():

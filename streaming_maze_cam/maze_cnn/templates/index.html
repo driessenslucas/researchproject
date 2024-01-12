@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Video Stream</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #video-container {
+            width: 80%;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            background: #fff;
+            padding: 20px;
+        }
+        #video-stream {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream">
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- Here you can add custom scripts if needed -->
+</body>
+</html>
