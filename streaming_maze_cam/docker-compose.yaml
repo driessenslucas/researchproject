@@ -2,12 +2,15 @@ version: '3'
 
 services:
   mjpg-streamer:
-    image: ailispaw/barge:armhf
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - '8500:8080'
+    volumes:
+      - mydata:/usr/www # Named volume
+    # Or for bind mount:
+    # - ./localfolder:/usr/www
     command:
       [
         'dumb-init',
@@ -18,3 +21,6 @@ services:
         '-o',
         'output_http.so -w /usr/www -p 8080',
       ]
+
+volumes:
+  mydata:

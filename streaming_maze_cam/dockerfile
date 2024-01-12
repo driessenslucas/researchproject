@@ -1,5 +1,6 @@
 FROM ailispaw/barge:armhf
 
+RUN mkdir -p /usr/www
 RUN pkg install mjpg-streamer
 
 EXPOSE 8080
