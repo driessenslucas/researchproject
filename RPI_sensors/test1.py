@@ -19,20 +19,20 @@ app = Flask(__name__)
 def index():
    return "hello_world"
 
-@app.route('/sensor/{direction}')
+@app.route('/sensor/<direction>')
 def get_sensor_value(direction):
    if direction == "front":
-      sensor = DistanceSensor(echo=5, trigger=6)
-      print('Distance: ', sensor.distance )
-      return f"{sensor.distance}"
+      sensor_front = DistanceSensor(echo=5, trigger=6)
+      print('Distance: ', sensor_front.distance )
+      return f"{sensor_front.distance * 100 }"
    elif direction == "left":
-      sensor = DistanceSensor(echo=17, trigger=27)
-      print('Distance: ', sensor.distance )
-      return f"{sensor.distance}"
+      sensor_left = DistanceSensor(echo=17, trigger=27)
+      print('Distance: ', sensor_left .distance )
+      return f"{sensor_left.distance  * 100}"
    elif direction == "right":
-      sensor = DistanceSensor(echo=23, trigger=24)
-      print('Distance: ', sensor.distance )
-      return f"{sensor.distance}"
+      sensor_right = DistanceSensor(echo=24, trigger=23)
+      print('Distance: ', sensor_right.distance )
+      return f"{sensor_right.distance * 100 }"
 
 
 if __name__ == '__main__':
