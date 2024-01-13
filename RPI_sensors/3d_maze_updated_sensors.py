@@ -16,6 +16,8 @@ from tensorflow.keras.optimizers.legacy import Adam
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
 
+import requests
+
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12):
       self.maze_size_x = maze_size_x
@@ -71,6 +73,8 @@ class RCMazeEnv(gym.Env):
       return self.get_state()
 
    def step(self, action):
+      #ask user input to continue
+      # input('press enter to continue')
       if action == 0:
          self.move_forward()
       elif action == 1:
@@ -118,54 +122,21 @@ class RCMazeEnv(gym.Env):
       self.sensor_readings['right'] = self.distance_to_wall('right')
 
    def distance_to_wall(self, direction):
-    x, y = self.car_position
-    sensor_max_range = 255  # Maximum range of the ultrasonic sensor
-
-    def calculate_distance(dx, dy):
-        distance = 0
-        while 0 <= x + distance * dx < self.maze_size_x and \
-              0 <= y + distance * dy < self.maze_size_y and \
-              self.maze[y + distance * dy][x + distance * dx] != 1:
-            distance += 1
-            if distance > sensor_max_range:  # Limiting the sensor range
-                break
-        return distance
-
-    if direction == 'front':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(0, -1)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(0, 1)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(-1, 0)
-
-    elif direction == 'left':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(-1, 0)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(0, -1)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(0, 1)
-
-    elif direction == 'right':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(-1, 0)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(0, 1)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(0, -1)
-
-    # Normalize the distance to a range of 0-1
-    normalized_distance = distance / sensor_max_range
-    normalized_distance = max(0, min(normalized_distance, 1))
-
-    return normalized_distance * 100
+      if direction == 'front':
+         #request to http://192.168.0.25:5000/sensor/front
+         # response = requests.get('http://192.168.0.25:5000/sensor/front')
+         # distance = float(response.text)
+         return 0.1
+      elif direction == 'left':
+         #request to http://
+         # response = requests.get('http://192.168.0.25:5000/sensor/left')
+         # distance = float(response.text)
+         return 0.1
+      elif direction == 'right':
+         #request to http://
+         # response = requests.get('http://192.168.0.25:5000/sensor/right')
+         # distance = float(response.text)
+         return 0.1
  
    def compute_reward(self):
       # Initialize reward
@@ -371,7 +342,7 @@ class RCMazeEnv(gym.Env):
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
-      close_threshold = 3.0
+      close_threshold = 0.005
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -505,7 +476,7 @@ if __name__ == "__main__":
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('./models/DDQN_RCmaze_ASRA.h5')
+   test_agent.policy_model = load_model('./models/DDQN_RCmaze_ARF.h5')
 
 
    done = False
