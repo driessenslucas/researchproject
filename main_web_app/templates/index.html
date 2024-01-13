@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 	<head>
 		<title>RC Maze Visualization</title>
@@ -32,5 +32,94 @@
 		<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
 		<button onclick="startMaze()">Start Maze</button>
 		<img id="maze-frame" src="/frame" />
+	</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>RC Maze Visualization</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background-color: #f4f4f4;
+				text-align: center;
+				padding: 20px;
+			}
+
+			#container {
+				margin: auto;
+				width: 50%;
+				padding: 10px;
+				background-color: white;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				border-radius: 8px;
+			}
+
+			input,
+			button {
+				padding: 10px;
+				margin: 10px 0;
+				border-radius: 5px;
+				border: 1px solid #ddd;
+				box-sizing: border-box;
+			}
+
+			button {
+				background-color: #007bff;
+				color: white;
+				border: none;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: #0056b3;
+			}
+
+			label {
+				display: block;
+				margin-top: 20px;
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+				border-radius: 8px;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<h1>RC Maze Control</h1>
+			<label for="esp-ip">ESP IP:</label>
+			<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
+			<button onclick="startMaze()">Start Maze</button>
+			<img id="maze-frame" src="/frame" alt="Maze Image" />
+		</div>
+
+		<script>
+			function refreshImage() {
+				var img = document.getElementById('maze-frame');
+				img.src = '/frame?' + new Date().getTime();
+			}
+
+			function start_refresh() {
+				setInterval(refreshImage, 1000);
+			}
+
+			function startMaze() {
+				var esp_ip = document.getElementById('esp-ip').value;
+				if (esp_ip) {
+					fetch('/start-maze/' + esp_ip)
+						.then((response) => response.text())
+						.then((data) => {
+							start_refresh();
+						});
+				} else {
+					alert('Please enter the ESP IP address.');
+				}
+			}
+		</script>
 	</body>
 </html>
