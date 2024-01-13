@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>RC Maze Visualization</title>
+
+		<script>
+			function refreshImage() {
+				var img = document.getElementById('maze-frame');
+				img.src = '/frame?' + new Date().getTime();
+			}
+
+			function start_refresh() {
+				setInterval(refreshImage, 1000);
+			}
+
+			function startMaze() {
+				var esp_ip = document.getElementById('esp-ip').value;
+				if (esp_ip) {
+					fetch('/start-maze/' + esp_ip)
+						.then((response) => response.text())
+						.then((data) => {
+							start_refresh();
+						});
+				} else {
+					alert('Please enter the ESP IP address.');
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<label for="esp-ip">ESP IP:</label>
+		<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
+		<button onclick="startMaze()">Start Maze</button>
+		<img id="maze-frame" src="/frame" />
+	</body>
+</html>

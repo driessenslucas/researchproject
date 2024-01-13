@@ -15,9 +15,16 @@ from tensorflow.keras.optimizers.legacy import Adam
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
+from flask import Flask, send_file, Response, render_template
+import threading
+import time
+
+import io
+from PIL import Image
+
 
 class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12):
+   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
       self.maze_size_x = maze_size_x
       self.maze_size_y = maze_size_y
       self.maze = self.generate_maze()
@@ -28,6 +35,7 @@ class RCMazeEnv(gym.Env):
       self.steps = 0
       self.previous_distance = 0
       self.goal = (10, 10)
+      self.esp_ip = esp_ip
       self.previous_steps = 0
       self.visited_positions = set()
       self.reset()
@@ -165,7 +173,7 @@ class RCMazeEnv(gym.Env):
     normalized_distance = distance / sensor_max_range
     normalized_distance = max(0, min(normalized_distance, 1))
 
-    return normalized_distance * 1000
+    return normalized_distance
  
    def compute_reward(self):
       # Initialize reward
@@ -271,12 +279,14 @@ class RCMazeEnv(gym.Env):
       
       # Set the rendering function
       glutDisplayFunc(self.render)
+      glutHideWindow()
       
    def run_opengl(self):
       # Set up the rendering context and callbacks
       # but do NOT call glutMainLoop()
       glutDisplayFunc(self.render)
       glutIdleFunc(self.render)  # Update rendering in idle time
+      
         
    def third_person_view(self):
       camera_distance = 2.5 # Distance from the camera to the car
@@ -311,6 +321,22 @@ class RCMazeEnv(gym.Env):
       gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 2)  # Up vector (x, y, z), assuming Z is up
+      
+      
+   def capture_frame(self):
+        # Capture the OpenGL frame
+        width, height = 800, 600
+        glPixelStorei(GL_PACK_ALIGNMENT, 1)
+        data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
+        image = Image.frombytes("RGB", (width, height), data)
+        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        return buffer.getvalue()
+   
 
    def render(self):
       # Clear buffers
@@ -371,7 +397,7 @@ class RCMazeEnv(gym.Env):
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
-      close_threshold = 3.0
+      close_threshold = 0.005
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -402,11 +428,11 @@ class RCMazeEnv(gym.Env):
    def close_opengl(self):
       # Close the OpenGL context
       glutLeaveMainLoop()
+      glutDestroyWindow(glutGetWindow())
 
         
  
 
-from tensorflow.keras.optimizers.legacy import Adam
 class DQNAgent:
     def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
         self.capacity = replayCapacity
@@ -487,11 +513,46 @@ class DQNAgent:
 
     def update_target_network(self):
         self.target_model.set_weights(self.policy_model.get_weights())
+
+
+import queue
+
+app = Flask(__name__)
+
+
+frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
+
+def run_flask_app():
+   app.run(debug=True, use_reloader=False, threaded=True)
         
-# set main
-if __name__ == "__main__":
-   import time
-   env = RCMazeEnv()
+@app.route('/frame')
+def frame():
+   try:
+      image_data = frame_queue.get_nowait()  # Non-blocking get
+   except queue.Empty:
+      return "No frame available", 503  # Service Unavailable
+   return Response(image_data, mimetype='image/png')
+
+maze_thread = None
+
+@app.route('/start-maze/<esp_ip>')
+def start_maze(esp_ip):
+    global maze_thread
+    if maze_thread is None or not maze_thread.is_alive():
+        # Use a lambda function to pass arguments to the target function
+        maze_thread = threading.Thread(target=lambda: run_maze_env(esp_ip))
+        maze_thread.start()
+        return "Maze started with ESP IP: " + esp_ip
+    else:
+        return "Maze is already running"
+
+
+@app.route('/')
+def index():
+   return render_template('index.html')        
+ 
+def run_maze_env(esp_ip):
+   env = RCMazeEnv(esp_ip=esp_ip)
    state = env.reset()
 
    env.init_opengl()
@@ -511,7 +572,7 @@ if __name__ == "__main__":
    done = False
    rewards = []
    
-   desired_fps = 3.0
+   desired_fps = 1.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()
@@ -529,6 +590,11 @@ if __name__ == "__main__":
          state, reward, done = env.step(action)
          rewards.append(reward)
          env.render()
+         frame = env.capture_frame()
+         try:
+            frame_queue.put_nowait(frame)  # Non-blocking put
+         except queue.Full:
+            pass  # Skip if the queue is full
          
          last_time = current_time
        
@@ -537,6 +603,24 @@ if __name__ == "__main__":
             break
    # env.close()
    print(sum(rewards))
-   # env.close_opengl()
+   env.close_opengl()
    # env.close_pygame()
+
+# set main
+if __name__ == "__main__":
+   # maze_thread = threading.Thread(target=run_maze_env)
+   # maze_thread.start()
+
+   # Create and start the Flask app in its own thread
+   flask_thread = threading.Thread(target=run_flask_app)
+   flask_thread.daemon = True
+   flask_thread.start()
+
+   # Optionally, join threads or handle main thread logic
+   flask_thread.join()
+   # maze_thread.join()
+   
+   
+   
+   
 
