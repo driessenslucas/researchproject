@@ -1,2 +1,2 @@
-flask
-opencv-python
+flask==3.0.0
+opencv-python==4.9.0.80
