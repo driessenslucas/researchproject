@@ -32,10 +32,14 @@ services:
     build:
       context: ./sensors
       dockerfile: Dockerfile
+    devices:
+     - /dev/gpiomem0:/dev/gpiomem0
+     - /dev/gpiomem1:/dev/gpiomem1
+     - /dev/gpiomem2:/dev/gpiomem2
+     - /dev/gpiomem3:/dev/gpiomem3
+     - /dev/gpiomem4:/dev/gpiomem4
     expose: 
       - "5500"
-    environment:
-      - HOST_IP=${HOST_IP}
     networks:
       - rpi-network
     privileged: true
