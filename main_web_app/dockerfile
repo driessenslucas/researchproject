@@ -82,7 +82,7 @@ RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
 
 # Set permission and create an entrypoint script
 RUN chmod +x virtual_display.sh
-RUN echo "#!/bin/bash\n./virtual_display.sh\npython3 main.py" > entrypoint.sh
+
 RUN chmod +x entrypoint.sh
 
 # Command to run the entrypoint script
