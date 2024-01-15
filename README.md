@@ -50,6 +50,8 @@
       - [second test environment](#second-test-environment)
     - [3D Maze using PyOpenGL](#3d-maze-using-pyopengl)
       - [installation](#installation-1)
+  - [rpi install](#rpi-install)
+    - [2. **Systemd Service** (systemd systems only)](#2-systemd-service-systemd-systems-only)
   - [Sources](#sources)
 
 ## Progress
@@ -1779,6 +1781,27 @@ class RCMazeEnv(gym.Env):
 
 - Video:
   - ![3D-environment](./video/3D_v3.gif)
+
+## rpi install
+
+### 2. **Systemd Service** (systemd systems only)
+
+- Create a systemd service file, for example, `/etc/systemd/system/display_ip.service`.
+- Edit the file with the following content:
+
+  ```ini
+  [Unit]
+  Description=Display IP Address on SSD1306
+
+  [Service]
+  ExecStart=/home/pi/Documents/researchproject/RPI_display/display_ip.sh
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+- Enable the service to run at startup with `sudo systemctl enable display_ip.service`.
+- Start the service with `sudo systemctl start display_ip.service` to test it.
 
 ## Sources
 

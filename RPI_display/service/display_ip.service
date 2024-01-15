@@ -1,0 +1,8 @@
+[Unit]
+Description=Display IP Address on SSD1306
+
+[Service]
+ExecStart=/home/pi/Documents/researchproject/RPI_display/display_ip.sh
+
+[Install]
+WantedBy=multi-user.target
