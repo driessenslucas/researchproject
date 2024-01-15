@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Initial delay to ensure the system is ready
-sleep 30
-
 # Check if the Xvfb server is already running
 if [ -e /tmp/.X99-lock ]; then
     echo "Display :99 is already in use. Trying to release it..."
