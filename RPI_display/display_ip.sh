@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 15  # Waits 30 seconds
+
 #init display
 /home/pi/Documents/researchproject/RPI_display/ssd1306_linux/ssd1306_bin -n 1 -I 128x64
 
