@@ -1,0 +1,11 @@
+[Unit]
+Description=Create virtual display for main web app
+
+[Service]
+ExecStart=/home/pi/Documents/researchproject/RPI_display/service/virtual_display.sh
+Restart=on-failure
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

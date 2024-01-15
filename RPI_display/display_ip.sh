@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleep 15  # Waits 30 seconds
+sleep 10 
 
 #init display
 /home/pi/Documents/researchproject/RPI_display/ssd1306_linux/ssd1306_bin -n 1 -I 128x64
@@ -31,8 +31,3 @@ fi
 
 echo "IP address displayed successfully."
 
-#create virtual screen for pyopengl to run in.... the main app won't work without this
-Xvfb :99 -screen 0 1024x768x16 &
-export DISPLAY=:99
-
-sudo xhost +Local:docker
