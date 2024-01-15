@@ -41,10 +41,13 @@
 		<title>RC Maze Visualization</title>
 		<style>
 			body {
-				font-family: Arial, sans-serif;
-				background-color: #f4f4f4;
-				text-align: center;
-				padding: 20px;
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+				background-color: #f0f0f0;
 			}
 
 			#container {
@@ -87,6 +90,18 @@
 				border-radius: 8px;
 				margin-top: 20px;
 			}
+			#video-container {
+				/* width: 80%; */
+				border: 1px solid #ddd;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+				background: #fff;
+				padding: 20px;
+			}
+			#video-stream {
+				max-width: 400px;
+				max-height: 400px;
+				height: auto;
+			}
 		</style>
 	</head>
 	<body>
@@ -97,33 +112,11 @@
 			<button onclick="startMaze()">Start Maze</button>
 			<img id="maze-frame" src="/frame" alt="Maze Image" />
 		</div>
+		<div id="video-container">
+			<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
+		</div>
 
 		<script>
-			// function refreshImage() {
-			// 	try {
-			// 		var img = document.getElementById('maze-frame');
-			// 		img.src = 'http://localhost:5000/frame?' + new Date().getTime();
-			// 	} catch (error) {
-			// 		console.log(error);
-			// 	}
-			// }
-
-			// function start_refresh() {
-			// 	setInterval(refreshImage, 1000);
-			// }
-
-			// function startMaze() {
-			// 	var esp_ip = document.getElementById('esp-ip').value;
-			// 	if (esp_ip) {
-			// 		fetch('/start-maze/' + esp_ip)
-			// 			.then((response) => response.text())
-			// 			.then((data) => {
-			// 				start_refresh();
-			// 			});
-			// 	} else {
-			// 		alert('Please enter the ESP IP address.');
-			// 	}
-			// }
 			var amountOfRefreshes = 0;
 			function refreshImage() {
 				// fetch image
@@ -140,8 +133,9 @@
 							});
 						} else {
 							amountOfRefreshes++;
-							if (amountOfRefreshes > 4) {
+							if (amountOfRefreshes > 2) {
 								clearInterval(refreshImage);
+								img.src = '/static/img/placeholder.png';
 							}
 						}
 					}

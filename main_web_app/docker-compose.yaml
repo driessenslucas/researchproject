@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  mjpgstreamer:
+    build:
+      context: ./camera_stream
+      dockerfile: Dockerfile
+    ports:
+      - '8500:8080'
+    volumes:
+      - mydata:/usr/www
+    devices:
+      - '/dev/video0:/dev/video0'
+    networks:
+      - mynetwork
+
+  mazecnn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    networks:
+      - mynetwork
+volumes:
+  mydata:
+
+networks:
+  mynetwork:

@@ -508,6 +508,21 @@ class DQNAgent:
         self.target_model.set_weights(self.policy_model.get_weights())
 
 import queue
+import cv2
+
+def generate_frames():
+   #  cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        success, frame = cap.read()
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 app = Flask(__name__)
 # allow origin from anywhere
@@ -557,6 +572,10 @@ def start_maze(esp_ip):
 @app.route('/')
 def index():
    return render_template('index.html')        
+
+@app.route('/video')
+def video():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
  
 def run_maze_env(esp_ip):
    env = RCMazeEnv(esp_ip=esp_ip)
