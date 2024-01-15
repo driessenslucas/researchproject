@@ -573,7 +573,7 @@ def run_maze_env(esp_ip):
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('./models_v2/DDQN_RCmaze.h5')
+   test_agent.policy_model = load_model('./models/DDQN_RCmaze.h5')
 
 
    done = False
