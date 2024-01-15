@@ -1,8 +1,11 @@
 [Unit]
 Description=Display IP Address on SSD1306
+After=network.target
 
 [Service]
 ExecStart=/home/pi/Documents/researchproject/RPI_display/display_ip.sh
+Restart=on-failure
+RestartSec=30s  # Time to wait before restarting
 
 [Install]
 WantedBy=multi-user.target
