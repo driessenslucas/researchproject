@@ -1803,6 +1803,12 @@ class RCMazeEnv(gym.Env):
 - Enable the service to run at startup with `sudo systemctl enable display_ip.service`.
 - Start the service with `sudo systemctl start display_ip.service` to test it.
 
+
+### for mainapp docker
+```bash
+    xhost -local:docker
+```
+
 ## Sources
 
 [1] “2WD miniQ Robot Chassis.” Accessed: Jan. 08, 2024. [Online]. Available: <https://www.dfrobot.com/product-367.html>

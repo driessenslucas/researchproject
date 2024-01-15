@@ -121,7 +121,8 @@
 			function refreshImage() {
 				// fetch image
 				var img = document.getElementById('maze-frame');
-				fetch('http://localhost:5000/frame?' + new Date().getTime()).then(
+				var location = window.location.href
+				fetch(location+'frame?' + new Date().getTime()).then(
 					(response) => {
 						if (response.ok) {
 							//make blob
@@ -133,9 +134,9 @@
 							});
 						} else {
 							amountOfRefreshes++;
-							if (amountOfRefreshes > 2) {
+							if (amountOfRefreshes > 4) {
 								clearInterval(refreshImage);
-								img.src = '/static/img/placeholder.png';
+								img.src = '';
 							}
 						}
 					}

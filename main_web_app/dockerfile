@@ -1,17 +1,61 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8-slim
+# # Use an official Python runtime as a parent image
+# FROM python:3.11-slim
+
+# # Set the working directory in the container
+# WORKDIR /usr/src/app
+
+# # Install OpenCV dependencies
+# RUN apt-get update && apt-get install -y \
+#     libopencv-dev \
+#     python3-opencv \
+#     build-essential \
+#     python-opengl
+
+# COPY . .
+
+# # Install any needed packages specified in requirements.txt
+# RUN pip install --upgrade pip && pip install  -r requirements.txt
+
+# CMD ["python", "main.py"]
+
+# Use Ubuntu as the parent image
+FROM ubuntu:latest
+
+# Set noninteractive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Install OpenCV dependencies
+# Install Python, OpenCV dependencies, and other essential tools
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
     libopencv-dev \
-    python3-opencv
+    python3-opencv \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    x11-apps \
+    libxext6 \
+    libxtst6 \
+    libxrender1 \
+    build-essential \
+    xvfb \
+    bash
 
+
+# Copy the local directory contents into the container at /usr/src/app
 COPY . .
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+#set permission
+RUN chmod +x start.sh
+RUN ./start.sh
 
-CMD ["python", "main.py"]
+# Install any needed packages specified in requirements.txt
+RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
+
+# Command to run the application
+CMD ["python3", "main.py"]

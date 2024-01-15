@@ -18,6 +18,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment :
+      - DISPLAY=:99
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./:/usr/src/app
     ports:
       - '5000:5000'
     networks:

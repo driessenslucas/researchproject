@@ -511,8 +511,8 @@ import queue
 import cv2
 
 def generate_frames():
-   #  cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
+   #  cap = cv2.VideoCapture(0)
 
     while True:
         success, frame = cap.read()
@@ -535,19 +535,13 @@ frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many fra
 def run_flask_app():
    app.run(debug=True, use_reloader=False, threaded=True, host='0.0.0.0', port=5000)
         
-# @app.route('/frame')
-# def frame():
-#    try:
-#       image_data = frame_queue.get_nowait()  # Non-blocking get
-#       return Response(image_data, mimetype='image/png', status=200)
-#    except queue.Empty:
-#       # return "No frame available", 503  # Service Unavailable
-#       return Response(status=503)  # Service Unavailable
+        
 @app.route('/frame')
 def frame():
     try:
         image_data = frame_queue.get_nowait()  # Non-blocking get
         print("Sending image data with status 200")
+    
         return Response(image_data, mimetype='image/png', status=200)
     except queue.Empty:
         print("Queue empty, sending status 503")
@@ -573,10 +567,16 @@ def start_maze(esp_ip):
 def index():
    return render_template('index.html')        
 
+
 @app.route('/video')
 def video():
+    # Create and start the video thread
+    video_thread = threading.Thread(target=generate_frames)
+    video_thread.start()
+
+    # Return the response to stream the video
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
- 
+
 def run_maze_env(esp_ip):
    env = RCMazeEnv(esp_ip=esp_ip)
    state = env.reset()
