@@ -1,5 +1,6 @@
 [Unit]
 Description=Create virtual display for main web app
+After=network-online.target graphical.target
 
 [Service]
 ExecStart=/home/pi/Documents/researchproject/RPI_display/service/virtual_display.sh
