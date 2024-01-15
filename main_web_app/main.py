@@ -21,6 +21,10 @@ import time
 
 import io
 from PIL import Image
+import queue
+import cv2
+import requests
+import json
 
 
 class RCMazeEnv(gym.Env):
@@ -507,8 +511,7 @@ class DQNAgent:
     def update_target_network(self):
         self.target_model.set_weights(self.policy_model.get_weights())
 
-import queue
-import cv2
+
 
 def generate_frames():
     cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
@@ -565,6 +568,9 @@ def start_maze(esp_ip):
 
 @app.route('/')
 def index():
+   res = requests.get("http://sensors:5500/sensor/front")
+   distance = float(res.text)
+   print(distance)
    return render_template('index.html')        
 
 
@@ -646,7 +652,10 @@ if __name__ == "__main__":
    flask_thread.join()
    # maze_thread.join()
    
-   
+   #get http://sensors:5500/sensors/front
+   res = requests.get("http://sensors:5500/sensors/front")
+   response = json.loads(res.text)
+   print(response)
    
    
 

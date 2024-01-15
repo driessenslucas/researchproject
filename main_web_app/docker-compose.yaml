@@ -12,9 +12,9 @@ services:
     devices:
       - '/dev/video0:/dev/video0'
     networks:
-      - mynetwork
+      - rpi-network
 
-  mazecnn:
+  mazecontrol:
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,9 +26,23 @@ services:
     ports:
       - '5000:5000'
     networks:
-      - mynetwork
+      - rpi-network
+
+  sensors:
+    build:
+      context: ./sensors
+      dockerfile: Dockerfile
+    expose: 
+      - "5500"
+    environment:
+      - HOST_IP=${HOST_IP}
+    networks:
+      - rpi-network
+    privileged: true
+
+
 volumes:
   mydata:
 
 networks:
-  mynetwork:
+  rpi-network:
