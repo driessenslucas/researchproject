@@ -99,9 +99,53 @@
 		</div>
 
 		<script>
+			// function refreshImage() {
+			// 	try {
+			// 		var img = document.getElementById('maze-frame');
+			// 		img.src = 'http://localhost:5000/frame?' + new Date().getTime();
+			// 	} catch (error) {
+			// 		console.log(error);
+			// 	}
+			// }
+
+			// function start_refresh() {
+			// 	setInterval(refreshImage, 1000);
+			// }
+
+			// function startMaze() {
+			// 	var esp_ip = document.getElementById('esp-ip').value;
+			// 	if (esp_ip) {
+			// 		fetch('/start-maze/' + esp_ip)
+			// 			.then((response) => response.text())
+			// 			.then((data) => {
+			// 				start_refresh();
+			// 			});
+			// 	} else {
+			// 		alert('Please enter the ESP IP address.');
+			// 	}
+			// }
+			var amountOfRefreshes = 0;
 			function refreshImage() {
+				// fetch image
 				var img = document.getElementById('maze-frame');
-				img.src = '/frame?' + new Date().getTime();
+				fetch('http://localhost:5000/frame?' + new Date().getTime()).then(
+					(response) => {
+						if (response.ok) {
+							//make blob
+							response.blob().then((blob) => {
+								//make objectURL
+								var objectURL = URL.createObjectURL(blob);
+								//set img.src to objectURL
+								img.src = objectURL;
+							});
+						} else {
+							amountOfRefreshes++;
+							if (amountOfRefreshes > 4) {
+								clearInterval(refreshImage);
+							}
+						}
+					}
+				);
 			}
 
 			function start_refresh() {

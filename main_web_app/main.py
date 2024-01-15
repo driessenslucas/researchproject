@@ -15,9 +15,16 @@ from tensorflow.keras.optimizers.legacy import Adam
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
+from flask import Flask, send_file, Response, render_template
+import threading
+import time
+
+import io
+from PIL import Image
+
 
 class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12):
+   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
       self.maze_size_x = maze_size_x
       self.maze_size_y = maze_size_y
       self.maze = self.generate_maze()
@@ -28,6 +35,7 @@ class RCMazeEnv(gym.Env):
       self.steps = 0
       self.previous_distance = 0
       self.goal = (10, 10)
+      self.esp_ip = esp_ip
       self.previous_steps = 0
       self.visited_positions = set()
       self.reset()
@@ -71,8 +79,6 @@ class RCMazeEnv(gym.Env):
       return self.get_state()
 
    def step(self, action):
-      #ask user input to continue
-      input('press enter to continue')
       if action == 0:
          self.move_forward()
       elif action == 1:
@@ -85,8 +91,7 @@ class RCMazeEnv(gym.Env):
       self.steps += 1
       done = self.is_done()
       #print each sensor reading and the car orientation
-      print('sensor readings: ', self.sensor_readings, 'car orientation: ', self.car_orientation)
-      print('next action: ', action)
+      print('sensor readings: ', self.sensor_readings)
       # print('car orientation: ', self.car_orientation)
       # print('car position: ', self.car_position)
       return self.get_state(), reward, done
@@ -121,103 +126,96 @@ class RCMazeEnv(gym.Env):
       self.sensor_readings['right'] = self.distance_to_wall('right')
 
    def distance_to_wall(self, direction):
-    x, y = self.car_position
-    sensor_max_range = 255  # Maximum range of the ultrasonic sensor
+        x, y = self.car_position
+        sensor_max_range = 255  # Maximum range of the ultrasonic sensor
 
-    def calculate_distance(dx, dy):
-        distance = 0
-        while 0 <= x + distance * dx < self.maze_size_x and \
-              0 <= y + distance * dy < self.maze_size_y and \
-              self.maze[y + distance * dy][x + distance * dx] != 1:
-            distance += 1
-            if distance > sensor_max_range:  # Limiting the sensor range
-                break
-        return distance
+        def calculate_distance(dx, dy):
+            distance = 0
+            while 0 <= x + distance * dx < self.maze_size_x and \
+                0 <= y + distance * dy < self.maze_size_y and \
+                self.maze[y + distance * dy][x + distance * dx] != 1:
+                distance += 1
+                if distance > sensor_max_range:  # Limiting the sensor range
+                    break
+            return distance
 
-    if direction == 'front':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(0, -1)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(0, 1)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(-1, 0)
+        if direction == 'front':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(0, -1)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(0, 1)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(-1, 0)
 
-    elif direction == 'left':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(-1, 0)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(0, -1)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(0, 1)
+        elif direction == 'left':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(-1, 0)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(0, -1)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(0, 1)
 
-    elif direction == 'right':
-        if self.car_orientation == 'N':
-            distance = calculate_distance(1, 0)
-        elif self.car_orientation == 'S':
-            distance = calculate_distance(-1, 0)
-        elif self.car_orientation == 'E':
-            distance = calculate_distance(0, 1)
-        elif self.car_orientation == 'W':
-            distance = calculate_distance(0, -1)
+        elif direction == 'right':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(-1, 0)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(0, 1)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(0, -1)
 
-    # Normalize the distance to a range of 0-100
-    normalized_distance = distance / sensor_max_range
-    normalized_distance = max(0, min(normalized_distance, 1))
+        # Normalize the distance to a range of 0-1
+        normalized_distance = distance / sensor_max_range
+        normalized_distance = max(0, min(normalized_distance, 1))
 
-    return normalized_distance
-   #get distance from http://192.168.0.25:5000/sensor 
-      # import requests
-      # if direction == 'front':
-      #    if self.car_orientation == 'N':
-      #       response = requests.get('http://192.168.0.25:5000/sensor')
-      #       distance = float(response.text)
-   
+        return normalized_distance * 1000
  
    def compute_reward(self):
-      # Initialize reward
-      reward = 0
+        # Initialize reward
+        reward = 0
 
-      # Check for collision or out of bounds
-      if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
-         reward -= 20
+        # Check for collision or out of bounds
+        if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
+            reward -= 20
 
-      # Check if goal is reached
-      if self.car_position == self.goal:
-         reward += 500
-         # Additional penalty if it takes too many steps to reach the goal
-         if self.steps > 1000:
-               reward -= 200
-         return reward  # Return immediately as this is the terminal state
+        # Check if goal is reached
+        if self.car_position == self.goal:
+            reward += 500
+            # Additional penalty if it takes too many steps to reach the goal
+            if self.steps > 1000:
+                reward -= 200
+            return reward  # Return immediately as this is the terminal state
 
-      # Calculate the Euclidean distance to the goal
-      distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
+        # Calculate the Euclidean distance to the goal
+        distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
 
-      # Define a maximum reward when the car is at the goal
-      max_reward_at_goal = 50
+        # Define a maximum reward when the car is at the goal
+        max_reward_at_goal = 50
 
-      # Reward based on proximity to the goal
-      reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
+        # Reward based on proximity to the goal
+        reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
 
-      # # Reward or penalize based on movement towards or away from the goal
-      if distance_to_goal < self.previous_distance:
-         reward += 50  # Positive reward for moving closer to the goal
-      elif distance_to_goal > self.previous_distance:
-         reward -= 25  # Negative reward for moving farther from the goal
+        # # Reward or penalize based on movement towards or away from the goal
+        if distance_to_goal < self.previous_distance:
+            reward += 50  # Positive reward for moving closer to the goal
+        elif distance_to_goal > self.previous_distance:
+            reward -= 25  # Negative reward for moving farther from the goal
 
-      if self.car_position in self.visited_positions:
-         # Apply a penalty for revisiting the same position
-         reward -= 10
-         
-      # Penalize for each step taken to encourage efficiency
-      reward -= 2
-      
-      # Update the previous_distance for the next step
-      self.previous_distance = distance_to_goal
-      return reward
+        if self.car_position in self.visited_positions:
+            # Apply a penalty for revisiting the same position
+            reward -= 10
+            
+        # Penalize for each step taken to encourage efficiency
+        reward -= 2
+        
+        # Update the previous_distance for the next step
+        self.previous_distance = distance_to_goal
+        return reward
 
    def is_done(self):
       #is done if it reaches the goal or goes out of bounds or takes more than 3000 steps
@@ -225,6 +223,7 @@ class RCMazeEnv(gym.Env):
       
    def get_state(self):
       car_position = [float(coord) for coord in self.car_position]
+      self.update_sensor_readings()
       sensor_readings = [float(value) for value in self.sensor_readings.values()]
       
       state = car_position + [self.car_orientation] + sensor_readings
@@ -280,12 +279,14 @@ class RCMazeEnv(gym.Env):
       
       # Set the rendering function
       glutDisplayFunc(self.render)
+      glutHideWindow()
       
    def run_opengl(self):
       # Set up the rendering context and callbacks
       # but do NOT call glutMainLoop()
       glutDisplayFunc(self.render)
       glutIdleFunc(self.render)  # Update rendering in idle time
+      
         
    def third_person_view(self):
       camera_distance = 2.5 # Distance from the camera to the car
@@ -320,6 +321,22 @@ class RCMazeEnv(gym.Env):
       gluLookAt(camera_x, camera_y, camera_z,  # Camera position (x, y, z)
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 2)  # Up vector (x, y, z), assuming Z is up
+      
+      
+   def capture_frame(self):
+        # Capture the OpenGL frame
+        width, height = 800, 600
+        glPixelStorei(GL_PACK_ALIGNMENT, 1)
+        data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
+        image = Image.frombytes("RGB", (width, height), data)
+        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        return buffer.getvalue()
+   
 
    def render(self):
       # Clear buffers
@@ -380,7 +397,7 @@ class RCMazeEnv(gym.Env):
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
-      close_threshold = 0.005
+      close_threshold = 4
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -411,11 +428,8 @@ class RCMazeEnv(gym.Env):
    def close_opengl(self):
       # Close the OpenGL context
       glutLeaveMainLoop()
+      glutDestroyWindow(glutGetWindow())
 
-        
- 
-
-from tensorflow.keras.optimizers.legacy import Adam
 class DQNAgent:
     def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
         self.capacity = replayCapacity
@@ -443,17 +457,13 @@ class DQNAgent:
 
 
     def buildNetwork(self):
-        model = Sequential()
-        model.add(Dense(128, input_shape=self.input_shape, activation='relu'))
-        model.add(Dense(256, activation='relu'))
-        model.add(Dense(512, activation='relu'))
-        model.add(Dense(1028, activation='relu'))
-        model.add(Dense(512, activation='relu'))
-        model.add(Dense(256, activation='relu'))
-        model.add(Dense(128, activation='relu'))
-        model.add(Dense(self.output_shape, activation='linear'))
-        model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate), metrics=['MeanSquaredError'])
-        return model
+      model = Sequential()
+      model.add(Dense(32, input_shape=self.input_shape, activation='relu'))
+      model.add(Dense(64, activation='relu'))
+      model.add(Dense(32, activation='relu'))
+      model.add(Dense(self.output_shape, activation='linear'))
+      model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate), metrics=['MeanSquaredError'])
+      return model
 
     def policy_network_fit(self, batch, batch_size):
             states, actions, rewards, next_states, dones = zip(*batch)
@@ -496,11 +506,60 @@ class DQNAgent:
 
     def update_target_network(self):
         self.target_model.set_weights(self.policy_model.get_weights())
+
+import queue
+
+app = Flask(__name__)
+# allow origin from anywhere
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_RESOURCES'] = {r"/*": {"origins": "*"}}
+
+
+frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
+
+def run_flask_app():
+   app.run(debug=True, use_reloader=False, threaded=True, host='0.0.0.0', port=5000)
         
-# set main
-if __name__ == "__main__":
-   import time
-   env = RCMazeEnv()
+# @app.route('/frame')
+# def frame():
+#    try:
+#       image_data = frame_queue.get_nowait()  # Non-blocking get
+#       return Response(image_data, mimetype='image/png', status=200)
+#    except queue.Empty:
+#       # return "No frame available", 503  # Service Unavailable
+#       return Response(status=503)  # Service Unavailable
+@app.route('/frame')
+def frame():
+    try:
+        image_data = frame_queue.get_nowait()  # Non-blocking get
+        print("Sending image data with status 200")
+        return Response(image_data, mimetype='image/png', status=200)
+    except queue.Empty:
+        print("Queue empty, sending status 503")
+        return Response(status=503)  # Service Unavailable
+
+   
+
+maze_thread = None
+
+@app.route('/start-maze/<esp_ip>')
+def start_maze(esp_ip):
+    global maze_thread
+    if maze_thread is None or not maze_thread.is_alive():
+        # Use a lambda function to pass arguments to the target function
+        maze_thread = threading.Thread(target=lambda: run_maze_env(esp_ip))
+        maze_thread.start()
+        return "Maze started with ESP IP: " + esp_ip
+    else:
+        return "Maze is already running"
+
+
+@app.route('/')
+def index():
+   return render_template('index.html')        
+ 
+def run_maze_env(esp_ip):
+   env = RCMazeEnv(esp_ip=esp_ip)
    state = env.reset()
 
    env.init_opengl()
@@ -514,13 +573,13 @@ if __name__ == "__main__":
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('./models/DDQN_RCmaze_ARF.h5')
+   test_agent.policy_model = load_model('./models_v2/DDQN_RCmaze.h5')
 
 
    done = False
    rewards = []
    
-   desired_fps = 2.0
+   desired_fps = 1.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()
@@ -538,6 +597,11 @@ if __name__ == "__main__":
          state, reward, done = env.step(action)
          rewards.append(reward)
          env.render()
+         frame = env.capture_frame()
+         try:
+            frame_queue.put_nowait(frame)  # Non-blocking put
+         except queue.Full:
+            pass  # Skip if the queue is full
          
          last_time = current_time
        
@@ -546,6 +610,24 @@ if __name__ == "__main__":
             break
    # env.close()
    print(sum(rewards))
-   # env.close_opengl()
+   env.close_opengl()
    # env.close_pygame()
+
+# set main
+if __name__ == "__main__":
+   # maze_thread = threading.Thread(target=run_maze_env)
+   # maze_thread.start()
+
+   # Create and start the Flask app in its own thread
+   flask_thread = threading.Thread(target=run_flask_app)
+   flask_thread.daemon = True
+   flask_thread.start()
+
+   # Optionally, join threads or handle main thread logic
+   flask_thread.join()
+   # maze_thread.join()
+   
+   
+   
+   
 
