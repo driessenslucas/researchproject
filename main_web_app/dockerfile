@@ -44,11 +44,13 @@ RUN apt-get update && apt-get install -y \
     libxrender1 \
     build-essential \
     xvfb \
+    x11-xserver-utils \
     bash
 
 
 # Copy the local directory contents into the container at /usr/src/app
 COPY . .
+
 
 #set permission
 RUN chmod +x start.sh

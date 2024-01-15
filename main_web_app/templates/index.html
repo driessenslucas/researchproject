@@ -43,7 +43,7 @@
 			body {
 				display: flex;
 				justify-content: center;
-				flex-direction: column;
+				flex-direction: row;
 				align-items: center;
 				height: 100vh;
 				margin: 0;
@@ -118,47 +118,51 @@
 
 		<script>
 			var amountOfRefreshes = 0;
+			var intervalID; // Variable to store the interval ID
+
 			function refreshImage() {
-				// fetch image
-				var img = document.getElementById('maze-frame');
-				var location = window.location.href
-				fetch(location+'frame?' + new Date().getTime()).then(
-					(response) => {
-						if (response.ok) {
-							//make blob
-							response.blob().then((blob) => {
-								//make objectURL
-								var objectURL = URL.createObjectURL(blob);
-								//set img.src to objectURL
-								img.src = objectURL;
-							});
-						} else {
-							amountOfRefreshes++;
-							if (amountOfRefreshes > 4) {
-								clearInterval(refreshImage);
-								img.src = '';
+					// fetch image
+					var img = document.getElementById('maze-frame');
+					var location = window.location.href
+					fetch(location + 'frame?' + new Date().getTime()).then(
+							(response) => {
+									if (response.ok) {
+											//make blob
+											response.blob().then((blob) => {
+													//make objectURL
+													var objectURL = URL.createObjectURL(blob);
+													//set img.src to objectURL
+													img.src = objectURL;
+											});
+									} else {
+											amountOfRefreshes++;
+											if (amountOfRefreshes > 2) {
+													img.src = '';
+													clearInterval(intervalID); // Clear the interval using the stored ID
+													amountOfRefreshes = 0;
+											}
+									}
 							}
-						}
-					}
-				);
+					);
 			}
 
 			function start_refresh() {
-				setInterval(refreshImage, 1000);
+					intervalID = setInterval(refreshImage, 1000); // Store the interval ID
 			}
 
 			function startMaze() {
-				var esp_ip = document.getElementById('esp-ip').value;
-				if (esp_ip) {
-					fetch('/start-maze/' + esp_ip)
-						.then((response) => response.text())
-						.then((data) => {
-							start_refresh();
-						});
-				} else {
-					alert('Please enter the ESP IP address.');
-				}
+					var esp_ip = document.getElementById('esp-ip').value;
+					if (esp_ip) {
+							fetch('/start-maze/' + esp_ip)
+									.then((response) => response.text())
+									.then((data) => {
+											start_refresh();
+									});
+					} else {
+							alert('Please enter the ESP IP address.');
+					}
 			}
+
 		</script>
 	</body>
 </html>
