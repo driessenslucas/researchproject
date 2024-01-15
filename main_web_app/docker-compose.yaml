@@ -9,8 +9,8 @@ services:
       - '8500:8080'
     volumes:
       - mydata:/usr/www
-    devices:
-      - '/dev/video0:/dev/video0'
+    #devices:
+      #- '/dev/video0:/dev/video0'
     networks:
       - rpi-network
 
@@ -38,8 +38,10 @@ services:
      - /dev/gpiomem2:/dev/gpiomem2
      - /dev/gpiomem3:/dev/gpiomem3
      - /dev/gpiomem4:/dev/gpiomem4
-    expose: 
-      - "5500"
+    #expose: 
+     # - "5500"
+    ports:
+      - "5800:5500"
     networks:
       - rpi-network
     privileged: true

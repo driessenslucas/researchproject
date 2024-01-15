@@ -27,7 +27,7 @@ def get_sensor_value(direction):
       print('Distance: ', sensor_left .distance )
       return f"{sensor_left.distance  * 100}"
    elif direction == "right":
-      sensor_right = DistanceSensor(echo=24, trigger=23)
+      sensor_right = DistanceSensor(echo=23, trigger=24)
       print('Distance: ', sensor_right.distance )
       return f"{sensor_right.distance * 100 }"
    pause()

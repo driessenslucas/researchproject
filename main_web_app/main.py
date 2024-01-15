@@ -568,9 +568,9 @@ def start_maze(esp_ip):
 
 @app.route('/')
 def index():
-   res = requests.get("http://sensors:5500/sensor/front")
-   distance = float(res.text)
-   print(distance)
+   # res = requests.get("http://sensors:5500/sensor/front")
+   # distance = float(res.text)
+   # print(distance)
    return render_template('index.html')        
 
 

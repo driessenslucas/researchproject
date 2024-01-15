@@ -34,4 +34,5 @@ echo "IP address displayed successfully."
 #create virtual screen for pyopengl to run in.... the main app won't work without this
 Xvfb :99 -screen 0 1024x768x16 &
 export DISPLAY=:99
-xhost +Local:docker
+
+sudo xhost +Local:docker
