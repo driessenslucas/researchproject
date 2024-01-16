@@ -1,40 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-	<head>
-		<title>RC Maze Visualization</title>
-
-		<script>
-			function refreshImage() {
-				var img = document.getElementById('maze-frame');
-				img.src = '/frame?' + new Date().getTime();
-			}
-
-			function start_refresh() {
-				setInterval(refreshImage, 1000);
-			}
-
-			function startMaze() {
-				var esp_ip = document.getElementById('esp-ip').value;
-				if (esp_ip) {
-					fetch('/start-maze/' + esp_ip)
-						.then((response) => response.text())
-						.then((data) => {
-							start_refresh();
-						});
-				} else {
-					alert('Please enter the ESP IP address.');
-				}
-			}
-		</script>
-	</head>
-	<body>
-		<label for="esp-ip">ESP IP:</label>
-		<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
-		<button onclick="startMaze()">Start Maze</button>
-		<img id="maze-frame" src="/frame" />
-	</body>
-</html> -->
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -44,6 +7,7 @@
 				display: flex;
 				justify-content: center;
 				flex-direction: row;
+				flex-wrap: wrap;
 				align-items: center;
 				height: 100vh;
 				margin: 0;
@@ -91,7 +55,9 @@
 				margin-top: 20px;
 			}
 			#video-container {
-				/* width: 80%; */
+				position: relative;
+				width: 420px;
+				height: 420px;
 				border: 1px solid #ddd;
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 				background: #fff;
@@ -101,6 +67,15 @@
 				max-width: 400px;
 				max-height: 400px;
 				height: auto;
+			}
+			#sensor-readings {
+				position: absolute;
+				top: 0;  /* Adjust this value to position the sensor readings */
+				left: 0; /* Adjust this value to position the sensor readings */
+				z-index: 10;
+				background-color: rgba(255, 255, 255, 0.8); /* Optional: Adds a white, slightly transparent background */
+				padding: 10px;
+				border-radius: 8px;
 			}
 		</style>
 	</head>
@@ -113,16 +88,17 @@
 			<img id="maze-frame" src="/frame" alt="Maze Image" />
 		</div>
 		<div id="video-container">
-			<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
+				<div id="sensor-readings">
+						<h2>Sensor Readings:</h2>
+						<div id="sensor-data">
+								Front: <span id="sensor-front">N/A</span><br>
+								Left: <span id="sensor-left">N/A</span><br>
+								Right: <span id="sensor-right">N/A</span>
+						</div>
+				</div>
+				<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
 		</div>
-		<div id="sensor-readings">
-			<h2>Sensor Readings:</h2>
-			<div id="sensor-data">
-					Front: <span id="sensor-front">N/A</span><br>
-					Left: <span id="sensor-left">N/A</span><br>
-					Right: <span id="sensor-right">N/A</span>
-			</div>
-		</div>
+
 
 
 		<script>
@@ -173,17 +149,17 @@
 					}
 			}
 
-			// function refreshSensorReadings() {
-			// 		fetch('/get_sensor_readings')
-			// 				.then(response => response.json())
-			// 				.then(data => {
-			// 						document.getElementById('sensor-front').textContent = data.front;
-			// 						document.getElementById('sensor-left').textContent = data.left;
-			// 						document.getElementById('sensor-right').textContent = data.right;
-			// 				})
-			// 				.catch(error => console.error('Error fetching sensor readings:', error));
-			// }
-			// // setInterval(refreshSensorReadings, 1000);
+			function refreshSensorReadings() {
+					fetch('/get_sensor_readings')
+			 				.then(response => response.json())
+			 				.then(data => {
+			 						document.getElementById('sensor-front').textContent = data.front;
+									document.getElementById('sensor-left').textContent = data.left;
+			 						document.getElementById('sensor-right').textContent = data.right;
+			 				})
+							.catch(error => console.error('Error fetching sensor readings:', error));
+			}
+			setInterval(refreshSensorReadings, 1000);
 		</script>
 	</body>
 </html>

@@ -25,6 +25,7 @@ import requests
 import json
 import aiohttp
 import asyncio
+from threading import Lock
 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
@@ -155,6 +156,10 @@ class RCMazeEnv(gym.Env):
             results = await asyncio.gather(*tasks)
             
             self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+                    # Update shared sensor data structure
+            global sensor_data, sensor_data_lock
+            with sensor_data_lock:
+               sensor_data.update(self.sensor_readings)
 
    async def fetch_sensor_data(self, session, direction, retry_delay=1):
         url = f'http://sensors:5500/sensor/{direction}'
@@ -228,25 +233,6 @@ class RCMazeEnv(gym.Env):
 
    #      return normalized_distance * 1000
    
-   ## this is for the actual sensors
-   def distance_to_wall(self, direction):
-         
-      if direction == 'front':
-         response = requests.get('http://sensors:5500/sensor/front')
-         distance = float(response.text)
-         print(distance)
-         return distance
-      if direction == 'left':
-         response = requests.get('http://sensors:5500/sensor/left')
-         distance = float(response.text)
-         print(distance)
-         return distance
-      if direction == 'right':
-         response = requests.get('http://sensors:5500/sensor/front')
-         distance = float(response.text)
-         print(distance)
-         return distance
-
    def compute_reward(self):
         # Initialize reward
         reward = 0
@@ -621,31 +607,23 @@ def frame():
 
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
-    return jsonify({'ip': request.remote_addr}), 200
+   ## add something to get host camera??? 
+   return jsonify({'ip': request.remote_addr}), 200
 
 maze_thread = None
 
-# @app.route("/get_sensor_readings")
-# def get_sensor_readings():
-#     sensor_urls = {
-#         'front': 'http://sensors:5500/sensor/front',
-#         'left': 'http://sensors:5500/sensor/left',
-#         'right': 'http://sensors:5500/sensor/right'
-#     }
+# Shared data structure and lock
+sensor_data = {"front": 0, "left": 0, "right": 0}
+sensor_data_lock = Lock()
 
-#     readings = {}
-#     for direction, url in sensor_urls.items():
-#         try:
-#             response = requests.get(url)
-#             if response.status_code == 200:
-#                 readings[direction] = float(response.text)
-#             else:
-#                 readings[direction] = 'Error'
-#         except requests.exceptions.RequestException as e:
-#             readings[direction] = 'Error'
-#             print(f"Error fetching {direction} sensor data: {e}")
+@app.route("/get_sensor_readings")
+def get_sensor_readings():
+    global sensor_data, sensor_data_lock
+    with sensor_data_lock:
+        # Make a copy of the data to avoid holding the lock while JSONifying
+        data_copy = sensor_data.copy()
+    return jsonify(data_copy)
 
-#     return jsonify(readings)
 
 @app.route('/start-maze/<esp_ip>')
 def start_maze(esp_ip):
@@ -736,11 +714,10 @@ def run_maze_env(esp_ip):
    env.close_opengl()
    # env.close_pygame()
 
+
+
 # set main
 if __name__ == "__main__":
-   # response = requests.get('http://192.168.0.25:5800/sensors/front')
-   
-   # print(response)
    # maze_thread = threading.Thread(target=run_maze_env)
    # maze_thread.start()
 
@@ -749,7 +726,6 @@ if __name__ == "__main__":
    flask_thread.daemon = True
    flask_thread.start()
 
-   # Optionally, join threads or handle main thread logic
    flask_thread.join()
    # maze_thread.join()
    
