@@ -93,12 +93,26 @@ class RCMazeEnv(gym.Env):
          self.turn_right()
          self.move_car('right')
          
+      self.render()
+      frame = self.capture_frame()
+      try:
+         frame_queue.put_nowait(frame)  # Non-blocking put
+      except queue.Full:
+         pass  # Skip if the queue is full
       
       await self.update_sensor_readings()
       self.visited_positions.add(self.car_position)
       reward = self.compute_reward()
       self.steps += 1
       done = self.is_done()
+      
+      self.render()
+      frame = self.capture_frame()
+      try:
+         frame_queue.put_nowait(frame)  # Non-blocking put
+      except queue.Full:
+         pass  # Skip if the queue is full
+         
       
       print('sensor readings: ', self.sensor_readings)
       time.sleep(1)
@@ -716,12 +730,12 @@ def run_maze_env(esp_ip):
          action = np.argmax(qValues[0])
          state, reward, done = asyncio.run(env.step(action))
          rewards.append(reward)
-         env.render()
-         frame = env.capture_frame()
-         try:
-            frame_queue.put_nowait(frame)  # Non-blocking put
-         except queue.Full:
-            pass  # Skip if the queue is full
+         # env.render()
+         # frame = env.capture_frame()
+         # try:
+         #    frame_queue.put_nowait(frame)  # Non-blocking put
+         # except queue.Full:
+         #    pass  # Skip if the queue is full
          
          last_time = current_time
        
