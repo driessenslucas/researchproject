@@ -7,3 +7,4 @@ numpy==1.26.2
 tensorflow==2.15.0
 keras==2.15.0
 matplotlib
+aiohttp

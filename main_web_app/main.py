@@ -23,6 +23,8 @@ import queue
 import cv2
 import requests
 import json
+import aiohttp
+import asyncio
 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
@@ -31,7 +33,7 @@ class RCMazeEnv(gym.Env):
       self.maze = self.generate_maze()
       self.car_position = (1, 1)
       self.possible_actions = range(3)
-      self.car_orientation = 'N'
+      self.car_orientation = 'E'
       self.sensor_readings = {'front': 0, 'left': 0, 'right': 0}
       self.steps = 0
       self.previous_distance = 0
@@ -70,7 +72,7 @@ class RCMazeEnv(gym.Env):
 
    def reset(self):
       self.car_position = (1, 1)
-      self.car_orientation = 'N'
+      self.car_orientation = 'E'
       self.update_sensor_readings()
       self.steps = 0
       self.previous_distance = 0
@@ -79,22 +81,27 @@ class RCMazeEnv(gym.Env):
       self.visited_positions.add(self.car_position)
       return self.get_state()
 
-   def step(self, action):
+   async def step(self, action):
+      
       if action == 0:
          self.move_forward()
+         self.move_car('forward')
       elif action == 1:
          self.turn_left()
+         self.move_car('left')
       elif action == 2:
          self.turn_right()
-      self.update_sensor_readings()
+         self.move_car('right')
+         
+      
+      await self.update_sensor_readings()
       self.visited_positions.add(self.car_position)
       reward = self.compute_reward()
       self.steps += 1
       done = self.is_done()
-      #print each sensor reading and the car orientation
+      
       print('sensor readings: ', self.sensor_readings)
-      # print('car orientation: ', self.car_orientation)
-      # print('car position: ', self.car_position)
+      time.sleep(1)
       return self.get_state(), reward, done
 
    
@@ -124,6 +131,7 @@ class RCMazeEnv(gym.Env):
       if direction == 'forward':
         #call to esp
         url = f'http://{self.esp_ip}/forward'
+        print(url)
         requests.get(url)
       elif direction == 'left':
         # do call to http://{self.esp_ip}/left
@@ -137,12 +145,43 @@ class RCMazeEnv(gym.Env):
         #call to esp
         url = f'http://{self.esp_ip}/right'
         requests.get(url)
+        
+   async def update_sensor_readings(self):
+      async with aiohttp.ClientSession() as session:
+         tasks = [
+               self.fetch_sensor_data(session, 'front'),
+               self.fetch_sensor_data(session, 'left'),
+               self.fetch_sensor_data(session, 'right')
+         ]
+         results = await asyncio.gather(*tasks)
+         print(results)
+         self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
 
-   def update_sensor_readings(self):
-      # Simple sensor implementation: counts steps to the nearest wall
-      self.sensor_readings['front'] = self.distance_to_wall('front')
-      self.sensor_readings['left'] = self.distance_to_wall('left')
-      self.sensor_readings['right'] = self.distance_to_wall('right')
+   async def fetch_sensor_data(self, session, direction, max_retries=5, retry_delay=1):
+    url = f'http://sensors:5500/sensor/{direction}'
+    attempts = 0
+
+    while attempts < max_retries:
+        try:
+            async with session.get(url, timeout=5) as response:
+                if response.status == 200:
+                    data = await response.text()
+                    return float(data)
+                else:
+                    print(f"Error: Received status code {response.status} from sensor.")
+        except Exception as e:
+            print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+
+        attempts += 1
+        await asyncio.sleep(retry_delay)  # Wait before retrying
+
+    return float('inf')  # Return this value if all retries fail
+
+   # def update_sensor_readings(self):
+   #    # Simple sensor implementation: counts steps to the nearest wall
+   #    self.sensor_readings['front'] = self.distance_to_wall('front')
+   #    self.sensor_readings['left'] = self.distance_to_wall('left')
+   #    self.sensor_readings['right'] = self.distance_to_wall('right')
 
    # def distance_to_wall(self, direction):
    #      x, y = self.car_position
@@ -196,20 +235,21 @@ class RCMazeEnv(gym.Env):
    
    ## this is for the actual sensors
    def distance_to_wall(self, direction):
-      # Define a dictionary where keys are directions and values are sensor URLs
-      sensor_urls = {
-         'front': 'http://sensors:5500/sensors/front',
-         'left': 'http://sensors:5500/sensors/left',
-         'right': 'http://sensors:5500/sensors/right'  # Assuming this is the correct URL for 'right'
-      }
-
-      # Get the URL for the given direction
-      url = sensor_urls.get(direction)
-
-      # If the direction is valid and the URL is found
-      if url:
-         response = requests.get(url)
+         
+      if direction == 'front':
+         response = requests.get('http://sensors:5500/sensor/front')
          distance = float(response.text)
+         print(distance)
+         return distance
+      if direction == 'left':
+         response = requests.get('http://sensors:5500/sensor/left')
+         distance = float(response.text)
+         print(distance)
+         return distance
+      if direction == 'right':
+         response = requests.get('http://sensors:5500/sensor/front')
+         distance = float(response.text)
+         print(distance)
          return distance
 
    def compute_reward(self):
@@ -260,7 +300,7 @@ class RCMazeEnv(gym.Env):
       
    def get_state(self):
       car_position = [float(coord) for coord in self.car_position]
-      self.update_sensor_readings()
+      # self.update_sensor_readings()
       sensor_readings = [float(value) for value in self.sensor_readings.values()]
       
       state = car_position + [self.car_orientation] + sensor_readings
@@ -590,6 +630,28 @@ def get_my_ip():
 
 maze_thread = None
 
+# @app.route("/get_sensor_readings")
+# def get_sensor_readings():
+#     sensor_urls = {
+#         'front': 'http://sensors:5500/sensor/front',
+#         'left': 'http://sensors:5500/sensor/left',
+#         'right': 'http://sensors:5500/sensor/right'
+#     }
+
+#     readings = {}
+#     for direction, url in sensor_urls.items():
+#         try:
+#             response = requests.get(url)
+#             if response.status_code == 200:
+#                 readings[direction] = float(response.text)
+#             else:
+#                 readings[direction] = 'Error'
+#         except requests.exceptions.RequestException as e:
+#             readings[direction] = 'Error'
+#             print(f"Error fetching {direction} sensor data: {e}")
+
+#     return jsonify(readings)
+
 @app.route('/start-maze/<esp_ip>')
 def start_maze(esp_ip):
     global maze_thread
@@ -652,7 +714,7 @@ def run_maze_env(esp_ip):
          glutMainLoopEvent()
          qValues = test_agent.policy_network_predict(np.array([state]))
          action = np.argmax(qValues[0])
-         state, reward, done = env.step(action)
+         state, reward, done = asyncio.run(env.step(action))
          rewards.append(reward)
          env.render()
          frame = env.capture_frame()
@@ -673,6 +735,9 @@ def run_maze_env(esp_ip):
 
 # set main
 if __name__ == "__main__":
+   # response = requests.get('http://192.168.0.25:5800/sensors/front')
+   
+   # print(response)
    # maze_thread = threading.Thread(target=run_maze_env)
    # maze_thread.start()
 

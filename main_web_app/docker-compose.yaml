@@ -9,6 +9,7 @@ services:
       - '8500:8080'
     volumes:
       - mydata:/usr/www
+      
     #devices:
       #- '/dev/video0:/dev/video0'
     networks:
@@ -19,7 +20,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment :
-      - DISPLAY=:99
+      - DISPLAY=:100
     restart: always
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -29,21 +30,25 @@ services:
     # command: './virtual_display.sh'
     networks:
       - rpi-network
+    
 
   sensors:
     build:
       context: ./sensors
       dockerfile: Dockerfile
+    restart: always
     devices:
      - /dev/gpiomem0:/dev/gpiomem0
      - /dev/gpiomem1:/dev/gpiomem1
      - /dev/gpiomem2:/dev/gpiomem2
      - /dev/gpiomem3:/dev/gpiomem3
      - /dev/gpiomem4:/dev/gpiomem4
-    #expose: 
-     # - "5500"
+    expose: 
+     - "5500"
     ports:
       - "5800:5500"
+    volumes:
+      - ./sensors:/usr/src/app
     networks:
       - rpi-network
     privileged: true

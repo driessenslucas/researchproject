@@ -2,19 +2,34 @@
 
 # Check if the Xvfb server is already running
 if [ -e /tmp/.X99-lock ]; then
-    echo "Display :99 is already in use. Trying to release it..."
-    kill $(cat /tmp/.X99-lock)
-    # Wait a bit to ensure the process has been killed
-    sleep 2
+    echo "Display :99 is already in use."
+
+    # Check if the process listed in the lock file is actually running
+    if ps -p $(cat /tmp/.X99-lock) > /dev/null 2>&1; then
+       echo "Xvfb is already running. Proceeding to set DISPLAY."
+    else
+       echo "Lock file found but Xvfb is not running. Starting Xvfb."
+       # Start Xvfb
+       Xvfb :99 -screen 0 1024x768x16 &
+       sleep 2 # Give some time for Xvfb to start
+    fi
+else
+    # Start Xvfb since it's not running
+    echo "Starting Xvfb."
+    Xvfb :99 -screen 0 1024x768x16 &
+    sleep 2 # Give some time for Xvfb to start
 fi
 
-# Start Xvfb
-Xvfb :99 -screen 0 1024x768x16 &
-sleep 2 # Give some time for Xvfb to start
+# Set DISPLAY
 export DISPLAY=:99
 
 # Allow local docker containers to connect to the X server
-xhost +Local:docker
+# This should be done only if Xvfb is running
+if xhost > /dev/null 2>&1; then
+    xhost +Local:docker
+else
+    echo "Xvfb is not running. Cannot set xhost."
+fi
 
 # Add a success message
-echo "Virtual display setup completed successfully. display: ${DISPLAY}"
+echo "Virtual display setup completed successfully. Display: ${DISPLAY}"
