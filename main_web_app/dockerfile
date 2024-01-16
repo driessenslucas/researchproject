@@ -70,6 +70,8 @@ RUN apt-get update && apt-get install -y \
     libxrender1 \
     build-essential \
     xvfb \
+    python3-gpiozero \
+    python3-pigpio \
     x11-xserver-utils \
     bash && \
     rm -rf /var/lib/apt/lists/*

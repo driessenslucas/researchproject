@@ -70,10 +70,15 @@
 			}
 			#sensor-readings {
 				position: absolute;
-				top: 0;  /* Adjust this value to position the sensor readings */
+				top: 0; /* Adjust this value to position the sensor readings */
 				left: 0; /* Adjust this value to position the sensor readings */
 				z-index: 10;
-				background-color: rgba(255, 255, 255, 0.8); /* Optional: Adds a white, slightly transparent background */
+				background-color: rgba(
+					255,
+					255,
+					255,
+					0.8
+				); /* Optional: Adds a white, slightly transparent background */
 				padding: 10px;
 				border-radius: 8px;
 			}
@@ -88,78 +93,73 @@
 			<img id="maze-frame" src="/frame" alt="Maze Image" />
 		</div>
 		<div id="video-container">
-				<div id="sensor-readings">
-						<h2>Sensor Readings:</h2>
-						<div id="sensor-data">
-								Front: <span id="sensor-front">N/A</span><br>
-								Left: <span id="sensor-left">N/A</span><br>
-								Right: <span id="sensor-right">N/A</span>
-						</div>
+			<div id="sensor-readings">
+				<h2>Sensor Readings:</h2>
+				<div id="sensor-data">
+					Front: <span id="sensor-front">N/A</span><br />
+					Left: <span id="sensor-left">N/A</span><br />
+					Right: <span id="sensor-right">N/A</span>
 				</div>
-				<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
+			</div>
+			<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
 		</div>
-
-
 
 		<script>
 			var amountOfRefreshes = 0;
 			var intervalID; // Variable to store the interval ID
 
 			function refreshImage() {
-					// fetch image
-					var img = document.getElementById('maze-frame');
-					var location = window.location.href
-					fetch(location + 'frame?' + new Date().getTime()).then(
-							(response) => {
-									if (response.ok) {
-											//make blob
-											response.blob().then((blob) => {
-													//make objectURL
-													var objectURL = URL.createObjectURL(blob);
-													//set img.src to objectURL
-													img.src = objectURL;
-											});
-									} else {
-											// amountOfRefreshes++;
-											// if (amountOfRefreshes > 10) {
-											// 		img.src = '';
-											// 		clearInterval(intervalID); // Clear the interval using the stored ID
-											// 		amountOfRefreshes = 0;
-											// }
-									}
-							}
-					);
+				// fetch image
+				var img = document.getElementById('maze-frame');
+				var location = window.location.href;
+				fetch(location + 'frame?' + new Date().getTime()).then((response) => {
+					if (response.ok) {
+						//make blob
+						response.blob().then((blob) => {
+							//make objectURL
+							var objectURL = URL.createObjectURL(blob);
+							//set img.src to objectURL
+							img.src = objectURL;
+						});
+					} else {
+						// amountOfRefreshes++;
+						// if (amountOfRefreshes > 10) {
+						// 		img.src = '';
+						// 		clearInterval(intervalID); // Clear the interval using the stored ID
+						// 		amountOfRefreshes = 0;
+						// }
+					}
+				});
 			}
 
 			function start_refresh() {
-					intervalID = setInterval(refreshImage, 500); // Store the interval ID
+				intervalID = setInterval(refreshImage, 500); // Store the interval ID
 			}
 
 			function startMaze() {
-					var esp_ip = document.getElementById('esp-ip').value;
-					if (esp_ip) {
-							fetch('/start-maze/' + esp_ip)
-									.then((response) => response.text())
-									.then((data) => {
-											start_refresh();
-											
-									});
-					} else {
-							alert('Please enter the ESP IP address.');
-					}
+				var esp_ip = document.getElementById('esp-ip').value;
+				if (esp_ip) {
+					fetch('/start-maze/' + esp_ip)
+						.then((response) => response.text())
+						.then((data) => {
+							start_refresh();
+						});
+				} else {
+					alert('Please enter the ESP IP address.');
+				}
 			}
 
-			function refreshSensorReadings() {
-					fetch('/get_sensor_readings')
-			 				.then(response => response.json())
-			 				.then(data => {
-			 						document.getElementById('sensor-front').textContent = data.front;
-									document.getElementById('sensor-left').textContent = data.left;
-			 						document.getElementById('sensor-right').textContent = data.right;
-			 				})
-							.catch(error => console.error('Error fetching sensor readings:', error));
-			}
-			setInterval(refreshSensorReadings, 1000);
+			//function refreshSensorReadings() {
+			//		fetch('/get_sensor_readings')
+			//				.then(response => response.json())
+			//				.then(data => {
+			//						document.getElementById('sensor-front').textContent = data.front;
+			//						document.getElementById('sensor-left').textContent = data.left;
+			// 						document.getElementById('sensor-right').textContent = data.right;
+			// 				})
+			//				.catch(error => console.error('Error fetching sensor readings:', error));
+			//}
+			//setInterval(refreshSensorReadings, 1000);
 		</script>
 	</body>
 </html>

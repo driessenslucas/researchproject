@@ -8,3 +8,4 @@ tensorflow==2.15.0
 keras==2.15.0
 matplotlib
 aiohttp
+gpiozero==2.0

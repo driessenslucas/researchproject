@@ -26,6 +26,8 @@ import json
 import aiohttp
 import asyncio
 from threading import Lock
+from gpiozero import DistanceSensor
+from signal import pause
 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
@@ -86,13 +88,13 @@ class RCMazeEnv(gym.Env):
       # time.sleep(1)
       if action == 0:
          self.move_forward()
-         # self.move_car('forward')
+         self.move_car('forward')
       elif action == 1:
          self.turn_left()
-         # self.move_car('left')
+         self.move_car('left')
       elif action == 2:
          self.turn_right()
-         # self.move_car('right')
+         self.move_car('right')
       
       await self.update_sensor_readings()
       
@@ -162,20 +164,33 @@ class RCMazeEnv(gym.Env):
                sensor_data.update(self.sensor_readings)
 
    async def fetch_sensor_data(self, session, direction, retry_delay=1):
-        url = f'http://sensors:5500/sensor/{direction}'
+      #   url = f'http://sensors:5500/sensor/{direction}'
 
-        while True:  # Continue indefinitely until successful
-            try:
-                async with session.get(url, timeout=5) as response:
-                    if response.status == 200:
-                        data = await response.text()
-                        return float(data)
-                    else:
-                        print(f"Error: Received status code {response.status} from sensor.")
-            except Exception as e:
-                print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+      #   while True:  # Continue indefinitely until successful
+      #       try:
+      #           async with session.get(url, timeout=5) as response:
+      #               if response.status == 200:
+      #                   data = await response.text()
+      #                   return float(data)
+      #               else:
+      #                   print(f"Error: Received status code {response.status} from sensor.")
+      #       except Exception as e:
+      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
 
-            await asyncio.sleep(retry_delay)  # Wait before retrying
+      #       await asyncio.sleep(retry_delay)  # Wait before retrying
+      
+         sensor_front = DistanceSensor(echo=5, trigger=6)
+         sensor_left = DistanceSensor(echo=17, trigger=27)
+         sensor_right = DistanceSensor(echo=23, trigger=24)
+         
+         if direction == "front":
+               return f"{float(sensor_front.distance * 100)}"
+         elif direction == "left":
+               return f"{float(sensor_left.distance * 100)}"
+         elif direction == "right":
+               return f"{float(sensor_right.distance * 100)}"
+         pause()
+
 
    # def update_sensor_readings(self):
    #    # Simple sensor implementation: counts steps to the nearest wall
@@ -616,13 +631,13 @@ maze_thread = None
 sensor_data = {"front": 0, "left": 0, "right": 0}
 sensor_data_lock = Lock()
 
-@app.route("/get_sensor_readings")
-def get_sensor_readings():
-    global sensor_data, sensor_data_lock
-    with sensor_data_lock:
-        # Make a copy of the data to avoid holding the lock while JSONifying
-        data_copy = sensor_data.copy()
-    return jsonify(data_copy)
+# @app.route("/get_sensor_readings")
+# def get_sensor_readings():
+#     global sensor_data, sensor_data_lock
+#     with sensor_data_lock:
+#         # Make a copy of the data to avoid holding the lock while JSONifying
+#         data_copy = sensor_data.copy()
+#     return jsonify(data_copy)
 
 
 @app.route('/start-maze/<esp_ip>')
