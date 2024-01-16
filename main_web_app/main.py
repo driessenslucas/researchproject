@@ -82,40 +82,25 @@ class RCMazeEnv(gym.Env):
       return self.get_state()
 
    async def step(self, action):
-      
+      # time.sleep(1)
       if action == 0:
          self.move_forward()
-         self.move_car('forward')
+         # self.move_car('forward')
       elif action == 1:
          self.turn_left()
-         self.move_car('left')
+         # self.move_car('left')
       elif action == 2:
          self.turn_right()
-         self.move_car('right')
-         
-      self.render()
-      frame = self.capture_frame()
-      try:
-         frame_queue.put_nowait(frame)  # Non-blocking put
-      except queue.Full:
-         pass  # Skip if the queue is full
+         # self.move_car('right')
       
       await self.update_sensor_readings()
+      
       self.visited_positions.add(self.car_position)
       reward = self.compute_reward()
       self.steps += 1
       done = self.is_done()
-      
-      self.render()
-      frame = self.capture_frame()
-      try:
-         frame_queue.put_nowait(frame)  # Non-blocking put
-      except queue.Full:
-         pass  # Skip if the queue is full
          
-      
       print('sensor readings: ', self.sensor_readings)
-      time.sleep(0.1)
       return self.get_state(), reward, done
 
    
@@ -161,35 +146,31 @@ class RCMazeEnv(gym.Env):
         requests.get(url)
         
    async def update_sensor_readings(self):
-      async with aiohttp.ClientSession() as session:
-         tasks = [
-               self.fetch_sensor_data(session, 'front'),
-               self.fetch_sensor_data(session, 'left'),
-               self.fetch_sensor_data(session, 'right')
-         ]
-         results = await asyncio.gather(*tasks)
-         print(results)
-         self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+        async with aiohttp.ClientSession() as session:
+            tasks = [
+                self.fetch_sensor_data(session, 'front'),
+                self.fetch_sensor_data(session, 'left'),
+                self.fetch_sensor_data(session, 'right')
+            ]
+            results = await asyncio.gather(*tasks)
+            
+            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
 
-   async def fetch_sensor_data(self, session, direction, max_retries=5, retry_delay=0.1):
-    url = f'http://sensors:5500/sensor/{direction}'
-    attempts = 0
+   async def fetch_sensor_data(self, session, direction, retry_delay=1):
+        url = f'http://sensors:5500/sensor/{direction}'
 
-    while attempts < max_retries:
-        try:
-            async with session.get(url, timeout=5) as response:
-                if response.status == 200:
-                    data = await response.text()
-                    return float(data)
-                else:
-                    print(f"Error: Received status code {response.status} from sensor.")
-        except Exception as e:
-            print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+        while True:  # Continue indefinitely until successful
+            try:
+                async with session.get(url, timeout=5) as response:
+                    if response.status == 200:
+                        data = await response.text()
+                        return float(data)
+                    else:
+                        print(f"Error: Received status code {response.status} from sensor.")
+            except Exception as e:
+                print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
 
-        attempts += 1
-        await asyncio.sleep(retry_delay)  # Wait before retrying
-
-    return float('inf')  # Return this value if all retries fail
+            await asyncio.sleep(retry_delay)  # Wait before retrying
 
    # def update_sensor_readings(self):
    #    # Simple sensor implementation: counts steps to the nearest wall
@@ -416,7 +397,7 @@ class RCMazeEnv(gym.Env):
       
    def capture_frame(self):
         # Capture the OpenGL frame
-        width, height = 800, 600
+        width, height = 1200, 1200
         glPixelStorei(GL_PACK_ALIGNMENT, 1)
         data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
         image = Image.frombytes("RGB", (width, height), data)
@@ -433,7 +414,7 @@ class RCMazeEnv(gym.Env):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      self.third_person_view()
+      # self.third_person_view()
 
       # Render the maze
       for y in range(self.maze_size_y):
@@ -728,16 +709,24 @@ def run_maze_env(esp_ip):
          glutMainLoopEvent()
          qValues = test_agent.policy_network_predict(np.array([state]))
          action = np.argmax(qValues[0])
+         env.render()
+         frame = env.capture_frame()
+         try:
+            frame_queue.put_nowait(frame)  # Non-blocking put
+         except queue.Full:
+            pass  # Skip if the queue is full
+         
          state, reward, done = asyncio.run(env.step(action))
          rewards.append(reward)
-         # env.render()
-         # frame = env.capture_frame()
-         # try:
-         #    frame_queue.put_nowait(frame)  # Non-blocking put
-         # except queue.Full:
-         #    pass  # Skip if the queue is full
          
-         last_time = current_time
+         env.render()
+         frame = env.capture_frame()
+         try:
+            frame_queue.put_nowait(frame)  # Non-blocking put
+         except queue.Full:
+            pass  # Skip if the queue is full
+         
+         # last_time = current_time
        
          if done:
             print('done in ', len(rewards), 'steps')
