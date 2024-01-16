@@ -21,9 +21,9 @@
     - [Step 9.5: Place RPI 5 on top of the top plate](#step-95-place-rpi-5-on-top-of-the-top-plate)
     - [Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)](#step-10-connect-the-hc-sr04-sensor-to-the-rpi-5-and-try-to-fit-them-on-the-top-plate-togheter-with-the-battery-holder-for-the-esp32-and-the-mini-oled-screens)
   - [Wiring Guide](#wiring-guide)
-    - [Motor Connections](#motor-connections)
-    - [Sensor Wiring](#sensor-wiring)
-    - [Power Supply](#power-supply)
+    - [RPI5 Wiring](#rpi5-wiring)
+    - [ESP32 Wiring](#esp32-wiring)
+      - [esp32 Motor pins](#esp32-motor-pins)
   - [Software Configuration](#software-configuration)
 
 ## Introduction
@@ -120,20 +120,26 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ## Wiring Guide
 
-### Motor Connections
+### RPI5 Wiring
 
-![Motor Connections](path/to/image4.jpg)
+![RPI5 Connections](./pictures/rpi_schema.png)
 Detail the wiring for the motors, referencing the motor driver documentation.
 
-### Sensor Wiring
+### ESP32 Wiring
 
-![Sensor Wiring](path/to/image5.jpg)
+![ESP32 Wiring](./pictures/esp_schema.png)
 Explain how to wire the sensors to the main board.
 
-### Power Supply
+#### esp32 Motor pins
 
-![Power Supply](path/to/image6.jpg)
-Instructions on how to connect the battery holder.
+```c
+
+int E1 = 2;
+int M1 = 17;
+int E2 = 19;
+int M2 = 4;
+
+```
 
 ...
 
