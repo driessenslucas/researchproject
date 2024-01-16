@@ -1,27 +1,27 @@
 #!/bin/bash
 
 # Check if the Xvfb server is already running
-if [ -e /tmp/.X99-lock ]; then
-    echo "Display :99 is already in use."
+if [ -e /tmp/.X100-lock ]; then
+    echo "Display :100 is already in use."
 
     # Check if the process listed in the lock file is actually running
-    if ps -p $(cat /tmp/.X99-lock) > /dev/null 2>&1; then
+    if ps -p $(cat /tmp/.X100-lock) > /dev/null 2>&1; then
        echo "Xvfb is already running. Proceeding to set DISPLAY."
     else
        echo "Lock file found but Xvfb is not running. Starting Xvfb."
        # Start Xvfb
-       Xvfb :99 -screen 0 1024x768x16 &
+       Xvfb :100 -screen 0 1024x768x16 &
        sleep 2 # Give some time for Xvfb to start
     fi
 else
     # Start Xvfb since it's not running
     echo "Starting Xvfb."
-    Xvfb :99 -screen 0 1024x768x16 &
+    Xvfb :100 -screen 0 1024x768x16 &
     sleep 2 # Give some time for Xvfb to start
 fi
 
 # Set DISPLAY
-export DISPLAY=:99
+export DISPLAY=:100
 
 # Allow local docker containers to connect to the X server
 # This should be done only if Xvfb is running

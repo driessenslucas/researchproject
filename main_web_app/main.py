@@ -53,13 +53,13 @@ class RCMazeEnv(gym.Env):
       
       layout = [
          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-         [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+         [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+         [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+         [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
          [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-         [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+         [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
          [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],
-         [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1],
+         [1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
          [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
          [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
          [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
@@ -115,7 +115,7 @@ class RCMazeEnv(gym.Env):
          
       
       print('sensor readings: ', self.sensor_readings)
-      time.sleep(1)
+      time.sleep(0.1)
       return self.get_state(), reward, done
 
    
@@ -171,7 +171,7 @@ class RCMazeEnv(gym.Env):
          print(results)
          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
 
-   async def fetch_sensor_data(self, session, direction, max_retries=5, retry_delay=1):
+   async def fetch_sensor_data(self, session, direction, max_retries=5, retry_delay=0.1):
     url = f'http://sensors:5500/sensor/{direction}'
     attempts = 0
 
@@ -713,7 +713,7 @@ def run_maze_env(esp_ip):
    done = False
    rewards = []
    
-   desired_fps = 1.0
+   desired_fps = 4.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()

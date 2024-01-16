@@ -25,6 +25,7 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./:/usr/src/app
+      - ./templates:/user/src/app/templates
     ports:
       - '5000:5000'
     # command: './virtual_display.sh'
