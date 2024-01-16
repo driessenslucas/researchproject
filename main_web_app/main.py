@@ -1,6 +1,5 @@
 import numpy as np
 import gym
-from gym import spaces
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -15,17 +14,15 @@ from tensorflow.keras.optimizers.legacy import Adam
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
-from flask import Flask, send_file, Response, render_template
+from flask import Flask, send_file, Response, render_template,jsonify, request
 import threading
 import time
-
 import io
 from PIL import Image
 import queue
 import cv2
 import requests
 import json
-
 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
@@ -550,7 +547,10 @@ def frame():
         print("Queue empty, sending status 503")
         return Response(status=503)  # Service Unavailable
 
-   
+
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({'ip': request.remote_addr}), 200
 
 maze_thread = None
 
@@ -568,9 +568,6 @@ def start_maze(esp_ip):
 
 @app.route('/')
 def index():
-   # res = requests.get("http://sensors:5500/sensor/front")
-   # distance = float(res.text)
-   # print(distance)
    return render_template('index.html')        
 
 

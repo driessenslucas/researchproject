@@ -27,6 +27,12 @@ def index():
 def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+from flask import current_app, flash, jsonify, make_response, redirect, request
+
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({'ip': request.remote_addr}), 200
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
 

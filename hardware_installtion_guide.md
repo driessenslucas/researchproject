@@ -10,8 +10,16 @@
   - [Tools Required](#tools-required)
   - [Assembly Instructions](#assembly-instructions)
     - [Step 1: Base Assembly](#step-1-base-assembly)
-    - [Step 2: Motor Installation](#step-2-motor-installation)
-    - [Step 3: Wheel Attachment](#step-3-wheel-attachment)
+    - [Step 2: Attach Motor Driver](#step-2-attach-motor-driver)
+    - [Step 3: Attach ESP32-WROOM-32 module to the motor driver](#step-3-attach-esp32-wroom-32-module-to-the-motor-driver)
+    - [Step 4: Cut the support beams](#step-4-cut-the-support-beams)
+    - [Step 5: Screw in the supports on the bottom of the bottom plate](#step-5-screw-in-the-supports-on-the-bottom-of-the-bottom-plate)
+    - [Step 6: Mount all the supports on the bottom plate](#step-6-mount-all-the-supports-on-the-bottom-plate)
+    - [Step 7: Attach the top plate (you will need to drill holes so that the supports can fit through the top plate)](#step-7-attach-the-top-plate-you-will-need-to-drill-holes-so-that-the-supports-can-fit-through-the-top-plate)
+    - [Step 8: Attach the ultrasonic sensor to the top plate](#step-8-attach-the-ultrasonic-sensor-to-the-top-plate)
+    - [Step 9: Attatch the battery pack to the RPI 5](#step-9-attatch-the-battery-pack-to-the-rpi-5)
+    - [Step 9.5: Place RPI 5 on top of the top plate](#step-95-place-rpi-5-on-top-of-the-top-plate)
+    - [Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)](#step-10-connect-the-hc-sr04-sensor-to-the-rpi-5-and-try-to-fit-them-on-the-top-plate-togheter-with-the-battery-holder-for-the-esp32-and-the-mini-oled-screens)
   - [Wiring Guide](#wiring-guide)
     - [Motor Connections](#motor-connections)
     - [Sensor Wiring](#sensor-wiring)
@@ -35,16 +43,15 @@ Provide a brief introduction to the device, its purpose, and any background info
 - 3D printed parts from Thingiverse ([Link 1](https://www.thingiverse.com/thing:3436448/files), [Link 2](https://www.thingiverse.com/thing:2544002))
 - Motor Driver - available at [DFRobot](https://www.dfrobot.com/product-66.html)
 - 2WD robot kit - available at [DFRobot](https://www.dfrobot.com/product-367.html)
-- Mini lcd - available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF)
+- Mini OlED screen - available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF)
 - Sensors - available at [Amazon](https://www.amazon.com.be/dp/B07XF4815H)
-- Batter For RPI 5 - available at [Amazon](https://www.amazon.com.be/dp/B09QRS666Y)
+- Battery For RPI 5 - available at [Amazon](https://www.amazon.com.be/dp/B09QRS666Y)
 - Battery Holder For ESP 32 - available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW)
 
 - Other miscellaneous components (screws, wires, etc.)
 
 ## Tools Required
 
-- Soldering iron
 - Screwdriver
 - Wire cutter/stripper
 - ...
@@ -53,18 +60,61 @@ Provide a brief introduction to the device, its purpose, and any background info
 
 ### Step 1: Base Assembly
 
-![Base Assembly](path/to/image1.jpg)
-Describe the initial step of assembling the base of the device using the 3D printed parts.
+To assemble the base, you can follow this youtube video from the makers themselves:
 
-### Step 2: Motor Installation
+[![MiniQ 2WD Robot](./assembly_images/yt_vid.png)](https://www.youtube.com/watch?v=tKakeyL_8Fg 'MiniQ 2WD Robot Chassis Quick Assembly Guide')
 
-![Motor Installation](path/to/image2.jpg)
-Guide on how to attach the motors to the base.
+### Step 2: Attach Motor Driver
 
-### Step 3: Wheel Attachment
+Attach the motor driver to the base using 2 screws that came with the kit. Just so that it barely fits on the base.
 
-![Wheel Attachment](path/to/image3.jpg)
-Instructions on how to fix the wheels to the motors.
+![Base Assembly](./assembly_images/base.jpeg)
+
+### Step 3: Attach ESP32-WROOM-32 module to the motor driver
+
+Connect the Wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below.
+
+![Base Assembly](./assembly_images/esp32_schema.png)
+
+### Step 4: Cut the support beams
+
+Cut the support beams so that we can securely attach the top plate to the base. I cut them to ~7cm.
+
+![Base Assembly](./assembly_images/supports.jpeg)
+
+### Step 5: Screw in the supports on the bottom of the bottom plate
+
+![Base Assembly](./assembly_images/washers_underneath.jpeg)'
+
+### Step 6: Mount all the supports on the bottom plate
+
+![Base Assembly](./assembly_images/supports_mounted.jpeg)
+
+![Base Assembly](./assembly_images/all4_supports.jpeg)
+
+### Step 7: Attach the top plate (you will need to drill holes so that the supports can fit through the top plate)
+
+![Base Assembly](./assembly_images/top_placed.jpeg)
+
+### Step 8: Attach the ultrasonic sensor to the top plate
+
+![Base Assembly](./assembly_images/hc-sr04.jpeg)
+
+![Base Assembly](./assembly_images/top_mounted.jpeg)
+
+### Step 9: Attatch the battery pack to the RPI 5
+
+![Base Assembly](./assembly_images/PI_sugar.jpg)
+
+### Step 9.5: Place RPI 5 on top of the top plate
+
+![Base Assembly](./assembly_images/rpi_on_top.jpeg)
+
+### Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)
+
+![Base Assembly](./assembly_images/battery_holder.jpeg)
+
+![Base Assembly](./assembly_images/completed.jpeg)
 
 ...
 
@@ -89,6 +139,4 @@ Instructions on how to connect the battery holder.
 
 ## Software Configuration
 
-Provide steps to install necessary drivers and software for the ESP32-WROOM
-
--32 module. Detailed setup instructions can be found in the official datasheet.
+.... to be added
