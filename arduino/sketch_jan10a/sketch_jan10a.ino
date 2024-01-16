@@ -17,7 +17,7 @@ int M1 = 17;
 int E2 = 19;
 int M2 = 4;
 
-int turnDuration = 160;
+int turnDuration = 300;
 
 int carX = 1;
 int carY = 1;
@@ -78,6 +78,7 @@ int layout[12][12] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
+//}
 void drawMaze() {
     ssd1306_clearScreen();
     ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
@@ -130,9 +131,10 @@ void setup() {
   ssd1306_128x64_i2c_init();
   //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
   ssd1306_clearScreen();
-  ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
+  ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
   String ip = WiFi.localIP().toString();
   ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
+  ssd1306_printFixed(0, 24, "Current action:", STYLE_NORMAL);
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -236,7 +238,10 @@ void loop() {
           carY = path[currentStep][1];
           drawMaze();
           
-        } 
+        }
+        else{
+          stop_moving(); 
+        }
       }
     }
     client.stop();
