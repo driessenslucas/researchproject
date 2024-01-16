@@ -40,7 +40,7 @@ Provide a brief introduction to the device, its purpose, and any background info
 
 - Raspberry Pi 5 8gb ram - Available at [KiwiElectronics](https://www.kiwi-electronics.com/en/raspberry-pi-5-computers-accessories-415/raspberry-pi-5-8gb-11580)
 - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
-- 3D printed parts from Thingiverse ([Link 1](https://www.thingiverse.com/thing:3436448/files), [Link 2](https://www.thingiverse.com/thing:2544002))
+- 3D printed parts from Thingiverse ([hc-sr04](https://www.thingiverse.com/thing:3436448/files), [top plate + alternative for the robot kit](https://www.thingiverse.com/thing:2544002))
 - Motor Driver - available at [DFRobot](https://www.dfrobot.com/product-66.html)
 - 2WD robot kit - available at [DFRobot](https://www.dfrobot.com/product-367.html)
 - Mini OlED screen - available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF)

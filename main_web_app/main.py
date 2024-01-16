@@ -119,6 +119,24 @@ class RCMazeEnv(gym.Env):
       orientations = ['N', 'E', 'S', 'W']
       idx = orientations.index(self.car_orientation)
       self.car_orientation = orientations[(idx + 1) % 4]
+      
+   def move_car(self, direction):
+      if direction == 'forward':
+        #call to esp
+        url = f'http://{self.esp_ip}/forward'
+        requests.get(url)
+      elif direction == 'left':
+        # do call to http://{self.esp_ip}/left
+        #print('left')
+        #call to esp
+        url = f'http://{self.esp_ip}/left'
+        requests.get(url)
+      elif direction == 'right':
+        # do call to http://{self.esp_ip}/right
+        #print('right')
+        #call to esp
+        url = f'http://{self.esp_ip}/right'
+        requests.get(url)
 
    def update_sensor_readings(self):
       # Simple sensor implementation: counts steps to the nearest wall
@@ -126,56 +144,74 @@ class RCMazeEnv(gym.Env):
       self.sensor_readings['left'] = self.distance_to_wall('left')
       self.sensor_readings['right'] = self.distance_to_wall('right')
 
+   # def distance_to_wall(self, direction):
+   #      x, y = self.car_position
+   #      sensor_max_range = 255  # Maximum range of the ultrasonic sensor
+
+   #      def calculate_distance(dx, dy):
+   #          distance = 0
+   #          while 0 <= x + distance * dx < self.maze_size_x and \
+   #              0 <= y + distance * dy < self.maze_size_y and \
+   #              self.maze[y + distance * dy][x + distance * dx] != 1:
+   #              distance += 1
+   #              if distance > sensor_max_range:  # Limiting the sensor range
+   #                  break
+   #          return distance
+
+   #      if direction == 'front':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(0, -1)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(0, 1)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(-1, 0)
+
+   #      elif direction == 'left':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(-1, 0)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(0, -1)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(0, 1)
+
+   #      elif direction == 'right':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(-1, 0)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(0, 1)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(0, -1)
+
+   #      # Normalize the distance to a range of 0-1
+   #      normalized_distance = distance / sensor_max_range
+   #      normalized_distance = max(0, min(normalized_distance, 1))
+
+   #      return normalized_distance * 1000
+   
+   ## this is for the actual sensors
    def distance_to_wall(self, direction):
-        x, y = self.car_position
-        sensor_max_range = 255  # Maximum range of the ultrasonic sensor
+      # Define a dictionary where keys are directions and values are sensor URLs
+      sensor_urls = {
+         'front': 'http://sensors:5500/sensors/front',
+         'left': 'http://sensors:5500/sensors/left',
+         'right': 'http://sensors:5500/sensors/right'  # Assuming this is the correct URL for 'right'
+      }
 
-        def calculate_distance(dx, dy):
-            distance = 0
-            while 0 <= x + distance * dx < self.maze_size_x and \
-                0 <= y + distance * dy < self.maze_size_y and \
-                self.maze[y + distance * dy][x + distance * dx] != 1:
-                distance += 1
-                if distance > sensor_max_range:  # Limiting the sensor range
-                    break
-            return distance
+      # Get the URL for the given direction
+      url = sensor_urls.get(direction)
 
-        if direction == 'front':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(0, -1)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(0, 1)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(-1, 0)
+      # If the direction is valid and the URL is found
+      if url:
+         response = requests.get(url)
+         distance = float(response.text)
+         return distance
 
-        elif direction == 'left':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(-1, 0)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(0, -1)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(0, 1)
-
-        elif direction == 'right':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(-1, 0)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(0, 1)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(0, -1)
-
-        # Normalize the distance to a range of 0-1
-        normalized_distance = distance / sensor_max_range
-        normalized_distance = max(0, min(normalized_distance, 1))
-
-        return normalized_distance * 1000
- 
    def compute_reward(self):
         # Initialize reward
         reward = 0
@@ -649,10 +685,6 @@ if __name__ == "__main__":
    flask_thread.join()
    # maze_thread.join()
    
-   #get http://sensors:5500/sensors/front
-   res = requests.get("http://sensors:5500/sensors/front")
-   response = json.loads(res.text)
-   print(response)
    
    
 

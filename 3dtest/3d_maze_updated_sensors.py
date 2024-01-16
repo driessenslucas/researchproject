@@ -167,6 +167,8 @@ class RCMazeEnv(gym.Env):
 
     return normalized_distance * 1000
  
+   
+ 
    def compute_reward(self):
       # Initialize reward
       reward = 0
