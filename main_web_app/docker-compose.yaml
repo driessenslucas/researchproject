@@ -26,33 +26,39 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./:/usr/src/app
       - ./templates:/user/src/app/templates
-    ports:
-      - '5000:5000'
-    # command: './virtual_display.sh'
-    networks:
-      - rpi-network
-    
-
-  sensors:
-    build:
-      context: ./sensors
-      dockerfile: Dockerfile
-    restart: always
     devices:
      - /dev/gpiomem0:/dev/gpiomem0
      - /dev/gpiomem1:/dev/gpiomem1
      - /dev/gpiomem2:/dev/gpiomem2
      - /dev/gpiomem3:/dev/gpiomem3
      - /dev/gpiomem4:/dev/gpiomem4
-    expose: 
-     - "5500"
     ports:
-      - "5800:5500"
-    volumes:
-      - ./sensors:/usr/src/app
+      - '5000:5000'
+    privileged: true
     networks:
       - rpi-network
-    privileged: true
+    
+
+  # sensors:
+    # build:
+    #   context: ./sensors
+    #   dockerfile: Dockerfile
+    # restart: always
+    # devices:
+    #  - /dev/gpiomem0:/dev/gpiomem0
+    #  - /dev/gpiomem1:/dev/gpiomem1
+    #  - /dev/gpiomem2:/dev/gpiomem2
+    #  - /dev/gpiomem3:/dev/gpiomem3
+    #  - /dev/gpiomem4:/dev/gpiomem4
+    # expose: 
+    #  - "5500"
+    # ports:
+    #   - "5800:5500"
+    # volumes:
+    #   - ./sensors:/usr/src/app
+    # networks:
+    #   - rpi-network
+    # privileged: true
 
 
 volumes:

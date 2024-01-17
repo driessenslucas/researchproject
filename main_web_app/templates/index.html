@@ -149,17 +149,18 @@
 				}
 			}
 
-			//function refreshSensorReadings() {
-			//		fetch('/get_sensor_readings')
-			//				.then(response => response.json())
-			//				.then(data => {
-			//						document.getElementById('sensor-front').textContent = data.front;
-			//						document.getElementById('sensor-left').textContent = data.left;
-			// 						document.getElementById('sensor-right').textContent = data.right;
-			// 				})
-			//				.catch(error => console.error('Error fetching sensor readings:', error));
-			//}
-			//setInterval(refreshSensorReadings, 1000);
+			function refreshSensorReadings() {
+					fetch('/get_sensor_readings')
+							.then(response => response.json())
+							.then(data => {
+								document.getElementById('sensor-front').textContent = data.front;
+								document.getElementById('sensor-left').textContent = data.left;
+								document.getElementById('sensor-right').textContent = data.right;
+							})
+							.catch(error => console.error('Error fetching sensor readings:', error));
+						}
+			
+			setInterval(refreshSensorReadings, 1000);
 		</script>
 	</body>
 </html>
