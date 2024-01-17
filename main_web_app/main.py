@@ -65,7 +65,7 @@ class RCMazeEnv(gym.Env):
       layout = [
          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+         [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
          [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
          [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
          [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
@@ -177,69 +177,69 @@ class RCMazeEnv(gym.Env):
         esp_right = f'http://{self.esp_ip}/right'
         requests.get(esp_right)
         
-   ## for actual sensors
-   async def update_sensor_readings(self):
-        """
-         Fetch sensor readings and update the sensor_readings
-        """
-        async with aiohttp.ClientSession() as session:
-            tasks = [
-                self.fetch_sensor_data(session, 'front'),
-                self.fetch_sensor_data(session, 'left'),
-                self.fetch_sensor_data(session, 'right')
-            ]
-            results = await asyncio.gather(*tasks)
+   # ## for actual sensors
+   # async def update_sensor_readings(self):
+   #      """
+   #       Fetch sensor readings and update the sensor_readings
+   #      """
+   #      async with aiohttp.ClientSession() as session:
+   #          tasks = [
+   #              self.fetch_sensor_data(session, 'front'),
+   #              self.fetch_sensor_data(session, 'left'),
+   #              self.fetch_sensor_data(session, 'right')
+   #          ]
+   #          results = await asyncio.gather(*tasks)
             
-            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
-                    # Update shared sensor data structure
-            global sensor_data, sensor_data_lock
-            with sensor_data_lock:
-               sensor_data.update(self.sensor_readings)
+   #          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+   #                  # Update shared sensor data structure
+   #          global sensor_data, sensor_data_lock
+   #          with sensor_data_lock:
+   #             sensor_data.update(self.sensor_readings)
 
-   async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
-      """
-       Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
+   # async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
+   #    """
+   #     Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
        
-       @param session - connect to the session
-       @param direction - Direction of sensor ( front / back ).
-       @param retry_delay - Delay between retries in case of failure
-       @param max_retries - Maximum number of retries. Default is 10
+   #     @param session - connect to the session
+   #     @param direction - Direction of sensor ( front / back ).
+   #     @param retry_delay - Delay between retries in case of failure
+   #     @param max_retries - Maximum number of retries. Default is 10
        
-       @return Float value of sensor data from the HC-SR04
-      """
-      time.sleep(0.1)
-      #   url = f'http://sensors:5500/sensor/{direction}'
+   #     @return Float value of sensor data from the HC-SR04
+   #    """
+   #    time.sleep(0.1)
+   #    #   url = f'http://sensors:5500/sensor/{direction}'
 
-      #   while True:  # Continue indefinitely until successful
-      #       try:
-      #           async with session.get(url, timeout=5) as response:
-      #               if response.status == 200:
-      #                   data = await response.text()
-      #                   return float(data)
-      #               else:
-      #                   print(f"Error: Received status code {response.status} from sensor.")
-      #       except Exception as e:
-      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+   #    #   while True:  # Continue indefinitely until successful
+   #    #       try:
+   #    #           async with session.get(url, timeout=5) as response:
+   #    #               if response.status == 200:
+   #    #                   data = await response.text()
+   #    #                   return float(data)
+   #    #               else:
+   #    #                   print(f"Error: Received status code {response.status} from sensor.")
+   #    #       except Exception as e:
+   #    #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
 
-      #       await asyncio.sleep(retry_delay)  # Wait before retrying
+   #    #       await asyncio.sleep(retry_delay)  # Wait before retrying
          
-      try:
-         sensor_front = DistanceSensor(echo=5, trigger=6)
-         sensor_left = DistanceSensor(echo=17, trigger=27)
-         sensor_right = DistanceSensor(echo=23, trigger=24)
-      except:
-         pass
-      try:
-         # distance between sensor and front direction
-         if direction == "front":
-               return float(sensor_front.distance * 100)
-         elif direction == "left":
-               return float(sensor_left.distance * 100)
-         elif direction == "right":
-               return float(sensor_right.distance * 100)
-      except Exception as e:
-         print(f"Error: {e}")
-         return "Error reading sensor"
+   #    try:
+   #       sensor_front = DistanceSensor(echo=5, trigger=6)
+   #       sensor_left = DistanceSensor(echo=17, trigger=27)
+   #       sensor_right = DistanceSensor(echo=23, trigger=24)
+   #    except:
+   #       pass
+   #    try:
+   #       # distance between sensor and front direction
+   #       if direction == "front":
+   #             return float(sensor_front.distance * 100)
+   #       elif direction == "left":
+   #             return float(sensor_left.distance * 100)
+   #       elif direction == "right":
+   #             return float(sensor_right.distance * 100)
+   #    except Exception as e:
+   #       print(f"Error: {e}")
+   #       return "Error reading sensor"
 
 
    async def update_sensor_readings(self):
@@ -439,7 +439,7 @@ class RCMazeEnv(gym.Env):
 
 
       from keras.models import load_model
-      test_agent.policy_model = load_model('./models/DDQN_RCmaze.h5')
+      test_agent.policy_model = load_model('./models/DDQN_RCmaze_v2.h5')
 
 
       done = False
