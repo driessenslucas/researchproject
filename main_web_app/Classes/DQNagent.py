@@ -87,3 +87,4 @@ class DQNAgent:
 
     def update_target_network(self):
         self.target_model.set_weights(self.policy_model.get_weights())
+

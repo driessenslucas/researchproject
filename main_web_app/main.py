@@ -29,8 +29,9 @@ from threading import Lock
 from gpiozero import DistanceSensor
 from signal import pause
 
+
 class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.27'):
+   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.7'):
       self.maze_size_x = maze_size_x
       self.maze_size_y = maze_size_y
       self.maze = self.generate_maze()
@@ -44,12 +45,9 @@ class RCMazeEnv(gym.Env):
       self.esp_ip = esp_ip
       self.previous_steps = 0
       self.visited_positions = set()
-      self.sensor_front = DistanceSensor(echo=5, trigger=6)
-      self.sensor_left = DistanceSensor(echo=17, trigger=27)
-      self.sensor_right = DistanceSensor(echo=23, trigger=24)
+      self.opelgl_window = (1200,1200)
       # self.reset()
-
-         
+      
    def generate_maze(self):
       layout = [
          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -65,7 +63,6 @@ class RCMazeEnv(gym.Env):
          [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
       
-   
       maze = np.array(layout)
 
       return maze
@@ -82,16 +79,17 @@ class RCMazeEnv(gym.Env):
       return self.get_state()
 
    async def step(self, action):
-      # time.sleep(1)
       if action == 0:
-         self.move_forward()
-         self.move_car('forward')
+         # dont allow to move forward if the car is too close to a wall
+         if self.sensor_readings['front'] >= 4:
+            self.move_forward()
+            # self.move_car('forward')
       elif action == 1:
          self.turn_left()
-         self.move_car('left')
+         # self.move_car('left')
       elif action == 2:
          self.turn_right()
-         self.move_car('right')
+         # self.move_car('right')
       
       await self.update_sensor_readings()
       
@@ -102,7 +100,6 @@ class RCMazeEnv(gym.Env):
          
       print('sensor readings: ', self.sensor_readings)
       return self.get_state(), reward, done
-
    
    def move_forward(self):
       x, y = self.car_position
@@ -115,7 +112,6 @@ class RCMazeEnv(gym.Env):
       elif self.car_orientation == 'W' and x > 0 and self.maze[y][x - 1] != 1:
          self.car_position = (x - 1, y)
       
-
    def turn_left(self):
       orientations = ['N', 'W', 'S', 'E']
       idx = orientations.index(self.car_orientation)
@@ -128,122 +124,127 @@ class RCMazeEnv(gym.Env):
       
    def move_car(self, direction):
       if direction == 'forward':
-        url = f'http://{self.esp_ip}/forward'
-        print(url)
-        requests.get(url)
+        esp_forward = f'http://{self.esp_ip}/forward'
+        requests.get(esp_forward)
       elif direction == 'left':
-        url = f'http://{self.esp_ip}/left'
-        requests.get(url)
+        esp_left = f'http://{self.esp_ip}/left'
+        requests.get(esp_left)
       elif direction == 'right':
-        url = f'http://{self.esp_ip}/right'
-        requests.get(url)
+        esp_right = f'http://{self.esp_ip}/right'
+        requests.get(esp_right)
         
-   ## for actual sensors
-   async def update_sensor_readings(self):
-        async with aiohttp.ClientSession() as session:
-            tasks = [
-                self.fetch_sensor_data(session, 'front'),
-                self.fetch_sensor_data(session, 'left'),
-                self.fetch_sensor_data(session, 'right')
-            ]
-            results = await asyncio.gather(*tasks)
-            
-            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
-                    # Update shared sensor data structure
-            global sensor_data, sensor_data_lock
-            with sensor_data_lock:
-               sensor_data.update(self.sensor_readings)
-
-   async def fetch_sensor_data(self, session, direction, retry_delay=0.5):
-      #   url = f'http://sensors:5500/sensor/{direction}'
-
-      #   while True:  # Continue indefinitely until successful
-      #       try:
-      #           async with session.get(url, timeout=5) as response:
-      #               if response.status == 200:
-      #                   data = await response.text()
-      #                   return float(data)
-      #               else:
-      #                   print(f"Error: Received status code {response.status} from sensor.")
-      #       except Exception as e:
-      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
-
-      #       await asyncio.sleep(retry_delay)  # Wait before retrying
-         
-         if direction == "front":
-            distance = float(self.sensor_front.distance * 100)
-            pause()
-            return distance
-         elif direction == "left":
-            distance = float(self.sensor_left.distance * 100)
-            pause()
-            return distance
-         elif direction == "right":
-            distance = float(self.sensor_right.distance * 100)
-            pause()
-            return distance
-
-
+   # ## for actual sensors
    # async def update_sensor_readings(self):
-   #    # Simple sensor implementation: counts steps to the nearest wall
-   #    self.sensor_readings['front'] = self.distance_to_wall('front')
-   #    self.sensor_readings['left'] = self.distance_to_wall('left')
-   #    self.sensor_readings['right'] = self.distance_to_wall('right')
+   #      async with aiohttp.ClientSession() as session:
+   #          tasks = [
+   #              self.fetch_sensor_data(session, 'front'),
+   #              self.fetch_sensor_data(session, 'left'),
+   #              self.fetch_sensor_data(session, 'right')
+   #          ]
+   #          results = await asyncio.gather(*tasks)
+            
+   #          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+   #                  # Update shared sensor data structure
+   #          global sensor_data, sensor_data_lock
+   #          with sensor_data_lock:
+   #             sensor_data.update(self.sensor_readings)
+
+   # async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
+   #    time.sleep(0.1)
+   #    #   url = f'http://sensors:5500/sensor/{direction}'
+
+   #    #   while True:  # Continue indefinitely until successful
+   #    #       try:
+   #    #           async with session.get(url, timeout=5) as response:
+   #    #               if response.status == 200:
+   #    #                   data = await response.text()
+   #    #                   return float(data)
+   #    #               else:
+   #    #                   print(f"Error: Received status code {response.status} from sensor.")
+   #    #       except Exception as e:
+   #    #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+
+   #    #       await asyncio.sleep(retry_delay)  # Wait before retrying
+         
+   #    try:
+   #       sensor_front = DistanceSensor(echo=5, trigger=6)
+   #       sensor_left = DistanceSensor(echo=17, trigger=27)
+   #       sensor_right = DistanceSensor(echo=23, trigger=24)
+   #    except:
+   #       pass
+   #    try:
+   #       if direction == "front":
+   #             return float(sensor_front.distance * 100)
+   #       elif direction == "left":
+   #             return float(sensor_left.distance * 100)
+   #       elif direction == "right":
+   #             return float(sensor_right.distance * 100)
+   #    except Exception as e:
+   #       print(f"Error: {e}")
+   #       return "Error reading sensor"
+   #    # pause()
+
+
+   async def update_sensor_readings(self):
+      # Simple sensor implementation: counts steps to the nearest wall
+      self.sensor_readings['front'] = self.distance_to_wall('front')
+      self.sensor_readings['left'] = self.distance_to_wall('left')
+      self.sensor_readings['right'] = self.distance_to_wall('right')
       
-   #    global sensor_data, sensor_data_lock
-   #    with sensor_data_lock:
-   #       sensor_data.update(self.sensor_readings)
+      global sensor_data, sensor_data_lock
+      with sensor_data_lock:
+         sensor_data.update(self.sensor_readings)
 
-   # def distance_to_wall(self, direction):
-   #      x, y = self.car_position
-   #      sensor_max_range = 255  # Maximum range of the ultrasonic sensor
+   def distance_to_wall(self, direction):
+        x, y = self.car_position
+        sensor_max_range = 255  # Maximum range of the ultrasonic sensor
 
-   #      def calculate_distance(dx, dy):
-   #          distance = 0
-   #          while 0 <= x + distance * dx < self.maze_size_x and \
-   #              0 <= y + distance * dy < self.maze_size_y and \
-   #              self.maze[y + distance * dy][x + distance * dx] != 1:
-   #              distance += 1
-   #              if distance > sensor_max_range:  # Limiting the sensor range
-   #                  break
-   #          return distance
+        def calculate_distance(dx, dy):
+            distance = 0
+            while 0 <= x + distance * dx < self.maze_size_x and \
+                0 <= y + distance * dy < self.maze_size_y and \
+                self.maze[y + distance * dy][x + distance * dx] != 1:
+                distance += 1
+                if distance > sensor_max_range:  # Limiting the sensor range
+                    break
+            return distance
 
-   #      if direction == 'front':
-   #          if self.car_orientation == 'N':
-   #              distance = calculate_distance(0, -1)
-   #          elif self.car_orientation == 'S':
-   #              distance = calculate_distance(0, 1)
-   #          elif self.car_orientation == 'E':
-   #              distance = calculate_distance(1, 0)
-   #          elif self.car_orientation == 'W':
-   #              distance = calculate_distance(-1, 0)
+        if direction == 'front':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(0, -1)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(0, 1)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(-1, 0)
 
-   #      elif direction == 'left':
-   #          if self.car_orientation == 'N':
-   #              distance = calculate_distance(-1, 0)
-   #          elif self.car_orientation == 'S':
-   #              distance = calculate_distance(1, 0)
-   #          elif self.car_orientation == 'E':
-   #              distance = calculate_distance(0, -1)
-   #          elif self.car_orientation == 'W':
-   #              distance = calculate_distance(0, 1)
+        elif direction == 'left':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(-1, 0)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(0, -1)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(0, 1)
 
-   #      elif direction == 'right':
-   #          if self.car_orientation == 'N':
-   #              distance = calculate_distance(1, 0)
-   #          elif self.car_orientation == 'S':
-   #              distance = calculate_distance(-1, 0)
-   #          elif self.car_orientation == 'E':
-   #              distance = calculate_distance(0, 1)
-   #          elif self.car_orientation == 'W':
-   #              distance = calculate_distance(0, -1)
+        elif direction == 'right':
+            if self.car_orientation == 'N':
+                distance = calculate_distance(1, 0)
+            elif self.car_orientation == 'S':
+                distance = calculate_distance(-1, 0)
+            elif self.car_orientation == 'E':
+                distance = calculate_distance(0, 1)
+            elif self.car_orientation == 'W':
+                distance = calculate_distance(0, -1)
 
-   #      # Normalize the distance to a range of 0-1
-   #      normalized_distance = distance / sensor_max_range
-   #      normalized_distance = max(0, min(normalized_distance, 1))
+        # Normalize the distance to a range of 0-1
+        normalized_distance = distance / sensor_max_range
+        normalized_distance = max(0, min(normalized_distance, 1))
         
 
-   #      return normalized_distance * 1000
+        return normalized_distance * 1000
    
    def compute_reward(self):
         # Initialize reward
@@ -315,11 +316,74 @@ class RCMazeEnv(gym.Env):
       
       return state
 
+   async def run_maze_env(self, esp_ip, replayCapacity=2000000):
+      env = RCMazeEnv(esp_ip=esp_ip)
+      state = await env.reset()
+
+      env.init_opengl()
+      env.run_opengl()
+      
+      REPLAY_MEMORY_CAPACITY = replayCapacity
+      POSSIBLE_ACTIONS = env.possible_actions
+
+      # create DQN agent
+      test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
+
+
+      from keras.models import load_model
+      test_agent.policy_model = load_model('./models/DDQN_RCmaze.h5')
+
+
+      done = False
+      rewards = []
+      
+      desired_fps = 10.0
+      frame_duration = 1.0 / desired_fps
+
+      last_time = time.time()
+      done = False
+
+
+      while not done:
+         current_time = time.time()
+         elapsed = current_time - last_time
+         if elapsed >= frame_duration:
+            
+            glutMainLoopEvent()
+            qValues = test_agent.policy_network_predict(np.array([state]))
+            action = np.argmax(qValues[0])
+            env.render()
+            frame = env.capture_frame()
+            try:
+               frame_queue.put_nowait(frame)  # Non-blocking put
+            except queue.Full:
+               pass  # Skip if the queue is full
+            
+            state, reward, done = await env.step(action)
+            rewards.append(reward)
+            
+            env.render()
+            frame = env.capture_frame()
+            try:
+               frame_queue.put_nowait(frame)  # Non-blocking put
+            except queue.Full:
+               pass  # Skip if the queue is full
+            
+            last_time = current_time
+         
+            if done:
+               print('done in ', len(rewards), 'steps')
+               break
+      # env.close()
+      print(sum(rewards))
+      env.close_opengl()
+      # env.close_pygame()
+
    def init_opengl(self):
       # Initialize OpenGL context
       glutInit()
       glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-      glutInitWindowSize(1200, 1200)
+      glutInitWindowSize(self.opelgl_window[0], self.opelgl_window[1])
       glutCreateWindow("RC Maze Environment")
 
       # Set up OpenGL environment
@@ -357,10 +421,9 @@ class RCMazeEnv(gym.Env):
       glutDisplayFunc(self.render)
       glutIdleFunc(self.render)  # Update rendering in idle time
       
-        
-   def third_person_view(self):
-      camera_distance = 2.5 # Distance from the camera to the car
-      camera_height = 1.5  # Height of the camera above the car
+   def third_person_view(self, CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=1.5):
+      camera_distance = CAMERA_DISTANCE # Distance from the camera to the car
+      camera_height = CAMERA_HEIGHT  # Height of the camera above the car
       
       # Assuming self.car_orientation is 'N' and you want to be behind the car (to the 'S')
       if self.car_orientation == 'N':  # Car is facing North
@@ -392,27 +455,25 @@ class RCMazeEnv(gym.Env):
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 2)  # Up vector (x, y, z), assuming Z is up
       
-      
    def capture_frame(self):
-        # Capture the OpenGL frame
-        width, height = 1200, 1200
-        glPixelStorei(GL_PACK_ALIGNMENT, 1)
-        data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
-        image = Image.frombytes("RGB", (width, height), data)
-        image = image.transpose(Image.FLIP_TOP_BOTTOM)
+      # Capture the OpenGL frame
+      width, height = self.opelgl_window[0], self.opelgl_window[1]
+      glPixelStorei(GL_PACK_ALIGNMENT, 1)
+      data = glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE)
+      image = Image.frombytes("RGB", (width, height), data)
+      image = image.transpose(Image.FLIP_TOP_BOTTOM)
 
-        buffer = io.BytesIO()
-        image.save(buffer, format="PNG")
-        buffer.seek(0)
+      buffer = io.BytesIO()
+      image.save(buffer, format="PNG")
+      buffer.seek(0)
 
-        return buffer.getvalue()
+      return buffer.getvalue()
    
-
    def render(self):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-      # self.third_person_view()
+      # set third person view over the car (you can commit this for a top down view)
+      self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
 
       # Render the maze
       for y in range(self.maze_size_y):
@@ -440,11 +501,9 @@ class RCMazeEnv(gym.Env):
       # Swap buffers
       glutSwapBuffers()
       
-
    def draw_cube(self, x, y, color):
       # Set the color
       glColor3fv(color)
-
       # Draw a cube at position (x, y), flipping y coordinate
       glPushMatrix()
       glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
@@ -461,8 +520,6 @@ class RCMazeEnv(gym.Env):
          'E': {'front': 0, 'left': 90, 'right': -90},
          'W': {'front': 180, 'left': -90, 'right': 90}
       }
-
-
       # Calculate total rotation angle
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
@@ -488,12 +545,26 @@ class RCMazeEnv(gym.Env):
       # Set the color
       glColor3fv(color)
 
-      # Draw a cube at position (x, y), flipping y coordinate
+      # Adjust for vertical flipping
+      car_y = self.maze_size_y - y - 1
+
+      # Draw the main body of the car as a rectangle
       glPushMatrix()
-      glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
-      glScalef(1, 1, 1)  # Adjust the size of your cube
-      glutSolidCube(0.5)  # Adjust the size if needed
+      glTranslate(x, car_y, 0)
+      glScalef(1.5, 0.8, 1)  # Adjust for the size of the car body
+      glutSolidCube(0.5)
       glPopMatrix()
+
+      # Draw the wheels
+      wheel_radius = 0.1
+      wheel_width = 0.1
+      for wheel_x, wheel_y in [(x-0.5, car_y-0.3), (x+0.5, car_y-0.3),
+                              (x-0.5, car_y+0.3), (x+0.5, car_y+0.3)]:
+         glPushMatrix()
+         glTranslate(wheel_x, wheel_y, 0)
+         glRotatef(90, 1, 0, 0)  # Orient the wheel correctly
+         glutSolidTorus(wheel_radius, wheel_width, 10, 10)
+         glPopMatrix()
 
    def close_opengl(self):
       # Close the OpenGL context
@@ -501,32 +572,31 @@ class RCMazeEnv(gym.Env):
       glutDestroyWindow(glutGetWindow())
 
 class DQNAgent:
-    def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
-        self.capacity = replayCapacity
-        self.memory = collections.deque(maxlen=self.capacity)
-        self.learning_rate = learning_rate
-        self.discount_factor = discount_factor
-        self.input_shape = input_shape
-        self.output_shape = output_shape
-        self.policy_model = self.buildNetwork()
-        self.target_model = self.buildNetwork()
-        self.target_model.set_weights(self.policy_model.get_weights())
+   def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
+      self.capacity = replayCapacity
+      self.memory = collections.deque(maxlen=self.capacity)
+      self.learning_rate = learning_rate
+      self.discount_factor = discount_factor
+      self.input_shape = input_shape
+      self.output_shape = output_shape
+      self.policy_model = self.buildNetwork()
+      self.target_model = self.buildNetwork()
+      self.target_model.set_weights(self.policy_model.get_weights())
 
 
-    def addToReplayMemory(self, step):
-        self.step = step
-        self.memory.append(self.step)
+   def addToReplayMemory(self, step):
+      self.step = step
+      self.memory.append(self.step)
 
-    def sampleFromReplayMemory(self, batchSize):
-        self.batchSize = batchSize
-        if self.batchSize > len(self.memory):
-            self.populated = False
-            return self.populated
-        else:
-            return random.sample(self.memory, self.batchSize)
+   def sampleFromReplayMemory(self, batchSize):
+      self.batchSize = batchSize
+      if self.batchSize > len(self.memory):
+         self.populated = False
+         return self.populated
+      else:
+         return random.sample(self.memory, self.batchSize)
 
-
-    def buildNetwork(self):
+   def buildNetwork(self):
       model = Sequential()
       model.add(Dense(32, input_shape=self.input_shape, activation='relu'))
       model.add(Dense(64, activation='relu'))
@@ -535,92 +605,49 @@ class DQNAgent:
       model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate), metrics=['MeanSquaredError'])
       return model
 
-    def policy_network_fit(self, batch, batch_size):
-            states, actions, rewards, next_states, dones = zip(*batch)
+   def policy_network_fit(self, batch, batch_size):
+      states, actions, rewards, next_states, dones = zip(*batch)
+      states = np.array(states)
+      next_states = np.array(next_states)
+      # Predict Q-values for starting state using the policy network
+      q_values = self.policy_model.predict(states)
+      # Predict Q-values for next state using the policy network
+      q_values_next_state_policy = self.policy_model.predict(next_states)
+      # Select the best action for the next state using the policy network
+      best_actions = np.argmax(q_values_next_state_policy, axis=1)
+      # Predict Q-values for next state using the target network
+      q_values_next_state_target = self.target_model.predict(next_states)
+      # Update Q-values for actions taken
+      for i in range(batch_size):
+         if dones[i]:
+            q_values[i, actions[i]] = rewards[i]
+         else:
+            # Double DQN update rule
+            q_values[i, actions[i]] = rewards[i] + self.discount_factor * q_values_next_state_target[i, best_actions[i]]
+      # Train the policy network
+      self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
 
-            states = np.array(states)
-            next_states = np.array(next_states)
+   def policy_network_predict(self, state):
+      self.state = state
+      self.qPolicy = self.policy_model.predict(self.state)
+      return self.qPolicy
 
-            # Predict Q-values for starting state using the policy network
-            q_values = self.policy_model.predict(states)
+   def target_network_predict(self, state):
+      self.state = state
+      self.qTarget = self.target_model.predict(self.state)
+      return self.qTarget
 
-            # Predict Q-values for next state using the policy network
-            q_values_next_state_policy = self.policy_model.predict(next_states)
-
-            # Select the best action for the next state using the policy network
-            best_actions = np.argmax(q_values_next_state_policy, axis=1)
-
-            # Predict Q-values for next state using the target network
-            q_values_next_state_target = self.target_model.predict(next_states)
-
-            # Update Q-values for actions taken
-            for i in range(batch_size):
-                if dones[i]:
-                    q_values[i, actions[i]] = rewards[i]
-                else:
-                    # Double DQN update rule
-                    q_values[i, actions[i]] = rewards[i] + self.discount_factor * q_values_next_state_target[i, best_actions[i]]
-
-            # Train the policy network
-            self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
-
-    def policy_network_predict(self, state):
-        self.state = state
-        self.qPolicy = self.policy_model.predict(self.state)
-        return self.qPolicy
-
-    def target_network_predict(self, state):
-        self.state = state
-        self.qTarget = self.target_model.predict(self.state)
-        return self.qTarget
-
-    def update_target_network(self):
-        self.target_model.set_weights(self.policy_model.get_weights())
+   def update_target_network(self):
+      self.target_model.set_weights(self.policy_model.get_weights())
 
 
-
-def generate_frames():
-    cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
-   #  cap = cv2.VideoCapture(0)
-
-    while True:
-        success, frame = cap.read()
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 app = Flask(__name__)
-# allow origin from anywhere
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['CORS_RESOURCES'] = {r"/*": {"origins": "*"}}
 
 
 frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
-
-def run_flask_app():
-   app.run(debug=True, use_reloader=False, threaded=True, host='0.0.0.0', port=5000)
-        
-        
-@app.route('/frame')
-def frame():
-    try:
-        image_data = frame_queue.get_nowait()  # Non-blocking get
-        print("Sending image data with status 200")
-    
-        return Response(image_data, mimetype='image/png', status=200)
-    except queue.Empty:
-        print("Queue empty, sending status 503")
-        return Response(status=503)  # Service Unavailable
-
-
-@app.route("/get_my_ip", methods=["GET"])
-def get_my_ip():
-   ## add something to get host camera??? 
-   return jsonify({'ip': request.remote_addr}), 200
 
 maze_thread = None
 
@@ -628,113 +655,77 @@ maze_thread = None
 sensor_data = {"front": 0, "left": 0, "right": 0}
 sensor_data_lock = Lock()
 
+def generate_frames():
+   cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
+   #cap = cv2.VideoCapture(0) # for webcam access
+   while True:
+      success, frame = cap.read()
+      if not success:
+         break
+      else:
+         ret, buffer = cv2.imencode('.jpg', frame)
+         frame = buffer.tobytes()
+         yield (b'--frame\r\n'
+                  b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+def run_flask_app():
+   app.run(debug=True, use_reloader=False, threaded=True, host='0.0.0.0', port=5000)
+   
+def run_async_function(func):
+   loop = asyncio.new_event_loop()
+   asyncio.set_event_loop(loop)
+   loop.run_until_complete(func)
+   loop.close()
+        
+@app.route('/frame')
+def frame():
+    try:
+      image_data = frame_queue.get_nowait()  # Non-blocking get
+      print("Sending image data with status 200")
+   
+      return Response(image_data, mimetype='image/png', status=200)
+    except queue.Empty:
+      print("Queue empty, sending status 503")
+      return Response(status=503)  # Service Unavailable
+
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+   ## add something to get host camera??? 
+   return jsonify({'ip': request.remote_addr}), 200
+
 @app.route("/get_sensor_readings")
 def get_sensor_readings():
-    global sensor_data, sensor_data_lock
-    with sensor_data_lock:
-        # Make a copy of the data to avoid holding the lock while JSONifying
-        data_copy = sensor_data.copy()
-    return jsonify(data_copy)
-
-import asyncio
-def run_async_function(func):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(func)
-    loop.close()
+   global sensor_data, sensor_data_lock
+   with sensor_data_lock:
+      # Make a copy of the data to avoid holding the lock while JSONifying
+      data_copy = sensor_data.copy()
+   return jsonify(data_copy)
 
 @app.route('/start-maze/<esp_ip>')
 def start_maze(esp_ip):
-    global maze_thread
-    if maze_thread is None or not maze_thread.is_alive():
-        # Use a lambda function to pass arguments to the async function wrapper
-        maze_thread = threading.Thread(target=lambda: run_async_function(run_maze_env(esp_ip)))
-        maze_thread.start()
-        return "Maze started with ESP IP: " + esp_ip
-    else:
-        return "Maze is already running"
-
+   global maze_thread
+   if maze_thread is None or not maze_thread.is_alive():
+      env = RCMazeEnv()
+      # Use a lambda function to pass arguments to the async function wrapper
+      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env(esp_ip)))
+      maze_thread.start()
+      return "Maze started with ESP IP: " + esp_ip
+   else:
+      return "Maze is already running"
 
 @app.route('/')
 def index():
    return render_template('index.html')        
 
-
 @app.route('/video')
 def video():
-    # Create and start the video thread
-    video_thread = threading.Thread(target=generate_frames)
-    video_thread.start()
+   # Create and start the video thread
+   video_thread = threading.Thread(target=generate_frames)
+   video_thread.start()
 
-    # Return the response to stream the video
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+   # Return the response to stream the video
+   return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-async def run_maze_env(esp_ip):
-   env = RCMazeEnv(esp_ip=esp_ip)
-   state = await env.reset()
-
-   env.init_opengl()
-   env.run_opengl()
-   
-   REPLAY_MEMORY_CAPACITY = 20000
-   POSSIBLE_ACTIONS = env.possible_actions
-
-   # create DQN agent
-   test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
-
-
-   from keras.models import load_model
-   test_agent.policy_model = load_model('./models/DDQN_RCmaze.h5')
-
-
-   done = False
-   rewards = []
-   
-   desired_fps = 4.0
-   frame_duration = 1.0 / desired_fps
-
-   last_time = time.time()
-   done = False
-
-
-   while not done:
-      current_time = time.time()
-      elapsed = current_time - last_time
-      if elapsed >= frame_duration:
-         
-         glutMainLoopEvent()
-         qValues = test_agent.policy_network_predict(np.array([state]))
-         action = np.argmax(qValues[0])
-         env.render()
-         frame = env.capture_frame()
-         try:
-            frame_queue.put_nowait(frame)  # Non-blocking put
-         except queue.Full:
-            pass  # Skip if the queue is full
-         
-         state, reward, done = await env.step(action)
-         rewards.append(reward)
-         
-         env.render()
-         frame = env.capture_frame()
-         try:
-            frame_queue.put_nowait(frame)  # Non-blocking put
-         except queue.Full:
-            pass  # Skip if the queue is full
-         
-         # last_time = current_time
-       
-         if done:
-            print('done in ', len(rewards), 'steps')
-            break
-   # env.close()
-   print(sum(rewards))
-   env.close_opengl()
-   # env.close_pygame()
-
-
-
-# set main
 if __name__ == "__main__":
    # maze_thread = threading.Thread(target=run_maze_env)
    # maze_thread.start()

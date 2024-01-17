@@ -23,11 +23,17 @@ def get_sensor_value(direction):
          pass
       try:
          if direction == "front":
-               return f"{sensor_front.distance * 100}"
+            distance = float(sensor_front.distance * 100)
+            # pause()
+            return f"{distance}"
          elif direction == "left":
-               return f"{sensor_left.distance * 100}"
+            distance = float(sensor_left.distance * 100)
+            # pause()
+            return f"{distance}"
          elif direction == "right":
-               return f"{sensor_right.distance * 100}"
+            distance = float(sensor_right.distance * 100)
+            # pause()
+            return f"{distance}"
       except Exception as e:
          print(f"Error: {e}")
          return "Error reading sensor"
