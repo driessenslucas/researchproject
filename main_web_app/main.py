@@ -112,16 +112,19 @@ class RCMazeEnv(gym.Env):
          # Move forward or car if sensor readings front 4
          if self.sensor_readings['front'] >= 4:
             self.move_forward()
-            if not self.use_virtual_sensors:
-               self.move_car('forward')
+            if self.use_virtual_sensors == False:
+               # self.move_car('forward')
+               pass
       elif action == 1:
          self.turn_left()
-         if not self.use_virtual_sensors:
-               self.move_car('left')
+         if self.use_virtual_sensors == False:
+               # self.move_car('left')
+               pass
       elif action == 2:
          self.turn_right()
-         if not self.use_virtual_sensors:
-               self.move_car('right')
+         if self.use_virtual_sensors == False:
+               # self.move_car('right')
+               pass
          
       await self.update_sensor_readings()
       
@@ -185,10 +188,10 @@ class RCMazeEnv(gym.Env):
       if self.use_virtual_sensors:
          await self.update_virtual_sensor_readings()
       else:
-         await self.update_sensor_readings()
+         await self.update_real_sensor_readings()
         
    ## for actual sensors
-   async def update_sensor_readings(self):
+   async def update_real_sensor_readings(self):
         """
          Fetch sensor readings and update the sensor_readings
         """
@@ -428,24 +431,24 @@ class RCMazeEnv(gym.Env):
       
       return state
 
-   async def run_maze_env(self, env, replayCapacity=2000000):
+   async def run_maze_env(self, replayCapacity=2000000):
       """
        Run RCMaze environment and return rewards.
        
        @param esp_ip - IP address of ESP to use //outdates use self.esp_ip
        @param replayCapacity - Size of replay memory
       """
-      global maze_running
+      global maze_running, frame_queue
       
       
-      env = env  
-      state = await env.reset()
+      # env = env
+      state = await self.reset()
 
-      env.init_opengl()
-      env.run_opengl()
+      self.init_opengl()
+      self.run_opengl()
       
       REPLAY_MEMORY_CAPACITY = replayCapacity
-      POSSIBLE_ACTIONS = env.possible_actions
+      POSSIBLE_ACTIONS = self.possible_actions
 
       # create DQN agent
       test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
@@ -470,6 +473,7 @@ class RCMazeEnv(gym.Env):
             if not maze_running:
                 print("Stopping maze environment...")
                 break  # Exit the loop if maze_running is False
+             
             current_time = time.time()
             elapsed = current_time - last_time
             # If the frame is full or full we can t wait for the frame to be processed.
@@ -478,18 +482,18 @@ class RCMazeEnv(gym.Env):
                glutMainLoopEvent()
                qValues = test_agent.policy_network_predict(np.array([state]))
                action = np.argmax(qValues[0])
-               env.render()
-               frame = env.capture_frame()
+               self.render()
+               frame = self.capture_frame()
                try:
                   frame_queue.put_nowait(frame)  # Non-blocking put
                except queue.Full:
                   pass  # Skip if the queue is full
                
-               state, reward, done = await env.step(action)
+               state, reward, done = await self.step(action)
                rewards.append(reward)
                
-               env.render()
-               frame = env.capture_frame()
+               self.render()
+               frame = self.capture_frame()
                try:
                   frame_queue.put_nowait(frame)  # Non-blocking put
                except queue.Full:
@@ -500,10 +504,12 @@ class RCMazeEnv(gym.Env):
                # prints the number of steps in the list
                if done:
                   print('done in ', len(rewards), 'steps')
+                  maze_running = False
                   break
+            
          print(sum(rewards))
-         env.close_opengl()
-      env.close_opengl()
+         self.close_opengl()
+      self.close_opengl()
       print("Maze environment stopped.")
       
 
@@ -938,6 +944,7 @@ def frame():
      @return Response object with status 200 or 503 if queue is full
     """
     try:
+      global frame_queue
       image_data = frame_queue.get_nowait()  # Non-blocking get
       print("Sending image data with status 200")
    
@@ -984,10 +991,10 @@ def start_maze(use_virtual,esp_ip):
    global maze_thread, maze_running
    # This method is used to start the maze thread
    if maze_thread is None or not maze_thread.is_alive():
-      env = RCMazeEnv(esp_ip=esp_ip, display_type=use_virtual)
+      env = RCMazeEnv(esp_ip=esp_ip, use_virtual_sensors=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper
       maze_running = True
-      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env(env=env)))
+      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env()))
       maze_thread.start()
       return "Maze started with ESP IP: " + esp_ip
    else:

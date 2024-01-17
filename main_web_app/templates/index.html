@@ -133,6 +133,14 @@
 				background-color: #45a049;
 			}
 
+			.stop-button{
+				background-color: red;
+			}
+
+			.stop-button:hover{
+				background-color: #333;
+			}
+
 			label {
 				display: block;
 				margin: 10px 0;
@@ -212,27 +220,30 @@
 				var location = window.location.href;
 				fetch(location + 'frame?' + new Date().getTime()).then((response) => {
 					if (response.ok) {
+						amountOfRefreshes = 0
 						//make blob
 						response.blob().then((blob) => {
 							//make objectURL
 							var objectURL = URL.createObjectURL(blob);
 							//set img.src to objectURL
 							img.src = objectURL;
+							
 						});
 					} else {
-						amountOfRefreshes++;
-						if (amountOfRefreshes > 5) {
-							img.src = '';
-							clearInterval(frameIntervalID); // Clear the interval using the stored ID
-							clearInterval(sensorIntervalID);
-							amountOfRefreshes = 0;
-						}
+						// amountOfRefreshes++;
+						// if (amountOfRefreshes > 15) {
+						// 	img.src = '';
+						// 	clearInterval(frameIntervalID); // Clear the interval using the stored ID
+						// 	clearInterval(sensorIntervalID);
+						// 	amountOfRefreshes = 0;
+						// }
+						
 					}
 				});
 			}
 
 			function start_refresh() {
-				frameIntervalID = setInterval(refreshImage, 100); // Store the interval ID
+				frameIntervalID = setInterval(refreshImage, 1000); // Store the interval ID
 			}
 
 			function startMaze() {
