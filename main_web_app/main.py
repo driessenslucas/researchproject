@@ -31,7 +31,7 @@ from signal import pause
 
 
 class RCMazeEnv(gym.Env):
-   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.7'):
+   def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.7', use_virtual_sensors=True):
       """
        Initialize the maze.
        
@@ -53,6 +53,7 @@ class RCMazeEnv(gym.Env):
       self.previous_steps = 0
       self.visited_positions = set()
       self.opelgl_window = (1200,1200)
+      self.use_virtual_sensors = use_virtual_sensors
       # self.reset()
       
    def generate_maze(self):
@@ -111,13 +112,16 @@ class RCMazeEnv(gym.Env):
          # Move forward or car if sensor readings front 4
          if self.sensor_readings['front'] >= 4:
             self.move_forward()
-            # self.move_car('forward')
+            if not self.use_virtual_sensors:
+               self.move_car('forward')
       elif action == 1:
          self.turn_left()
-         # self.move_car('left')
+         if not self.use_virtual_sensors:
+               self.move_car('left')
       elif action == 2:
          self.turn_right()
-         # self.move_car('right')
+         if not self.use_virtual_sensors:
+               self.move_car('right')
          
       await self.update_sensor_readings()
       
@@ -177,72 +181,78 @@ class RCMazeEnv(gym.Env):
         esp_right = f'http://{self.esp_ip}/right'
         requests.get(esp_right)
         
-   # ## for actual sensors
-   # async def update_sensor_readings(self):
-   #      """
-   #       Fetch sensor readings and update the sensor_readings
-   #      """
-   #      async with aiohttp.ClientSession() as session:
-   #          tasks = [
-   #              self.fetch_sensor_data(session, 'front'),
-   #              self.fetch_sensor_data(session, 'left'),
-   #              self.fetch_sensor_data(session, 'right')
-   #          ]
-   #          results = await asyncio.gather(*tasks)
-            
-   #          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
-   #                  # Update shared sensor data structure
-   #          global sensor_data, sensor_data_lock
-   #          with sensor_data_lock:
-   #             sensor_data.update(self.sensor_readings)
-
-   # async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
-   #    """
-   #     Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
-       
-   #     @param session - connect to the session
-   #     @param direction - Direction of sensor ( front / back ).
-   #     @param retry_delay - Delay between retries in case of failure
-   #     @param max_retries - Maximum number of retries. Default is 10
-       
-   #     @return Float value of sensor data from the HC-SR04
-   #    """
-   #    time.sleep(0.1)
-   #    #   url = f'http://sensors:5500/sensor/{direction}'
-
-   #    #   while True:  # Continue indefinitely until successful
-   #    #       try:
-   #    #           async with session.get(url, timeout=5) as response:
-   #    #               if response.status == 200:
-   #    #                   data = await response.text()
-   #    #                   return float(data)
-   #    #               else:
-   #    #                   print(f"Error: Received status code {response.status} from sensor.")
-   #    #       except Exception as e:
-   #    #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
-
-   #    #       await asyncio.sleep(retry_delay)  # Wait before retrying
-         
-   #    try:
-   #       sensor_front = DistanceSensor(echo=5, trigger=6)
-   #       sensor_left = DistanceSensor(echo=17, trigger=27)
-   #       sensor_right = DistanceSensor(echo=23, trigger=24)
-   #    except:
-   #       pass
-   #    try:
-   #       # distance between sensor and front direction
-   #       if direction == "front":
-   #             return float(sensor_front.distance * 100)
-   #       elif direction == "left":
-   #             return float(sensor_left.distance * 100)
-   #       elif direction == "right":
-   #             return float(sensor_right.distance * 100)
-   #    except Exception as e:
-   #       print(f"Error: {e}")
-   #       return "Error reading sensor"
-
-
    async def update_sensor_readings(self):
+      if self.use_virtual_sensors:
+         await self.update_virtual_sensor_readings()
+      else:
+         await self.update_sensor_readings()
+        
+   ## for actual sensors
+   async def update_sensor_readings(self):
+        """
+         Fetch sensor readings and update the sensor_readings
+        """
+        async with aiohttp.ClientSession() as session:
+            tasks = [
+                self.fetch_sensor_data(session, 'front'),
+                self.fetch_sensor_data(session, 'left'),
+                self.fetch_sensor_data(session, 'right')
+            ]
+            results = await asyncio.gather(*tasks)
+            
+            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+                    # Update shared sensor data structure
+            global sensor_data, sensor_data_lock
+            with sensor_data_lock:
+               sensor_data.update(self.sensor_readings)
+
+   async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
+      """
+       Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
+       
+       @param session - connect to the session
+       @param direction - Direction of sensor ( front / back ).
+       @param retry_delay - Delay between retries in case of failure
+       @param max_retries - Maximum number of retries. Default is 10
+       
+       @return Float value of sensor data from the HC-SR04
+      """
+      time.sleep(0.1)
+      #   url = f'http://sensors:5500/sensor/{direction}'
+
+      #   while True:  # Continue indefinitely until successful
+      #       try:
+      #           async with session.get(url, timeout=5) as response:
+      #               if response.status == 200:
+      #                   data = await response.text()
+      #                   return float(data)
+      #               else:
+      #                   print(f"Error: Received status code {response.status} from sensor.")
+      #       except Exception as e:
+      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+
+      #       await asyncio.sleep(retry_delay)  # Wait before retrying
+         
+      try:
+         sensor_front = DistanceSensor(echo=5, trigger=6)
+         sensor_left = DistanceSensor(echo=17, trigger=27)
+         sensor_right = DistanceSensor(echo=23, trigger=24)
+      except:
+         pass
+      try:
+         # distance between sensor and front direction
+         if direction == "front":
+               return float(sensor_front.distance * 100)
+         elif direction == "left":
+               return float(sensor_left.distance * 100)
+         elif direction == "right":
+               return float(sensor_right.distance * 100)
+      except Exception as e:
+         print(f"Error: {e}")
+         return "Error reading sensor"
+
+
+   async def update_virtual_sensor_readings(self):
       """
        Update the readings from the virtual sensors.
       """
@@ -418,16 +428,17 @@ class RCMazeEnv(gym.Env):
       
       return state
 
-   async def run_maze_env(self, esp_ip, replayCapacity=2000000):
+   async def run_maze_env(self, env, replayCapacity=2000000):
       """
        Run RCMaze environment and return rewards.
        
-       @param esp_ip - IP address of ESP to use
+       @param esp_ip - IP address of ESP to use //outdates use self.esp_ip
        @param replayCapacity - Size of replay memory
       """
       global maze_running
       
-      env = RCMazeEnv(esp_ip=esp_ip)
+      
+      env = env  
       state = await env.reset()
 
       env.init_opengl()
@@ -960,11 +971,12 @@ def get_sensor_readings():
       data_copy = sensor_data.copy()
    return jsonify(data_copy)
 
-@app.route('/start-maze/<esp_ip>')
-def start_maze(esp_ip):
+@app.route('/start-maze/<use_virtual>/<esp_ip>')
+def start_maze(use_virtual,esp_ip):
    """
     Starts maze if it is not already running. This is a blocking call
     
+    @param use_virtual - choose if you want to run the simulation or the real rc car // true for virtual and false for real
     @param esp_ip - ESP IP to use for the maze
     
     @return String describing success or failure of the maze startup
@@ -972,10 +984,10 @@ def start_maze(esp_ip):
    global maze_thread, maze_running
    # This method is used to start the maze thread
    if maze_thread is None or not maze_thread.is_alive():
-      env = RCMazeEnv()
+      env = RCMazeEnv(esp_ip=esp_ip, display_type=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper
       maze_running = True
-      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env(esp_ip)))
+      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env(env=env)))
       maze_thread.start()
       return "Maze started with ESP IP: " + esp_ip
    else:

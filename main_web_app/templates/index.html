@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>RC Maze Visualization</title>
-		<style>
+		<!-- <style>
 			body {
 				display: flex;
 				justify-content: center;
@@ -82,6 +82,93 @@
 				padding: 10px;
 				border-radius: 8px;
 			}
+		</style> -->
+
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+				background-color: #f8f9fa;
+				font-family: Arial, sans-serif;
+			}
+
+			#container {
+				margin: 20px;
+				width: 60%;
+				padding: 20px;
+				background-color: white;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				border-radius: 10px;
+			}
+
+			input[type='text'],
+			button {
+				width: 100%;
+				padding: 12px 20px;
+				margin: 8px 0;
+				display: inline-block;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-sizing: border-box;
+			}
+
+			input[type='checkbox'] {
+				margin: 4px 10px 4px 0;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			button {
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: #45a049;
+			}
+
+			label {
+				display: block;
+				margin: 10px 0;
+				font-size: 18px;
+				color: #333;
+			}
+
+			.checkbox-label {
+				display: inline-block;
+				margin: 0 10px 0 0;
+				font-size: 18px;
+				color: #333;
+			}
+
+			h1 {
+				color: #333;
+			}
+
+			#video-container,
+			#sensor-readings {
+				margin: 20px;
+				padding: 20px;
+				background: #fff;
+				border-radius: 10px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+				border-radius: 8px;
+			}
+
+			#sensor-readings {
+				background-color: rgba(255, 255, 255, 0.9);
+			}
 		</style>
 	</head>
 	<body>
@@ -89,9 +176,18 @@
 			<h1>RC Maze Control</h1>
 			<label for="esp-ip">ESP IP:</label>
 			<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
+			<label class="checkbox-label" for="use-virtualized"
+				>Use Virtualized Maze:</label
+			>
+			<input
+				type="checkbox"
+				id="use-virtualized"
+				name="use-virtualized"
+				value="true"
+				checked />
 			<button onclick="startMaze()">Start Maze</button>
 			<button onclick="stopMaze()">Stop Maze</button>
-			<img id="maze-frame" src="/frame" alt="Maze Image" />
+			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
 		</div>
 		<div id="video-container">
 			<div id="sensor-readings">
@@ -126,10 +222,10 @@
 					} else {
 						amountOfRefreshes++;
 						if (amountOfRefreshes > 5) {
-								img.src = '';
-								clearInterval(frameIntervalID); // Clear the interval using the stored ID
-								clearInterval(sensorIntervalID);
-								amountOfRefreshes = 0;
+							img.src = '';
+							clearInterval(frameIntervalID); // Clear the interval using the stored ID
+							clearInterval(sensorIntervalID);
+							amountOfRefreshes = 0;
 						}
 					}
 				});
@@ -140,9 +236,10 @@
 			}
 
 			function startMaze() {
-				var esp_ip = document.getElementById('esp-ip').value;
-				if (esp_ip) {
-					fetch('/start-maze/' + esp_ip)
+				var espIP = document.getElementById('esp-ip').value;
+				var useVirtualized = document.getElementById('use-virtualized').checked;
+				if (espIP) {
+					fetch('/start-maze/' + useVirtualized + '/' + espIP)
 						.then((response) => response.text())
 						.then((data) => {
 							start_refresh();
@@ -151,26 +248,27 @@
 					alert('Please enter the ESP IP address.');
 				}
 			}
-			function stopMaze(){
-				fetch('/close-maze')
-						.then((response) => {
-							response.text();
-							console.log(response);
-							alert('stopped maze')
-						})
+			function stopMaze() {
+				fetch('/close-maze').then((response) => {
+					response.text();
+					console.log(response);
+					alert('stopped maze');
+				});
 			}
 
 			function refreshSensorReadings() {
-					fetch('/get_sensor_readings')
-							.then(response => response.json())
-							.then(data => {
-								document.getElementById('sensor-front').textContent = data.front;
-								document.getElementById('sensor-left').textContent = data.left;
-								document.getElementById('sensor-right').textContent = data.right;
-							})
-							.catch(error => console.error('Error fetching sensor readings:', error));
-						}
-			
+				fetch('/get_sensor_readings')
+					.then((response) => response.json())
+					.then((data) => {
+						document.getElementById('sensor-front').textContent = data.front;
+						document.getElementById('sensor-left').textContent = data.left;
+						document.getElementById('sensor-right').textContent = data.right;
+					})
+					.catch((error) =>
+						console.error('Error fetching sensor readings:', error)
+					);
+			}
+
 			sensorIntervalID = setInterval(refreshSensorReadings, 1000);
 		</script>
 	</body>
