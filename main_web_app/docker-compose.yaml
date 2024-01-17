@@ -9,7 +9,6 @@ services:
       - '8500:8080'
     volumes:
       - mydata:/usr/www
-      
     #devices:
       #- '/dev/video0:/dev/video0'
     networks:

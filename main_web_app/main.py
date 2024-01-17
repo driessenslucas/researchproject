@@ -85,13 +85,13 @@ class RCMazeEnv(gym.Env):
       # time.sleep(1)
       if action == 0:
          self.move_forward()
-         # self.move_car('forward')
+         self.move_car('forward')
       elif action == 1:
          self.turn_left()
-         # self.move_car('left')
+         self.move_car('left')
       elif action == 2:
          self.turn_right()
-         # self.move_car('right')
+         self.move_car('right')
       
       await self.update_sensor_readings()
       
@@ -139,111 +139,111 @@ class RCMazeEnv(gym.Env):
         requests.get(url)
         
    ## for actual sensors
-   # async def update_sensor_readings(self):
-   #      async with aiohttp.ClientSession() as session:
-   #          tasks = [
-   #              self.fetch_sensor_data(session, 'front'),
-   #              self.fetch_sensor_data(session, 'left'),
-   #              self.fetch_sensor_data(session, 'right')
-   #          ]
-   #          results = await asyncio.gather(*tasks)
-            
-   #          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
-   #                  # Update shared sensor data structure
-   #          global sensor_data, sensor_data_lock
-   #          with sensor_data_lock:
-   #             sensor_data.update(self.sensor_readings)
-
-   # async def fetch_sensor_data(self, session, direction, retry_delay=0.5):
-   #    #   url = f'http://sensors:5500/sensor/{direction}'
-
-   #    #   while True:  # Continue indefinitely until successful
-   #    #       try:
-   #    #           async with session.get(url, timeout=5) as response:
-   #    #               if response.status == 200:
-   #    #                   data = await response.text()
-   #    #                   return float(data)
-   #    #               else:
-   #    #                   print(f"Error: Received status code {response.status} from sensor.")
-   #    #       except Exception as e:
-   #    #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
-
-   #    #       await asyncio.sleep(retry_delay)  # Wait before retrying
-         
-   #       if direction == "front":
-   #          distance = float(self.sensor_front.distance * 100)
-   #          pause()
-   #          return distance
-   #       elif direction == "left":
-   #          distance = float(self.sensor_left.distance * 100)
-   #          pause()
-   #          return distance
-   #       elif direction == "right":
-   #          distance = float(self.sensor_right.distance * 100)
-   #          pause()
-   #          return distance
-
-
    async def update_sensor_readings(self):
-      # Simple sensor implementation: counts steps to the nearest wall
-      self.sensor_readings['front'] = self.distance_to_wall('front')
-      self.sensor_readings['left'] = self.distance_to_wall('left')
-      self.sensor_readings['right'] = self.distance_to_wall('right')
-      
-      global sensor_data, sensor_data_lock
-      with sensor_data_lock:
-         sensor_data.update(self.sensor_readings)
+        async with aiohttp.ClientSession() as session:
+            tasks = [
+                self.fetch_sensor_data(session, 'front'),
+                self.fetch_sensor_data(session, 'left'),
+                self.fetch_sensor_data(session, 'right')
+            ]
+            results = await asyncio.gather(*tasks)
+            
+            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+                    # Update shared sensor data structure
+            global sensor_data, sensor_data_lock
+            with sensor_data_lock:
+               sensor_data.update(self.sensor_readings)
 
-   def distance_to_wall(self, direction):
-        x, y = self.car_position
-        sensor_max_range = 255  # Maximum range of the ultrasonic sensor
+   async def fetch_sensor_data(self, session, direction, retry_delay=0.5):
+      #   url = f'http://sensors:5500/sensor/{direction}'
 
-        def calculate_distance(dx, dy):
-            distance = 0
-            while 0 <= x + distance * dx < self.maze_size_x and \
-                0 <= y + distance * dy < self.maze_size_y and \
-                self.maze[y + distance * dy][x + distance * dx] != 1:
-                distance += 1
-                if distance > sensor_max_range:  # Limiting the sensor range
-                    break
+      #   while True:  # Continue indefinitely until successful
+      #       try:
+      #           async with session.get(url, timeout=5) as response:
+      #               if response.status == 200:
+      #                   data = await response.text()
+      #                   return float(data)
+      #               else:
+      #                   print(f"Error: Received status code {response.status} from sensor.")
+      #       except Exception as e:
+      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
+
+      #       await asyncio.sleep(retry_delay)  # Wait before retrying
+         
+         if direction == "front":
+            distance = float(self.sensor_front.distance * 100)
+            pause()
+            return distance
+         elif direction == "left":
+            distance = float(self.sensor_left.distance * 100)
+            pause()
+            return distance
+         elif direction == "right":
+            distance = float(self.sensor_right.distance * 100)
+            pause()
             return distance
 
-        if direction == 'front':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(0, -1)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(0, 1)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(-1, 0)
 
-        elif direction == 'left':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(-1, 0)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(0, -1)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(0, 1)
+   # async def update_sensor_readings(self):
+   #    # Simple sensor implementation: counts steps to the nearest wall
+   #    self.sensor_readings['front'] = self.distance_to_wall('front')
+   #    self.sensor_readings['left'] = self.distance_to_wall('left')
+   #    self.sensor_readings['right'] = self.distance_to_wall('right')
+      
+   #    global sensor_data, sensor_data_lock
+   #    with sensor_data_lock:
+   #       sensor_data.update(self.sensor_readings)
 
-        elif direction == 'right':
-            if self.car_orientation == 'N':
-                distance = calculate_distance(1, 0)
-            elif self.car_orientation == 'S':
-                distance = calculate_distance(-1, 0)
-            elif self.car_orientation == 'E':
-                distance = calculate_distance(0, 1)
-            elif self.car_orientation == 'W':
-                distance = calculate_distance(0, -1)
+   # def distance_to_wall(self, direction):
+   #      x, y = self.car_position
+   #      sensor_max_range = 255  # Maximum range of the ultrasonic sensor
 
-        # Normalize the distance to a range of 0-1
-        normalized_distance = distance / sensor_max_range
-        normalized_distance = max(0, min(normalized_distance, 1))
+   #      def calculate_distance(dx, dy):
+   #          distance = 0
+   #          while 0 <= x + distance * dx < self.maze_size_x and \
+   #              0 <= y + distance * dy < self.maze_size_y and \
+   #              self.maze[y + distance * dy][x + distance * dx] != 1:
+   #              distance += 1
+   #              if distance > sensor_max_range:  # Limiting the sensor range
+   #                  break
+   #          return distance
+
+   #      if direction == 'front':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(0, -1)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(0, 1)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(-1, 0)
+
+   #      elif direction == 'left':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(-1, 0)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(0, -1)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(0, 1)
+
+   #      elif direction == 'right':
+   #          if self.car_orientation == 'N':
+   #              distance = calculate_distance(1, 0)
+   #          elif self.car_orientation == 'S':
+   #              distance = calculate_distance(-1, 0)
+   #          elif self.car_orientation == 'E':
+   #              distance = calculate_distance(0, 1)
+   #          elif self.car_orientation == 'W':
+   #              distance = calculate_distance(0, -1)
+
+   #      # Normalize the distance to a range of 0-1
+   #      normalized_distance = distance / sensor_max_range
+   #      normalized_distance = max(0, min(normalized_distance, 1))
         
 
-        return normalized_distance * 1000
+   #      return normalized_distance * 1000
    
    def compute_reward(self):
         # Initialize reward
