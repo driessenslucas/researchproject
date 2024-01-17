@@ -656,7 +656,9 @@ class RCMazeEnv(gym.Env):
          
       # Draw the car
       car_x, car_y = self.car_position
-      self.draw_car(car_x, car_y, color=(1.0, 0.0, 1.0))
+      # self.draw_car(car_x, car_y, color=(1.0, 0.0, 1.0))
+      self.draw_car(car_x, car_y, [1, 0, 1], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25])  # pink body, grey wheels, dark grey window
+
       
       # Swap buffers
       glutSwapBuffers()
@@ -724,38 +726,96 @@ class RCMazeEnv(gym.Env):
 
       glPopMatrix()
 
-   def draw_car(self, x, y, color):
-      """
-       Draw a car at x y.
-       
-       @param x - x coordinate of the car
-       @param y - y coordinate of the car ( 0 - 7 )
-       @param color - color of the car
-      """
-      # Set the color
-      glColor3fv(color)
+   # def draw_car(self, x, y, color):
+   #    """
+   #    Draw a car at x y.
+      
+   #    @param x - x coordinate of the car
+   #    @param y - y coordinate of the car 
+   #    @param color - color of the car
+   #    """
+   #    # Set the color
+   #    glColor3fv(color)
 
-      # Adjust for vertical flipping
-      car_y = self.maze_size_y - y - 1
+   #    # Adjust for vertical flipping
+   #    car_y = self.maze_size_y - y - 1
 
-      # Draw the main body of the car as a rectangle
+   #    # Draw the main body of the car as a rectangle
+   #    glPushMatrix()
+   #    glTranslate(x, car_y, 0)
+   #    glScalef(1.5, 0.8, 1)  # Adjust for the size of the car body
+   #    glutSolidCube(0.5)
+   #    glPopMatrix()
+
+   #    # Draw the wheels with rotation based on car's orientation
+   #    wheel_radius = 0.1
+   #    wheel_width = 0.1
+
+   #    # Define wheel positions relative to the car
+   #    wheel_positions = [(x-0.5, car_y-0.3), (x+0.5, car_y-0.3), (x-0.5, car_y+0.3), (x+0.5, car_y+0.3)]
+
+   #    # Apply rotation to each wheel based on car orientation
+   #    for wheel_x, wheel_y in wheel_positions:
+   #       glPushMatrix()
+   #       glTranslate(wheel_x, wheel_y, 0)
+
+   #       # Get rotation angle for the wheels
+   #       rotation_angle = self.get_sensor_rotation_angle('front')  # Assuming you want the wheels to align with the front of the car
+   #       glRotatef(rotation_angle, 0, 0, 1)
+         
+   #       glRotatef(90, 1, 0, 0)  # Orient the wheel correctly
+   #       glutSolidTorus(wheel_radius, wheel_width, 10, 10)
+   #       glPopMatrix()
+   def draw_car(self, x, y, body_color, wheel_color, window_color):
+      """
+      Draw a car with a given orientation and different colors for body, wheels, and window.
+      
+      @param x - x coordinate of the car
+      @param y - y coordinate of the car
+      @param body_color - color of the car's body
+      @param wheel_color - color of the wheels
+      @param window_color - color of the window
+      """
+      
+      #car orientation
+      car_orientation = self.car_orientation
+      
+      # Calculate rotation based on car's orientation
+      rotation_angle = self.get_sensor_rotation_angle('front')
+
+      # Set the color for the car body and draw it with the correct orientation
+      glColor3fv(body_color)
       glPushMatrix()
-      glTranslate(x, car_y, 0)
-      glScalef(1.5, 0.8, 1)  # Adjust for the size of the car body
-      glutSolidCube(0.5)
+      glTranslate(x, self.maze_size_y - y - 1, 0)
+      glRotatef(rotation_angle, 0, 0, 1)  # Rotate the car body
+      glScalef(1.0, 0.5, 0.3)  # Car body size
+      glutSolidCube(1)
       glPopMatrix()
 
-      # Draw the wheels
+      # Draw the wheels in a different color
+      glColor3fv(wheel_color)
       wheel_radius = 0.1
-      wheel_width = 0.1
-      # Draws a wheel on the canvas.
-      for wheel_x, wheel_y in [(x-0.5, car_y-0.3), (x+0.5, car_y-0.3),
-                              (x-0.5, car_y+0.3), (x+0.5, car_y+0.3)]:
+      wheel_width = 0.05
+      wheel_positions = [(x-0.55, y-0.25), (x+0.55, y-0.25),
+                        (x-0.55, y+0.25), (x+0.55, y+0.25)]
+      for wheel_x, wheel_y in wheel_positions:
          glPushMatrix()
-         glTranslate(wheel_x, wheel_y, 0)
+         glTranslate(wheel_x, self.maze_size_y - wheel_y - 1, -0.1)
+         glRotatef(rotation_angle, 0, 0, 1)  # Rotate the wheel with the car
          glRotatef(90, 1, 0, 0)  # Orient the wheel correctly
-         glutSolidTorus(wheel_radius, wheel_width, 10, 10)
+         glutSolidTorus(wheel_width, wheel_radius, 10, 10)
          glPopMatrix()
+
+      # Add a smaller rectangle on top as a window, in a different color
+      glColor3fv(window_color)
+      glPushMatrix()
+      glTranslate(x, self.maze_size_y - y - 1, 0.15)  # Adjust for the height of the window
+      glRotatef(rotation_angle, 0, 0, 1)  # Rotate the window with the car
+      glScalef(0.4, 0.2, 0.1)  # Window size
+      glutSolidCube(1)
+      glPopMatrix()
+
+
 
    def close_opengl(self):
       """
@@ -991,6 +1051,13 @@ def start_maze(use_virtual,esp_ip):
    global maze_thread, maze_running
    # This method is used to start the maze thread
    if maze_thread is None or not maze_thread.is_alive():
+      
+      #convert js true / false to python true false
+      if use_virtual == 'true':
+         use_virtual = True
+      elif use_virtual == 'false':
+         use_virtual = False
+      
       env = RCMazeEnv(esp_ip=esp_ip, use_virtual_sensors=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper
       maze_running = True
