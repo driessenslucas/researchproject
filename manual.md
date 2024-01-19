@@ -78,5 +78,6 @@ cd researchproject
 - You can opt for a virtual demonstration of the project without moving the car, primarily for demo purposes.
 
 Demo of the web app using a virtual rc-car
+
 https://github.com/driessenslucas/researchproject/assets/91117911/413fde11-6752-4a19-b113-028ed2151be2
 
