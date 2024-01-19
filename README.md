@@ -11,6 +11,14 @@
 
 This project explores the feasibility of transferring a trained Reinforcement Learning (RL) agent from a virtual environment to the real world, focusing on navigating a maze with a remote-controlled (RC) car.
 
+## Abstract
+
+In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of our investigation revolves around the challenging question: "Is it possible to transfer a trained RL agent from a simulation to the real world?" This inquiry is particularly examined in the context of maze navigation.
+
+Our research is partitioned into three pivotal sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for our purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
+
+Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
+
 ### Main Research Question
 
 > Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)
@@ -36,6 +44,7 @@ This project explores the feasibility of transferring a trained Reinforcement Le
 - [Research Project](#research-project)
   - [Author Information](#author-information)
   - [Description](#description)
+  - [Abstract](#abstract)
     - [Main Research Question](#main-research-question)
     - [Sub Research Questions](#sub-research-questions)
   - [Table of Contents](#table-of-contents)
