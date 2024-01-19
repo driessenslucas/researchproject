@@ -24,17 +24,16 @@
     - [RPI5 Wiring](#rpi5-wiring)
     - [ESP32 Wiring](#esp32-wiring)
       - [esp32 Motor pins](#esp32-motor-pins)
-  - [Software Configuration](#software-configuration)
 
 ## Introduction
 
-Provide a brief introduction to the device, its purpose, and any background information necessary for the user.
+This guide provides step-by-step instructions for assembling and configuring the RC robot used in our research project. The RC robot, powered by a Raspberry Pi 5 and an ESP32-WROOM-32 module, is designed to navigate a maze using a combination of onboard sensors and reinforcement learning algorithms.
 
 ## Safety Precautions
 
 - Always disconnect the device from the power source before assembling or disassembling.
 - Be cautious of sharp edges on the metal or plastic parts.
-- ...
+- Handle the battery with care. Do not puncture, disassemble, short contacts, dispose of in fire, or expose to high temperatures.
 
 ## Components List
 
@@ -66,7 +65,7 @@ To assemble the base, you can follow this youtube video from the makers themselv
 
 ### Step 2: Attach Motor Driver
 
-Attach the motor driver to the base using 2 screws that came with the kit. Just so that it barely fits on the base.
+Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
 
 ![Base Assembly](./assembly_images/base.jpeg)
 
@@ -123,12 +122,12 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 ### RPI5 Wiring
 
 ![RPI5 Connections](./pictures/rpi_schema.png)
-Detail the wiring for the motors, referencing the motor driver documentation.
+The above diagram shows the wiring connections for the Raspberry Pi 5. The ultrasonic sensors are connected to the GPIO pins as per the sensor documentation, same thing for the mini oled screen.
 
 ### ESP32 Wiring
 
 ![ESP32 Wiring](./pictures/esp_schema.png)
-Explain how to wire the sensors to the main board.
+The above diagram shows the wiring connections for the ESP32-WROOM-32 module. The motors are connected to the motor driver LN298N.
 
 #### esp32 Motor pins
 
@@ -140,9 +139,3 @@ int E2 = 19;
 int M2 = 4;
 
 ```
-
-...
-
-## Software Configuration
-
-.... to be added

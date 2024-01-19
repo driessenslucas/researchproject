@@ -50,9 +50,9 @@
       - [second test environment](#second-test-environment)
     - [3D Maze using PyOpenGL](#3d-maze-using-pyopengl)
       - [installation](#installation-1)
-  - [rpi install](#rpi-install)
-    - [2. **Systemd Service** (systemd systems only)](#2-systemd-service-systemd-systems-only)
-  - [Sources](#sources)
+  - [Getting Started](#getting-started)
+  - [Hardware Installation](#hardware-installation)
+  - [Sources and Insperations](#sources-and-insperations)
 
 ## Progress
 
@@ -1782,34 +1782,15 @@ class RCMazeEnv(gym.Env):
 - Video:
   - ![3D-environment](./video/3D_v3.gif)
 
-## rpi install
+## Getting Started
 
-### 2. **Systemd Service** (systemd systems only)
+To get started with this project, you'll need to set up your development environment and install the necessary dependencies. Please refer to the [manual.md](./manual.md) for detailed instructions on setting up and running the project.
 
-- Create a systemd service file, for example, `/etc/systemd/system/display_ip.service`.
-- Edit the file with the following content:
+## Hardware Installation
 
-  ```ini
-  [Unit]
-  Description=Display IP Address on SSD1306
+For instructions on how to set up the hardware, please refer to the [hardware_installation_guide.md](./hardware_installtion_guide.md).
 
-  [Service]
-  ExecStart=/home/pi/Documents/researchproject/RPI_display/display_ip.sh
-
-  [Install]
-  WantedBy=multi-user.target
-  ```
-
-- Enable the service to run at startup with `sudo systemctl enable display_ip.service`.
-- Start the service with `sudo systemctl start display_ip.service` to test it.
-
-
-### for mainapp docker
-```bash
-    xhost -local:docker
-```
-
-## Sources
+## Sources and Insperations
 
 [1] “2WD miniQ Robot Chassis.” Accessed: Jan. 08, 2024. [Online]. Available: <https://www.dfrobot.com/product-367.html>
 

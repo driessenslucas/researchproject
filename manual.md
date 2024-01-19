@@ -1,92 +1,78 @@
-# Research Project
+# Research Project Installation Guide
 
 ## Author Information
 
-**Name:** Lucas Driessens  
-**Institution:** HOWEST Kortrijk  
-**Course:** Research Project  
-**Date:** 2024-08-01
+- **Name:** Lucas Driessens
+- **Institution:** HOWEST Kortrijk
+- **Course:** Research Project
+- **Date:** 2024-08-01
 
-## Description
+## Installation Steps
 
-### Main Research Question
+### Prerequisites
 
-> Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)
+Ensure you have Python 3.11, pip, git, and Docker installed.
 
-### Sub Research Questions
+### Repository Setup
 
-1. Which virtual environments exist to train a virtual RF-car?
-
-2. Which reinforcement learning techniques can I best use in this application?
-
-3. Can the simulation be transferred to the real world? Difference between how the car moves in the simulation and in the real world.
-
-4. Does the simulation have any useful contributions? In terms of training time or performance?
-
-5. How can I transfer my trained model to my physical RC car? (sim2real) How do I adjust the agent, environment and model to work in the real world?
-
-6. How can Real-time learning be implemented?
-
-7. Extra: How can I make the car drive through an unknown maze?
-
-## Installation
-
-- prerequisites: python 3.11, pip, git, docker...
+Clone and navigate to the repository:
 
 ```bash
-
-git clone https://github.com/driessenslucas/researchproject.git && cd researchproject
-
+git clone https://github.com/driessenslucas/researchproject.git
+cd researchproject
 ```
 
-### ESP32 setup
+### ESP32 Setup
 
-- after looking at the hardware installation manual, you can continue by uploading the code to the esp found in the "esp32" folder of the project
+#### Hardware Installation
 
-- you will need to change the wifi credentials in the code to match your own local network
+- Refer to the hardware installation manual for ESP32 setup. [hardware_installation_guide.md](./hardware_installtion_guide.md).
 
-### RPI setup
+#### Software Configuration
 
-**please note to always run docker-compose down after running. This is to make sure the virtual display will be albe to start up correctly**
+- Upload the code from the `esp32` folder to the ESP32.
+- Modify the WiFi credentials in the code to your local network settings.
 
-- the code ran on the RPI is found in the "main web app" folder..
+### Raspberry Pi (RPI) Setup
 
-```bash
+1. Install the Raspberry Pi OS on your Raspberry Pi 5. You can follow the official guide [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md).
 
-cd main_web_app/ && docker-compose up -d
+#### Important Note
 
-```
+- Always execute `docker-compose down` after use to ensure proper virtual display startup.
 
-- you should also enable the script to run on startup, so you can see the ip address the rpi is running on
+#### Setup Instructions
 
-```bash
+- The code for the RPI is in the `main_web_app` folder.
+- Run the following commands to start the Docker containers:
 
-sudo systemctl enable ./services/virtual_display.service && sudo systemctl start virtual_display.service
+  ```bash
+  cd main_web_app/
+  docker-compose up -d
+  ```
 
-```
+- Enable the script at startup to display the RPI IP address:
 
-### camera setup for the camera
+  ```bash
+  sudo systemctl enable ./services/virtual_display.service
+  sudo systemctl start virtual_display.service
+  ```
 
-- the camera script can either be ran on the computer itself or anther raspberry pi ( like I did )
+### Camera Setup
 
-- go to the "camera" folder and run the command
+- The camera script can be run either on a PC or another Raspberry Pi.
+- Navigate to the `camera` folder and execute:
 
-```bash
+  ```bash
+  docker-compose up -d
+  ```
 
-docker-compose up -d
+### Training
 
-```
+- Use the provided pre-trained model or train a new one using the "ResearchProject_v2.ipynb" Jupyter notebook in the main folder.
+- The model is saved in the `models` folder and `main_web_app` folder. Restart the Docker container to launch the web app.
 
-## Training
+### Usage
 
-- you can use my pre-trained model, or train your own model. The jupyter notebook can be found in the main folder of the project under the name "ResearchProject_v2.ipynb".
-
-After running the whole script the model will be saved in the "models" folder and also in the main_web_app folder. You can then run the docker container again to start the web app.
-
-## Usage
-
-- on the webapp you will need to enter the IP address displayed on the little screen of the esp. and the IP address of the device running the camera docker container
-
-Next you can choose to either run the virtualization of the project ( without actually moving the car, this is used more as a demo and to see how the car would move)
-
-![rc_control_demo](./video/maze_web_app.mp4)
+- In the web app, enter the ESP's IP address and the IP of the device running the camera.
+- You can opt for a virtual demonstration of the project without moving the car, primarily for demo purposes.
