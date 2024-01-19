@@ -16,7 +16,6 @@ from tensorflow.keras.optimizers.legacy import Adam
 #import early stopping
 from tensorflow.keras.callbacks import EarlyStopping
 
-from IPython.display import HTML
 
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
