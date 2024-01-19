@@ -170,7 +170,31 @@
 			function startMaze() {
 				var espIP = document.getElementById('esp-ip').value;
 				var useVirtualized = document.getElementById('use-virtualized').checked;
-				if (espIP) {
+				if (!useVirtualized && espIP) {
+					fetch(
+						'/start-maze/' +
+							useVirtualized +
+							'/' +
+							espIP +
+							'/' +
+							document.getElementById('model-select').value
+					).then((response) => {
+						// check if the response is ok
+						if (!response.ok) {
+							// altert with text from response
+							console.log(response);
+							response.text().then((text) => {
+								alert(text);
+							});
+						} else {
+							alert('started maze');
+							start_refresh();
+						}
+					});
+				} else if (useVirtualized) {
+					if (espIP == '') {
+						espIP = '127';
+					}
 					fetch(
 						'/start-maze/' +
 							useVirtualized +
@@ -226,7 +250,9 @@
 							option.textContent = model;
 							select.appendChild(option);
 						});
-						console.log('Models fetched:', models);
+						if (models.length > 0) {
+							select.selectedIndex = 1; // Set the first real option as default
+						}
 					})
 					.catch((error) => console.error('Error fetching models:', error));
 			}
