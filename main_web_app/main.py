@@ -11,6 +11,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers.legacy import Adam
+from keras.models import load_model
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
@@ -54,7 +55,6 @@ class RCMazeEnv(gym.Env):
       self.visited_positions = set()
       self.opelgl_window = (1200,1200)
       self.use_virtual_sensors = use_virtual_sensors
-      # self.reset()
       
    def generate_maze(self):
       """
@@ -109,7 +109,7 @@ class RCMazeEnv(gym.Env):
       # Move the car to the right or forward
       if action == 0:
          # dont allow to move forward if the car is too close to a wall
-         # Move forward or car if sensor readings front 4
+         # Move forward or car if sensor readings of the front sensor is greater than 4
          if self.sensor_readings['front'] >= 4:
             self.move_forward()
             if self.use_virtual_sensors == False:
@@ -209,33 +209,15 @@ class RCMazeEnv(gym.Env):
             with sensor_data_lock:
                sensor_data.update(self.sensor_readings)
 
-   async def fetch_sensor_data(self, session, direction, retry_delay=0.5, max_retries=10):
+   async def fetch_sensor_data(self, direction):
       """
        Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
        
        @param session - connect to the session
-       @param direction - Direction of sensor ( front / back ).
-       @param retry_delay - Delay between retries in case of failure
-       @param max_retries - Maximum number of retries. Default is 10
        
        @return Float value of sensor data from the HC-SR04
       """
       time.sleep(0.1)
-      #   url = f'http://sensors:5500/sensor/{direction}'
-
-      #   while True:  # Continue indefinitely until successful
-      #       try:
-      #           async with session.get(url, timeout=5) as response:
-      #               if response.status == 200:
-      #                   data = await response.text()
-      #                   return float(data)
-      #               else:
-      #                   print(f"Error: Received status code {response.status} from sensor.")
-      #       except Exception as e:
-      #           print(f"Error: Failed to get sensor data from {url}. Exception: {e}")
-
-      #       await asyncio.sleep(retry_delay)  # Wait before retrying
-         
       try:
          sensor_front = DistanceSensor(echo=5, trigger=6)
          sensor_left = DistanceSensor(echo=17, trigger=27)
@@ -431,7 +413,7 @@ class RCMazeEnv(gym.Env):
       
       return state
 
-   async def run_maze_env(self, replayCapacity=2000000):
+   async def run_maze_env(self, model='DDQN_RCmaze_v2.h5' ,replayCapacity=2000000):
       """
        Run RCMaze environment and return rewards.
        
@@ -453,9 +435,7 @@ class RCMazeEnv(gym.Env):
       # create DQN agent
       test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
 
-
-      from keras.models import load_model
-      test_agent.policy_model = load_model('./models/DDQN_RCmaze_v2.h5')
+      test_agent.policy_model = load_model(f'./models/{model}')
 
 
       done = False
@@ -571,8 +551,7 @@ class RCMazeEnv(gym.Env):
       camera_distance = CAMERA_DISTANCE # Distance from the camera to the car
       camera_height = CAMERA_HEIGHT  # Height of the camera above the car
       
-      # Assuming self.car_orientation is 'N' and you want to be behind the car (to the 'S')
-      # The camera orientation is N S S W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
+      # Assuming self.car_orientation is 'N' and you want to be behind the car (to the 'S') 
       if self.car_orientation == 'N':  # Car is facing North
          camera_x = self.car_position[0]
          camera_y = (self.maze_size_y - self.car_position[1] - 1) - camera_distance  # Move camera to South
@@ -632,7 +611,7 @@ class RCMazeEnv(gym.Env):
       self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
 
       # Render the maze
-      # draws the cube at the maze_size_y maze_size_x maze_size_y maze_size_x maze_size_y maze_size_x maze_size_y maze_size_x maze_size_y maze_size_x maze_size_y maze_size_x maze_size_x maze_size_y maze_size_x maze_size_x maze_size_y maze_size_x maze_size_y maze_size_y maze_size_y maze_size_y maze_size_y
+      # draws the cube at the maze_size_y 
       for y in range(self.maze_size_y):
          # draw the cube at the given x y
          for x in range(self.maze_size_x):
@@ -726,94 +705,6 @@ class RCMazeEnv(gym.Env):
 
       glPopMatrix()
 
-   # def draw_car(self, x, y, color):
-   #    """
-   #    Draw a car at x y.
-      
-   #    @param x - x coordinate of the car
-   #    @param y - y coordinate of the car 
-   #    @param color - color of the car
-   #    """
-   #    # Set the color
-   #    glColor3fv(color)
-
-   #    # Adjust for vertical flipping
-   #    car_y = self.maze_size_y - y - 1
-
-   #    # Draw the main body of the car as a rectangle
-   #    glPushMatrix()
-   #    glTranslate(x, car_y, 0)
-   #    glScalef(1.5, 0.8, 1)  # Adjust for the size of the car body
-   #    glutSolidCube(0.5)
-   #    glPopMatrix()
-
-   #    # Draw the wheels with rotation based on car's orientation
-   #    wheel_radius = 0.1
-   #    wheel_width = 0.1
-
-   #    # Define wheel positions relative to the car
-   #    wheel_positions = [(x-0.5, car_y-0.3), (x+0.5, car_y-0.3), (x-0.5, car_y+0.3), (x+0.5, car_y+0.3)]
-
-   #    # Apply rotation to each wheel based on car orientation
-   #    for wheel_x, wheel_y in wheel_positions:
-   #       glPushMatrix()
-   #       glTranslate(wheel_x, wheel_y, 0)
-
-   #       # Get rotation angle for the wheels
-   #       rotation_angle = self.get_sensor_rotation_angle('front')  # Assuming you want the wheels to align with the front of the car
-   #       glRotatef(rotation_angle, 0, 0, 1)
-         
-   #       glRotatef(90, 1, 0, 0)  # Orient the wheel correctly
-   #       glutSolidTorus(wheel_radius, wheel_width, 10, 10)
-   #       glPopMatrix()
-   # def draw_car(self, x, y, body_color, wheel_color, window_color):
-   #    """
-   #    Draw a car with a given orientation and different colors for body, wheels, and window.
-      
-   #    @param x - x coordinate of the car
-   #    @param y - y coordinate of the car
-   #    @param body_color - color of the car's body
-   #    @param wheel_color - color of the wheels
-   #    @param window_color - color of the window
-   #    """
-      
-   #    #car orientation
-   #    car_orientation = self.car_orientation
-      
-   #    # Calculate rotation based on car's orientation
-   #    rotation_angle = self.get_sensor_rotation_angle('front')
-
-   #    # Set the color for the car body and draw it with the correct orientation
-   #    glColor3fv(body_color)
-   #    glPushMatrix()
-   #    glTranslate(x, self.maze_size_y - y - 1, 0)
-   #    glRotatef(rotation_angle, 0, 0, 1)  # Rotate the car body
-   #    glScalef(1.0, 0.5, 0.3)  # Car body size
-   #    glutSolidCube(1)
-   #    glPopMatrix()
-
-   #    # Draw the wheels in a different color
-   #    glColor3fv(wheel_color)
-   #    wheel_radius = 0.1
-   #    wheel_width = 0.05
-   #    wheel_positions = [(x-0.55, y-0.25), (x+0.55, y-0.25),
-   #                      (x-0.55, y+0.25), (x+0.55, y+0.25)]
-   #    for wheel_x, wheel_y in wheel_positions:
-   #       glPushMatrix()
-   #       glTranslate(wheel_x, self.maze_size_y - wheel_y - 1, -0.1)
-   #       glRotatef(rotation_angle, 0, 0, 1)  # Rotate the wheel with the car
-   #       glRotatef(90, 1, 0, 0)  # Orient the wheel correctly
-   #       glutSolidTorus(wheel_width, wheel_radius, 10, 10)
-   #       glPopMatrix()
-
-   #    # Add a smaller rectangle on top as a window, in a different color
-   #    glColor3fv(window_color)
-   #    glPushMatrix()
-   #    glTranslate(x, self.maze_size_y - y - 1, 0.15)  # Adjust for the height of the window
-   #    glRotatef(rotation_angle, 0, 0, 1)  # Rotate the window with the car
-   #    glScalef(0.4, 0.2, 0.1)  # Window size
-   #    glutSolidCube(1)
-   #    glPopMatrix()
    def draw_car(self, x, y, body_color, wheel_color, window_color):
       """
       Draw a car with a given orientation and different colors for body, wheels, and window.
@@ -870,16 +761,12 @@ class RCMazeEnv(gym.Env):
       glutSolidCube(1)
       glPopMatrix()
 
-
-
-
    def close_opengl(self):
       """
        Close the OpenGL context and clean up the GLUT window. This is called when the window is no longer needed
       """
       # Close the OpenGL context
       glutLeaveMainLoop()
-      # glutDestroyWindow(glutGetWindow())
 
 class DQNAgent:
    def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
@@ -1094,13 +981,27 @@ def get_sensor_readings():
       data_copy = sensor_data.copy()
    return jsonify(data_copy)
 
-@app.route('/start-maze/<use_virtual>/<esp_ip>')
-def start_maze(use_virtual,esp_ip):
+@app.route("/get-models")
+def get_models():
+   """
+    Get the models that are available to be used.
+    
+    
+    @return A JSON object containing the models that are available to be used
+   """
+   # Get the models that are available to be used
+   models = os.listdir('./models')
+   models = [model for model in models if model.endswith('.h5')]
+   return jsonify(models)
+
+@app.route('/start-maze/<use_virtual>/<esp_ip>/<model>')
+def start_maze(use_virtual,esp_ip,model):
    """
     Starts maze if it is not already running. This is a blocking call
     
     @param use_virtual - choose if you want to run the simulation or the real rc car // true for virtual and false for real
     @param esp_ip - ESP IP to use for the maze
+    @param model - The model to use for the maze
     
     @return String describing success or failure of the maze startup
    """
@@ -1113,11 +1014,13 @@ def start_maze(use_virtual,esp_ip):
          use_virtual = True
       elif use_virtual == 'false':
          use_virtual = False
+         
+      
       
       env = RCMazeEnv(esp_ip=esp_ip, use_virtual_sensors=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper
       maze_running = True
-      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env()))
+      maze_thread = threading.Thread(target=lambda: run_async_function(env.run_maze_env(model=model)))
       maze_thread.start()
       return "Maze started with ESP IP: " + esp_ip
    else:

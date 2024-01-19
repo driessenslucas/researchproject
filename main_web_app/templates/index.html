@@ -2,93 +2,11 @@
 <html>
 	<head>
 		<title>RC Maze Visualization</title>
-		<!-- <style>
-			body {
-				display: flex;
-				justify-content: center;
-				flex-direction: row;
-				flex-wrap: wrap;
-				align-items: center;
-				height: 100vh;
-				margin: 0;
-				background-color: #f0f0f0;
-			}
-
-			#container {
-				margin: auto;
-				width: 50%;
-				padding: 10px;
-				background-color: white;
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-				border-radius: 8px;
-			}
-
-			input,
-			button {
-				padding: 10px;
-				margin: 10px 0;
-				border-radius: 5px;
-				border: 1px solid #ddd;
-				box-sizing: border-box;
-			}
-
-			button {
-				background-color: #007bff;
-				color: white;
-				border: none;
-				cursor: pointer;
-			}
-
-			button:hover {
-				background-color: #0056b3;
-			}
-
-			label {
-				display: block;
-				margin-top: 20px;
-			}
-
-			img {
-				max-width: 100%;
-				height: auto;
-				border-radius: 8px;
-				margin-top: 20px;
-			}
-			#video-container {
-				position: relative;
-				width: 420px;
-				height: 420px;
-				border: 1px solid #ddd;
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-				background: #fff;
-				padding: 20px;
-			}
-			#video-stream {
-				max-width: 400px;
-				max-height: 400px;
-				height: auto;
-			}
-			#sensor-readings {
-				position: absolute;
-				top: 0; /* Adjust this value to position the sensor readings */
-				left: 0; /* Adjust this value to position the sensor readings */
-				z-index: 10;
-				background-color: rgba(
-					255,
-					255,
-					255,
-					0.8
-				); /* Optional: Adds a white, slightly transparent background */
-				padding: 10px;
-				border-radius: 8px;
-			}
-		</style> -->
-
 		<style>
 			body {
 				display: flex;
 				justify-content: center;
-				flex-direction: column;
+				flex-direction: row;
 				align-items: center;
 				height: 100vh;
 				margin: 0;
@@ -98,7 +16,7 @@
 
 			#container {
 				margin: 20px;
-				width: 60%;
+				width: 40%;
 				padding: 20px;
 				background-color: white;
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -133,11 +51,11 @@
 				background-color: #45a049;
 			}
 
-			.stop-button{
+			.stop-button {
 				background-color: red;
 			}
 
-			.stop-button:hover{
+			.stop-button:hover {
 				background-color: #333;
 			}
 
@@ -182,6 +100,11 @@
 	<body>
 		<div id="container">
 			<h1>RC Maze Control</h1>
+			<label for="model-select">Select Model:</label>
+			<select id="model-select" name="model-select">
+				<option value="">--Select a Model--</option>
+				<!-- Options will be added dynamically -->
+			</select>
 			<label for="esp-ip">ESP IP:</label>
 			<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
 			<label class="checkbox-label" for="use-virtualized"
@@ -220,14 +143,13 @@
 				var location = window.location.href;
 				fetch(location + 'frame?' + new Date().getTime()).then((response) => {
 					if (response.ok) {
-						amountOfRefreshes = 0
+						amountOfRefreshes = 0;
 						//make blob
 						response.blob().then((blob) => {
 							//make objectURL
 							var objectURL = URL.createObjectURL(blob);
 							//set img.src to objectURL
 							img.src = objectURL;
-							
 						});
 					} else {
 						// amountOfRefreshes++;
@@ -237,7 +159,6 @@
 						// 	clearInterval(sensorIntervalID);
 						// 	amountOfRefreshes = 0;
 						// }
-						
 					}
 				});
 			}
@@ -250,7 +171,14 @@
 				var espIP = document.getElementById('esp-ip').value;
 				var useVirtualized = document.getElementById('use-virtualized').checked;
 				if (espIP) {
-					fetch('/start-maze/' + useVirtualized + '/' + espIP)
+					fetch(
+						'/start-maze/' +
+							useVirtualized +
+							'/' +
+							espIP +
+							'/' +
+							document.getElementById('model-select').value
+					)
 						.then((response) => response.text())
 						.then((data) => {
 							start_refresh();
@@ -279,7 +207,24 @@
 						console.error('Error fetching sensor readings:', error)
 					);
 			}
+			// Function to populate the model dropdown
+			function populateModelDropdown() {
+				fetch('/get-models') // Assuming '/get-models' is your server endpoint
+					.then((response) => response.json())
+					.then((models) => {
+						const select = document.getElementById('model-select');
+						models.forEach((model) => {
+							const option = document.createElement('option');
+							option.value = model;
+							option.textContent = model;
+							select.appendChild(option);
+						});
+						console.log('Models fetched:', models);
+					})
+					.catch((error) => console.error('Error fetching models:', error));
+			}
 
+			populateModelDropdown();
 			sensorIntervalID = setInterval(refreshSensorReadings, 1000);
 		</script>
 	</body>

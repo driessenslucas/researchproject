@@ -1,24 +1,24 @@
 version: '3'
 
 services:
-  mjpgstreamer:
-    build:
-      context: ./camera_stream
-      dockerfile: Dockerfile
-    ports:
-      - '8500:8080'
-    volumes:
-      - mydata:/usr/www
-    #devices:
-      #- '/dev/video0:/dev/video0'
-    networks:
-      - rpi-network
+  # mjpgstreamer:
+  #   build:
+  #     context: ./camera_stream
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '8500:8080'
+  #   volumes:
+  #     - mydata:/usr/www
+  #   #devices:
+  #     #- '/dev/video0:/dev/video0'
+  #   networks:
+  #     - rpi-network
 
   mazecontrol:
     build:
       context: .
       dockerfile: Dockerfile
-    environment :
+    environment:
       - DISPLAY=:100
     restart: always
     volumes:
@@ -26,39 +26,37 @@ services:
       - ./:/usr/src/app
       - ./templates:/user/src/app/templates
     devices:
-     - /dev/gpiomem0:/dev/gpiomem0
-     - /dev/gpiomem1:/dev/gpiomem1
-     - /dev/gpiomem2:/dev/gpiomem2
-     - /dev/gpiomem3:/dev/gpiomem3
-     - /dev/gpiomem4:/dev/gpiomem4
+      - /dev/gpiomem0:/dev/gpiomem0
+      - /dev/gpiomem1:/dev/gpiomem1
+      - /dev/gpiomem2:/dev/gpiomem2
+      - /dev/gpiomem3:/dev/gpiomem3
+      - /dev/gpiomem4:/dev/gpiomem4
     ports:
       - '5000:5000'
     privileged: true
     networks:
       - rpi-network
-    
 
   # sensors:
-    # build:
-    #   context: ./sensors
-    #   dockerfile: Dockerfile
-    # restart: always
-    # devices:
-    #  - /dev/gpiomem0:/dev/gpiomem0
-    #  - /dev/gpiomem1:/dev/gpiomem1
-    #  - /dev/gpiomem2:/dev/gpiomem2
-    #  - /dev/gpiomem3:/dev/gpiomem3
-    #  - /dev/gpiomem4:/dev/gpiomem4
-    # expose: 
-    #  - "5500"
-    # ports:
-    #   - "5800:5500"
-    # volumes:
-    #   - ./sensors:/usr/src/app
-    # networks:
-    #   - rpi-network
-    # privileged: true
-
+  # build:
+  #   context: ./sensors
+  #   dockerfile: Dockerfile
+  # restart: always
+  # devices:
+  #  - /dev/gpiomem0:/dev/gpiomem0
+  #  - /dev/gpiomem1:/dev/gpiomem1
+  #  - /dev/gpiomem2:/dev/gpiomem2
+  #  - /dev/gpiomem3:/dev/gpiomem3
+  #  - /dev/gpiomem4:/dev/gpiomem4
+  # expose:
+  #  - "5500"
+  # ports:
+  #   - "5800:5500"
+  # volumes:
+  #   - ./sensors:/usr/src/app
+  # networks:
+  #   - rpi-network
+  # privileged: true
 
 volumes:
   mydata:

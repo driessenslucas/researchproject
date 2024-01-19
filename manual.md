@@ -69,11 +69,12 @@ cd researchproject
 
 ### Training
 
-- Use the provided pre-trained model or train a new one using the "ResearchProject_v2.ipynb" Jupyter notebook in the main folder.
-- The model is saved in the `models` folder and `main_web_app` folder. Restart the Docker container to launch the web app.
+- Use the provided pre-trained model or train a new one using the `train.py` script.
+- The `train.py` script can be run either on a PC or the RPI itself.
+- The script will ask you if you want to save the model. If you do, it will be saved in the `models` folder.
 
 ### Usage
 
-- In the web app, enter the ESP's IP address and the IP of the device running the camera.
+- In the web app, enter the ESP's IP address and select the model you want to use.
+- Click on the `Start Maze` button to start the project.
 - You can opt for a virtual demonstration of the project without moving the car, primarily for demo purposes.
-
