@@ -1,1 +1,101 @@
-is het is mogelijk een in een simulatie getrained RL-agent over te zetten naar de echte wereld (case : doolhof)
+Absolutely! I'll enhance and structure your research project document to make it more comprehensive and academically rigorous.
+
+---
+
+# Enhanced Research Project
+
+## Author Information
+
+**Name:** Lucas Driessens  
+**Institution:** HOWEST Kortrijk  
+**Course:** Research Project  
+**Date:** 2024-08-01
+
+## Abstract
+
+This research project explores the feasibility of transferring a trained Reinforcement Learning (RL) agent from a simulated environment to navigating a real-world maze using a remote-controlled (RC) car. The study investigates the applicability of sim2real techniques, evaluates the performance of the RL agent in both virtual and physical realms, and provides insights into the challenges and potential of real-time learning in autonomous navigation.
+
+## Introduction
+
+Reinforcement Learning (RL) has seen rapid advancement and widespread application in various domains, including robotics and autonomous vehicles. This project aims to bridge the gap between simulation-based training and real-world application, focusing on the transferability of an RL agent trained to navigate a virtual maze to controlling an RC car in a physical maze environment.
+
+## Literature Review
+
+- **Basics of RL**: Introduction to the principles of RL, its historical development, and its significance in contemporary AI research.
+- **Sim2Real Transfers**: Examination of existing research on the challenges and strategies for transferring RL agents from simulations to real-world applications.
+- **Case Studies in Robotics**: Analysis of similar applications of RL in robotics and autonomous systems, emphasizing successful sim2real implementations.
+
+## Research Questions
+
+### Main Question
+
+- Is it possible to transfer a trained RL-agent from a simulation to the real world in the context of maze navigation?
+
+### Sub-Questions
+
+1. What virtual environments are available for training a virtual RC car?
+2. Which RL techniques are most effective for this application?
+3. How does the simulation compare to the real world in terms of the RC car's movement?
+4. What are the benefits of using simulation for training in terms of time and performance?
+5. What adjustments are necessary to transfer the trained model to a physical RC car?
+6. How can real-time learning be implemented in this context?
+7. What strategies can be used to navigate an unknown maze?
+
+## Methodology
+
+### Environment and Agent Design
+
+- **Virtual Environment Setup**: Description of the simulation environment used for training the RL agent.
+- **Agent Training Process**: Explanation of the RL algorithms chosen, reward structures, and training protocols.
+
+### Experimental Setup
+
+- **Simulation Experiments**: Detailed methodology for testing the agent's performance in virtual mazes.
+- **Real-World Implementation**: Process for adapting the trained model to control a physical RC car in a real maze.
+
+## Results
+
+- **Simulation Results**: Presentation of data on the agent's performance metrics in the virtual environment.
+- **Real-World Performance**: Analysis of the RC car's navigation capabilities in the physical maze and comparison with simulation results.
+
+## Discussion
+
+- **Effectiveness of Sim2Real Transfer**: Evaluation of the success and limitations of transferring the RL agent from the simulation to the real world.
+- **Challenges and Solutions**: Discussion of encountered challenges and the strategies used to overcome them.
+
+## Conclusion
+
+- **Summary of Findings**: Recap of key results and their implications for sim2real transfer in RL.
+- **Future Directions**: Suggestions for further research in this area, including potential improvements and new applications.
+
+## Installation and Setup
+
+- **Software and Hardware Requirements**: List of prerequisites including Python 3.11, pip, git, docker, etc.
+- **Repository Cloning and Setup Instructions**: Step-by-step guide to clone the project repository and set up the environment.
+
+### ESP32, Raspberry Pi, and Camera Setup
+
+- Detailed instructions for setting up the ESP32, Raspberry Pi, and camera, including necessary code modifications and docker-compose commands.
+
+## Training
+
+- **Model Training**: Instructions for using the provided Jupyter notebook to train or retrain the RL model.
+- **Model Deployment**: Guidelines for deploying the trained model to the web app.
+
+## Usage
+
+- **Web App Operation**: Steps to operate the web app, including IP configuration and mode selection.
+- **Virtualization and Real-World Control**: Instructions for using the web app to control the RC car virtually and in the real maze.
+
+## Appendices
+
+- **Appendix A - Hardware Specifications**: Detailed information on the RC car, ESP32, Raspberry Pi, and other hardware components.
+- **Appendix B - Software Dependencies**: Comprehensive list of all software dependencies and their versions.
+
+## References
+
+- **Bibliography**: Complete list of academic papers, books, and online resources referenced in the project.
+
+---
+
+This structured approach should provide a clear and comprehensive framework for your research project, covering all necessary aspects from theory to practical application.
