@@ -109,22 +109,22 @@ class RCMazeEnv(gym.Env):
       # Move the car to the right or forward
       if action == 0:
          # dont allow to move forward if the car is too close to a wall
-         # Move forward or car if sensor readings of the front sensor is greater than 4
-         if self.sensor_readings['front'] >= 4:
+         # Move forward or car if sensor readings of the front sensor is greater than 4 or 12 if the real sensors are used
+         if self.use_virtual_sensors == False and self.sensor_readings['front'] >= 12:
+               self.move_forward()
+               self.move_car('forward')
+         elif self.sensor_readings['front'] >= 4:
             self.move_forward()
-            if self.use_virtual_sensors == False:
-               # self.move_car('forward')
-               pass
       elif action == 1:
          self.turn_left()
          if self.use_virtual_sensors == False:
-               # self.move_car('left')
-               pass
+               self.move_car('left')
+               # pass
       elif action == 2:
          self.turn_right()
          if self.use_virtual_sensors == False:
-               # self.move_car('right')
-               pass
+               self.move_car('right')
+               # pass
          
       await self.update_sensor_readings()
       
@@ -1016,6 +1016,13 @@ def start_maze(use_virtual,esp_ip,model):
          use_virtual = False
          
       
+      import os
+      #check if the pi is reachable
+      # if not reachable then return error
+      response = os.system("ping -c 1 " + esp_ip)
+      if response != 0 and not use_virtual: # 0 means reachable
+         msg = "ESP IP not reachable"
+         return Response(msg, status=503)  # Service Unavailable
       
       env = RCMazeEnv(esp_ip=esp_ip, use_virtual_sensors=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper

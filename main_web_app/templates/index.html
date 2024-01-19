@@ -178,18 +178,25 @@
 							espIP +
 							'/' +
 							document.getElementById('model-select').value
-					)
-						.then((response) => response.text())
-						.then((data) => {
+					).then((response) => {
+						// check if the response is ok
+						if (!response.ok) {
+							// altert with text from response
+							console.log(response);
+							response.text().then((text) => {
+								alert(text);
+							});
+						} else {
+							alert('started maze');
 							start_refresh();
-						});
+						}
+					});
 				} else {
 					alert('Please enter the ESP IP address.');
 				}
 			}
 			function stopMaze() {
 				fetch('/close-maze').then((response) => {
-					response.text();
 					console.log(response);
 					alert('stopped maze');
 				});
