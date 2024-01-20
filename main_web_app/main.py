@@ -604,7 +604,7 @@ class RCMazeEnv(gym.Env):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       # set third person view over the car (you can commit this for a top down view)
-      # self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
+      self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
 
       # Render the maze
       # draws the cube at the maze_size_y 

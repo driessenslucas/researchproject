@@ -1062,13 +1062,17 @@ The results of the training:
 
 ## Web app
 
-> Please not that you should have gone through the [manual](./manual.md) before trying to run the web app yourself.
+> Please note that you should have gone through the [manual](./manual.md) before trying to run the web app yourself.
 
 The web app I created to be able to have a virtual twin of the rc-car and the maze environment. The web app is built using the Flask framework and should be ran on your Raspberry Pi, then you can see the web app by going to the IP address of your Raspberry Pi on port 5000.
 
 On the web app you can opt to run the simulation, which will not be using real sensors and not move the actual rc-car (this is used for demo purposes) or you can run the simulation with the real sensors and the real rc-car (If you have actually built the rc-car and the maze to scale).
 
+When Running the simuation the sensor values will not be 100% representative of the real world, but it works well enough to be able to train the model.
+
 ![web app](./pictures/web_app_v3.png)
+
+![web app demo](./video/web_app_demo_v2.gif)
 
 ### Flask
 
