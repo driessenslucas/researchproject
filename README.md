@@ -29,11 +29,11 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 2. Which reinforcement learning techniques can I best use in this application?
 
-3. Can the simulation be transferred to the real world? Difference between how the car moves in the simulation and in the real world.
+3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.
 
 4. Does the simulation have any useful contributions? In terms of training time or performance?
 
-5. How can I transfer my trained model to my physical RC car? (sim2real) How do I adjust the agent, environment and model to work in the real world?
+5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
 
 6. How can Real-time learning be implemented?
 
@@ -63,6 +63,19 @@ Through this study, I aspire to contribute significantly to the field of AI and 
   - [Results](#results)
   - [Web app](#web-app)
     - [Flask](#flask)
+  - [Sub Questions](#sub-questions)
+    - [1. Which virtual environments exist to train a virtual RF-car?](#1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
+      - [Introduction](#introduction)
+      - [Virtual Environments Overview](#virtual-environments-overview)
+      - [Conclusion](#conclusion)
+    - [2. Which reinforcement learning techniques can I best use in this application?](#2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
+      - [Introduction](#introduction-1)
+      - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
+      - [Conclusion](#conclusion-1)
+    - [3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world](#3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
+    - [4. Does the simulation have any useful contributions? In terms of training time or performance?](#4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
+    - [5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?](#5-how-can-i-transfer-my-trained-model-to-my-physical-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-environment-and-model-for-it-to-work-in-the-real-world)
+    - [6. How can Real-time learning be implemented?](#6-how-can-real-time-learning-be-implemented)
   - [Sources and Inspiration](#sources-and-inspiration)
 
 ## Getting Started
@@ -1128,6 +1141,88 @@ def video():
     @return A : class : ` twisted. web. server. Response ` object
    """
 ```
+
+## Sub Questions
+
+### 1. Which virtual environments exist to train a virtual RF-car?
+
+#### Introduction
+
+The selection of an appropriate virtual environment is crucial for the effective training of a virtual Radio Frequency (RF) car. Various platforms offer unique features suitable for simulating different aspects of autonomous driving. This document evaluates several virtual environments to determine the most suitable choice for training a virtual RF-car.
+
+#### Virtual Environments Overview
+
+1. **Unity 3D**
+
+   - **Website:** [Unity 3D](https://unity.com/)
+   - **Description:** Unity 3D is renowned for creating realistic, detailed virtual environments. It's commonly employed for simulating autonomous driving scenarios.
+   - **Reason for Exclusion:** My proficiency lies primarily in Python, and I lack experience with Unity. This mismatch in skill set led to the decision against using Unity for this project.
+
+2. **AirSim**
+
+   - **Website:** [AirSim](https://microsoft.github.io/AirSim/)
+   - **Description:** AirSim, developed on Unreal Engine, is a versatile simulator for drones, cars, and more. It offers realistic simulations for both physical and visual aspects.
+   - **Reason for Exclusion:** AirSim's primary focus on cars, as opposed to RF-cars, makes it less suitable for this specific project.
+
+3. **CARLA**
+
+   - **Website:** [CARLA](https://carla.org/)
+   - **Details:** CARLA is a comprehensive platform for autonomous driving systems' development, training, and validation. It provides open-source code, protocols, and digital assets.
+   - **Reason for Exclusion:** CARLA's focus on autonomous driving systems, as opposed to RF-cars, makes it less suitable for this specific project.
+
+4. **OpenAI Gym**
+
+   - **Website:** [OpenAI Gym](https://gym.openai.com/)
+   - **Details:** This toolkit is designed for the development and comparison of reinforcement learning algorithms. It's known for its ease of use in creating custom environments.
+   - **Reason for Selection:** Familiarity from Advanced AI coursework and the flexibility to create custom environments make OpenAI Gym an ideal choice. Its simplicity and focus on reinforcement learning align well with the project's objectives, particularly in SIM2REAL transfer.
+
+5. **ISAAC Gym**
+   - **Website:** [ISAAC Gym](https://developer.nvidia.com/isaac-gym)
+   - **Description:** NVIDIA's Isaac Gym focuses on training robotics AI skills within a reinforcement learning framework. It offers accurate world and sensor models through the NVIDIA Omniverse.
+   - **Reason for Exclusion:** The project's focus on RF-cars, as opposed to robots, makes ISAAC Gym less suitable for this specific project. Additionally, the amount of time it would take to create a rf-car that is an exact copy the real rf-car I already had, would be too much.
+
+#### Conclusion
+
+Considering the project's needs for a simple, lightweight environment conducive to SIM2REAL transfer and the existing familiarity with the tool, **OpenAI Gym** emerges as the optimal choice. Its ease of use for creating custom environments and focus on reinforcement learning agents provide the necessary foundation for this project.
+
+### 2. Which reinforcement learning techniques can I best use in this application?
+
+#### Introduction
+
+The efficacy of training a virtual Radio Frequency (RF) car in a simulation environment hinges significantly on the choice of reinforcement learning (RL) techniques. This document explores various RL methods, assessing their suitability for the nuanced requirements of RF-car training, with an emphasis on navigating complex environments.
+
+#### Reinforcement Learning Techniques Overview
+
+1. **Deep Q-Network (DQN)**
+
+   - **Description:** DQN integrates a deep neural network with a Q-learning framework. It stands out for its proficiency in processing high-dimensional sensory inputs, making it a strong candidate for applications requiring detailed environmental interaction.
+   - **Suitability:** While DQN offers advanced learning capabilities, its tendency to overestimate Q-values in environments with intricate and unpredictable dynamics can be a limitation for training RF-cars.
+   - **Visual Representation of my integration:** ![DQN](./video/DQN-agent.gif)
+
+2. **Double Deep Q-Network (DDQN)**
+
+   - **Description:** DDQN, an evolution of DQN, employs dual neural networks. This structure effectively mitigates the overestimation bias present in DQN by decoupling action selection from Q-value generation.
+   - **Reason for Selection:** The choice of DDQN is driven by its enhanced accuracy in Q-value approximation, crucial for navigating the intricate maze-like environments encountered by virtual RF-cars. The RF-car's limited sensor range can lead to overestimations in Q-values, a challenge adeptly addressed by DDQN’s design. Through empirical trials, DDQN demonstrated superior performance, validating its selection for this application.
+   - **Visual Representation of my integration:** ![DDQN](./video/DDQN_withfailsave.gif)
+
+3. **Proximal Policy Optimization (PPO)**
+   - **Description:** PPO, a policy gradient method, optimizes decision-making policies directly. It is renowned for its stability and efficiency in environments where policy output is more consequential than value estimation.
+   - **Suitability:** PPO, despite its strengths in certain RL contexts, is less aligned with the specific needs of an RF-car simulation. The focus on policy over value estimation renders it suboptimal for environments where precise Q-value approximation is critical.
+   - **Visual Representation of my integration:** ![PPO](./video/ppo.gif)
+
+#### Conclusion
+
+The Double Deep Q-Network (DDQN) emerges as the most suitable technique for the virtual RF-car training. Its ability to accurately estimate Q-values in complex, sensor-driven environments, coupled with its proven performance in preliminary trials, underscores its effectiveness for this specific application.
+
+On top of that the DDQN sovled the environment in 25 steps on average, against the DQN which solved the environment in 34 steps on average. Which is a significant improvement.
+
+### 3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world
+
+### 4. Does the simulation have any useful contributions? In terms of training time or performance?
+
+### 5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
+
+### 6. How can Real-time learning be implemented?
 
 ## Sources and Inspiration
 
