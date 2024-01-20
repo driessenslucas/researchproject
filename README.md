@@ -1072,7 +1072,9 @@ When Running the simuation the sensor values will not be 100% representative of 
 
 ![web app](./pictures/web_app_v3.png)
 
-![web app demo](./video/web_app_demo_v2.gif)
+https://github.com/driessenslucas/researchproject/assets/91117911/a73e67b8-4c89-4d0c-91df-b306900693eb
+
+
 
 ### Flask
 
