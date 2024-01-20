@@ -1,27 +1,11 @@
-#include <ArrayQueue.h>
-
-
 #include <ssd1306.h>
+
 #include <WiFi.h>
 #include <ArduinoOTA.h>
-
-ArrayQueue        Fifo;
-
-enum VehicleState {
-  IDLE,
-  MOVING_FORWARD,
-  MOVING_LEFT,
-  MOVING_RIGHT
-};
-
-VehicleState currentState = IDLE; // Initial state
-bool motorMovementInProgress = false;
-
 // or for ESP32: #include <WiFi.h>
 
 const char* ssid = "telenet-799DCED";
-const char* password = "";
-
+const char* password = "m7cnypsHjxhp";
 
 WiFiServer server(80);
 
@@ -33,129 +17,9 @@ int M1 = 17;
 int E2 = 19;
 int M2 = 4;
 
-int turnDuration = 160;
+int turnDuration = 350;
 
 
-int carX = 1;
-int carY = 1;
-
-int path[][2] = {
-  {1, 1},
-  {2, 1},
-  {3, 1},
-  {4, 1},
-  {5, 1},
-  {6, 1},
-  {7, 1},
-  {8, 1},
-  {8, 1},
-  {8, 2},
-  {8, 3},
-  {8, 3},
-  {9, 3},
-  {10, 3},
-  {10, 3},
-  {10, 4},
-  {10, 5},
-  {10, 5},
-  {9, 5},
-  {8, 5},
-  {7, 5},
-  {6, 5},
-  {6, 5},
-  {6, 6},
-  {6, 7},
-  {6, 8},
-  {6, 8},
-  {7, 8},
-  {8, 8},
-  {9, 8},
-  {10, 8},
-  {10, 8},
-  {10, 9},
-  {10, 10}
-};
-
-// Variable to keep track of the current step in the path
-int currentStep = 0;
-
-// Define the layout of the maze
-int layout[12][12] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
-    {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1},
-    {1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1},
-    {1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-//void drawMaze() {
-//    ssd1306_clearScreen();
-//    int viewSize = 5; // Define the size of the zoomed-in view
-//
-//    // Calculate the top-left corner of the view
-//    int startX = max(0, min(carX - viewSize / 2, 12 - viewSize));
-//    int startY = max(0, min(carY - viewSize / 2, 12 - viewSize));
-//
-//    for (int y = startY; y < startY + viewSize; y++) {
-//        for (int x = startX; x < startX + viewSize; x++) {
-//            int screenX = (x - startX) * 6;
-//            int screenY = (y - startY) * 8;
-//
-//            if (layout[y][x] == 1) {
-//                // Draw wall as '#'
-//                ssd1306_printFixed(screenX, screenY, "#", STYLE_NORMAL);
-//            } else {
-//                // Draw empty space
-//                ssd1306_printFixed(screenX, screenY, " ", STYLE_NORMAL);
-//            }
-//        }
-//    }
-//
-//    // Draw the car at its current position
-//    int carScreenX = (carX - startX) * 6;
-//    int carScreenY = (carY - startY) * 8;
-//    ssd1306_printFixed(carScreenX, carScreenY, "o", STYLE_NORMAL);
-//}
-void drawMaze() {
-    ssd1306_clearScreen();
-    ssd1306_printFixed(0,  8, "ESP IP:", STYLE_NORMAL);
-    String ip = WiFi.localIP().toString();
-    ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
-    int viewSize = 8; // Define the size of the zoomed-in view
-
-    // Calculate the top-left corner of the view
-    int startX = max(0, min(carX - viewSize / 2, 12 - viewSize));
-    int startY = max(0, min(carY - viewSize / 2, 12 - viewSize));
-
-    // Calculate the starting position of the maze on the screen
-    int mazeStartX = max(0, 128 - (viewSize * 6)); // Adjusted to the right side
-
-    for (int y = startY; y < startY + viewSize; y++) {
-        for (int x = startX; x < startX + viewSize; x++) {
-            int screenX = mazeStartX + (x - startX) * 6; // Adjusted for maze position
-            int screenY = (y - startY) * 8;
-
-            if (layout[y][x] == 1) {
-                // Draw wall as '#'
-                ssd1306_printFixed(screenX, screenY, "#", STYLE_NORMAL);
-            } else {
-                // Draw empty space
-                ssd1306_printFixed(screenX, screenY, " ", STYLE_NORMAL);
-            }
-        }
-    }
-
-    // Draw the car at its current position
-    int carScreenX = mazeStartX + (carX - startX) * 6; // Adjusted for maze position
-    int carScreenY = (carY - startY) * 8;
-    ssd1306_printFixed(carScreenX, carScreenY, "o", STYLE_NORMAL);
-}
 void setup() {
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
@@ -211,12 +75,7 @@ void setup() {
     else if (error == OTA_END_ERROR) Serial.println("End Failed");
   });
   ArduinoOTA.begin();
-  drawMaze();
-  currentStep = 0; // Start from the beginning of the path
-  
 }
-
-int lastEntry = 1;
 
 void loop() {
 
@@ -259,89 +118,22 @@ void loop() {
         // Check the request route
         if (currentLine.endsWith("GET /forward")) {
           Serial.println("moving forward");
-//          ssd1306_printFixed(0, 32, "moving forward", STYLE_NORMAL);
-//          move_forward();
-          Fifo.enQueue(lastEntry,"/forward");
-          lastEntry++;
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
-          
+          move_forward();
         } else if (currentLine.endsWith("GET /left")) {
           Serial.println("moving left");
-//          ssd1306_printFixed(0, 32, "moving left", STYLE_NORMAL);
-//          move_left();
-          Fifo.enQueue(lastEntry,"/left");
-          lastEntry++;
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
-          
+          move_left();
         } else if (currentLine.endsWith("GET /right")) {
           Serial.println("moving right");
-//          ssd1306_printFixed(0, 32, "moving right", STYLE_NORMAL);
-//          move_right();
-          Fifo.enQueue(lastEntry,"/right");
-          lastEntry++;
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
-          
+          move_right();
         }
-        if (motorMovementInProgress) {
-          // Continue checking if the motors have completed their movement
-          continue;
-        } else {
-          // If no movement is in progress, process the queue
-          processRouteQueue();
+        else{
+          stop_moving(); 
         }
-
-
-//        if (!q.isEmpty()) {
-//            String route;
-//            // Pop request routes from the queue until it's empty
-//            while (q.pop(&route)) {
-//                // Process the route
-//                Serial.println("Processing route: " + route);
-//
-//                if (route == "/forward") {
-//                    move_forward();
-//                } else if (route == "/left") {
-//                    move_left();
-//                } else if (route == "/right") {
-//                    move_right();
-//                }
-//    
-//                // You can now use the 'route' string to handle the request as needed
-//            }
-//        } else {
-//            Serial.println("Queue is empty.");
-//        }
-
-        
       }
     }
     client.stop();
   }
 }
-
-void checkMotorStatus() {
-  // Check if the motors have completed their movement
-  // Set motorMovementInProgress to false when the motors are done
-  // Implement non-blocking motor control logic here
-  // ...
-
-  if (!motorMovementInProgress) {
-    // Motors have completed their movement, continue processing the queue
-    processRouteQueue();
-  }
-}
-
-
-
 
 void move_forward() {
   // Forward movement code
@@ -350,14 +142,13 @@ void move_forward() {
   digitalWrite(M1, HIGH); // Move forward
   digitalWrite(M2, LOW); // Move forward
 
-  delay(1000);
+  delay(500);
 
   // Stop motors after turning
-  analogWrite(E1, 0);
   analogWrite(E2, 0);
-  digitalWrite(M1, LOW);
+  analogWrite(E1, 0);
   digitalWrite(M2, HIGH);
-  motorMovementInProgress = false;
+  digitalWrite(M1, LOW);
 }
 
 void move_left() {
@@ -374,7 +165,6 @@ void move_left() {
   analogWrite(E2, 0);
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
-  motorMovementInProgress = false;
 }
 
 void move_right() {
@@ -391,42 +181,10 @@ void move_right() {
   analogWrite(E2, 0);
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
-  motorMovementInProgress = false;
 }
 void stop_moving() {
   analogWrite(E1, 0); // Stop one motor for turning
   analogWrite(E2, 0); // Set speed
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
-  motorMovementInProgress = false;
-}
-
-void processRouteQueue() {
-  Serial.println("clearing queue");
-  if (!Fifo.isEmpty()) {
-    int pos = Fifo.deQueue();
-    String route = Fifo.getData(pos);
-    Serial.println(route);
-    // Process the route based on the current state
-    if (route == "/forward") {
-//      motorMovementInProgress = true;
-      currentState = MOVING_FORWARD;
-      move_forward();
-    } else if (route == "/left") {
-//      motorMovementInProgress = true;
-      currentState = MOVING_LEFT;
-      move_left();
-    } else if (route == "/right") {
-//      motorMovementInProgress = true;
-      currentState = MOVING_RIGHT;
-      move_right();
-    }
-
-    // Set motorMovementInProgress to true to indicate motor movement is in progress
-   
-    }
-  else {
-    // No routes in the queue, set the vehicle to IDLE state
-    currentState = IDLE;
-  }
 }

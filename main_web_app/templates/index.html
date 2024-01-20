@@ -223,6 +223,9 @@
 				fetch('/close-maze').then((response) => {
 					console.log(response);
 					alert('stopped maze');
+					clearInterval(frameIntervalID); // Clear the frame refresh interval
+					clearInterval(sensorIntervalID); // Also clear the sensor data fetch interval
+					console.log('stopped maze');
 				});
 			}
 

@@ -24,9 +24,7 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./:/usr/src/app
-      - ./templates:/user/src/app/templates
-      - ./entrypoint.sh:/usr/src/app/entrypoint.sh
-      - ./virtual_display.sh:/usr/src/app/virtual_display.sh
+      - ./templates:/usr/src/app/templates
     devices:
       - /dev/gpiomem0:/dev/gpiomem0
       - /dev/gpiomem1:/dev/gpiomem1

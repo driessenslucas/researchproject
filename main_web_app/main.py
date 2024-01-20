@@ -4,10 +4,8 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import random 
-import matplotlib.pyplot as plt
 import collections
 # Import Tensorflow libraries
-import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers.legacy import Adam
@@ -15,7 +13,7 @@ from keras.models import load_model
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
-from flask import Flask, send_file, Response, render_template,jsonify, request
+from flask import Flask, Response, render_template,jsonify, request
 import threading
 import time
 import io
@@ -23,12 +21,10 @@ from PIL import Image
 import queue
 import cv2
 import requests
-import json
 import aiohttp
 import asyncio
 from threading import Lock
 from gpiozero import DistanceSensor
-from signal import pause
 
 
 class RCMazeEnv(gym.Env):
@@ -608,7 +604,7 @@ class RCMazeEnv(gym.Env):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       # set third person view over the car (you can commit this for a top down view)
-      self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
+      # self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
 
       # Render the maze
       # draws the cube at the maze_size_y 
