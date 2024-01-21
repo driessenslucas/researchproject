@@ -1052,7 +1052,7 @@ class DQNAgent:
 
 ## Training
 
-To say the way I trained the models and the results, you can look at the juptyer notebook [here](./ResearchProject_v2.ipynb)
+To say the way I trained the models and the results, you can look at the juptyer notebook [here](./training/ResearchProject_v2.ipynb)
 
 ## Results
 
@@ -1062,7 +1062,7 @@ The results of the training:
 
 ## Web app
 
-> Please note that you should have gone through the [manual](./manual.md) before trying to run the web app yourself.
+> Please note that you should have gone through the [manual](./user_manual.md) before trying to run the web app yourself.
 
 The web app I created to be able to have a virtual twin of the rc-car and the maze environment. The web app is built using the Flask framework and should be ran on your Raspberry Pi, then you can see the web app by going to the IP address of your Raspberry Pi on port 5000.
 

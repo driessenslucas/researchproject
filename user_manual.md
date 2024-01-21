@@ -70,8 +70,8 @@ cd researchproject
 
 ### Training
 
-- Use the provided pre-trained model or train a new one using the [train](./train.py) script.
-- The [train](./train.py) script can be run either on a PC or the RPI itself.
+- Use the provided pre-trained model or train a new one using the [train](./training/train.py) script.
+- The [train](./training/train.py) script can be run either on a PC or the RPI itself.
 - The script will ask you if you want to save the model. If you do, it will be saved in the [models](./models) folder.
 
 ### Usage

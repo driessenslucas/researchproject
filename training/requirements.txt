@@ -1,0 +1,8 @@
+flask==3.0.0
+opencv-python==4.9.0.80
+gym==0.23
+pygame
+numpy==1.26.2
+tensorflow==2.15.0
+keras==2.15.0
+matplotlib
