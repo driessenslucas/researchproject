@@ -61,59 +61,59 @@ This guide provides step-by-step instructions for assembling and configuring the
 
 To assemble the base, you can follow this youtube video from the makers themselves:
 
-[![MiniQ 2WD Robot](./assembly_images/yt_vid.png)](https://www.youtube.com/watch?v=tKakeyL_8Fg 'MiniQ 2WD Robot Chassis Quick Assembly Guide')
+[![MiniQ 2WD Robot](./images/assembly_images/yt_vid.png)](https://www.youtube.com/watch?v=tKakeyL_8Fg 'MiniQ 2WD Robot Chassis Quick Assembly Guide')
 
 ### Step 2: Attach Motor Driver
 
 Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
 
-![Base Assembly](./assembly_images/base.jpeg)
+![Base Assembly](./images/assembly_images/base.jpeg)
 
 ### Step 3: Attach ESP32-WROOM-32 module to the motor driver
 
 Connect the Wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below.
 
-![Base Assembly](./assembly_images/esp32_schema.png)
+![Base Assembly](./images/assembly_images/esp32_schema.png)
 
 ### Step 4: Cut the support beams
 
 Cut the support beams so that we can securely attach the top plate to the base. I cut them to ~7cm.
 
-![Base Assembly](./assembly_images/supports.jpeg)
+![Base Assembly](./images/assembly_images/supports.jpeg)
 
 ### Step 5: Screw in the supports on the bottom of the bottom plate
 
-![Base Assembly](./assembly_images/washers_underneath.jpeg)'
+![Base Assembly](./images/assembly_images/washers_underneath.jpeg)'
 
 ### Step 6: Mount all the supports on the bottom plate
 
-![Base Assembly](./assembly_images/supports_mounted.jpeg)
+![Base Assembly](./images/assembly_images/supports_mounted.jpeg)
 
-![Base Assembly](./assembly_images/all4_supports.jpeg)
+![Base Assembly](./images/assembly_images/all4_supports.jpeg)
 
 ### Step 7: Attach the top plate (you will need to drill holes so that the supports can fit through the top plate)
 
-![Base Assembly](./assembly_images/top_placed.jpeg)
+![Base Assembly](./images/assembly_images/top_placed.jpeg)
 
 ### Step 8: Attach the ultrasonic sensor to the top plate
 
-![Base Assembly](./assembly_images/hc-sr04.jpeg)
+![Base Assembly](./images/assembly_images/hc-sr04.jpeg)
 
-![Base Assembly](./assembly_images/top_mounted.jpeg)
+![Base Assembly](./images/assembly_images/top_mounted.jpeg)
 
 ### Step 9: Attatch the battery pack to the RPI 5
 
-![Base Assembly](./assembly_images/PI_sugar.jpg)
+![Base Assembly](./images/assembly_images/PI_sugar.jpg)
 
 ### Step 9.5: Place RPI 5 on top of the top plate
 
-![Base Assembly](./assembly_images/rpi_on_top.jpeg)
+![Base Assembly](./images/assembly_images/rpi_on_top.jpeg)
 
 ### Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)
 
-![Base Assembly](./assembly_images/battery_holder.jpeg)
+![Base Assembly](./images/assembly_images/battery_holder.jpeg)
 
-![Base Assembly](./assembly_images/completed.jpeg)
+![Base Assembly](./images/assembly_images/completed.jpeg)
 
 ...
 
@@ -121,12 +121,12 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ### RPI5 Wiring
 
-![RPI5 Connections](./images/rpi_schema.png)
+![RPI5 Connections](./images/schematics/rpi_schema.png)
 The above diagram shows the wiring connections for the Raspberry Pi 5. The ultrasonic sensors are connected to the GPIO pins as per the sensor documentation, same thing for the mini oled screen.
 
 ### ESP32 Wiring
 
-![ESP32 Wiring](./images/esp_schema.png)
+![ESP32 Wiring](./images/schematics/esp_schema.png)
 The above diagram shows the wiring connections for the ESP32-WROOM-32 module. The motors are connected to the motor driver LN298N.
 
 #### esp32 Motor pins

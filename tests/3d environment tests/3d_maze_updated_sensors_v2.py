@@ -1,40 +1,17 @@
 import numpy as np
-
 import gym
 from gym import spaces
-
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-
-import pygame
-
-
-import gym
-import random
-import numpy as np   
+import random 
 import matplotlib.pyplot as plt
 import collections
-
 # Import Tensorflow libraries
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.legacy import Adam
-
-physical_devices = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
-from IPython.display import HTML
-
-from tqdm import tqdm
-
-tqdm.pandas()
-
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
@@ -59,7 +36,7 @@ class RCMazeEnv(gym.Env):
    def generate_maze(self):
       # For simplicity, create a static maze with walls
       # '1' represents a wall, and '0' represents an open path
-      maze = np.zeros((self.maze_size_y, self.maze_size_x), dtype=int)
+      # maze = np.zeros((self.maze_size_y, self.maze_size_x), dtype=int)
       # Add walls to the maze (this can be customized)
 
       
@@ -94,6 +71,8 @@ class RCMazeEnv(gym.Env):
       return self.get_state()
 
    def step(self, action):
+      #ask user input to continue
+      input('press enter to continue')
       if action == 0:
          self.move_forward()
       elif action == 1:
@@ -105,6 +84,11 @@ class RCMazeEnv(gym.Env):
       reward = self.compute_reward()
       self.steps += 1
       done = self.is_done()
+      #print each sensor reading and the car orientation
+      print('sensor readings: ', self.sensor_readings, 'car orientation: ', self.car_orientation)
+      print('next action: ', action)
+      # print('car orientation: ', self.car_orientation)
+      # print('car position: ', self.car_position)
       return self.get_state(), reward, done
 
    
@@ -137,58 +121,62 @@ class RCMazeEnv(gym.Env):
       self.sensor_readings['right'] = self.distance_to_wall('right')
 
    def distance_to_wall(self, direction):
-      x, y = self.car_position
-      distance = 0
-      max_distance = self.maze_size_x if direction in ['left', 'right'] else self.maze_size_y
-      
-      if direction == 'front':
-         if self.car_orientation == 'N':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:     
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-      elif direction == 'left':
-         if self.car_orientation == 'N':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-      elif direction == 'right':
-         if self.car_orientation == 'N':
-               while x + distance < self.maze_size_x and self.maze[y][x + distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'S':
-               while x - distance >= 0 and self.maze[y][x - distance] != 1:
-                  distance += 1
-         elif self.car_orientation == 'E':
-               while y + distance < self.maze_size_y and self.maze[y + distance][x] != 1:
-                  distance += 1
-         elif self.car_orientation == 'W':
-               while y - distance >= 0 and self.maze[y - distance][x] != 1:
-                  distance += 1
-      
-         # Normalize the measured distance
-      normalized_distance = (max_distance - distance - 1) / (max_distance - 1)
+    x, y = self.car_position
+    sensor_max_range = 255  # Maximum range of the ultrasonic sensor
 
-      # Ensure the value is within the range [0, 1]
-      normalized_distance = max(0, min(normalized_distance, 1))
+    def calculate_distance(dx, dy):
+        distance = 0
+        while 0 <= x + distance * dx < self.maze_size_x and \
+              0 <= y + distance * dy < self.maze_size_y and \
+              self.maze[y + distance * dy][x + distance * dx] != 1:
+            distance += 1
+            if distance > sensor_max_range:  # Limiting the sensor range
+                break
+        return distance
 
-      return normalized_distance
+    if direction == 'front':
+        if self.car_orientation == 'N':
+            distance = calculate_distance(0, -1)
+        elif self.car_orientation == 'S':
+            distance = calculate_distance(0, 1)
+        elif self.car_orientation == 'E':
+            distance = calculate_distance(1, 0)
+        elif self.car_orientation == 'W':
+            distance = calculate_distance(-1, 0)
+
+    elif direction == 'left':
+        if self.car_orientation == 'N':
+            distance = calculate_distance(-1, 0)
+        elif self.car_orientation == 'S':
+            distance = calculate_distance(1, 0)
+        elif self.car_orientation == 'E':
+            distance = calculate_distance(0, -1)
+        elif self.car_orientation == 'W':
+            distance = calculate_distance(0, 1)
+
+    elif direction == 'right':
+        if self.car_orientation == 'N':
+            distance = calculate_distance(1, 0)
+        elif self.car_orientation == 'S':
+            distance = calculate_distance(-1, 0)
+        elif self.car_orientation == 'E':
+            distance = calculate_distance(0, 1)
+        elif self.car_orientation == 'W':
+            distance = calculate_distance(0, -1)
+
+    # Normalize the distance to a range of 0-100
+    normalized_distance = distance / sensor_max_range
+    normalized_distance = max(0, min(normalized_distance, 1))
+
+    return normalized_distance
+   #get distance from http://192.168.0.25:5000/sensor 
+      # import requests
+      # if direction == 'front':
+      #    if self.car_orientation == 'N':
+      #       response = requests.get('http://192.168.0.25:5000/sensor')
+      #       distance = float(response.text)
    
+ 
    def compute_reward(self):
       # Initialize reward
       reward = 0
@@ -281,31 +269,26 @@ class RCMazeEnv(gym.Env):
 
       # Set up camera (you may want to make this adjustable)
       gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
-          self.maze_size_x / 2, self.maze_size_y / 2, 0,  # Look at point (center of the maze)
-          0, 1, 0)  # Up vector
-      
+         self.maze_size_x / 2, self.maze_size_y / 2, 0,  # Look at point (center of the maze)
+         0, 1, 0)  # Up vector
+   
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity()
       gluPerspective(90, 1, 0.1, 100)  # Adjust field of view angle, aspect ratio, near and far planes
       glMatrixMode(GL_MODELVIEW)
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       
-      
-      
-      
-        # Set the rendering function
+      # Set the rendering function
       glutDisplayFunc(self.render)
       
    def run_opengl(self):
-        # Set up the rendering context and callbacks
-        # but do NOT call glutMainLoop()
-        glutDisplayFunc(self.render)
-        glutIdleFunc(self.render)  # Update rendering in idle time
-
-   def render(self):
-      # Clear buffers
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-      camera_distance = 0.5 # Distance from the camera to the car
+      # Set up the rendering context and callbacks
+      # but do NOT call glutMainLoop()
+      glutDisplayFunc(self.render)
+      glutIdleFunc(self.render)  # Update rendering in idle time
+        
+   def third_person_view(self):
+      camera_distance = 2.5 # Distance from the camera to the car
       camera_height = 1.5  # Height of the camera above the car
       
       # Assuming self.car_orientation is 'N' and you want to be behind the car (to the 'S')
@@ -338,14 +321,20 @@ class RCMazeEnv(gym.Env):
                look_at_x, look_at_y, look_at_z,  # Look at position (x, y, z)
                0, 0, 2)  # Up vector (x, y, z), assuming Z is up
 
+   def render(self):
+      # Clear buffers
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+      self.third_person_view()
+
       # Render the maze
       for y in range(self.maze_size_y):
          for x in range(self.maze_size_x):
-               if self.maze[y][x] == 1:
-                  self.draw_cube(x, y, color=(0.5, 0.5, 0.5))
-               elif (x, y) == self.goal:
-                  #set color to green
-                  self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
+            if self.maze[y][x] == 1:
+               self.draw_cube(x, y, color=(0.5, 0.5, 0.5))
+            elif (x, y) == self.goal:
+               #set color to green
+               self.draw_cube(x, y, color=(0.0, 1.0, 0.0))
                   
       # Render the car's sensor readings
       car_x, car_y = self.car_position
@@ -359,7 +348,7 @@ class RCMazeEnv(gym.Env):
          
       # Draw the car
       car_x, car_y = self.car_position
-      self.draw_car(car_x, car_y, color=(1.0, 0.0, 0.0))
+      self.draw_car(car_x, car_y, color=(1.0, 0.0, 1.0))
       
       # Swap buffers
       glutSwapBuffers()
@@ -372,15 +361,15 @@ class RCMazeEnv(gym.Env):
       # Draw a cube at position (x, y), flipping y coordinate
       glPushMatrix()
       glTranslate(x, self.maze_size_y - y - 1, 0)  # Adjust for vertical flipping
-      glScalef(2, 2, 5)  # Adjust the size of your cube
+      glScalef(2, 2, 1)  # Adjust the size of your cube
       glutSolidCube(0.5)  # Adjust the size if needed
       glPopMatrix()
       
    def get_sensor_rotation_angle(self, sensor_orientation):
-      print('direction: ', self.car_orientation)
+      # print('direction: ', self.car_orientation)
       # Rotation logic based on car's orientation and sensor's relative position
       rotation_mapping = {
-         'N': {'front': 0, 'left': 90, 'right': -90},
+         'N': {'front': 90, 'left': 180, 'right': 0},
          'S': {'front': -90, 'left': 0, 'right': 180},
          'E': {'front': 0, 'left': 90, 'right': -90},
          'W': {'front': 180, 'left': -90, 'right': 90}
@@ -391,7 +380,7 @@ class RCMazeEnv(gym.Env):
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
-      close_threshold = 0.5
+      close_threshold = 0.005
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -403,8 +392,8 @@ class RCMazeEnv(gym.Env):
       glRotatef(90, 0, 1, 0)
 
       # Draw sensor line
-      distance = min(distance, 0.5)  # Cap distance
-      glutSolidCylinder(0.05, distance, 5, 5)
+      # distance = min(distance, 0.5)  # Cap distance
+      glutSolidCylinder(0.05, 0.5, 5, 5)
 
       glPopMatrix()
 
@@ -426,20 +415,19 @@ class RCMazeEnv(gym.Env):
         
  
 
+from tensorflow.keras.optimizers.legacy import Adam
 class DQNAgent:
-    def __init__(self, replayCapacity, inputShape, outputShape):
-        ## Initialize replay memory
+    def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
         self.capacity = replayCapacity
         self.memory = collections.deque(maxlen=self.capacity)
-        self.populated = False
-        ## Policiy model
-        self.inputShape = inputShape
-        self.outputShape = outputShape
+        self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
+        self.input_shape = input_shape
+        self.output_shape = output_shape
         self.policy_model = self.buildNetwork()
-
-        ## Target model
         self.target_model = self.buildNetwork()
         self.target_model.set_weights(self.policy_model.get_weights())
+
 
     def addToReplayMemory(self, step):
         self.step = step
@@ -456,18 +444,45 @@ class DQNAgent:
 
     def buildNetwork(self):
         model = Sequential()
-        model.add(Dense(32, input_shape=self.inputShape, activation='relu'))
-        model.add(Dense(64, activation='relu'))
-        model.add(Dense(64, activation='relu'))
-        model.add(Dense(32, activation='relu'))
-        model.add(Dense(self.outputShape, activation='linear'))
-        model.compile(loss='mse', optimizer=Adam(learning_rate=0.001), metrics=['MeanSquaredError'])
+        model.add(Dense(128, input_shape=self.input_shape, activation='relu'))
+        model.add(Dense(256, activation='relu'))
+        model.add(Dense(512, activation='relu'))
+        model.add(Dense(1028, activation='relu'))
+        model.add(Dense(512, activation='relu'))
+        model.add(Dense(256, activation='relu'))
+        model.add(Dense(128, activation='relu'))
+        model.add(Dense(self.output_shape, activation='linear'))
+        model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate), metrics=['MeanSquaredError'])
         return model
 
-    def policy_network_fit(self,batch, batchSize):
-        self.batchSize = batchSize
-        self.batch = batch
+    def policy_network_fit(self, batch, batch_size):
+            states, actions, rewards, next_states, dones = zip(*batch)
 
+            states = np.array(states)
+            next_states = np.array(next_states)
+
+            # Predict Q-values for starting state using the policy network
+            q_values = self.policy_model.predict(states)
+
+            # Predict Q-values for next state using the policy network
+            q_values_next_state_policy = self.policy_model.predict(next_states)
+
+            # Select the best action for the next state using the policy network
+            best_actions = np.argmax(q_values_next_state_policy, axis=1)
+
+            # Predict Q-values for next state using the target network
+            q_values_next_state_target = self.target_model.predict(next_states)
+
+            # Update Q-values for actions taken
+            for i in range(batch_size):
+                if dones[i]:
+                    q_values[i, actions[i]] = rewards[i]
+                else:
+                    # Double DQN update rule
+                    q_values[i, actions[i]] = rewards[i] + self.discount_factor * q_values_next_state_target[i, best_actions[i]]
+
+            # Train the policy network
+            self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
 
     def policy_network_predict(self, state):
         self.state = state
@@ -480,7 +495,7 @@ class DQNAgent:
         return self.qTarget
 
     def update_target_network(self):
-        self.target_model.set_weights(self.policy_model.get_weights()) 
+        self.target_model.set_weights(self.policy_model.get_weights())
         
 # set main
 if __name__ == "__main__":
@@ -495,17 +510,17 @@ if __name__ == "__main__":
    POSSIBLE_ACTIONS = env.possible_actions
 
    # create DQN agent
-   test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, inputShape=state.shape, outputShape=len(POSSIBLE_ACTIONS))
+   test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
 
 
    from keras.models import load_model
-   test_agent.policy_model = load_model('./models/D-DQN_RCmaze.h5')
+   test_agent.policy_model = load_model('./tests/models/DDQN_RCmaze_ARF.h5')
 
 
    done = False
    rewards = []
    
-   desired_fps = 5.0
+   desired_fps = 2.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()

@@ -62,7 +62,7 @@ cd researchproject
 ### Camera Setup
 
 - The camera script can be run either on a PC or another Raspberry Pi.
-- Navigate to the [streaming maze cam](./streaming_maze_cam/) folder and execute:
+- Navigate to the [camera stream](./camera_stream) folder and execute:
 
   ```bash
   docker-compose up -d

@@ -1,35 +1,17 @@
 import numpy as np
-
 import gym
 from gym import spaces
-
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import glutBitmapCharacter, GLUT_BITMAP_HELVETICA_18
-
-import pygame
-
-
-import gym
-import random
-import numpy as np   
+import random 
 import matplotlib.pyplot as plt
 import collections
-
 # Import Tensorflow libraries
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.optimizers.legacy import Adam
-
-physical_devices = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
-
-
 # disable eager execution (optimization)
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
@@ -101,7 +83,7 @@ class RCMazeEnv(gym.Env):
       self.steps += 1
       done = self.is_done()
       #print each sensor reading and the car orientation
-      # print('sensor readings: ', self.sensor_readings)
+      print('sensor readings: ', self.sensor_readings)
       # print('car orientation: ', self.car_orientation)
       # print('car position: ', self.car_position)
       return self.get_state(), reward, done
@@ -185,55 +167,49 @@ class RCMazeEnv(gym.Env):
 
     return normalized_distance * 1000
  
+   
+ 
    def compute_reward(self):
-        # Initialize reward
-        reward = 0
+      # Initialize reward
+      reward = 0
 
-        # Check for collision or out of bounds
-        if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
-            reward -= 50
+      # Check for collision or out of bounds
+      if any(self.sensor_readings[direction] == 0 for direction in ['front', 'left', 'right']):
+         reward -= 20
 
-        # Check if goal is reached
-        if self.car_position == self.goal:
-            reward += 500
-            # Additional penalty if it takes too many steps to reach the goal
-            if self.steps > 100:
-                reward -= 200
-            return reward  # Return immediately as this is the terminal state
+      # Check if goal is reached
+      if self.car_position == self.goal:
+         reward += 500
+         # Additional penalty if it takes too many steps to reach the goal
+         if self.steps > 1000:
+               reward -= 200
+         return reward  # Return immediately as this is the terminal state
 
-        # Calculate the Euclidean distance to the goal
-        distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
+      # Calculate the Euclidean distance to the goal
+      distance_to_goal = ((self.car_position[0] - self.goal[0]) ** 2 + (self.car_position[1] - self.goal[1]) ** 2) ** 0.5
 
-        # Define a maximum reward when the car is at the goal
-        max_reward_at_goal = 100
+      # Define a maximum reward when the car is at the goal
+      max_reward_at_goal = 50
 
-        # Reward based on proximity to the goal
-        reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
+      # Reward based on proximity to the goal
+      reward += max_reward_at_goal / (distance_to_goal + 1)  # Adding 1 to avoid division by zero
 
-        # # Reward or penalize based on movement towards or away from the goal
-        if distance_to_goal < self.previous_distance:
-            reward += 75  # Positive reward for moving closer to the goal
-        # elif distance_to_goal > self.previous_distance:
-        #     reward -= 75  # Negative reward for moving farther from the goal
+      # # Reward or penalize based on movement towards or away from the goal
+      if distance_to_goal < self.previous_distance:
+         reward += 50  # Positive reward for moving closer to the goal
+      elif distance_to_goal > self.previous_distance:
+         reward -= 25  # Negative reward for moving farther from the goal
 
-        # each time it visits the same position more than 3 times it gets a penalty
-        for position in self.visited_positions:
-            times_in_position = sum([1 for pos in self.visited_positions if pos == position])
-            if times_in_position >= 2:
-                reward -= 25
-        
-            
-        # Penalize for each step taken to encourage efficiency
-        reward -= 20
-        
-        #if it doesnt move it gets a penalty
-        if self.steps == self.previous_steps:
-            reward -= 25
-            
-        
-        # Update the previous_distance for the next step
-        self.previous_distance = distance_to_goal
-        return reward
+      if self.car_position in self.visited_positions:
+         # Apply a penalty for revisiting the same position
+         reward -= 10
+         
+      # Penalize for each step taken to encourage efficiency
+      reward -= 2
+      
+      # Update the previous_distance for the next step
+      self.previous_distance = distance_to_goal
+      return reward
 
    def is_done(self):
       #is done if it reaches the goal or goes out of bounds or takes more than 3000 steps
@@ -303,22 +279,6 @@ class RCMazeEnv(gym.Env):
       # but do NOT call glutMainLoop()
       glutDisplayFunc(self.render)
       glutIdleFunc(self.render)  # Update rendering in idle time
-      
-   def render_text(self, x, y, text, font=GLUT_BITMAP_HELVETICA_18):
-      glMatrixMode(GL_PROJECTION)
-      glPushMatrix()
-      glLoadIdentity()
-      gluOrtho2D(0, 1200, 0, 1200)
-      glMatrixMode(GL_MODELVIEW)
-      glPushMatrix()
-      glLoadIdentity()
-      glRasterPos2i(x, y)
-      for character in text:
-         glutBitmapCharacter(font, ord(character))
-      glPopMatrix()
-      glMatrixMode(GL_PROJECTION)
-      glPopMatrix()
-      glMatrixMode(GL_MODELVIEW)
         
    def third_person_view(self):
       camera_distance = 2.5 # Distance from the camera to the car
@@ -358,7 +318,7 @@ class RCMazeEnv(gym.Env):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-      # self.third_person_view()
+      self.third_person_view()
 
       # Render the maze
       for y in range(self.maze_size_y):
@@ -378,11 +338,6 @@ class RCMazeEnv(gym.Env):
       for sensor in ['front', 'left', 'right']:
          self.draw_sensor_line(car_x, car_y, self.sensor_readings[sensor], 
                                  sensor_colors[sensor], sensor)
-         
-      # Display sensor readings
-      sensor_readings_str = f"Sensor Readings: {self.sensor_readings}"
-      self.render_text(10, 1200 - 20, sensor_readings_str)  # Adjust the position as needed
-
          
       # Draw the car
       car_x, car_y = self.car_position
@@ -418,7 +373,7 @@ class RCMazeEnv(gym.Env):
       return rotation_mapping[self.car_orientation][sensor_orientation]
 
    def draw_sensor_line(self, car_x, car_y, distance, color, sensor_orientation):
-      close_threshold = 4.0
+      close_threshold = 3.0
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -451,90 +406,10 @@ class RCMazeEnv(gym.Env):
       glutLeaveMainLoop()
 
         
-     
  
 
 from tensorflow.keras.optimizers.legacy import Adam
-# class DQAgent:
-#     def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
-#         self.capacity = replayCapacity
-#         self.memory = collections.deque(maxlen=self.capacity)
-#         self.learning_rate = learning_rate
-#         self.discount_factor = discount_factor
-#         self.input_shape = input_shape
-#         self.output_shape = output_shape
-#         self.policy_model = self.buildNetwork()
-#         self.target_model = self.buildNetwork()
-#         self.target_model.set_weights(self.policy_model.get_weights())
-
-
-#     def addToReplayMemory(self, step):
-#         self.step = step
-#         self.memory.append(self.step)
-
-#     def sampleFromReplayMemory(self, batchSize):
-#         self.batchSize = batchSize
-#         if self.batchSize > len(self.memory):
-#             self.populated = False
-#             return self.populated
-#         else:
-#             return random.sample(self.memory, self.batchSize)
-
-
-#     def buildNetwork(self):
-#         model = Sequential()
-#         model.add(Dense(32, input_shape=self.input_shape, activation='relu'))
-#         model.add(Dense(64, activation='relu'))
-#         model.add(Dense(64, activation='relu'))
-#         model.add(Dense(32, activation='relu'))
-#         model.add(Dense(self.output_shape, activation='linear'))
-#         model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate), metrics=['MeanSquaredError'])
-#         return model
-
-#     def policy_network_fit(self, batch, batch_size):
-#             states, actions, rewards, next_states, dones = zip(*batch)
-
-#             states = np.array(states)
-#             next_states = np.array(next_states)
-
-#             # Predict Q-values for starting state using the policy network
-#             q_values = self.policy_model.predict(states)
-
-#             # Predict Q-values for next state using the policy network
-#             q_values_next_state_policy = self.policy_model.predict(next_states)
-
-#             # Select the best action for the next state using the policy network
-#             best_actions = np.argmax(q_values_next_state_policy, axis=1)
-
-#             # Predict Q-values for next state using the target network
-#             q_values_next_state_target = self.target_model.predict(next_states)
-
-#             # Update Q-values for actions taken
-#             for i in range(batch_size):
-#                 if dones[i]:
-#                     q_values[i, actions[i]] = rewards[i]
-#                 else:
-#                     # Double DQN update rule
-#                     q_values[i, actions[i]] = rewards[i] + self.discount_factor * q_values_next_state_target[i, best_actions[i]]
-
-#             # Train the policy network
-#             self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
-
-#     def policy_network_predict(self, state):
-#         self.state = state
-#         self.qPolicy = self.policy_model.predict(self.state)
-#         return self.qPolicy
-
-#     def target_network_predict(self, state):
-#         self.state = state
-#         self.qTarget = self.target_model.predict(self.state)
-#         return self.qTarget
-
-#     def update_target_network(self):
-#         self.target_model.set_weights(self.policy_model.get_weights())
-   
-from tensorflow.keras.optimizers.legacy import Adam
-class DQAgent:
+class DQNAgent:
     def __init__(self, replayCapacity, input_shape, output_shape, learning_rate=0.001, discount_factor=0.90):
         self.capacity = replayCapacity
         self.memory = collections.deque(maxlen=self.capacity)
@@ -617,131 +492,53 @@ class DQAgent:
         
 # set main
 if __name__ == "__main__":
-   from tensorflow.keras.callbacks import EarlyStopping
    import time
    env = RCMazeEnv()
    state = env.reset()
 
    env.init_opengl()
-
-   # Model parameters
+   env.run_opengl()
+   
    REPLAY_MEMORY_CAPACITY = 20000
-   # MIN_REPLAY_MEMORY_SIZE = 1_000  # Minimum number of steps in a memory to start training
    POSSIBLE_ACTIONS = env.possible_actions
 
-   # state = state[0]
    # create DQN agent
-   agent = DQAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, 
-                  input_shape=state.shape, 
-                  output_shape=len(POSSIBLE_ACTIONS),
-                  learning_rate=0.001, 
-                  discount_factor=0.90)
+   test_agent = DQNAgent(replayCapacity=REPLAY_MEMORY_CAPACITY, input_shape=state.shape, output_shape=len(POSSIBLE_ACTIONS))
 
 
-   # reset the parameters
-   DISCOUNT = 0.90
-   BATCH_SIZE = 64  # How many steps (samples) to use for training
-   UPDATE_TARGET_INTERVAL = 2
-   EPSILON = 0.95 # Exploration percentage
-   MIN_EPSILON = 0.01
-   DECAY = 0.99999
-   EPISODE_AMOUNT = 170
+   from keras.models import load_model
+   test_agent.policy_model = load_model('./tests/models/DDQN_RCmaze_ARF.h5')
 
 
-
-   # Fill the replay memory with the first batch of samples
-   update_counter = 0
-   reward_history = []
-   epsilon_history = []
-
-   np.set_printoptions(precision=3, suppress=True)
+   done = False
+   rewards = []
    
-   #set fps
-   desired_fps = 60.0
+   desired_fps = 3.0
    frame_duration = 1.0 / desired_fps
 
    last_time = time.time()
-
-   for episode in range(EPISODE_AMOUNT):
-      episode_reward = 0
-      step_counter = 0  # count the number of successful steps within the episode
-      
-      state = env.reset()
-      done = False
-      epsilon_history.append(EPSILON)
-      
-      #early stopping
-      if len(reward_history) > 10:
-         last_10_rewards = reward_history[-10:]
-         if all(reward > 0 for reward in last_10_rewards):
-               differences = [abs(last_10_rewards[i] - last_10_rewards[i-1]) for i in range(1, 10)]
-               if all(diff < 200 for diff in differences):
-                  print('The difference between each of the last 10 positive rewards is less than 200, stopping training')
-                  break
+   done = False
 
 
-      while not done:
-         current_time = time.time()
-         elapsed = current_time - last_time
-         if elapsed >= frame_duration:
-            if random.random() <= EPSILON:
-                  action = random.sample(POSSIBLE_ACTIONS, 1)[0]
-            else:
-                  qValues = agent.policy_network_predict(state.reshape(1,-1))
-                  action = np.argmax(qValues[0])
-
-            new_state, reward, done = env.step(action)
-
-            step_counter +=1
-
-            # store step in replay memory
-            step = (state, action, reward, new_state, done)
-            agent.addToReplayMemory(step)
-            state = new_state
-            episode_reward += reward
-            # When enough steps in replay memory -> train policy network
-            if len(agent.memory) >= (BATCH_SIZE):
-                  EPSILON = DECAY * EPSILON
-                  if EPSILON < MIN_EPSILON:
-                     EPSILON = MIN_EPSILON
-                  # sample minibatch from replay memory
-                  
-                  miniBatch = agent.sampleFromReplayMemory(BATCH_SIZE)
-                  miniBatch_states = np.asarray(list(zip(*miniBatch))[0],dtype=float)
-                  miniBatch_actions = np.asarray(list(zip(*miniBatch))[1], dtype = int)
-                  miniBatch_rewards = np.asarray(list(zip(*miniBatch))[2], dtype = float)
-                  miniBatch_next_state = np.asarray(list(zip(*miniBatch))[3],dtype=float)
-                  miniBatch_done = np.asarray(list(zip(*miniBatch))[4],dtype=bool)
-                  
-                  # current state q values1tch_states)
-                  y = agent.policy_network_predict(miniBatch_states)
-
-                  next_state_q_values = agent.target_network_predict(miniBatch_next_state)
-                  max_q_next_state = np.max(next_state_q_values,axis=1)
-
-                  for i in range(BATCH_SIZE):
-                     if miniBatch_done[i]:
-                        y[i,miniBatch_actions[i]] = miniBatch_rewards[i]
-                     else:
-                        y[i,miniBatch_actions[i]] = miniBatch_rewards[i] + DISCOUNT *  max_q_next_state[i]
-                        
-                  agent.policy_model.fit(miniBatch_states, y, batch_size=2048, verbose = 0)
-                  env.render()
-                  # last_time = current_time
-            else:
-                  continue
-            if update_counter == UPDATE_TARGET_INTERVAL:
-                  agent.update_target_network()
-                  update_counter = 0
-         update_counter += 1
-      print('episodeReward for episode ', episode, '= ', episode_reward, 'with epsilon = ', EPSILON)
-      reward_history.append(episode_reward)
-      
-
-   env.close_pygame()
-   env.close()
-   
-   #save the model
-   agent.policy_model.save('model.h5')
-   print('model saved')
+   while not done:
+      current_time = time.time()
+      elapsed = current_time - last_time
+      if elapsed >= frame_duration:
+         
+         glutMainLoopEvent()
+         qValues = test_agent.policy_network_predict(np.array([state]))
+         action = np.argmax(qValues[0])
+         state, reward, done = env.step(action)
+         rewards.append(reward)
+         env.render()
+         
+         last_time = current_time
+       
+         if done:
+            print('done in ', len(rewards), 'steps')
+            break
+   # env.close()
+   print(sum(rewards))
+   # env.close_opengl()
+   # env.close_pygame()
 
