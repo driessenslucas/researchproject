@@ -131,7 +131,7 @@ The car is equipped with sensors that detect distances to walls on the front, le
 This environment provides a rich testing ground for developing algorithms in reinforcement learning, with an emphasis on spatial navigation and sensor-based decision-making. 🤖🧭🏁
 
 <details>
-<summary>RCMazeEnv.py</summary>
+<summary> <b> Click here to see the RCMazeEnv class</b></summary>
 
 ```python
 class RCMazeEnv(gym.Env):
@@ -932,7 +932,7 @@ The core principle behind the Double DQN agent is to disentangle the action sele
 The agent's architecture is meticulously designed to process and interpret the intricate sensor data from the maze environment, translating it into intelligent movement decisions. It continually learns and adapts through interaction with the environment, storing experiences in a replay memory for effective learning and optimization.
 
 <details>
-<summary>Double DQN</summary>
+<summary><b>CLick here to see the Double DQN class</b> </summary>
 
 ```python
 class DQNAgent:
@@ -1201,17 +1201,20 @@ My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable te
    - **Description:** DQN integrates a deep neural network with a Q-learning framework. It stands out for its proficiency in processing high-dimensional sensory inputs, making it a strong candidate for applications requiring detailed environmental interaction.
    - **Suitability:** While DQN offers advanced learning capabilities, its tendency to overestimate Q-values in environments with intricate and unpredictable dynamics can be a limitation for training RF-cars.
    - **Visual Representation of my integration:** ![DQN](./videos/DQN-agent.gif)
+   - **Reward History of the DQN:** ![DQN](./images/reward_history_DQN.png)
 
 2. **Double Deep Q-Network (DDQN)**
 
    - **Description:** DDQN, an evolution of DQN, employs dual neural networks. This structure effectively mitigates the overestimation bias present in DQN by decoupling action selection from Q-value generation.
    - **Reason for Selection:** The choice of DDQN is driven by its enhanced accuracy in Q-value approximation, crucial for navigating the intricate maze-like environments encountered by virtual RF-cars. The RF-car's limited sensor range can lead to overestimations in Q-values, a challenge adeptly addressed by DDQN’s design. Through empirical trials, DDQN demonstrated superior performance, validating its selection for this application.
    - **Visual Representation of my integration:** ![DDQN](./videos/DDQN_withfailsave.gif)
+   - **Reward History of the DDQN:** ![DDQN](./images/DDQPN%20results.png)
 
 3. **Proximal Policy Optimization (PPO)**
    - **Description:** PPO, a policy gradient method, optimizes decision-making policies directly. It is renowned for its stability and efficiency in environments where policy output is more consequential than value estimation.
    - **Suitability:** PPO, despite its strengths in certain RL contexts, is less aligned with the specific needs of an RF-car simulation. The focus on policy over value estimation renders it suboptimal for environments where precise Q-value approximation is critical.
    - **Visual Representation of my integration:** ![PPO](./videos/ppo.gif)
+   - **Reward History of the PPO:** ![PPO](./images/PPO_reward_history.png)
 
 | Reinforcement Learning Technique       | Pros                                                                                                                                                                               | Cons                                                                                                                                                         |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
