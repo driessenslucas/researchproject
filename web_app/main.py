@@ -929,10 +929,10 @@ def handle_start_stream(data):
    pass
 
 def send_frame():
-    """
-     Send frame to client and convert to binary or base64 if it's
-    """
-    # Function to send frame to client
+   """
+   Send frame to client and convert to binary or base64 if it's
+   """
+   # Function to send frame to client
    try:
       image_data = frame_queue.get_nowait()
       socketio.emit('frame', {'image': image_data})  # Send as binary or convert to base64
