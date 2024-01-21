@@ -1158,13 +1158,13 @@ The selection of an appropriate virtual environment is crucial for the effective
 3. **CARLA**
 
    - **Website:** [CARLA](https://carla.org/)
-   - **Details:** CARLA is a comprehensive platform for autonomous driving systems' development, training, and validation. It provides open-source code, protocols, and digital assets.
+   - **Description:** CARLA is a comprehensive platform for autonomous driving systems' development, training, and validation. It provides open-source code, protocols, and digital assets.
    - **Reason for Exclusion:** CARLA's focus on autonomous driving systems, as opposed to RF-cars, makes it less suitable for this specific project.
 
 4. **OpenAI Gym**
 
    - **Website:** [OpenAI Gym](https://gym.openai.com/)
-   - **Details:** This toolkit is designed for the development and comparison of reinforcement learning algorithms. It's known for its ease of use in creating custom environments.
+   - **Description:** This toolkit is designed for the development and comparison of reinforcement learning algorithms. It's known for its ease of use in creating custom environments.
    - **Reason for Selection:** Familiarity from Advanced AI coursework and the flexibility to create custom environments make OpenAI Gym an ideal choice. Its simplicity and focus on reinforcement learning align well with the project's objectives, particularly in SIM2REAL transfer.
 
 5. **ISAAC Gym**
@@ -1200,6 +1200,12 @@ The efficacy of training a virtual Radio Frequency (RF) car in a simulation envi
    - **Description:** PPO, a policy gradient method, optimizes decision-making policies directly. It is renowned for its stability and efficiency in environments where policy output is more consequential than value estimation.
    - **Suitability:** PPO, despite its strengths in certain RL contexts, is less aligned with the specific needs of an RF-car simulation. The focus on policy over value estimation renders it suboptimal for environments where precise Q-value approximation is critical.
    - **Visual Representation of my integration:** ![PPO](./videos/ppo.gif)
+
+| Reinforcement Learning Technique       | Pros                                                                                                                                                                               | Cons                                                                                                                                                         |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Deep Q-Network (DQN)**               | - Proficient in processing high-dimensional sensory inputs.<br> - Effective in detailed environmental interaction.                                                                 | - Tendency to overestimate Q-values in complex dynamics.<br> - Less suitable for unpredictable environments.                                                 |
+| **Double Deep Q-Network (DDQN)**       | - Addresses overestimation bias of DQN with dual neural networks.<br> - Enhanced accuracy in Q-value approximation.<br> - Demonstrated superior performance in preliminary trials. | - More complex architecture than DQN.<br> - Potentially requires more computational resources.                                                               |
+| **Proximal Policy Optimization (PPO)** | - Directly optimizes decision-making policies.<br> - Known for stability and efficiency.                                                                                           | - Less focused on value estimation, which is crucial for RF-car training.<br> - Suboptimal for environments where precise Q-value approximation is critical. |
 
 #### Conclusion
 
