@@ -121,12 +121,12 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ### RPI5 Wiring
 
-![RPI5 Connections](./pictures/rpi_schema.png)
+![RPI5 Connections](./images/rpi_schema.png)
 The above diagram shows the wiring connections for the Raspberry Pi 5. The ultrasonic sensors are connected to the GPIO pins as per the sensor documentation, same thing for the mini oled screen.
 
 ### ESP32 Wiring
 
-![ESP32 Wiring](./pictures/esp_schema.png)
+![ESP32 Wiring](./images/esp_schema.png)
 The above diagram shows the wiring connections for the ESP32-WROOM-32 module. The motors are connected to the motor driver LN298N.
 
 #### esp32 Motor pins

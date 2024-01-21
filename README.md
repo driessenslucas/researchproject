@@ -80,11 +80,11 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 ## Getting Started
 
-To get started with this project, you'll need to set up your development environment and install the necessary dependencies. Please refer to the [manual.md](./manual.md) for detailed instructions on setting up and running the project.
+To get started with this project, you'll need to set up your development environment and install the necessary dependencies. Please refer to the [user manual](./user_manual.md) for detailed instructions on setting up and running the project.
 
 ## Hardware Installation
 
-For instructions on how to set up the hardware, please refer to the [hardware_installation_guide.md](./hardware_installtion_guide.md).
+For instructions on how to set up the hardware, please refer to the [hardware installation guide](./hardware_installtion.md).
 
 ## Virtual Environment
 
@@ -1058,7 +1058,7 @@ To say the way I trained the models and the results, you can look at the juptyer
 
 The results of the training:
 
-![results](./pictures/DDQPN%20results.png)
+![results](./images/DDQPN%20results.png)
 
 ## Web app
 
@@ -1070,11 +1070,9 @@ On the web app you can opt to run the simulation, which will not be using real s
 
 When Running the simuation the sensor values will not be 100% representative of the real world, but it works well enough to be able to train the model.
 
-![web app](./pictures/web_app_v3.png)
+![web app](./images/web_app_v3.png)
 
-https://github.com/driessenslucas/researchproject/assets/91117911/a73e67b8-4c89-4d0c-91df-b306900693eb
-
-
+<https://github.com/driessenslucas/researchproject/assets/91117911/a73e67b8-4c89-4d0c-91df-b306900693eb>
 
 ### Flask
 
@@ -1203,18 +1201,18 @@ The efficacy of training a virtual Radio Frequency (RF) car in a simulation envi
 
    - **Description:** DQN integrates a deep neural network with a Q-learning framework. It stands out for its proficiency in processing high-dimensional sensory inputs, making it a strong candidate for applications requiring detailed environmental interaction.
    - **Suitability:** While DQN offers advanced learning capabilities, its tendency to overestimate Q-values in environments with intricate and unpredictable dynamics can be a limitation for training RF-cars.
-   - **Visual Representation of my integration:** ![DQN](./video/DQN-agent.gif)
+   - **Visual Representation of my integration:** ![DQN](./videos/DQN-agent.gif)
 
 2. **Double Deep Q-Network (DDQN)**
 
    - **Description:** DDQN, an evolution of DQN, employs dual neural networks. This structure effectively mitigates the overestimation bias present in DQN by decoupling action selection from Q-value generation.
    - **Reason for Selection:** The choice of DDQN is driven by its enhanced accuracy in Q-value approximation, crucial for navigating the intricate maze-like environments encountered by virtual RF-cars. The RF-car's limited sensor range can lead to overestimations in Q-values, a challenge adeptly addressed by DDQN’s design. Through empirical trials, DDQN demonstrated superior performance, validating its selection for this application.
-   - **Visual Representation of my integration:** ![DDQN](./video/DDQN_withfailsave.gif)
+   - **Visual Representation of my integration:** ![DDQN](./videos/DDQN_withfailsave.gif)
 
 3. **Proximal Policy Optimization (PPO)**
    - **Description:** PPO, a policy gradient method, optimizes decision-making policies directly. It is renowned for its stability and efficiency in environments where policy output is more consequential than value estimation.
    - **Suitability:** PPO, despite its strengths in certain RL contexts, is less aligned with the specific needs of an RF-car simulation. The focus on policy over value estimation renders it suboptimal for environments where precise Q-value approximation is critical.
-   - **Visual Representation of my integration:** ![PPO](./video/ppo.gif)
+   - **Visual Representation of my integration:** ![PPO](./videos/ppo.gif)
 
 #### Conclusion
 

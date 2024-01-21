@@ -26,11 +26,12 @@ cd researchproject
 
 #### Hardware Installation
 
-- Refer to the hardware installation manual for ESP32 setup. [hardware_installation_guide.md](./hardware_installtion_guide.md).
+- Refer to the hardware installation manual for ESP32 setup. [hardware installation guide](./hardware_installtion.md).
 
 #### Software Configuration
 
-- Upload the code from the `esp32` folder to the ESP32.
+- You will need to have this library installed if you want to use the OLED display [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master)
+- Upload the code from the [esp32](./esp32) folder to the ESP32.
 - Modify the WiFi credentials in the code to your local network settings.
 
 ### Raspberry Pi (RPI) Setup
@@ -43,7 +44,7 @@ cd researchproject
 
 #### Setup Instructions
 
-- The code for the RPI is in the `main_web_app` folder.
+- The code for the RPI is in the [web app](./web_app/) folder.
 - Run the following commands to start the Docker containers:
 
   ```bash
@@ -61,7 +62,7 @@ cd researchproject
 ### Camera Setup
 
 - The camera script can be run either on a PC or another Raspberry Pi.
-- Navigate to the `camera` folder and execute:
+- Navigate to the [streaming maze cam](./streaming_maze_cam/) folder and execute:
 
   ```bash
   docker-compose up -d
@@ -69,9 +70,9 @@ cd researchproject
 
 ### Training
 
-- Use the provided pre-trained model or train a new one using the `train.py` script.
-- The `train.py` script can be run either on a PC or the RPI itself.
-- The script will ask you if you want to save the model. If you do, it will be saved in the `models` folder.
+- Use the provided pre-trained model or train a new one using the [train](./train.py) script.
+- The [train](./train.py) script can be run either on a PC or the RPI itself.
+- The script will ask you if you want to save the model. If you do, it will be saved in the [models](./models) folder.
 
 ### Usage
 
