@@ -26,7 +26,7 @@ import asyncio
 from threading import Lock
 from gpiozero import DistanceSensor
 
-
+## write a little comment 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.7', use_virtual_sensors=True):
       """
