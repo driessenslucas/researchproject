@@ -1068,11 +1068,9 @@ The web app I created to be able to have a virtual twin of the rc-car and the ma
 
 On the web app you can opt to run the simulation, which will not be using real sensors and not move the actual rc-car (this is used for demo purposes) or you can run the simulation with the real sensors and the real rc-car (If you have actually built the rc-car and the maze to scale).
 
-When Running the simuation the sensor values will not be 100% representative of the real world, but it works well enough to be able to train the model.
-
 ![web app](./images/web_app_v3.png)
 
-https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff
+<https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
 
 ### Flask
 
@@ -1081,23 +1079,6 @@ I used flask to run the web app on the Raspberry Pi, the web app is built using 
 Here are the routes that are available on the web app:
 
 ```python
-@app.route('/frame')
-def frame():
-    """
-     Get a frame from the queue and return it as a PNG. This is a blocking call so it will block until something is available to be returned.
-
-     @return Response object with status 200 or 503 if queue is full
-    """
-
-@app.route("/get_sensor_readings")
-def get_sensor_readings():
-   """
-    Get a copy of the sensor data and return it as a JSON object.
-
-
-    @return A JSON object containing the readings of the sensor
-   """
-
 @app.route("/get-models")
 def get_models():
    """
