@@ -9,3 +9,4 @@ tensorflow==2.15.0
 keras==2.15.0
 aiohttp
 gpiozero==2.0
+flask-socketio

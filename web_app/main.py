@@ -25,6 +25,7 @@ import aiohttp
 import asyncio
 from threading import Lock
 from gpiozero import DistanceSensor
+from flask_socketio import SocketIO
 
 ## write a little comment 
 class RCMazeEnv(gym.Env):
@@ -183,8 +184,10 @@ class RCMazeEnv(gym.Env):
    async def update_sensor_readings(self):
       if self.use_virtual_sensors:
          await self.update_virtual_sensor_readings()
+         send_sensor_data()
       else:
          await self.update_real_sensor_readings()
+         send_sensor_data()
         
    ## for actual sensors
    async def update_real_sensor_readings(self):
@@ -437,7 +440,7 @@ class RCMazeEnv(gym.Env):
       done = False
       rewards = []
       
-      desired_fps = 2.0
+      desired_fps = 3.0
       frame_duration = 1.0 / desired_fps
 
       last_time = time.time()
@@ -458,12 +461,6 @@ class RCMazeEnv(gym.Env):
                glutMainLoopEvent()
                qValues = test_agent.policy_network_predict(np.array([state]))
                action = np.argmax(qValues[0])
-               self.render()
-               frame = self.capture_frame()
-               try:
-                  frame_queue.put_nowait(frame)  # Non-blocking put
-               except queue.Full:
-                  pass  # Skip if the queue is full
                
                state, reward, done = await self.step(action)
                rewards.append(reward)
@@ -472,6 +469,8 @@ class RCMazeEnv(gym.Env):
                frame = self.capture_frame()
                try:
                   frame_queue.put_nowait(frame)  # Non-blocking put
+                  send_frame()
+                  
                except queue.Full:
                   pass  # Skip if the queue is full
                
@@ -892,6 +891,8 @@ app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['CORS_RESOURCES'] = {r"/*": {"origins": "*"}}
 
+#set up socketio
+socketio = SocketIO(app)
 
 frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
 
@@ -901,6 +902,52 @@ maze_running = False
 # Shared data structure and lock
 sensor_data = {"front": 0, "left": 0, "right": 0}
 sensor_data_lock = Lock()
+
+
+@socketio.on('connect')
+def handle_connect():
+   """
+    Called when client connects to the server. This is a callback function that will be called by client. connect
+   """
+   print("Client connected")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+   """
+    Called when the client disconnects from the server. This is a no - op
+   """
+   print("Client disconnected")
+
+@socketio.on('start_stream')
+def handle_start_stream(data):
+   """
+    Handle start stream event. This is called when we receive START_STREAM from the sensor
+    
+    @param data - Data that was recieved from
+   """
+   # Start sending frames and sensor data
+   pass
+
+def send_frame():
+    """
+     Send frame to client and convert to binary or base64 if it's
+    """
+    # Function to send frame to client
+   try:
+      image_data = frame_queue.get_nowait()
+      socketio.emit('frame', {'image': image_data})  # Send as binary or convert to base64
+   except queue.Empty:
+      pass
+
+def send_sensor_data():
+   """
+    Send sensor data to socketio. This is called in a seperate thread
+   """
+   global sensor_data, sensor_data_lock
+   with sensor_data_lock:
+      data_copy = sensor_data.copy()
+   socketio.emit('sensor_data', data_copy)
+
 
 def generate_frames():
    """
@@ -934,23 +981,23 @@ def run_async_function(func):
    loop.run_until_complete(func)
    loop.close()
         
-@app.route('/frame')
-def frame():
-    """
-     Get a frame from the queue and return it as a PNG. This is a blocking call so it will block until something is available to be returned.
+# @app.route('/frame')
+# def frame():
+#     """
+#      Get a frame from the queue and return it as a PNG. This is a blocking call so it will block until something is available to be returned.
      
      
-     @return Response object with status 200 or 503 if queue is full
-    """
-    try:
-      global frame_queue
-      image_data = frame_queue.get_nowait()  # Non-blocking get
-      print("Sending image data with status 200")
+#      @return Response object with status 200 or 503 if queue is full
+#     """
+#     try:
+#       global frame_queue
+#       image_data = frame_queue.get_nowait()  # Non-blocking get
+#       print("Sending image data with status 200")
    
-      return Response(image_data, mimetype='image/png', status=200)
-    except queue.Empty:
-      print("Queue empty, sending status 503")
-      return Response(status=503)  # Service Unavailable
+#       return Response(image_data, mimetype='image/png', status=200)
+#     except queue.Empty:
+#       print("Queue empty, sending status 503")
+#       return Response(status=503)  # Service Unavailable
 
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
@@ -963,19 +1010,19 @@ def get_my_ip():
    ## add something to get host camera??? 
    return jsonify({'ip': request.remote_addr}), 200
 
-@app.route("/get_sensor_readings")
-def get_sensor_readings():
-   """
-    Get a copy of the sensor data and return it as a JSON object.
+# @app.route("/get_sensor_readings")
+# def get_sensor_readings():
+#    """
+#     Get a copy of the sensor data and return it as a JSON object.
     
     
-    @return A JSON object containing the readings of the sensor
-   """
-   global sensor_data, sensor_data_lock
-   with sensor_data_lock:
-      # Make a copy of the data to avoid holding the lock while JSONifying
-      data_copy = sensor_data.copy()
-   return jsonify(data_copy)
+#     @return A JSON object containing the readings of the sensor
+#    """
+#    global sensor_data, sensor_data_lock
+#    with sensor_data_lock:
+#       # Make a copy of the data to avoid holding the lock while JSONifying
+#       data_copy = sensor_data.copy()
+#    return jsonify(data_copy)
 
 @app.route("/get-models")
 def get_models():
