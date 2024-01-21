@@ -66,18 +66,22 @@ Through this study, I aspire to contribute significantly to the field of AI and 
   - [Sub Questions](#sub-questions)
     - [1. Which virtual environments exist to train a virtual RF-car?](#1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
       - [Introduction](#introduction)
+    - [Executive Summary](#executive-summary)
       - [Virtual Environments Overview](#virtual-environments-overview)
       - [Conclusion](#conclusion)
     - [2. Which reinforcement learning techniques can I best use in this application?](#2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
       - [Introduction](#introduction-1)
+    - [Executive Summary](#executive-summary-1)
       - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
       - [Conclusion](#conclusion-1)
     - [3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world](#3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
       - [Introduction](#introduction-2)
+      - [Executive Summary](#executive-summary-2)
       - [Discrepancies and Adjustments](#discrepancies-and-adjustments)
       - [Conclusion](#conclusion-2)
     - [4. Does the simulation have any useful contributions? In terms of training time or performance?](#4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
       - [Introduction](#introduction-3)
+      - [Executive Summary](#executive-summary-3)
       - [Advantages of Simulation Training](#advantages-of-simulation-training)
       - [Conclusion](#conclusion-3)
     - [5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?](#5-how-can-i-transfer-my-trained-model-to-my-physical-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-environment-and-model-for-it-to-work-in-the-real-world)
@@ -1141,6 +1145,10 @@ def video():
 
 The selection of an appropriate virtual environment is crucial for the effective training of a virtual Radio Frequency (RF) car. Various platforms offer unique features suitable for simulating different aspects of autonomous driving. This document evaluates several virtual environments to determine the most suitable choice for training a virtual RF-car.
 
+### Executive Summary
+
+There is no 'one-size-fits-all' solution for virtual environments. I used openAI gym because it is easy to create custom environments in it and I have experience with it from my Advanced AI coursework.
+
 #### Virtual Environments Overview
 
 1. **Unity 3D**
@@ -1182,6 +1190,10 @@ Considering the project's needs for a simple, lightweight environment conducive 
 
 The efficacy of training a virtual Radio Frequency (RF) car in a simulation environment hinges significantly on the choice of reinforcement learning (RL) techniques. This document explores various RL methods, assessing their suitability for the nuanced requirements of RF-car training, with an emphasis on navigating complex environments.
 
+### Executive Summary
+
+My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable technique for my application. It didn't need many episodes to be able to solve the environment efficiently.
+
 #### Reinforcement Learning Techniques Overview
 
 1. **Deep Q-Network (DQN)**
@@ -1219,6 +1231,10 @@ On top of that the DDQN sovled the environment in 25 steps on average, against t
 
 In addressing the critical task of transferring the simulation model to a real-world RF-car, this section explores the encountered discrepancies and the adjustments made to facilitate an effective sim-to-real transition.
 
+#### Executive Summary
+
+There needed to be some adjustments made to the simulation to account for how the car moves in the real world. Especially in the way the distance to the walls is calculated
+
 #### Discrepancies and Adjustments
 
 1. **Sensor Data Normalization**
@@ -1250,6 +1266,10 @@ The process of transferring the simulation model to a real-world RF-car highligh
 #### Introduction
 
 This section explores the significant advantages of using simulation for the training of a virtual RF-car, particularly focusing on aspects of training efficiency and performance.
+
+#### Executive Summary
+
+The simulation makes the training process more efficient and easier to manage. It also allows for the utilization of more powerful computing resources, greatly accelerating the training process.
 
 #### Advantages of Simulation Training
 
