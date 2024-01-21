@@ -73,7 +73,13 @@ Through this study, I aspire to contribute significantly to the field of AI and 
       - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
       - [Conclusion](#conclusion-1)
     - [3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world](#3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
+      - [Introduction](#introduction-2)
+      - [Discrepancies and Adjustments](#discrepancies-and-adjustments)
+      - [Conclusion](#conclusion-2)
     - [4. Does the simulation have any useful contributions? In terms of training time or performance?](#4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
+      - [Introduction](#introduction-3)
+      - [Advantages of Simulation Training](#advantages-of-simulation-training)
+      - [Conclusion](#conclusion-3)
     - [5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?](#5-how-can-i-transfer-my-trained-model-to-my-physical-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-environment-and-model-for-it-to-work-in-the-real-world)
     - [6. How can Real-time learning be implemented?](#6-how-can-real-time-learning-be-implemented)
   - [Sources and Inspiration](#sources-and-inspiration)
@@ -1203,9 +1209,71 @@ On top of that the DDQN sovled the environment in 25 steps on average, against t
 
 ### 3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world
 
+#### Introduction
+
+In addressing the critical task of transferring the simulation model to a real-world RF-car, this section explores the encountered discrepancies and the adjustments made to facilitate an effective sim-to-real transition.
+
+#### Discrepancies and Adjustments
+
+1. **Sensor Data Normalization**
+
+   - **Challenge:** The primary challenge was reconciling the differences in how the distance to walls was determined in the simulation versus the real world.
+   - **Solution:** Adjustments were made to the normalization of distance values in the simulation. This ensured that the sensor readings in the simulation were more aligned with those in the real world, enhancing the accuracy of the model's predictions in physical testing.
+
+2. **Action Synchronization and Failsafe Mechanisms**
+
+   - **Challenge:** The absence of a failsafe in the simulation led to instances where the real car would collide with walls, indicating a discrepancy in action execution.
+   - **Solution:** The introduction of a failsafe mechanism and retraining of the model, as well as consideration for a rotary encoder as an alternative solution, significantly mitigated this issue.
+
+3. **Signal Processing for RF-car Movements**
+
+   - **Challenge:** In the real-world scenario, the RF signals controlling the car were sent too rapidly, causing movement issues not present in the simulation.
+   - **Solution:** By reducing the frequency of action commands sent to the car, we achieved better synchronization between the simulation and real-world actions. Alternative solutions like direct motor driver connection or a queued action execution system were also explored, but ultimately deemed less suitable given the resources available.
+
+4. **Physical Dynamics and Motor Control**
+
+   - **Challenge:** The real car's turns and movements were affected by factors like weight and texture of the floor, which were not accounted for in the simulation.
+   - **Solution:** Adjusting the motor control timings, specifically the delay in turning the motors on and off, allowed for more accurate replication of the simulated movements in the real car. Additionally adjusting the car's center of gravity and using a flat undergroud texutre helped the car to move more like it is supposed to.
+
+#### Conclusion
+
+The process of transferring the simulation model to a real-world RF-car highlighted several key discrepancies, primarily in sensor data interpretation, action synchronization, signal processing, and physical dynamics. Through targeted adjustments and solutions, these challenges were addressed, enabling a more accurate and reliable sim-to-real transfer. This experience underscores the importance of thorough testing and adaptation in bridging the gap between simulated environments and real-world applications.
+
 ### 4. Does the simulation have any useful contributions? In terms of training time or performance?
 
+#### Introduction
+
+This section explores the significant advantages of using simulation for the training of a virtual RF-car, particularly focusing on aspects of training efficiency and performance.
+
+#### Advantages of Simulation Training
+
+1. **Training Efficiency**
+
+   - **Challenge in Real-World Training:** Real-world training requires programming the car for autonomous return to the start position after each episode, continuous supervision to prevent crashes and or manual intervention to reset the episode.
+   - **Solution with Simulation:** The simulation environment eliminates these needs, allowing for uninterrupted and automated training sessions. This results in a more streamlined and time-efficient training process.
+
+2. **Safety and Supervision**
+
+   - **Challenge in Real-World Training:** Even with failsafe mechanisms, real-world training poses risks of crashes or other accidents, necessitating constant observation.
+   - **Solution with Simulation:** The virtual environment provides a risk-free platform for training, removing the need for constant supervision and manual intervention.
+
+3. **Computational Efficiency**
+
+   - **Challenge in Real-World Training:** Training the model on the Raspberry Pi (RPI) in real life is significantly slower compared to using a more powerful computer.
+   - **Solution with Simulation:** Simulation allows for the utilization of more powerful computing resources, greatly accelerating the training process.
+
+4. **Model Performance and Practicality**
+
+   - **Observation:** The model trained in real life exhibits similar performance to the one trained in the simulation.
+   - **Conclusion:** Despite the similarity in performance, the challenges and inefficiencies associated with real-life training make the simulation an evidently more practical and efficient method for model development.
+
+#### Conclusion
+
+The simulation offers considerable advantages in training the virtual RF-car, particularly in terms of efficiency, safety, and computational power. These benefits make simulation a highly valuable tool, significantly simplifying the training process and reducing the time and resources required, as compared to real-world training. The simulation thus stands out as an indispensable component in the development and refinement of autonomous vehicle models.
+
 ### 5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
+
+-- TODO --
 
 ### 6. How can Real-time learning be implemented?
 
