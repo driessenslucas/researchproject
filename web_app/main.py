@@ -218,25 +218,35 @@ class RCMazeEnv(gym.Env):
        
        @return Float value of sensor data from the HC-SR04
       """
-      
+      def map_distance(distance):
+         if distance < 25:
+            # No change for distances less than 20 cm
+            return float(distance)
+         else:
+            distance = 25 + (distance - 25) * 0.5
+            return float(distance)
+      time.sleep(0.1)
       try:
          sensor_front = DistanceSensor(echo=5, trigger=6)
          sensor_left = DistanceSensor(echo=17, trigger=27)
          sensor_right = DistanceSensor(echo=23, trigger=24)
-      except Exception as ex:
-         print(ex)
-         pass
-      try:
-         # distance between sensor and front direction
-         time.sleep(0.1)
-         if direction == "front":
-            return float(sensor_front.distance * 100)
-         elif direction == "left":
-            return float(sensor_left.distance * 100)
-         elif direction == "right":
-            return float(sensor_right.distance * 100)
+         try:
+            distance = 0
+            if direction == "front":
+               distance = sensor_front.distance * 100
+            elif direction == "left":
+               distance = sensor_left.distance * 100
+            elif direction == "right":
+               distance = sensor_right.distance * 100
+               
+            mapped_distance = map_distance(distance)
+
+            return mapped_distance
+         except:
+            pass
       except Exception as e:
          print(f"Error: {e}")
+         send_warning("Error reading sensor")
          return "Error reading sensor"
 
 
@@ -393,8 +403,12 @@ class RCMazeEnv(gym.Env):
        @return a combination of the car position, orientation, sensor readings in an array ['1.0' '1.0' 'N' '1.0' '1.0' '10.0'] // car position, car direction and the sensor readings
       """
       car_position = [float(coord) for coord in self.car_position]
-      # self.update_sensor_readings()
-      sensor_readings = [float(value) for value in self.sensor_readings.values()]
+      
+      try:
+         sensor_readings = [float(value) for value in self.sensor_readings.values()]
+      except:
+         print('error reading sensors')
+         
       
       state = car_position + [self.car_orientation] + sensor_readings
       
@@ -444,7 +458,7 @@ class RCMazeEnv(gym.Env):
       done = False
       rewards = []
       
-      desired_fps = 15.0
+      desired_fps = 2.0
       frame_duration = 1.0 / desired_fps
 
       last_time = time.time()
@@ -696,10 +710,7 @@ class RCMazeEnv(gym.Env):
        @param color - color of the line 
        @param sensor_orientation - orientation of the sensor ( left / right / front )
       """
-      if self.use_virtual_sensors:
-         close_threshold = 4
-      else:
-         close_threshold = 8
+      close_threshold = 4.0
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -954,6 +965,10 @@ def send_frame():
       socketio.emit('frame', {'image': image_data})  # Send as binary or convert to base64
    except queue.Empty:
       pass
+
+def send_warning(data):
+   socketio.emit('warning' , data)
+   
 
 def send_sensor_data():
    """
