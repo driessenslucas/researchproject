@@ -497,6 +497,9 @@ class RCMazeEnv(gym.Env):
                qValues = test_agent.policy_network_predict(np.array([state]))
                action = np.argmax(qValues[0])
                
+               #send q values to the web app
+               send_q_values(qValues[0])
+               
                state, reward, done = await self.step(action)
                rewards.append(reward)
                
@@ -973,6 +976,22 @@ def send_frame():
       socketio.emit('frame', {'image': image_data})  # Send as binary or convert to base64
    except queue.Empty:
       pass
+   
+def send_q_values(q_values):
+   """
+    Send q values to client. This is called when we receive Q_VALUES from the sensor
+    
+    @param q_values - Q values to send to the client
+   """
+   
+   #qvalues are an array of 3 values
+   # convert to a list
+   q_values = q_values.tolist()
+   #send q values to client
+   
+   
+   socketio.emit('q_values', {'q_values': q_values})
+
 
 def send_warning(msg):
    """
@@ -1072,16 +1091,16 @@ def start_maze(use_virtual,esp_ip,model):
       elif use_virtual == 'false':
          use_virtual = False
       
-      ## see if the esp is reachable
-      import requests
-      url = f'http://{esp_ip}'
-      try:
-         page = requests.get(url)
-         print(page.status_code)
-      except:
-         print("Error")
-         msg = "ESP IP not reachable"
-         return Response(msg, status=503)  # Service Unavailable
+      if not use_virtual:
+          ## see if the esp is reachable
+         url = f'http://{esp_ip}'
+         try:
+            page = requests.get(url)
+            print(page.status_code)
+         except:
+            print("Error")
+            msg = "ESP IP not reachable"
+            return Response(msg, status=503)  # Service Unavailable
       
       env = RCMazeEnv(esp_ip=esp_ip, use_virtual_sensors=use_virtual)
       # Use a lambda function to pass arguments to the async function wrapper
