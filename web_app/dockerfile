@@ -1,85 +1,85 @@
-# # Use Ubuntu as the parent image
-# FROM ubuntu:latest
+# Use Ubuntu as the parent image
+FROM ubuntu:22.04
 
-# # Set noninteractive installation mode
-# ENV DEBIAN_FRONTEND=noninteractive
-# ENV TZ=UTC
+# Set noninteractive installation mode
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
 
-# # Set the working directory in the container
-# WORKDIR /usr/src/app
-
-# # Install Python, OpenCV dependencies, and other essential tools
-# RUN apt-get update && apt-get install -y \
-#     python3 \
-#     python3-pip \
-#     libopencv-dev \
-#     python3-opencv \
-#     libgl1-mesa-dev \
-#     libglu1-mesa-dev \
-#     freeglut3-dev \
-#     x11-apps \
-#     libxext6 \
-#     libxtst6 \
-#     libxrender1 \
-#     build-essential \
-#     xvfb \
-#     python3-gpiozero \
-#     python3-pigpio \
-#     x11-xserver-utils \
-#     bash && \
-#     rm -rf /var/lib/apt/lists/*
-
-# # Copy the local directory contents into the container at /usr/src/app
-# COPY . .
-
-# # Install any needed packages specified in requirements.txt
-# RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
-
-# # Set permission and create an entrypoint script
-# RUN chmod +x virtual_display.sh
-
-# RUN chmod +x entrypoint.sh
-
-# # Command to run the entrypoint script
-# CMD ["bash" , "/usr/src/app/entrypoint.sh"]
-
-
-# Base stage for common dependencies
-FROM python:3.11-slim as base
-
+# Set the working directory in the container
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install Python, OpenCV dependencies, and other essential tools
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    libopencv-dev \
+    python3-opencv \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
     freeglut3-dev \
-    build-essential \
-    libglib2.0-0 \
-    xvfb \
     x11-apps \
     libxext6 \
     libxtst6 \
     libxrender1 \
+    build-essential \
+    xvfb \
+    python3-gpiozero \
+    python3-pigpio \
     x11-xserver-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Builder stage for building/installing dependencies
-FROM base as builder
-
-COPY requirements.txt ./
-
-# Install Python dependencies
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
-
-# Final stage for the production image
-FROM base
-
-# Copy installed Python packages from builder stage
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+    bash && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the local directory contents into the container at /usr/src/app
 COPY . .
 
-# Set permission for scripts
-RUN chmod +x virtual_display.sh entrypoint.sh
+# Install any needed packages specified in requirements.txt
+RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
+
+# Set permission and create an entrypoint script
+RUN chmod +x virtual_display.sh
+
+RUN chmod +x entrypoint.sh
 
 # Command to run the entrypoint script
-CMD ["./entrypoint.sh"]
+CMD ["bash" , "/usr/src/app/entrypoint.sh"]
+
+
+# # Base stage for common dependencies
+# FROM python:3.11-slim as base
+
+# WORKDIR /usr/src/app
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     freeglut3-dev \
+#     build-essential \
+#     libglib2.0-0 \
+#     xvfb \
+#     x11-apps \
+#     libxext6 \
+#     libxtst6 \
+#     libxrender1 \
+#     x11-xserver-utils \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Builder stage for building/installing dependencies
+# FROM base as builder
+
+# COPY requirements.txt ./
+
+# # Install Python dependencies
+# RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# # Final stage for the production image
+# FROM base
+
+# # Copy installed Python packages from builder stage
+# COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+
+# # Copy the local directory contents into the container at /usr/src/app
+# COPY . .
+
+# # Set permission for scripts
+# RUN chmod +x virtual_display.sh entrypoint.sh
+
+# # Command to run the entrypoint script
+# CMD ["./entrypoint.sh"]

@@ -1,6 +1,12 @@
 from flask import Flask, Response, render_template
 import cv2
+
+import gpiozero
+from gpiozero.pins.native import NativeFactory
+
 from gpiozero import DistanceSensor
+
+
 # from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
 import os
@@ -16,9 +22,9 @@ def index():
 @app.route('/sensor/<direction>')
 def get_sensor_value(direction):
       try:
-         sensor_front = DistanceSensor(echo=5, trigger=6)
-         sensor_left = DistanceSensor(echo=17, trigger=27)
-         sensor_right = DistanceSensor(echo=23, trigger=24)
+         sensor_front = gpiozero.DistanceSensor(echo=5, trigger=6)
+         sensor_left = gpiozero.DistanceSensor(echo=17, trigger=27)
+         sensor_right = gpiozero.DistanceSensor(echo=23, trigger=24)
       except:
          pass
       try:

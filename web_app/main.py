@@ -24,6 +24,7 @@ import requests
 import aiohttp
 import asyncio
 from threading import Lock
+import gpiozero
 from gpiozero import DistanceSensor
 from flask_socketio import SocketIO
 
@@ -107,21 +108,21 @@ class RCMazeEnv(gym.Env):
       if action == 0:
          # dont allow to move forward if the car is too close to a wall
          # Move forward or car if sensor readings of the front sensor is greater than 4 or 12 if the real sensors are used
-         if self.use_virtual_sensors == False and self.sensor_readings['front'] >= 12:
+         if self.use_virtual_sensors == False and self.sensor_readings['front'] >= 8:
                self.move_forward()
-               self.move_car('forward')
+               # self.move_car('forward')
          elif self.sensor_readings['front'] >= 4:
             self.move_forward()
       elif action == 1:
          self.turn_left()
          if self.use_virtual_sensors == False:
-               self.move_car('left')
-               # pass
+               # self.move_car('left')
+               pass
       elif action == 2:
          self.turn_right()
          if self.use_virtual_sensors == False:
-               self.move_car('right')
-               # pass
+               # self.move_car('right')
+               pass
          
       await self.update_sensor_readings()
       
@@ -196,14 +197,15 @@ class RCMazeEnv(gym.Env):
         """
         async with aiohttp.ClientSession() as session:
             tasks = [
-                self.fetch_sensor_data(session, 'front'),
-                self.fetch_sensor_data(session, 'left'),
-                self.fetch_sensor_data(session, 'right')
+                self.fetch_sensor_data('front'),
+                self.fetch_sensor_data('left'),
+                self.fetch_sensor_data('right')
             ]
             results = await asyncio.gather(*tasks)
             
             self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
-                    # Update shared sensor data structure
+            
+            # Update shared sensor data structure
             global sensor_data, sensor_data_lock
             with sensor_data_lock:
                sensor_data.update(self.sensor_readings)
@@ -216,21 +218,23 @@ class RCMazeEnv(gym.Env):
        
        @return Float value of sensor data from the HC-SR04
       """
-      time.sleep(0.1)
+      
       try:
          sensor_front = DistanceSensor(echo=5, trigger=6)
          sensor_left = DistanceSensor(echo=17, trigger=27)
          sensor_right = DistanceSensor(echo=23, trigger=24)
-      except:
+      except Exception as ex:
+         print(ex)
          pass
       try:
          # distance between sensor and front direction
+         time.sleep(0.1)
          if direction == "front":
-               return float(sensor_front.distance * 100)
+            return float(sensor_front.distance * 100)
          elif direction == "left":
-               return float(sensor_left.distance * 100)
+            return float(sensor_left.distance * 100)
          elif direction == "right":
-               return float(sensor_right.distance * 100)
+            return float(sensor_right.distance * 100)
       except Exception as e:
          print(f"Error: {e}")
          return "Error reading sensor"
@@ -440,7 +444,7 @@ class RCMazeEnv(gym.Env):
       done = False
       rewards = []
       
-      desired_fps = 3.0
+      desired_fps = 15.0
       frame_duration = 1.0 / desired_fps
 
       last_time = time.time()
@@ -457,6 +461,15 @@ class RCMazeEnv(gym.Env):
             elapsed = current_time - last_time
             # If the frame is full or full we can t wait for the frame to be processed.
             if elapsed >= frame_duration:
+               
+               self.render()
+               frame = self.capture_frame()
+               try:
+                  frame_queue.put_nowait(frame)  # Non-blocking put
+                  send_frame()
+                  
+               except queue.Full:
+                  pass  # Skip if the queue is full
                
                glutMainLoopEvent()
                qValues = test_agent.policy_network_predict(np.array([state]))
@@ -683,7 +696,10 @@ class RCMazeEnv(gym.Env):
        @param color - color of the line 
        @param sensor_orientation - orientation of the sensor ( left / right / front )
       """
-      close_threshold = 4
+      if self.use_virtual_sensors:
+         close_threshold = 4
+      else:
+         close_threshold = 8
       glColor3fv((1.0, 0.0, 0.0) if distance <= close_threshold else color)
 
       # Calculate rotation based on car's and sensor's orientation
@@ -1062,8 +1078,19 @@ def start_maze(use_virtual,esp_ip,model):
       import os
       #check if the pi is reachable
       # if not reachable then return error
-      response = os.system("ping -c 1 " + esp_ip)
-      if response != 0 and not use_virtual: # 0 means reachable
+      # response = os.system("ping -c 1 " + esp_ip)
+      # if response != 0 and not use_virtual: # 0 means reachable
+      #    msg = "ESP IP not reachable"
+      #    return Response(msg, status=503)  # Service Unavailable
+      
+      import requests
+      url = f'http://{esp_ip}'
+
+      try:
+         page = requests.get(url)
+         print(page.status_code)
+      except:
+         print("Error")
          msg = "ESP IP not reachable"
          return Response(msg, status=503)  # Service Unavailable
       
