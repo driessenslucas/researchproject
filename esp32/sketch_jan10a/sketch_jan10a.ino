@@ -19,65 +19,6 @@ int M2 = 4;
 
 int turnDuration = 300;
 
-int carX = 1;
-int carY = 1;
-
-int path[][2] = {
-  {1, 1},
-  {2, 1},
-  {3, 1},
-  {4, 1},
-  {5, 1},
-  {6, 1},
-  {7, 1},
-  {8, 1},
-  {8, 1},
-  {8, 2},
-  {8, 3},
-  {8, 3},
-  {9, 3},
-  {10, 3},
-  {10, 3},
-  {10, 4},
-  {10, 5},
-  {10, 5},
-  {9, 5},
-  {8, 5},
-  {7, 5},
-  {6, 5},
-  {6, 5},
-  {6, 6},
-  {6, 7},
-  {6, 8},
-  {6, 8},
-  {7, 8},
-  {8, 8},
-  {9, 8},
-  {10, 8},
-  {10, 8},
-  {10, 9},
-  {10, 10}
-};
-
-// Variable to keep track of the current step in the path
-int currentStep = 0;
-
-// Define the layout of the maze
-int layout[12][12] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
-    {1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1},
-    {1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1},
-    {1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1},
-    {1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-
 //}
 void drawMaze() {
     ssd1306_clearScreen();
@@ -168,8 +109,6 @@ void setup() {
     else if (error == OTA_END_ERROR) Serial.println("End Failed");
   });
   ArduinoOTA.begin();
-  drawMaze();
-  currentStep = 0; // Start from the beginning of the path
 }
 
 void loop() {
@@ -215,29 +154,16 @@ void loop() {
           Serial.println("moving forward");
 //          ssd1306_printFixed(0, 32, "moving forward", STYLE_NORMAL);
           move_forward();
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
           
         } else if (currentLine.endsWith("GET /left")) {
           Serial.println("moving left");
 //          ssd1306_printFixed(0, 32, "moving left", STYLE_NORMAL);
           move_left();
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
           
         } else if (currentLine.endsWith("GET /right")) {
           Serial.println("moving right");
 //          ssd1306_printFixed(0, 32, "moving right", STYLE_NORMAL);
           move_right();
-          currentStep++;
-          carX = path[currentStep][0];
-          carY = path[currentStep][1];
-          drawMaze();
-          
         }
         else{
           stop_moving(); 
