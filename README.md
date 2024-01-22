@@ -33,11 +33,11 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 4. Does the simulation have any useful contributions? In terms of training time or performance?
 
-5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
+5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?
 
 6. How can Real-time learning be implemented?
 
-7. Extra: How can I make the car drive through an unknown maze?
+7. Extra: Can the car navigate through an unknown maze?
 
 ## Table of Contents
 
@@ -84,8 +84,8 @@ Through this study, I aspire to contribute significantly to the field of AI and 
       - [Executive Summary](#executive-summary-3)
       - [Advantages of Simulation Training](#advantages-of-simulation-training)
       - [Conclusion](#conclusion-3)
-    - [5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?](#5-how-can-i-transfer-my-trained-model-to-my-physical-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-environment-and-model-for-it-to-work-in-the-real-world)
-    - [6. How can Real-time learning be implemented?](#6-how-can-real-time-learning-be-implemented)
+    - [5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?](#5-how-can-the-trained-model-be-transfered-to-the-real-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-and-the-environment-for-it-to-translate-to-the-real-world)
+    - [6. Can the car navigate through an unknown maze?](#6-can-the-car-navigate-through-an-unknown-maze)
   - [Sources and Inspiration](#sources-and-inspiration)
 
 ## Getting Started
@@ -1300,11 +1300,11 @@ The simulation makes the training process more efficient and easier to manage. I
 
 The simulation offers considerable advantages in training the virtual RF-car, particularly in terms of efficiency, safety, and computational power. These benefits make simulation a highly valuable tool, significantly simplifying the training process and reducing the time and resources required, as compared to real-world training. The simulation thus stands out as an indispensable component in the development and refinement of autonomous vehicle models.
 
-### 5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
+### 5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?
 
 -- TODO --
 
-### 6. How can Real-time learning be implemented?
+### 6. Can the car navigate through an unknown maze?
 
 ## Sources and Inspiration
 
