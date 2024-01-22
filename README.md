@@ -1209,7 +1209,7 @@ My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable te
    - **Description:** DQN integrates a deep neural network with a Q-learning framework. It stands out for its proficiency in processing high-dimensional sensory inputs, making it a strong candidate for applications requiring detailed environmental interaction.
    - **Suitability:** While DQN offers advanced learning capabilities, its tendency to overestimate Q-values in environments with intricate and unpredictable dynamics can be a limitation for training RF-cars.
    - **Visual Representation of my integration:** ![DQN](./videos/DQN-agent.gif)
-   - **Reward History of the DQN:** ![DQN](./images/reward_history_DQN.png)
+   - **Reward History of the DQN:** ![DQN](./images/reward_history_dqn.png)
 
 2. **Double Deep Q-Network (DDQN)**
 
