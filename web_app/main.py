@@ -219,9 +219,17 @@ class RCMazeEnv(gym.Env):
        @return Float value of sensor data from the HC-SR04
       """
       def map_distance(distance):
+         """
+          Map a distance so it acts closer to the simulated distances
+          
+          @param distance - The distance to map.
+          
+          @return The distance in cm
+         """
+         
          if distance < 25:
             # No change for distances less than 20 cm
-            return float(distance)
+            return distance
          else:
             distance = 25 + (distance - 25) * 0.5
             return float(distance)
@@ -966,8 +974,13 @@ def send_frame():
    except queue.Empty:
       pass
 
-def send_warning(data):
-   socketio.emit('warning' , data)
+def send_warning(msg):
+   """
+    Send a warning to the client.
+    
+    @param msg - The message to send to the client. It will be formatted as a unicode string
+   """
+   socketio.emit('warning' , msg)
    
 
 def send_sensor_data():
@@ -1012,23 +1025,6 @@ def run_async_function(func):
    loop.run_until_complete(func)
    loop.close()
         
-# @app.route('/frame')
-# def frame():
-#     """
-#      Get a frame from the queue and return it as a PNG. This is a blocking call so it will block until something is available to be returned.
-     
-     
-#      @return Response object with status 200 or 503 if queue is full
-#     """
-#     try:
-#       global frame_queue
-#       image_data = frame_queue.get_nowait()  # Non-blocking get
-#       print("Sending image data with status 200")
-   
-#       return Response(image_data, mimetype='image/png', status=200)
-#     except queue.Empty:
-#       print("Queue empty, sending status 503")
-#       return Response(status=503)  # Service Unavailable
 
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
@@ -1041,19 +1037,6 @@ def get_my_ip():
    ## add something to get host camera??? 
    return jsonify({'ip': request.remote_addr}), 200
 
-# @app.route("/get_sensor_readings")
-# def get_sensor_readings():
-#    """
-#     Get a copy of the sensor data and return it as a JSON object.
-    
-    
-#     @return A JSON object containing the readings of the sensor
-#    """
-#    global sensor_data, sensor_data_lock
-#    with sensor_data_lock:
-#       # Make a copy of the data to avoid holding the lock while JSONifying
-#       data_copy = sensor_data.copy()
-#    return jsonify(data_copy)
 
 @app.route("/get-models")
 def get_models():
@@ -1088,19 +1071,10 @@ def start_maze(use_virtual,esp_ip,model):
          use_virtual = True
       elif use_virtual == 'false':
          use_virtual = False
-         
       
-      import os
-      #check if the pi is reachable
-      # if not reachable then return error
-      # response = os.system("ping -c 1 " + esp_ip)
-      # if response != 0 and not use_virtual: # 0 means reachable
-      #    msg = "ESP IP not reachable"
-      #    return Response(msg, status=503)  # Service Unavailable
-      
+      ## see if the esp is reachable
       import requests
       url = f'http://{esp_ip}'
-
       try:
          page = requests.get(url)
          print(page.status_code)
