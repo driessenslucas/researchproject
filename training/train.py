@@ -532,9 +532,9 @@ if save_model == 'y':
     from datetime import date
     today = date.today()
     d1 = today.strftime("%d-%m-%Y")
-    agent.policy_model.save('./models/DDQN_RCmaze_' + d1+ '.h5')
+    agent.policy_model.save('../models/DDQN_RCmaze_' + d1+ '.h5')
     #save model in the main web app folder
-    agent.policy_model.save('./main_web_app/models/DDQN_RCmaze_' + d1+ '.h5')
+    agent.policy_model.save('../web_app/models/DDQN_RCmaze_' + d1+ '.h5')
 else:
     print('Model not saved')
     
