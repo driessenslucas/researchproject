@@ -64,14 +64,14 @@ Through this study, I aspire to contribute significantly to the field of AI and 
   - [Web app](#web-app)
     - [Flask](#flask)
   - [Sub Questions](#sub-questions)
-    - [1. Which virtual environments exist to train a virtual RF-car?](#1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
+    - [Question 1: Which virtual environments exist to train a virtual RF-car?](#question-1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
       - [Introduction](#introduction)
-    - [Executive Summary](#executive-summary)
+      - [Executive Summary](#executive-summary)
       - [Virtual Environments Overview](#virtual-environments-overview)
       - [Conclusion](#conclusion)
-    - [2. Which reinforcement learning techniques can I best use in this application?](#2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
+    - [Question 2: Which reinforcement learning techniques can I best use in this application?](#question-2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
       - [Introduction](#introduction-1)
-    - [Executive Summary](#executive-summary-1)
+      - [Executive Summary](#executive-summary-1)
       - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
       - [Conclusion](#conclusion-1)
     - [Question 3: Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World](#question-3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
@@ -79,7 +79,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
       - [Executive Summary](#executive-summary-2)
       - [Discrepancies and Adjustments](#discrepancies-and-adjustments)
       - [Conclusion](#conclusion-2)
-    - [4. Does the simulation have any useful contributions? In terms of training time or performance?](#4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
+    - [Question 4: Does the simulation have any useful contributions? In terms of training time or performance?](#question-4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
       - [Introduction](#introduction-3)
       - [Executive Summary](#executive-summary-3)
       - [Advantages of Simulation Training](#advantages-of-simulation-training)
@@ -1147,13 +1147,13 @@ def video():
 
 ## Sub Questions
 
-### 1. Which virtual environments exist to train a virtual RF-car?
+### Question 1: Which virtual environments exist to train a virtual RF-car?
 
 #### Introduction
 
 The selection of an appropriate virtual environment is crucial for the effective training of a virtual Radio Frequency (RF) car. Various platforms offer unique features suitable for simulating different aspects of autonomous driving. This document evaluates several virtual environments to determine the most suitable choice for training a virtual RF-car.
 
-### Executive Summary
+#### Executive Summary
 
 There is no 'one-size-fits-all' solution for virtual environments. I used openAI gym because it is easy to create custom environments in it and I have experience with it from my Advanced AI coursework.
 
@@ -1192,13 +1192,13 @@ There is no 'one-size-fits-all' solution for virtual environments. I used openAI
 
 Considering the project's needs for a simple, lightweight environment conducive to SIM2REAL transfer and the existing familiarity with the tool, **OpenAI Gym** emerges as the optimal choice. Its ease of use for creating custom environments and focus on reinforcement learning agents provide the necessary foundation for this project.
 
-### 2. Which reinforcement learning techniques can I best use in this application?
+### Question 2: Which reinforcement learning techniques can I best use in this application?
 
 #### Introduction
 
 The efficacy of training a virtual Radio Frequency (RF) car in a simulation environment hinges significantly on the choice of reinforcement learning (RL) techniques. This document explores various RL methods, assessing their suitability for the nuanced requirements of RF-car training, with an emphasis on navigating complex environments.
 
-### Executive Summary
+#### Executive Summary
 
 My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable technique for my application. It didn't need many episodes to be able to solve the environment efficiently.
 
@@ -1266,7 +1266,7 @@ The simulation-to-real-world transfer presents unique challenges, particularly i
 
 Transferring a simulation model to a real-world RF-car involves addressing discrepancies in signal processing and physical dynamics. Tailored solutions are necessary to ensure accurate and reliable sim-to-real transition, emphasizing the importance of comprehensive testing and adaptation.
 
-### 4. Does the simulation have any useful contributions? In terms of training time or performance?
+### Question 4: Does the simulation have any useful contributions? In terms of training time or performance?
 
 #### Introduction
 
