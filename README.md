@@ -1251,16 +1251,12 @@ The simulation-to-real-world transfer presents unique challenges, particularly i
 1. **Signal Processing for RF-car Movements**
 
    - **Challenge:** RF signals controlling the car were more rapid in the real world, causing movement issues not seen in simulation.
-   - **Solution:** Reducing the frequency of action commands improved synchronization between the simulation and real-world actions. Further adjustments like direct motor driver connection or a queued action execution system were considered.
+   - **Solution:** Reducing the frequency of action commands improved synchronization between the simulation and real-world actions. Further adjustments like direct motor driver connection to the RPI or a queued action execution system were considered.
 
-2. **Physical Dynamics and Motor Control**
-
-   - **Challenge:** Real-world factors such as the car's weight and floor texture affected movement, not accounted for in simulation.
-   - **Solution:** Modifying motor control timings, and adjusting the car's center of gravity and surface texture, helped replicate simulated movements more accurately.
-
-3. **Precise Movement Replication**
+2. **Precise Movement Replication**
    - **Challenge:** The simulation's grid-based movement, where the car advances one 'square' at a time and rotates in place, needed to be accurately replicated in the real-world RF-car.
    - **Solution:** A methodical approach was adopted to calibrate the real RF-car's movements. This involved conducting experiments to determine the exact duration for which the motors should be active to move the car precisely one square forward and to rotate it 90 degrees. These durations were adjusted to account for variables like the car's weight and the texture of the driving surface, ensuring that the real car's movements mirrored those in the simulation. Additionally, the integration of a [rotary encoder](https://www.dfrobot.com/index.php?route=product/product&product_id=823&search=encoder) was considered as an alternative solution for more precise movement control. While this would offer enhanced accuracy by measuring wheel rotations directly, it would also entail additional hardware complexity.
+   - **Personal Note:** My rotary encoder didn't arrive in time, so I couldn't test it out. During the tests in real life with the delay, the car didn't always act in the same way, this made some of the test successful while others completely failed. This is why I think the rotary encoder would be a better solution, because it wouldn't have to account for the way the surface is, the weight of the car, etc. It would just measure the wheel rotations and move the car accordingly.
 
 #### Conclusion
 
