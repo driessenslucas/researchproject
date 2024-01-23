@@ -87,6 +87,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
     - [5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?](#5-how-can-the-trained-model-be-transfered-to-the-real-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-and-the-environment-for-it-to-translate-to-the-real-world)
     - [6. Can the car navigate through an unknown maze?](#6-can-the-car-navigate-through-an-unknown-maze)
   - [Sources and Inspiration](#sources-and-inspiration)
+  - [adjusting motor delay](#adjusting-motor-delay)
 
 ## Getting Started
 
@@ -1335,3 +1336,26 @@ The simulation offers considerable advantages in training the virtual RF-car, pa
 [13] J. Fu, A. Kumar, O. Nachum, G. Tucker, and S. Levine, “D4RL: Datasets for Deep Data-Driven Reinforcement Learning.” arXiv, Feb. 05, 2021. Accessed: Jan. 08, 2024. [Online]. Available: <http://arxiv.org/abs/2004.07219>
 
 [14] “Case for Raspberry PI 3 / 4 with a PiSugar 2 PRO or PiSugar 3 by tommycederlund | Download free STL model | Printables.com.” Accessed: Jan. 08, 2024. [Online]. Available: <https://www.printables.com/en/model/296484-case-for-raspberry-pi-3-4-with-a-pisugar-2-pro-or->
+
+## adjusting motor delay
+
+1. **Calculate Distance at Constant Speed**: At full speed (255 units), for 500 ms, the distance is \( \text{Distance}_{\text{constant}} = \text{Speed}_{\text{max}} \times \text{Time}\_{\text{constant}} \).
+
+2. **Calculate Distance during Acceleration**: During acceleration, the average speed is \( \frac{\text{Speed}_{\text{max}}}{2} \) over the acceleration period (\( \text{Time}_{\text{accel}} \)). The distance is \( \text{Distance}_{\text{accel}} = \frac{\text{Speed}_{\text{max}}}{2} \times \text{Time}\_{\text{accel}} \).
+
+3. **Total Distance**: The total distance is the sum of distances in both phases.
+
+4. **Adjust for Equivalent Distance**: Adjust \( \text{Time}_{\text{accel}} \) and \( \text{Time}_{\text{constant}} \) so that the total distance is equivalent to the distance covered at full speed for 500 ms.
+
+Assuming the ramp-up time is the same as the time it stays at full speed, the total time \( T \) would be \( \text{Time}_{\text{accel}} + \text{Time}_{\text{constant}} \), and we want the total distance to match the distance covered at full speed for 500 ms.
+
+Let's do these calculations to find the equivalent time durations.
+
+Based on the calculations:
+
+- The time required for acceleration (ramp-up) should be approximately 333.3 ms.
+- Consequently, the total time for the motion, including acceleration and moving at full speed, should be about 666.7 ms.
+
+This means that to cover the same distance as moving at full speed for 500 ms, you should ramp up the speed over approximately 333.3 ms and then continue at full speed for another 333.3 ms. Adjusting your code to reflect this timing will help achieve the desired distance coverage.
+
+use accelerometer to determine rotation angle and adjust the rotation angle of the car accordingly
