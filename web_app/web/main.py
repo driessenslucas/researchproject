@@ -551,7 +551,7 @@ class RCMazeEnv(gym.Env):
       glEnable(GL_COLOR_MATERIAL)
 
       # Set up camera (you may want to make this adjustable)
-      gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 10,  # Camera position (above the center of the maze)
+      gluLookAt(self.maze_size_x / 2, self.maze_size_y / 2, 6,  # Camera position (above the center of the maze)
          self.maze_size_x / 2, self.maze_size_y / 2, 0,  # Look at point (center of the maze)
          0, 1, 0)  # Up vector
    
@@ -641,7 +641,7 @@ class RCMazeEnv(gym.Env):
       # Clear buffers
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       # set third person view over the car (you can commit this for a top down view)
-      self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
+      # self.third_person_view( CAMERA_DISTANCE=2.5,CAMERA_HEIGHT=3.5 )
 
       # Render the maze
       # draws the cube at the maze_size_y 

@@ -43,6 +43,7 @@
 			}
 
 			button {
+				width: 49%;
 				background-color: #4caf50;
 				color: white;
 				border: none;
@@ -146,8 +147,11 @@
 				name="use-virtualized"
 				value="true"
 				checked />
-			<button onclick="startMaze()">Start Maze</button>
-			<button onclick="stopMaze()">Stop Maze</button>
+			<div class="buttonsbox">
+				<button onclick="startMaze()">Start Maze</button>
+				<button onclick="stopMaze()">Stop Maze</button>
+			</div>
+
 			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
 		</div>
 		<div id="video-container">
