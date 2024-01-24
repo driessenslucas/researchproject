@@ -16,7 +16,7 @@ services:
 
   mazecontrol:
     build:
-      context: .
+      context: ./web
       dockerfile: Dockerfile
     environment:
       - DISPLAY=:100
@@ -24,8 +24,8 @@ services:
     restart: always
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./:/usr/src/app
-      - ./templates:/usr/src/app/templates
+      - ./web/:/usr/src/app
+      - ./web/templates:/usr/src/app/templates
     devices:
       - /dev/gpiomem0:/dev/gpiomem0
       - /dev/gpiomem1:/dev/gpiomem1
