@@ -357,8 +357,6 @@ I would like to thank my coach and supervisor, [Gevaert Wouter](wouter.gevaert@h
 
 ## Sources and Inspiration
 
-Certainly! Below are the citations for the two sources you provided, formatted in the IEEE style:
-
 [1] L. Wan, H. Zhong, J. Xu, and Z. Pan, "Sim2Real Transfer for Reinforcement Learning without Dynamics Randomization," Appl. Sci., vol. 13, no. 11, Art. no. 6400, Jun. 2023. [Online]. Available: <https://www.mdpi.com/2076-3417/13/11/6400>
 
 [2] _Self Driving and Drifting RC Car using Reinforcement Learning_, (Aug. 19, 2019). Accessed: Jan. 08, 2024. [Online Video]. Available: <https://www.youtube.com/watch?v=U0-Jswwf0hw>
