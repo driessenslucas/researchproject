@@ -488,7 +488,7 @@ for episode in range(EPISODE_AMOUNT):
             y = agent.policy_network_predict(miniBatch_states)
             
             
-            agent.policy_network_fit(miniBatch, BATCH_SIZE)
+           
 
             next_state_q_values = agent.target_network_predict(miniBatch_next_state)
             max_q_next_state = np.max(next_state_q_values,axis=1)
@@ -499,7 +499,11 @@ for episode in range(EPISODE_AMOUNT):
                 else:
                     y[i,miniBatch_actions[i]] = miniBatch_rewards[i] + DISCOUNT *  max_q_next_state[i]
                     
-            agent.policy_model.fit(miniBatch_states, y, batch_size=BATCH_SIZE, verbose = 0)
+            # agent.policy_model.fit(miniBatch_states, y, batch_size=BATCH_SIZE, verbose = 0)
+
+            #fit the model
+            agent.policy_network_fit(miniBatch, BATCH_SIZE)            
+            
             
         else:
             continue
