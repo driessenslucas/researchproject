@@ -486,6 +486,9 @@ for episode in range(EPISODE_AMOUNT):
             
             # current state q values1tch_states)
             y = agent.policy_network_predict(miniBatch_states)
+            
+            
+            agent.policy_network_fit(miniBatch, BATCH_SIZE)
 
             next_state_q_values = agent.target_network_predict(miniBatch_next_state)
             max_q_next_state = np.max(next_state_q_values,axis=1)
