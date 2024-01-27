@@ -1,4 +1,4 @@
-## struggles and observations
+## struggles and observationss
 
 1. first of all I had to reimagine how the distance between the walls in my simulation is getting determined.
 
