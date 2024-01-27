@@ -160,7 +160,7 @@ Don’t neglect the software engineering aspect
 
 - Use case 6: Sibelco (sand)
 
-  - TNK?
+  - TNK? ( time series anomaly detection)
   - Theorics compared to real live model —> make virtual twin
 
 - Preprocessing is hard but essential, MASTER IT
