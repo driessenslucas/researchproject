@@ -4,7 +4,7 @@
 		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 		<title>RC Maze Visualization</title>
 		<style>
-			body {
+			/* body {
 				display: flex;
 				justify-content: center;
 				flex-direction: row;
@@ -23,14 +23,70 @@
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 				border-radius: 10px;
 				max-height: 88vh;
+			} */
+
+			body,
+			html {
+				height: 100vh;
+				margin: 0;
+				font-family: Arial, sans-serif;
+				/* background: url('/frame') no-repeat center center fixed; */
+				background-size: cover;
+				overflow: hidden;
 			}
 
+			#container {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				width: auto;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				max-height: 80vh;
+				overflow-y: auto;
+			}
+
+			#sensor-readings {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				width: auto;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				max-height: 80vh;
+				overflow-y: auto;
+			}
+
+			#maze-box {
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				overflow-y: auto;
+				z-index: -9999;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.maze-frame {
+				height: 100%;
+				width: 100%;
+			}
+
+			/* Adjust the width and padding of the input elements if necessary */
 			input[type='text'],
 			button {
-				width: 100%;
+				width: auto; /* Adjust as needed */
 				padding: 12px 20px;
 				margin: 8px 0;
-				display: inline-block;
+				display: block;
 				border: 1px solid #ccc;
 				border-radius: 4px;
 				box-sizing: border-box;
@@ -80,7 +136,7 @@
 				color: #333;
 			}
 
-			#video-container,
+			/* #video-container, */
 			#sensor-readings {
 				margin: 20px;
 				padding: 20px;
@@ -95,9 +151,9 @@
 				border-radius: 8px;
 			}
 
-			#sensor-readings {
+			/* #sensor-readings {
 				background-color: rgba(255, 255, 255, 0.9);
-			}
+			} */
 
 			.alertbox {
 				/* Styles for visible state */
@@ -129,6 +185,9 @@
 		<div class="alertbox c-hidden">
 			<span class="message"></span>
 		</div>
+		<div id="maze-box">
+			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
+		</div>
 		<div id="container">
 			<h1>RC Maze Control</h1>
 			<label for="model-select">Select Model:</label>
@@ -152,7 +211,7 @@
 				<button onclick="stopMaze()">Stop Maze</button>
 			</div>
 
-			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
+			<!-- <img id="maze-frame" src="/frame" alt="Maze Rendering" /> -->
 		</div>
 		<div id="video-container">
 			<div id="sensor-readings">
@@ -212,6 +271,7 @@
 			});
 
 			socket.on('frame', function (data) {
+				//var img = document.getElementById('maze-frame');
 				var img = document.getElementById('maze-frame');
 				// get image data from socketio.emit('frame', {'image': image_data})
 				var imageData = data.image;
@@ -223,6 +283,34 @@
 				// set img.src to objectURL
 				img.src = objectURL;
 			});
+			// Initialize two background images, one visible and one hidden for buffering
+
+			// socket.on('frame', function (data) {
+
+			// 	// Add both to the body
+			// 	document.body.appendChild(bufferBackground);
+			// 	document.body.appendChild(visibleBackground);
+			// 	// get image data from socketio.emit('frame', {'image': image_data})
+			// 	var imageData = data.image;
+			// 	console.log(imageData);
+			// 	// make blob
+			// 	var blob = new Blob([imageData], { type: 'image/jpeg' });
+			// 	// make objectURL
+			// 	var objectURL = URL.createObjectURL(blob);
+			// 	// set buffer background to objectURL
+			// 	bufferBackground.style.backgroundImage = `url(${objectURL})`;
+
+			// 	// Swap z-indexes so the buffer becomes visible and the old becomes the buffer
+			// 	var temp = visibleBackground.style.zIndex;
+			// 	visibleBackground.style.zIndex = bufferBackground.style.zIndex;
+			// 	bufferBackground.style.zIndex = temp;
+
+			// 	// Now the previous 'bufferBackground' is on top and visible
+			// 	// Swap references so 'visibleBackground' points to the newly visible background
+			// 	var tempDiv = visibleBackground;
+			// 	visibleBackground = bufferBackground;
+			// 	bufferBackground = tempDiv;
+			// });
 
 			socket.on('sensor_data', function (data) {
 				document.getElementById('sensor-front').textContent = data.front;
