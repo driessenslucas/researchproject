@@ -362,7 +362,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
   - **Visual Representation**:
 
-  ![PPO Integration](./videos/ppo.gif)
+ https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790
 
   - **Reward History**:
 
@@ -506,7 +506,9 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
 
-- **test 2**: ![encoder test 2](./testvideos/new-car-with-encoders-2.mp4)
+- **test 2**:
+  
+<https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
 
 #### video 5: Encoder implementation (original rc-car)
 
