@@ -21,7 +21,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 ## Introduction
 
-The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous RF-controlled car.
+The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
 
 #### Background on Reinforcement Learning (RL)
 
@@ -53,7 +53,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 ### Sub Research Questions
 
-1. Which virtual environments exist to train a virtual RF-car?
+1. Which virtual environments exist to train a virtual RC-car?
 
 2. Which reinforcement learning techniques can I best use in this application?
 
@@ -321,7 +321,7 @@ The training of the Double DQN agent was governed by the following parameters:
 #### 1. Deep Q-Network (DQN)
 
 - **Description**: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.
-- **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RF-cars, where environmental dynamics are unpredictable.
+- **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.
 
 - **Integration and Results**:
 
@@ -344,7 +344,7 @@ The training of the Double DQN agent was governed by the following parameters:
 - **Reason for Selection**:
 
   - DDQN's accuracy in Q-value approximation is crucial for navigating complex environments, such as mazes.
-  - The RF-car's sensor limitations, which could lead to Q-value overestimations, are better addressed by DDQN.
+  - The RC-car's sensor limitations, which could lead to Q-value overestimations, are better addressed by DDQN.
   - Empirical trials showed DDQN's superior performance in maze navigation tasks.
 
 - **Integration and Results**:
@@ -365,7 +365,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
 - **Description**: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It's known for its stability and efficiency in specific RL contexts.
 
-- **Suitability**: PPO's emphasis on policy optimization over value estimation makes it less suitable for RF-car simulations, where accurate Q-value approximation is key.
+- **Suitability**: PPO's emphasis on policy optimization over value estimation makes it less suitable for RC-car simulations, where accurate Q-value approximation is key.
 
 - **Integration and Results**:
 
@@ -379,7 +379,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
   ![PPO Reward History](./images/PPO_reward_history.png)
 
-  - **Performance**: PPO, while stable, did not align well with the precision requirements for RF-car maze navigation.
+  - **Performance**: PPO, while stable, did not align well with the precision requirements for RC-car maze navigation.
 
 ### Hardware Setup and Assembly
 
@@ -418,18 +418,18 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Challenge 1: Selection of an Appropriate Virtual Environment
 
-- **Description**: Choosing a virtual environment conducive to effective RF-car training is crucial.
-- **Solution**: After evaluating various platforms, **OpenAI Gym** was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning, particularly for SIM2REAL transfer.
+- **Description**: Choosing a virtual environment conducive to effective RC-car training is crucial.
+- **Solution**: After evaluating various platforms, **OpenAI Gym** was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.
 
 ### Challenge 2: Choosing the Optimal Reinforcement Learning Technique
 
-- **Description**: Selecting the most effective RL technique for training the virtual RF-car.
+- **Description**: Selecting the most effective RL technique for training the virtual RC-car.
 - **Solution**: Through comparative analysis and empirical testing, the Double Deep Q-Network (DDQN) was identified as the most suitable technique, demonstrating superior performance in navigating complex environments with fewer episodes.
 
 ### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
 
-- **Description**: Bridging the gap between simulation and real-world in terms of RF-car movement and control.
-- **Solution**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
+- **Description**: Bridging the gap between simulation and real-world in terms of RC-car movement and control.
+- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
 
 ### Challenge 4: alignment Issue and Motor Encoder Implementation
 
@@ -476,11 +476,11 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Conclusion
 
-This study provides a comprehensive overview of the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous vehicles, specifically focusing on an RF-car. Each challenge, ranging from the selection of an appropriate virtual environment to the intricacies of sim2real transfer, was met with a series of solutions, both successful and attempted. The decision to use OpenAI Gym emerged from a need for simplicity and relevance to RL. The Double Deep Q-Network (DDQN) was identified as the most effective RL technique for navigating complex environments. However, the transfer of these simulated learnings to real-world application revealed significant discrepancies, particularly in movement control and sensor data alignment.
+This section provides an overview of the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous vehicles, specifically focusing on an RC-car. Each challenge, ranging from the selection of an appropriate virtual environment to the intricacies of sim2real transfer, was met with a series of solutions, both successful and attempted. The decision to use OpenAI Gym emerged from a need for simplicity and relevance to RL. The Double Deep Q-Network (DDQN) was identified as the most effective RL technique for navigating complex environments. However, the transfer of these simulated learnings to real-world application revealed significant discrepancies, particularly in movement control and sensor data alignment.
 
-The journey to resolve the RC car's alignment issues highlights the gap between theoretical models and their practical efficacy. Despite innovative attempts, including the implementation of motor encoders, power adjustments, and accelerometer integration, these solutions only partially addressed the core issues. The study's exploration into normalizing sensor data and implementing failsafe mechanisms further illustrates the nuanced challenges in aligning simulated training with real-world application.
+The journey to resolve the RF car's alignment issues highlights the gap between theoretical models and their practical efficacy. Despite innovative attempts, including the implementation of motor encoders, power adjustments, and accelerometer integration, these solutions only partially addressed the core issues. The study's exploration into normalizing sensor data and implementing failsafe mechanisms further illustrates the nuanced challenges in aligning simulated training with real-world application.
 
-In conclusion, this research underscores the iterative and challenging nature of applying RL techniques to real-world scenarios. While theoretical knowledge serves as a crucial foundation, its application in practical settings often demands continuous refinement, innovation, and adaptation. The insights gained from addressing these challenges reinforce the importance of perseverance and creative problem-solving in the ever-evolving domain of autonomous vehicle technology.
+In conclusion, this section underscores the iterative and challenging nature of applying RL techniques to real-world scenarios. While theoretical knowledge serves as a crucial foundation, its application in practical settings often demands continuous refinement, innovation, and adaptation. The insights gained from addressing these challenges reinforce the importance of perseverance and creative problem-solving in the ever-evolving domain of autonomous vehicle technology.
 
 ### Supplementary Materials: Video Demonstrations
 
@@ -514,7 +514,7 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70>
 
-#### video 4: New rc-car with encoder and more powerful motor
+#### video 4: New RC-car with encoder and more powerful motor
 
 - **Description**: This video demonstrates the use of a rotary encoder to measure the amount of rotations the wheels have made. This approach was used in an attempt to address the address the ~3 degree offset when moving forward. This approach was looking promising, until adding the other components to the car, which increased the weight of the car, leading to the same problem.
 - **test 1**:
@@ -525,7 +525,7 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
 
-#### video 5: Encoder implementation (original rc-car)
+#### video 5: Encoder implementation (original RC-car)
 
 - **Description**: This video demonstrates reading out the wheel rotations measured by the rotary encoder. This approach again looked promising, but shortly after this video one of the encoders broke, so no further tests with this specific encoder were done.
 - **test 1**:
