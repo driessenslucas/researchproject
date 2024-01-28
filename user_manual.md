@@ -2,10 +2,10 @@
 
 ## Author Information
 
-- **Name:** Lucas Driessens
-- **Institution:** HOWEST Kortrijk
-- **Course:** Research Project
-- **Date:** 2024-08-01
+**Name:** Lucas Driessens  
+**Institution:** Howest University of Applied Sciences  
+**Course:** Research Project  
+**Date:** 2024-30-01
 
 ## Installation Steps
 
@@ -44,38 +44,45 @@ cd researchproject
 
 #### Setup Instructions
 
-- The code for the RPI is in the [web app](./web_app/) folder.
+- Install Docker on the RPI. You can follow this nice guide here [here](https://pimylifeup.com/raspberry-pi-docker/).
+
+- The code for the RPI is in the [web app](./web_app/) folder from the main folder in the repository.
+
+- Navigate to the [web app](./web_app/) folder.
+
+  ```bash
+  cd ./web_app/
+  ```
+
 - Run the following commands to start the Docker containers:
 
   ```bash
-  cd main_web_app/
+  cd ./web_app/
   docker-compose up -d
   ```
 
-- Enable the script at startup to display the RPI IP address:
+- Navigate to the [RPI_display](./RPI_display/) folder from the main folder in the repository.
 
   ```bash
-  sudo systemctl enable ./services/virtual_display.service
-  sudo systemctl start virtual_display.service
+  cd ./RPI_display/
   ```
 
-### Camera Setup
-
-- The camera script can be run either on a PC or another Raspberry Pi.
-- Navigate to the [camera stream](./camera_stream) folder and execute:
+- Enable the script at startup for the mini oled display to display the IP address of the RPI:
 
   ```bash
-  docker-compose up -d
+  sudo systemctl enable ./service/display_ip.service
+  sudo systemctl start display_ip.service
   ```
 
 ### Training
 
 - Use the provided pre-trained model or train a new one using the [train](./training/train.py) script.
-- The [train](./training/train.py) script can be run either on a PC or the RPI itself.
+- The [train](./training/train.py) script can be run on the RPI itself, it is not too resource intensive.
+  - This will require you to have the packages in the [requirements.txt](./training/requirements.txt) file installed. Along with python@11.7 and pip.
 - The script will ask you if you want to save the model. If you do, it will be saved in the [models](./models) folder.
 
 ### Usage
 
 - In the web app, enter the ESP's IP address and select the model you want to use.
 - Click on the `Start Maze` button to start the project.
-- You can opt for a virtual demonstration of the project without moving the car, primarily for demo purposes.
+- You can opt for a virtual demonstration of the project without moving the actual car.
