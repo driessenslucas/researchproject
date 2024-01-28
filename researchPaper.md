@@ -167,11 +167,17 @@ The main research question focuses on whether a trained RL agent can be effectiv
   - **Wiring and Configuration**
 
     - 1. **Raspberry Pi Wiring**: The ultrasonic sensors are connected to specific GPIO pins on the Raspberry Pi for distance data acquisition. The mini OlED screen is connected to the Raspberry Pi for displaying sensor readings and the IP address.
+
       - **Refer to the wiring diagram below for details**:
-        - ![RPI5 Connections](./images/schematics/rpi_schema.png)
+
+      ![RPI5 Connections](./images/schematics/rpi_schema.png)
+
     - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation.
+
       - **Refer to the wiring diagram below for details**:
-        - ![ESP32 Wiring](./images/schematics/esp_schema.png)
+
+      ![ESP32 Wiring](./images/schematics/esp_schema.png)
+
     - 3. **Programming**: The ESP32 and Raspberry Pi are programmed to facilitate communication between the sensor data processing, motor control, and the reinforcement learning agent.
 
   - **Challenges and Adjustments**:
@@ -191,19 +197,29 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
       - Formula:
 
-        - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+      $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
 
-      - Visualization: ![MSE Loss](./images/mse_DDQN.png)
+      - Visualization:
+
+      ![MSE Loss](./images/mse_DDQN.png)
 
     - **Reward Trend Analysis**:
+
       - Chart:
-        - ![Reward History](./images/DDQN_reward_history.png)
+
+      ![Reward History](./images/DDQN_reward_history.png)
+
     - **Epsilon Decay Tracking**:
+
       - Chart:
-        - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
+      ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
     - **Simulation Test Video**:
+
       - Clip:
-        - ![Test Video](./videos/DDQN_withfailsave.gif)
+
+      ![Test Video](./videos/DDQN_withfailsave.gif)
 
   - **Real-World Metrics**
 
@@ -222,8 +238,11 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Data Display**: Real-time visualization of sensor data and Q-values.
     - **User Controls**: Model selection, IP configuration for ESP32, mode selection (simulation or real RC car), and simulation control (start/stop).
   - **Visual and Interactive Interface**:
+
     - Screenshot:
-      - ![Web App Interface](./images/web_app_v4.png)
+
+    ![Web App Interface](./images/web_app_v4.png)
+
     - Clip:
 
   <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
