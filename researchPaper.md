@@ -21,6 +21,8 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 ## Introduction
 
+The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous RF-controlled car.
+
 #### Background on Reinforcement Learning (RL)
 
 Reinforcement Learning (RL) is a paradigm of machine learning where an agent learns to make decisions by interacting with its environment. In RL, the agent seeks to maximize cumulative rewards through a process of trial and error, guided by feedback from its actions. The fundamental elements of RL include the agent, environment, actions, states, and rewards. The RL process can be mathematically described using Markov Decision Processes (MDP) where:
@@ -58,8 +60,6 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?
 
-6. Can Real-time learning be implemented?
-
 ### Methodology
 
 #### Virtual Environment Design
@@ -70,7 +70,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 - **Maze Structure**:
 
-  - **Starting Position**: Top-left corner of the maze.
+  - **Starting Position**: Top-left corner of the maze. With the car facing East.
   - **Goal**: Bottom-right corner, representing the maze exit.
   - **Layout**: The maze layout is configurable, allowing for various complexity levels.
 
@@ -186,6 +186,26 @@ The training of the Double DQN agent was governed by the following parameters:
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
 
+#### Training Results
+
+The training process resulted in the following outcomes:
+
+**Reward history**
+
+- ![reward History](./images/DDQN_reward_history.png)
+
+**Epsilon Decay**
+
+- ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
+**MSE Loss**
+
+- ![MSE Loss](./images/mse_DDQN.png)
+
+**Test video**
+
+- ![Test Video](./videos/DDQN_withfailsave.gif)
+
 ### Reinforcement Learning Techniques Overview
 
 #### 1. Deep Q-Network (DQN)
@@ -266,6 +286,8 @@ This section provides a detailed overview of the hardware components used in the
   - Battery For RPI 5 - available at [Amazon](https://www.amazon.com.be/dp/B09QRS666Y)
   - Battery For ESP 32 - available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW)
 - **Supplementary Materials**: List of additional materials like screws, wires, and tools required for assembly.
+  - 4mm thick screws 5mm long to hold the wood together - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208)
+  - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
 
 #### Wiring Guide
 
@@ -291,31 +313,63 @@ This section provides a detailed overview of the hardware components used in the
 ### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
 
 - **Description**: Bridging the gap between simulation and real-world in terms of RF-car movement and control.
-- **Solution**: Fine-tuning the frequency of action commands and considering direct motor driver connections or a queued action system. The potential use of a rotary encoder was also identified to enhance real-world movement replication.
+- **Solution**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
 
-### Challenge 4: Ensuring Consistent and Effective Training
+### Challenge 4: alignment Issue and Motor Encoder Implementation
+
+- **Description**: Difficulty in achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.
+- **Solution Attempt 1**: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.
+- **Solution Attempt 2**: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car's weight increased, leading to the same problem.
+- **Solution Attempt 3**: The use of a MPU6050 accelerometer was explored to measure the car's orientation and adjust the movement accordingly. Even though this approach succeeded to some extent (90 degrees turns were accurate), it was not able to solve the ~3-degree offset issue when moving forward.
+
+### Challenge 5: Ensuring Consistent and Effective Training
 
 - **Description**: Maximizing training efficiency and performance while maintaining consistency between simulation and real-world scenarios.
 - **Solution**: The simulation demonstrated considerable advantages in terms of training efficiency, safety, and computational power, establishing it as an indispensable tool in autonomous vehicle model development.
 
-### Challenge 5: Accurate Sensor Data Normalization for Sim2Real Transfer
+### Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
 
 - **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
 - **Solution**: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model's accuracy in real-world applications.
 
-### Challenge 6: Integration of Failsafe Mechanisms
+### Challenge 7: Integration of Failsafe Mechanisms
 
 - **Description**: Preventing potential collisions and ensuring safe navigation in the real world.
 - **Solution**: Development of a failsafe system that prevents forward movement in hazardous situations, retraining the model with this protocol to align real-world behavior with the simulated environment.
 
-### Challenge 7: Training Environment and Technique Efficacy
+### Challenge 8: Training Environment and Technique Efficacy
 
 - **Description**: Determining the most effective environment and RL technique for training.
 - **Solution**: The DDQN solved the environment more efficiently than DQN, highlighting the importance of technique selection. The simulation provided a safer, more controlled environment for training, reinforcing its selection over real-world training.
 
 ### Conclusion
 
-Each challenge encountered necessitated tailored solutions, focusing on the accuracy of RL techniques, the selection of virtual environments, and the adaptability of models for sim-to-real transfer. These solutions underscore the complexity of RL applications in real-world scenarios and highlight the importance of careful consideration in every aspect of model training and implementation.
+This research underscores the dynamic and challenging nature of applying RL techniques in autonomous vehicle development. The encountered obstacles, particularly the RC car's alignment issue and the complexities with motor encoder implementation, highlight the iterative process of problem-solving in this field. These experiences provide valuable insights into the practical aspects of autonomous vehicle technology and the continuous need for innovation and experimentation.
+
+### Supplementary Materials: Video Demonstrations
+
+#### Introduction
+
+This section provides examples of how I attempted to solve some of the challenges encountered in this research project.
+
+#### Video 1: mpu6050 90 degree turn
+
+- **Description**: This video demonstrates the use of the MPU6050 accelerometer to measure the car's orientation move until the car has rotated ~90 degrees since the start of the movement. This approach was used in an attempt to address the alignment issues when using a delay to measure the amount of time the car needs to make a 90 degree turn.
+- **test 1**: ![mpu6050 90 degree test 1](./testvideos/turning-mpu-test1.mp4)
+- **test 2**: ![mpu6050 90 degree test 2](./testvideos/turning-mp6050.mp4)
+
+#### Video 2: mpu6050 to align forward movement
+
+- **Description**: This video demonstrates the use of the MPU6050 accelerometer to measure the car's orientation while driving forward and adjust the movement accordingly. This approach was used in an attempt to address the alignment issues, but it was not able to solve the ~3-degree offset issue when moving forward.
+- **test 1**: ![mpu6050 forward movement test 1](./testvideos/mpu-correction-test-1.mp4)
+- **test 2**: ![mpu6050 forward movement test 2](./testvideos/mpu-correction-test-2.mp4)
+- **test 3**: ![mpu6050 forward movement test 3](./testvideos/mpu-correction.mp4)
+
+#### video 4: New rc-car with encoder and more powerful motor
+
+- **Description**: This video demonstrates the use of a rotary encoder to measure the amount of rotations the wheels have made. This approach was used in an attempt to address the address the ~3 degree offset when moving forward. This approach was looking promising, until adding the other components to the car, which increased the weight of the car, leading to the same problem.
+- **test 1**: ![encoder test 1](./testvideos/new-car-with-encoders.mp4)
+- **test 2**: ![encoder test 2](./testvideos/new-car-with-encoders-2.mp4)
 
 ### Real-World Application and Limitations
 
