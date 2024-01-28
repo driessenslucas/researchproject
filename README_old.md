@@ -64,30 +64,37 @@ Through this study, I aspire to contribute significantly to the field of AI and 
   - [Web app](#web-app)
     - [Flask](#flask)
   - [Sub Questions](#sub-questions)
-    - [1. Which virtual environments exist to train a virtual RF-car?](#1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
+    - [Question 1: Which virtual environments exist to train a virtual RF-car?](#question-1-which-virtual-environments-exist-to-train-a-virtual-rf-car)
       - [Introduction](#introduction)
-    - [Executive Summary](#executive-summary)
+      - [Executive Summary](#executive-summary)
       - [Virtual Environments Overview](#virtual-environments-overview)
       - [Conclusion](#conclusion)
-    - [2. Which reinforcement learning techniques can I best use in this application?](#2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
+    - [Question 2: Which reinforcement learning techniques can I best use in this application?](#question-2-which-reinforcement-learning-techniques-can-i-best-use-in-this-application)
       - [Introduction](#introduction-1)
-    - [Executive Summary](#executive-summary-1)
+      - [Executive Summary](#executive-summary-1)
       - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
       - [Conclusion](#conclusion-1)
-    - [3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world](#3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
+    - [Question 3: Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World](#question-3-can-the-simulation-be-transferred-to-the-real-world-explore-the-difference-between-how-the-car-moves-in-the-simulation-and-in-the-real-world)
       - [Introduction](#introduction-2)
       - [Executive Summary](#executive-summary-2)
       - [Discrepancies and Adjustments](#discrepancies-and-adjustments)
       - [Conclusion](#conclusion-2)
-    - [4. Does the simulation have any useful contributions? In terms of training time or performance?](#4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
+    - [Question 4: Does the simulation have any useful contributions? In terms of training time or performance?](#question-4-does-the-simulation-have-any-useful-contributions-in-terms-of-training-time-or-performance)
       - [Introduction](#introduction-3)
       - [Executive Summary](#executive-summary-3)
       - [Advantages of Simulation Training](#advantages-of-simulation-training)
       - [Conclusion](#conclusion-3)
-    - [5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?](#5-how-can-the-trained-model-be-transfered-to-the-real-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-and-the-environment-for-it-to-translate-to-the-real-world)
+    - [Question 5: How Can the Trained Model be Transferred to the Real RC Car? (Sim2Real) How Do You Need to Adjust the Agent and the Environment for it to Translate to the Real World?](#question-5-how-can-the-trained-model-be-transferred-to-the-real-rc-car-sim2real-how-do-you-need-to-adjust-the-agent-and-the-environment-for-it-to-translate-to-the-real-world)
+      - [Introduction](#introduction-4)
+      - [Executive Summary](#executive-summary-4)
+      - [Sensor Data Normalization for Sim2Real Transfer](#sensor-data-normalization-for-sim2real-transfer)
+        - [Real-World Sensor Data Normalization](#real-world-sensor-data-normalization)
+        - [Simulation Sensor Data Normalization](#simulation-sensor-data-normalization)
+        - [Implications for Sim2Real Transfer](#implications-for-sim2real-transfer)
+      - [Action Synchronization and Failsafe Mechanisms](#action-synchronization-and-failsafe-mechanisms)
+      - [Conclusion](#conclusion-4)
     - [6. Can the car navigate through an unknown maze?](#6-can-the-car-navigate-through-an-unknown-maze)
   - [Sources and Inspiration](#sources-and-inspiration)
-  - [adjusting motor delay](#adjusting-motor-delay)
 
 ## Getting Started
 
@@ -1140,13 +1147,13 @@ def video():
 
 ## Sub Questions
 
-### 1. Which virtual environments exist to train a virtual RF-car?
+### Question 1: Which virtual environments exist to train a virtual RF-car?
 
 #### Introduction
 
 The selection of an appropriate virtual environment is crucial for the effective training of a virtual Radio Frequency (RF) car. Various platforms offer unique features suitable for simulating different aspects of autonomous driving. This document evaluates several virtual environments to determine the most suitable choice for training a virtual RF-car.
 
-### Executive Summary
+#### Executive Summary
 
 There is no 'one-size-fits-all' solution for virtual environments. I used openAI gym because it is easy to create custom environments in it and I have experience with it from my Advanced AI coursework.
 
@@ -1185,13 +1192,13 @@ There is no 'one-size-fits-all' solution for virtual environments. I used openAI
 
 Considering the project's needs for a simple, lightweight environment conducive to SIM2REAL transfer and the existing familiarity with the tool, **OpenAI Gym** emerges as the optimal choice. Its ease of use for creating custom environments and focus on reinforcement learning agents provide the necessary foundation for this project.
 
-### 2. Which reinforcement learning techniques can I best use in this application?
+### Question 2: Which reinforcement learning techniques can I best use in this application?
 
 #### Introduction
 
 The efficacy of training a virtual Radio Frequency (RF) car in a simulation environment hinges significantly on the choice of reinforcement learning (RL) techniques. This document explores various RL methods, assessing their suitability for the nuanced requirements of RF-car training, with an emphasis on navigating complex environments.
 
-### Executive Summary
+#### Executive Summary
 
 My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable technique for my application. It didn't need many episodes to be able to solve the environment efficiently.
 
@@ -1202,7 +1209,7 @@ My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable te
    - **Description:** DQN integrates a deep neural network with a Q-learning framework. It stands out for its proficiency in processing high-dimensional sensory inputs, making it a strong candidate for applications requiring detailed environmental interaction.
    - **Suitability:** While DQN offers advanced learning capabilities, its tendency to overestimate Q-values in environments with intricate and unpredictable dynamics can be a limitation for training RF-cars.
    - **Visual Representation of my integration:** ![DQN](./videos/DQN-agent.gif)
-   - **Reward History of the DQN:** ![DQN](./images/reward_history_DQN.png)
+   - **Reward History of the DQN:** ![DQN](./images/reward_history_dqn.png)
 
 2. **Double Deep Q-Network (DDQN)**
 
@@ -1227,45 +1234,35 @@ My tests concluded that the Double Deep Q-Network (DDQN) is the most suitable te
 
 The Double Deep Q-Network (DDQN) emerges as the most suitable technique for the virtual RF-car training. Its ability to accurately estimate Q-values in complex, sensor-driven environments, coupled with its proven performance in preliminary trials, underscores its effectiveness for this specific application.
 
-On top of that the DDQN sovled the environment in 25 steps on average, against the DQN which solved the environment in 34 steps on average. Which is a significant improvement.
+The DDQN sovled the environment in 25 steps on average, against the DQN which solved the environment in 34 steps on average. Which is a significant improvement.
 
-### 3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world
+### Question 3: Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World
 
 #### Introduction
 
-In addressing the critical task of transferring the simulation model to a real-world RF-car, this section explores the encountered discrepancies and the adjustments made to facilitate an effective sim-to-real transition.
+Exploring the feasibility of transferring a simulation model to a real-world Radio Frequency (RF) car involves identifying and addressing discrepancies in movement and control.
 
 #### Executive Summary
 
-There needed to be some adjustments made to the simulation to account for how the car moves in the real world. Especially in the way the distance to the walls is calculated
+The simulation-to-real-world transfer presents unique challenges, particularly in replicating the car's movement and behavior accurately in the physical environment.
 
 #### Discrepancies and Adjustments
 
-1. **Sensor Data Normalization**
+1. **Signal Processing for RF-car Movements**
 
-   - **Challenge:** The primary challenge was reconciling the differences in how the distance to walls was determined in the simulation versus the real world.
-   - **Solution:** Adjustments were made to the normalization of distance values in the simulation. This ensured that the sensor readings in the simulation were more aligned with those in the real world, enhancing the accuracy of the model's predictions in physical testing.
+   - **Challenge:** RF signals controlling the car were more rapid in the real world, causing movement issues not seen in simulation.
+   - **Solution:** Reducing the frequency of action commands improved synchronization between the simulation and real-world actions. Further adjustments like direct motor driver connection to the RPI or a queued action execution system were considered.
 
-2. **Action Synchronization and Failsafe Mechanisms**
-
-   - **Challenge:** The absence of a failsafe in the simulation led to instances where the real car would collide with walls, indicating a discrepancy in action execution.
-   - **Solution:** The introduction of a failsafe mechanism and retraining of the model, as well as consideration for a rotary encoder as an alternative solution, significantly mitigated this issue.
-
-3. **Signal Processing for RF-car Movements**
-
-   - **Challenge:** In the real-world scenario, the RF signals controlling the car were sent too rapidly, causing movement issues not present in the simulation.
-   - **Solution:** By reducing the frequency of action commands sent to the car, we achieved better synchronization between the simulation and real-world actions. Alternative solutions like direct motor driver connection or a queued action execution system were also explored, but ultimately deemed less suitable given the resources available.
-
-4. **Physical Dynamics and Motor Control**
-
-   - **Challenge:** The real car's turns and movements were affected by factors like weight and texture of the floor, which were not accounted for in the simulation.
-   - **Solution:** Adjusting the motor control timings, specifically the delay in turning the motors on and off, allowed for more accurate replication of the simulated movements in the real car. Additionally adjusting the car's center of gravity and using a flat undergroud texutre helped the car to move more like it is supposed to.
+2. **Precise Movement Replication**
+   - **Challenge:** The simulation's grid-based movement, where the car advances one 'square' at a time and rotates in place, needed to be accurately replicated in the real-world RF-car.
+   - **Solution:** A methodical approach was adopted to calibrate the real RF-car's movements. This involved conducting experiments to determine the exact duration for which the motors should be active to move the car precisely one square forward and to rotate it 90 degrees. These durations were adjusted to account for variables like the car's weight and the texture of the driving surface, ensuring that the real car's movements mirrored those in the simulation. Additionally, the integration of a [rotary encoder](https://www.dfrobot.com/index.php?route=product/product&product_id=823&search=encoder) was considered as an alternative solution for more precise movement control. While this would offer enhanced accuracy by measuring wheel rotations directly, it would also entail additional hardware complexity.
+   - **Personal Note:** My rotary encoder didn't arrive in time, so I couldn't test it out. During the tests in real life with the delay, the car didn't always act in the same way, this made some of the test successful while others completely failed. This is why I think the rotary encoder would be a better solution, because it wouldn't have to account for the way the surface is, the weight of the car, etc. It would just measure the wheel rotations and move the car accordingly.
 
 #### Conclusion
 
-The process of transferring the simulation model to a real-world RF-car highlighted several key discrepancies, primarily in sensor data interpretation, action synchronization, signal processing, and physical dynamics. Through targeted adjustments and solutions, these challenges were addressed, enabling a more accurate and reliable sim-to-real transfer. This experience underscores the importance of thorough testing and adaptation in bridging the gap between simulated environments and real-world applications.
+Transferring a simulation model to a real-world RF-car involves addressing discrepancies in signal processing and physical dynamics. Tailored solutions are necessary to ensure accurate and reliable sim-to-real transition, emphasizing the importance of comprehensive testing and adaptation.
 
-### 4. Does the simulation have any useful contributions? In terms of training time or performance?
+### Question 4: Does the simulation have any useful contributions? In terms of training time or performance?
 
 #### Introduction
 
@@ -1301,9 +1298,67 @@ The simulation makes the training process more efficient and easier to manage. I
 
 The simulation offers considerable advantages in training the virtual RF-car, particularly in terms of efficiency, safety, and computational power. These benefits make simulation a highly valuable tool, significantly simplifying the training process and reducing the time and resources required, as compared to real-world training. The simulation thus stands out as an indispensable component in the development and refinement of autonomous vehicle models.
 
-### 5. How can the trained model be transfered to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?
+### Question 5: How Can the Trained Model be Transferred to the Real RC Car? (Sim2Real) How Do You Need to Adjust the Agent and the Environment for it to Translate to the Real World?
 
--- TODO --
+#### Introduction
+
+Exploring the intricacies of transferring a trained model from a simulation to a real-world Radio Frequency (RF) car, with a focus on the necessary adjustments in the agent and the environment for an effective translation.
+
+#### Executive Summary
+
+The successful transfer of a trained model to a real-world RF car hinges on precise adjustments in sensor data interpretation and action synchronization. This section delves into the specific methods used to align simulated and real-world sensor data.
+
+#### Sensor Data Normalization for Sim2Real Transfer
+
+##### Real-World Sensor Data Normalization
+
+- **Method Implementation:**
+
+  ```python
+  def map_distance(distance):
+      """
+      Map a distance so it acts closer to the simulated distances
+
+      @param distance - The distance to map.
+      @return The distance in cm
+      """
+
+      if distance < 25:
+          return distance
+      else:
+          distance = 25 + (distance - 25) * 0.5
+          return float(distance)
+  ```
+
+  - **Purpose:** To modify real-world sensor data to closely resemble the simulated environment. This is particularly vital for distances beyond 25 cm, where real-world sensor readings differ significantly from the simulation.
+
+##### Simulation Sensor Data Normalization
+
+- **Method Implementation:**
+
+  ```python
+  def normalize_distance(distance):
+      normalized_distance = distance / sensor_max_range
+      normalized_distance = max(0, min(normalized_distance, 1))
+      return normalized_distance * 1000
+  ```
+
+  - **Purpose:** Standardizing simulated sensor readings to a consistent 0-1 range, facilitating comparability with real-world sensor data after normalization.
+
+##### Implications for Sim2Real Transfer
+
+1. **Consistency and Compatibility:** These normalization methods ensure that the sensor data is consistent and compatible across both simulated and real-world scenarios.
+2. **Enhanced Model Accuracy:** By aligning the sensor data, the model's predictive accuracy and reliability are significantly improved in real-world applications.
+3. **Adaptability and Testing:** The implementation highlights the need for adaptability and continuous testing to refine the normalization techniques based on real-world feedback.
+
+#### Action Synchronization and Failsafe Mechanisms
+
+- **Challenge:** The simulated environment did not originally incorporate a failsafe mechanism, leading to scenarios where the real-world car collided with obstacles.
+- **Solution:** A failsafe system was developed and integrated into the model to prevent forward movement if the detected distance ahead was insufficient to safely move one 'square'. This proactive approach ensures that the car only proceeds when there is adequate space to do so, significantly reducing the risk of collisions. Additionally, retraining the model with this failsafe protocol in place enhanced overall action execution, aligning the real-world car's behavior more closely with the simulated environment.
+
+#### Conclusion
+
+Effective Sim2Real transfer necessitates meticulous normalization of sensor data to ensure that the trained model operates accurately in real-world scenarios. The outlined methods represent a crucial step in this transfer, demonstrating the importance of data consistency and model adaptability
 
 ### 6. Can the car navigate through an unknown maze?
 
@@ -1336,26 +1391,3 @@ The simulation offers considerable advantages in training the virtual RF-car, pa
 [13] J. Fu, A. Kumar, O. Nachum, G. Tucker, and S. Levine, “D4RL: Datasets for Deep Data-Driven Reinforcement Learning.” arXiv, Feb. 05, 2021. Accessed: Jan. 08, 2024. [Online]. Available: <http://arxiv.org/abs/2004.07219>
 
 [14] “Case for Raspberry PI 3 / 4 with a PiSugar 2 PRO or PiSugar 3 by tommycederlund | Download free STL model | Printables.com.” Accessed: Jan. 08, 2024. [Online]. Available: <https://www.printables.com/en/model/296484-case-for-raspberry-pi-3-4-with-a-pisugar-2-pro-or->
-
-## adjusting motor delay
-
-1. **Calculate Distance at Constant Speed**: At full speed (255 units), for 500 ms, the distance is \( \text{Distance}_{\text{constant}} = \text{Speed}_{\text{max}} \times \text{Time}\_{\text{constant}} \).
-
-2. **Calculate Distance during Acceleration**: During acceleration, the average speed is \( \frac{\text{Speed}_{\text{max}}}{2} \) over the acceleration period (\( \text{Time}_{\text{accel}} \)). The distance is \( \text{Distance}_{\text{accel}} = \frac{\text{Speed}_{\text{max}}}{2} \times \text{Time}\_{\text{accel}} \).
-
-3. **Total Distance**: The total distance is the sum of distances in both phases.
-
-4. **Adjust for Equivalent Distance**: Adjust \( \text{Time}_{\text{accel}} \) and \( \text{Time}_{\text{constant}} \) so that the total distance is equivalent to the distance covered at full speed for 500 ms.
-
-Assuming the ramp-up time is the same as the time it stays at full speed, the total time \( T \) would be \( \text{Time}_{\text{accel}} + \text{Time}_{\text{constant}} \), and we want the total distance to match the distance covered at full speed for 500 ms.
-
-Let's do these calculations to find the equivalent time durations.
-
-Based on the calculations:
-
-- The time required for acceleration (ramp-up) should be approximately 333.3 ms.
-- Consequently, the total time for the motion, including acceleration and moving at full speed, should be about 666.7 ms.
-
-This means that to cover the same distance as moving at full speed for 500 ms, you should ramp up the speed over approximately 333.3 ms and then continue at full speed for another 333.3 ms. Adjusting your code to reflect this timing will help achieve the desired distance coverage.
-
-use accelerometer to determine rotation angle and adjust the rotation angle of the car accordingly
