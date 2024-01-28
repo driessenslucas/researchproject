@@ -210,7 +210,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
       - Formula:
 
-        - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+        ![MSE Loss](./images/MSE_equation.png)
 
       - Visualization: ![MSE Loss](./images/mse_DDQN.png)
 
@@ -223,11 +223,6 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Simulation Test Video**:
       - Clip:
         ![DDQN test](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
-
-
-
-
-
 
   - **Real-World Metrics**
 
@@ -329,7 +324,6 @@ The training of the Double DQN agent was governed by the following parameters:
 
   ![DQN-agent](https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2)
 
-
   - **Reward History**:
 
   ![DQN Reward History](./images/reward_history_dqn.png)
@@ -351,7 +345,6 @@ The training of the Double DQN agent was governed by the following parameters:
   - **Visual Representation**:
 
   ![DDQN Integration](https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001)
-
 
   - **Reward History**:
 
@@ -514,7 +507,7 @@ This section provides examples of how I attempted to solve some of the challenge
 <https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
 
 - **test 2**:
-  
+
 <https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
 
 #### video 5: Encoder implementation (original rc-car)
