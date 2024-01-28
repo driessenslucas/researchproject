@@ -221,8 +221,11 @@ The main research question focuses on whether a trained RL agent can be effectiv
       - Chart:
         - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
     - **Simulation Test Video**:
+
       - Clip:
         ![DDQN test](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
+
+        <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
 
   - **Real-World Metrics**
 
@@ -324,6 +327,8 @@ The training of the Double DQN agent was governed by the following parameters:
 
   ![DQN-agent](https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2)
 
+  <https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2>
+
   - **Reward History**:
 
   ![DQN Reward History](./images/reward_history_dqn.png)
@@ -346,6 +351,8 @@ The training of the Double DQN agent was governed by the following parameters:
 
   ![DDQN Integration](https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001)
 
+  <https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001>
+
   - **Reward History**:
 
   ![DDQN Reward History](./images/DDQN_reward_history.png)
@@ -363,6 +370,8 @@ The training of the Double DQN agent was governed by the following parameters:
   - **Visual Representation**:
 
   ![PPO Integration](https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790>
 
   - **Reward History**:
 
