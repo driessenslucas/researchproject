@@ -107,22 +107,21 @@ class RCMazeEnv(gym.Env):
       # Move the car to the right or forward
       if action == 0:
          # dont allow to move forward if the car is too close to a wall
-         # Move forward or car if sensor readings of the front sensor is greater than 4 or 12 if the real sensors are used
+         # Move forward or car if sensor readings of the front sensor is greater than 4 or 8 if the real sensors are used
          if self.use_virtual_sensors == False and self.sensor_readings['front'] >= 8:
                self.move_forward()
-               # self.move_car('forward')
+               await self.move_car('forward')
          elif self.sensor_readings['front'] >= 4:
             self.move_forward()
       elif action == 1:
          self.turn_left()
          if self.use_virtual_sensors == False:
-               # self.move_car('left')
-               pass
+               await self.move_car('left')
       elif action == 2:
          self.turn_right()
          if self.use_virtual_sensors == False:
-               # self.move_car('right')
-               pass
+               await self.move_car('right')
+               
          
       await self.update_sensor_readings()
       
@@ -165,7 +164,7 @@ class RCMazeEnv(gym.Env):
       idx = orientations.index(self.car_orientation)
       self.car_orientation = orientations[(idx + 1) % 4]
       
-   def move_car(self, direction):
+   async def move_car(self, direction):
       """
        Make a call to the esp so it knows in which direction to move the motors
        
