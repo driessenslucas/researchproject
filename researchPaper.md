@@ -107,6 +107,11 @@ The main research question focuses on whether a trained RL agent can be effectiv
   - Detailed steps on how the agent was trained, including the number of episodes, learning rates, and other relevant parameters.
   - Use of Jupyter Notebook for documenting the training process (reference to the notebook provided in the README).
 
+- **Environment Setup**:
+
+  - Description of the hardware setup, including the RC car and maze specifications.
+  - Steps for transferring the trained model to the physical RC car.
+
 - **Real-World Implementation**:
 
   - Description of the hardware setup, including the RC car and maze specifications.
@@ -114,12 +119,40 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 - **Evaluation Metrics**:
 
-  - Criteria for measuring the success of the RL agent in navigating the maze.
-  - Comparison of virtual and real-world performance.
+  - The main evaluation metric in the simulation was to see if the trained agent could solve the maze. On the other hand, there was looked at the number of episodes needed to consistantly solve the maze with an optimal reward. Then I also looked at the amount of steps needed to solve the maze. This was done to see if the agent was able to solve the maze more efficiently.
+  - In the real world, the evaluation metric was to see if the car was able to solve the maze. This was done visually, by looking at the car's movement and the sensor data.
+  - **Reward history**
+
+    - ![reward History](./images/DDQN_reward_history.png)
+
+  - **Epsilon Decay**
+
+    - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
+  - **MSE Loss**
+
+    - ![MSE Loss](./images/mse_DDQN.png)
+
+  - **Test video**
+    - ![Test Video](./videos/DDQN_withfailsave.gif)
 
 - **Web Application**:
-  - Development of a Flask-based web app for visualizing the RC car and maze environment.
-  - Features of the app, including simulation and real-world control options.
+
+  - The web app was created to have see the simulation and control the start/stop of the real life tests, further more it acts as a virtual twin of the real rc-car when not running the simulation.
+  - The web app was built using Flask, PYopenGL and SocketIO.
+  - Flask is used to create the web server and handle the routing.
+  - PYopenGL is used to render the simulation.
+  - SocketIO is used to communicate between the web app and the simulation.
+  - While the simulation is running in pyopengl, each time the render function is called, there is a snapshot taken of the current state of the simulation. This snapshot is then send to the web app using socketIO. The web app then renders the image on the screen. Thus creating a live feed of the simulation. Besides that also the sensor data and the Q-values are send to the web app, which are then displayed on the screen.
+  - The web app also has some controls and inputs:
+    - A drop down list with all the available models to test the simulation with.
+    - An input field for the IP address of the real esp32 for the motor control.
+    - A select box to choose between running the simulation and the real rc-car.
+    - A start/stop button to start and stop the simulation or the real rc-car.
+
+  ![web app](./images/web_app_v4.png)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
 
 ### Training Process of the Double DQN Agent
 
@@ -185,26 +218,6 @@ The training of the Double DQN agent was governed by the following parameters:
 5. **Target Network Update**: Every `UPDATE_TARGET_INTERVAL` episodes, update the weights of the target network with those of the policy network.
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
-
-#### Training Results
-
-The training process resulted in the following outcomes:
-
-**Reward history**
-
-- ![reward History](./images/DDQN_reward_history.png)
-
-**Epsilon Decay**
-
-- ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
-
-**MSE Loss**
-
-- ![MSE Loss](./images/mse_DDQN.png)
-
-**Test video**
-
-- ![Test Video](./videos/DDQN_withfailsave.gif)
 
 ### Reinforcement Learning Techniques Overview
 

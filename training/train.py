@@ -380,7 +380,8 @@ class DQNAgent:
                     q_values[i, actions[i]] = rewards[i] + self.discount_factor * q_values_next_state_target[i, best_actions[i]]
 
             # Train the policy network
-            self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
+            history = self.policy_model.fit(states, q_values, batch_size=batch_size, verbose=0)
+            return history
 
     def policy_network_predict(self, state):
         self.state = state
@@ -435,6 +436,7 @@ EPISODE_AMOUNT = 170
 update_counter = 0
 reward_history = []
 epsilon_history = []
+mse_history = []
 
 np.set_printoptions(precision=3, suppress=True)
 
@@ -487,9 +489,6 @@ for episode in range(EPISODE_AMOUNT):
             # current state q values1tch_states)
             y = agent.policy_network_predict(miniBatch_states)
             
-            
-           
-
             next_state_q_values = agent.target_network_predict(miniBatch_next_state)
             max_q_next_state = np.max(next_state_q_values,axis=1)
 
@@ -502,8 +501,8 @@ for episode in range(EPISODE_AMOUNT):
             # agent.policy_model.fit(miniBatch_states, y, batch_size=BATCH_SIZE, verbose = 0)
 
             #fit the model
-            agent.policy_network_fit(miniBatch, BATCH_SIZE)            
-            
+            history = agent.policy_network_fit(miniBatch, BATCH_SIZE)            
+            mse_history.append(history.history['MeanSquaredError'])
             
         else:
             continue
@@ -527,6 +526,29 @@ if plot_results == 'y':
     plt.xlabel('Episode')
     plt.ylabel('Reward')
     plt.title('Reward History for Double DQN with fail safe and 2M replay memory')
+    plt.show()
+    
+    plt.plot(epsilon_history)
+    plt.xlabel('Episode')
+    plt.ylabel('Epsilon')
+    plt.title('Epsilon History for Double DQN with fail safe and 2M replay memory')
+    plt.show()
+    
+    # Assuming mse_history is a flat list with the correct number of elements
+    EPISODE_AMOUNT = len(mse_history)  # Make sure this reflects the actual number of episodes
+    desired_samples = 170  # The number of points you want to plot
+
+    # Calculate the step size
+    step = max(EPISODE_AMOUNT // desired_samples, 1)  # Avoid division by zero
+    sampled_mse_history = mse_history[::step]
+
+    # Ensure sampled_episodes has the same number of elements as sampled_mse_history
+    sampled_episodes = list(range(0, EPISODE_AMOUNT, step))[:len(sampled_mse_history)]
+
+    plt.plot(sampled_episodes, sampled_mse_history)
+    plt.xlabel('Episode')
+    plt.ylabel('Mean Squared Error')
+    plt.title('Mean Squared Error over time (Sampled)')
     plt.show()
 else:
     print('Results not plotted')
