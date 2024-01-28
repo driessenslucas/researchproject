@@ -156,29 +156,57 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 - **Real-World Implementation**:
 
-  - Description of the hardware setup, including the RC car and maze specifications.
-  - Steps for transferring the trained model to the physical RC car.
+  - **Overview**:
+
+    - The real-world implementation involves assembling an RC robot, designed to navigate through a physical maze using sensor data and reinforcement learning algorithms. This section details the assembly process and hardware setup, crucial for the practical application of the trained reinforcement learning agent.
+
+  - **Components and Assembly**:
+
+    - 1. **Core Components**: The robot is built using a Raspberry Pi 5, ESP32-WROOM-32 module, motor driver, sensors, and other necessary hardware parts.
+    - 2. **Assembly Process**:
+      - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
+      - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
+      - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement.
+      - **Microcontroller and Power Setup**: The Raspberry Pi 5 and ESP32 module are set up with respective power sources to control the robot and process sensor data.
+
+  - **Wiring and Configuration**
+
+    - 1. **Raspberry Pi Wiring**: The ultrasonic sensors are connected to specific GPIO pins on the Raspberry Pi for distance data acquisition. The mini OlED screen is connected to the Raspberry Pi for displaying sensor readings and the IP address.
+      - **Refer to the wiring diagram below for details**:
+        - ![RPI5 Connections](./images/schematics/rpi_schema.png)
+    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation.
+      - **Refer to the wiring diagram below for details**:
+        - ![ESP32 Wiring](./images/schematics/esp_schema.png)
+    - 3. **Programming**: The ESP32 and Raspberry Pi are programmed to facilitate communication between the sensor data processing, motor control, and the reinforcement learning agent.
+
+  - **Challenges and Adjustments**:
+
+    - **Sensor Calibration**: Fine-tuning sensor readings to match the real-world environment conditions.
+    - **Motor Control**: Adjusting motor commands for precise movement in the physical space.
+    - **Integration with RL Agent**: Ensuring seamless communication between the robot's hardware and the software agent.
 
 - **Evaluation Metrics**:
 
   - The main evaluation metric in the simulation was to see if the trained agent could solve the maze. On the other hand, there was looked at the number of episodes needed to consistantly solve the maze with an optimal reward. Then I also looked at the amount of steps needed to solve the maze. This was done to see if the agent was able to solve the maze more efficiently.
   - In the real world, the evaluation metric was to see if the car was able to solve the maze. This was done visually, by looking at the car's movement and the sensor data.
-  - **Reward history**
-
-    - ![reward History](./images/DDQN_reward_history.png)
-
-  - **Epsilon Decay**
-
-    - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
-
-  - **MSE Loss**
 
 $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
- 
-    - ![MSE Loss](./images/mse_DDQN.png)
 
-  - **Test video**
-    - ![Test Video](./videos/DDQN_withfailsave.gif)
+- **MSE Loss**
+
+  - ![MSE Loss](./images/mse_DDQN.png)
+
+- **Reward history**
+
+  - ![reward History](./images/DDQN_reward_history.png)
+
+- **Epsilon Decay**
+
+  - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
+- **Test video**
+
+  - ![Test Video](./videos/DDQN_withfailsave.gif)
 
 - **Web Application**:
 
@@ -300,7 +328,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
   - **Reward History**:
 
-  ![DDQN Reward History](./images/DDQPN%20results.png)
+  ![DDQN Reward History](./images/DDQN_reward_history.png)
 
   - **Performance**: DDQN solved the environment in an average of 25 steps, compared to DQN's 34 steps, highlighting its efficiency.
 
