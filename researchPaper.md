@@ -30,7 +30,7 @@ Reinforcement Learning (RL) is a paradigm of machine learning where an agent lea
 $$ S \text{ is a set of states} $$
 $$ A \text{ is a set of actions} $$
 $$ P(s*{t+1}|s_t, a_t) \text{ is the probability that action } a_t \text{ in state } s_t \text{ at time } t \text{ will lead to state } s*{t+1} $$
-$$ R(s*t, a_t) \text{ is the reward received after transitioning from state } s_t \text{ to state } s*{t+1}, \text{ due to action } a_t $$
+$$ R(s*{t}, a_t) \text{ is the reward received after transitioning from state } s_t \text{ to state } s*{t+1}, \text{ due to action } a_t $$
 
 #### Real-World Applications of RL
 
