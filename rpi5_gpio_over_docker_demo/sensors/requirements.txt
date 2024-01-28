@@ -1,4 +1,3 @@
 flask
 opencv-python
 gpiozero==2.0
-luma.oled
