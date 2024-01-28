@@ -109,8 +109,47 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 - **Environment Setup**:
 
-  - Description of the hardware setup, including the RC car and maze specifications.
-  - Steps for transferring the trained model to the physical RC car.
+  - **Overview**: The custom `RCMazeEnv` class, developed based on the OpenAI Gym library, simulates a robotic car navigating through a maze. This environment offers a rich platform for testing and refining reinforcement learning algorithms, focusing on sensor-based navigation and spatial decision-making.
+
+  - **Key Features**:
+
+    - 1. **Maze Configuration**: A customizable maze layout with a start position at the top-left and a goal at the bottom-right corner.
+    - 2. **Robotic Car Actions**: The car's actions include moving forward, turning left, or right, considering its orientation (North, East, South, West).
+    - 3. **Sensors**: Equipped with front, left, and right distance sensors for wall detection.
+    - 4. **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
+    - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
+    - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
+
+  - **Rendering Modes**:
+
+    - **training Render Modes:**
+      - **Default (Human)**: Utilizes a 2D Pygame rendering for visual output.
+      - **Array Mode**: A less resource-intensive mode that displays maze and car positions in the console, facilitating faster training.
+    - **Final Render Mode**:
+      - **PYopenGL**: A 3D rendering mode that provides a more realistic representation of the maze and car with renders representing the sensor sensors, allowing for a more immersive experience.
+
+- **Agent Setup**
+
+  - **Agent's Role**: The Double DQN agent is central to navigating the RCMazeEnv. It leverages two neural networks (policy and target) to make informed movement decisions based on sensor input, enhancing learning efficiency and effectiveness.
+
+  - **Features**:
+
+  1. **Network Architecture**: Comprises a sequential model with dense layers, tailored for processing sensor data and selecting optimal actions.
+  2. **Learning Mechanisms**:
+     - Utilizes experiences stored in a replay memory for batch learning.
+     - Separates action selection (policy network) from Q-value generation (target network) to minimize overestimation bias.
+     - Employs periodic updates to the target network to maintain stability.
+
+  - **Training Strategy**:
+
+  - **Policy Network Training**: Involves fitting the network to batches of experiences, updating Q-values based on both the policy and target network predictions.
+  - **Action Prediction**: Employs the policy network for action prediction during the maze navigation.
+  - **Target Network Updating**: Ensures the target network's weights are periodically aligned with the policy network.
+
+  - **Operational Flow**:
+
+  - The agent iteratively interacts with the environment, making movement decisions based on current sensor data.
+  - Its performance is continuously monitored and adjusted based on the reward system.
 
 - **Real-World Implementation**:
 
