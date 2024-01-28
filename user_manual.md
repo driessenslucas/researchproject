@@ -26,7 +26,7 @@ cd researchproject
 
 #### Hardware Installation
 
-- Refer to the hardware installation manual for ESP32 setup. [hardware installation guide](./hardware_installtion.md).
+- Refer to the hardware installation manual for ESP32 wire connections. [hardware installation guide](./hardware_installtion.md).
 
 #### Software Configuration
 
@@ -43,6 +43,8 @@ cd researchproject
 - Always execute `docker-compose down` after use to ensure proper virtual display startup.
 
 #### Setup Instructions
+
+- Make sure the i2c interface is enabled on the RPI. You can follow this guide [here](https://www.raspberrypi-spy.co.uk/2014/11/enabling-the-i2c-interface-on-the-raspberry-pi/).
 
 - Install Docker on the RPI. You can follow this nice guide here [here](https://pimylifeup.com/raspberry-pi-docker/).
 
