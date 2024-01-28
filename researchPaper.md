@@ -3,7 +3,7 @@
 ## Author Information
 
 **Name:** Lucas Driessens  
-**Institution:** HOWEST Kortrijk  
+**Institution:** Howest University of Applied Sciences  
 **Course:** Research Project  
 **Date:** 2024-30-01
 
@@ -115,6 +115,18 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - 2. **Robotic Car Actions**: The car's actions include moving forward, turning left, or right, considering its orientation (North, East, South, West).
     - 3. **Sensors**: Equipped with front, left, and right distance sensors for wall detection.
     - 4. **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
+
+    ![reward equation](./images/reward_function.png)
+      <!-- ```tex
+        R =
+        \begin{cases}
+            -20 & \text{if sensor readings indicate collision or out-of-bounds} \\
+            500 - 200 \times \mathbb{I}(\text{steps} > 1000) & \text{if car\_position equals goal} \\
+            \frac{50}{\text{distance\_to\_goal} + 1} + 50 \times \mathbb{I}(\text{distance\_to\_goal} < \text{previous\_distance}) \\
+            \quad - 25 \times \mathbb{I}(\text{distance\_to\_goal} > \text{previous\_distance}) \\
+            \quad - 10 \times \mathbb{I}(\text{car\_position} \in \text{visited\_positions}) - 2 & \text{otherwise}
+        \end{cases}
+      ``` -->
 
     - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
     - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
@@ -418,6 +430,22 @@ This section provides a detailed overview of the hardware components used in the
 
 - **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
 - **Solution**: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model's accuracy in real-world applications.
+
+  - 1. **Real-World Sensor Data Normalization:**
+
+    The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
+
+    ![map_distance](./images/map_distance_equation.png)
+
+    This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.
+
+  - 2. **Simulation Sensor Data Normalization:**
+
+    The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
+
+    ![normalize_distance](./images/normalize_distance_equation.png)
+
+    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
 
 ### Challenge 7: Integration of Failsafe Mechanisms
 
