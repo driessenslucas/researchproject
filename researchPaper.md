@@ -429,7 +429,7 @@ This section provides a detailed overview of the hardware components used in the
 ### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
 
 - **Description**: Bridging the gap between simulation and real-world in terms of RF-car movement and control.
-- **Solution**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
+- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
 
 ### Challenge 4: alignment Issue and Motor Encoder Implementation
 
@@ -476,7 +476,11 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Conclusion
 
-This research underscores the dynamic and challenging nature of applying RL techniques in autonomous vehicle development. The encountered obstacles, particularly the RC car's alignment issue and the complexities with motor encoder implementation, highlight the iterative process of problem-solving in this field. These experiences provide valuable insights into the practical aspects of autonomous vehicle technology and the continuous need for innovation and experimentation.
+This study provides a comprehensive overview of the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous vehicles, specifically focusing on an RF-car. Each challenge, ranging from the selection of an appropriate virtual environment to the intricacies of sim2real transfer, was met with a series of solutions, both successful and attempted. The decision to use OpenAI Gym emerged from a need for simplicity and relevance to RL. The Double Deep Q-Network (DDQN) was identified as the most effective RL technique for navigating complex environments. However, the transfer of these simulated learnings to real-world application revealed significant discrepancies, particularly in movement control and sensor data alignment.
+
+The journey to resolve the RC car's alignment issues highlights the gap between theoretical models and their practical efficacy. Despite innovative attempts, including the implementation of motor encoders, power adjustments, and accelerometer integration, these solutions only partially addressed the core issues. The study's exploration into normalizing sensor data and implementing failsafe mechanisms further illustrates the nuanced challenges in aligning simulated training with real-world application.
+
+In conclusion, this research underscores the iterative and challenging nature of applying RL techniques to real-world scenarios. While theoretical knowledge serves as a crucial foundation, its application in practical settings often demands continuous refinement, innovation, and adaptation. The insights gained from addressing these challenges reinforce the importance of perseverance and creative problem-solving in the ever-evolving domain of autonomous vehicle technology.
 
 ### Supplementary Materials: Video Demonstrations
 
