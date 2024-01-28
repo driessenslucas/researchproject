@@ -553,6 +553,7 @@ if plot_results == 'y':
 else:
     print('Results not plotted')
     print('avg reward = ', np.mean(reward_history))
+    print('avg mse = ', np.mean(sampled_mse_history))
 
 # ask user if they want to save the model
 save_model = input('Do you want to save the model? (y/n)')
