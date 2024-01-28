@@ -180,12 +180,18 @@ The main research question focuses on whether a trained RL agent can be effectiv
   - **Wiring and Configuration**
 
     - 1. **Raspberry Pi Wiring**: The ultrasonic sensors are connected to specific GPIO pins on the Raspberry Pi for distance data acquisition. The mini OlED screen is connected to the Raspberry Pi for displaying sensor readings and the IP address.
+
       - **Refer to the wiring diagram below for details**:
-        - ![RPI5 Connections](./images/schematics/rpi_schema.png)
+
+      ![RPI5 Connections](./images/schematics/rpi_schema.png)
+
     - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation.
+
       - **Refer to the wiring diagram below for details**:
-        - ![ESP32 Wiring](./images/schematics/esp_schema.png)
-    - 3. **Programming**: The ESP32 and Raspberry Pi are programmed to facilitate communication between the sensor data processing, motor control, and the reinforcement learning agent.
+
+      ![ESP32 Wiring](./images/schematics/esp_schema.png)
+
+    - 3. **Programming**: The ESP32 and Raspberry Pi are programmed to facilitate communication between the sensor data processing, motor control, and the reinforcement learning agent. (code for the Raspberry Pi can be found in the `web_app` folder along with the code for the mini OLED display in the `RPI_display` folder and the code for the ESP32 can be found in the `esp32` folder)
 
   - **Challenges and Adjustments**:
 
