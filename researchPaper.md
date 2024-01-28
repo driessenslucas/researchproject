@@ -196,11 +196,14 @@ The main research question focuses on whether a trained RL agent can be effectiv
       - Visualization: ![MSE Loss](./images/mse_DDQN.png)
 
     - **Reward Trend Analysis**:
-      - Chart: ![Reward History](./images/DDQN_reward_history.png)
+      - Chart:
+        - ![Reward History](./images/DDQN_reward_history.png)
     - **Epsilon Decay Tracking**:
-      - Chart: ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+      - Chart:
+        - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
     - **Simulation Test Video**:
-      - Clip: ![Test Video](./videos/DDQN_withfailsave.gif)
+      - Clip:
+        - ![Test Video](./videos/DDQN_withfailsave.gif)
 
   - **Real-World Metrics**
 
@@ -219,8 +222,9 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Data Display**: Real-time visualization of sensor data and Q-values.
     - **User Controls**: Model selection, IP configuration for ESP32, mode selection (simulation or real RC car), and simulation control (start/stop).
   - **Visual and Interactive Interface**:
-    - Screenshot: ![Web App Interface](./images/web_app_v4.png)
-    - Video:
+    - Screenshot:
+      - ![Web App Interface](./images/web_app_v4.png)
+    - Clip:
 
   <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
 
