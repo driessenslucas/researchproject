@@ -1,4 +1,4 @@
-# Research Project
+# Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning
 
 ## Author Information
 
@@ -247,7 +247,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - Screenshot: ![Web App Interface](./images/web_app_v4.png)
     - Clip:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f
+<https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f>
 
 <!-- <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff> -->
 
