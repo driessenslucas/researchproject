@@ -188,9 +188,13 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Episodic Performance**: Analysis of the number of episodes required for consistent maze resolution with optimal rewards.
     - **Step Efficiency**: Monitoring the number of steps taken by the agent to complete the maze, indicating efficiency improvements.
     - **MSE Loss Measurement**:
+
       - Formula:
+
         - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+
       - Visualization: ![MSE Loss](./images/mse_DDQN.png)
+
     - **Reward Trend Analysis**:
       - Chart: ![Reward History](./images/DDQN_reward_history.png)
     - **Epsilon Decay Tracking**:
