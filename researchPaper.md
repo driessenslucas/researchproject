@@ -170,6 +170,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
   - **MSE Loss**
 
+    - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
     - ![MSE Loss](./images/mse_DDQN.png)
 
   - **Test video**
