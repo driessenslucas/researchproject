@@ -105,11 +105,6 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 #### Experimental Setup
 
-- **Training Process**:
-
-  - Detailed steps on how the agent was trained, including the number of episodes, learning rates, and other relevant parameters.
-  - Use of Jupyter Notebook for documenting the training process (reference to the notebook provided in the README).
-
 - **Environment Setup**:
 
   - **Overview**: The custom `RCMazeEnv` class, developed based on the OpenAI Gym library, simulates a robotic car navigating through a maze. This environment offers a rich platform for testing and refining reinforcement learning algorithms, focusing on sensor-based navigation and spatial decision-making.
@@ -154,7 +149,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
   - The agent iteratively interacts with the environment, making movement decisions based on current sensor data.
   - Its performance is continuously monitored and adjusted based on the reward system.
 
-- **Real-World Implementation**:
+- **Real-World Implementation**
 
   - **Overview**:
 
@@ -185,44 +180,43 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Motor Control**: Adjusting motor commands for precise movement in the physical space.
     - **Integration with RL Agent**: Ensuring seamless communication between the robot's hardware and the software agent.
 
-- **Evaluation Metrics**:
+- **Evaluation Metrics**
 
-  - The main evaluation metric in the simulation was to see if the trained agent could solve the maze. On the other hand, there was looked at the number of episodes needed to consistantly solve the maze with an optimal reward. Then I also looked at the amount of steps needed to solve the maze. This was done to see if the agent was able to solve the maze more efficiently.
-  - In the real world, the evaluation metric was to see if the car was able to solve the maze. This was done visually, by looking at the car's movement and the sensor data.
+  - **Simulation Metrics**
 
-$$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+    - **Objective**: Assess the agent's ability to solve the maze efficiently in the virtual environment.
+    - **Episodic Performance**: Analysis of the number of episodes required for consistent maze resolution with optimal rewards.
+    - **Step Efficiency**: Monitoring the number of steps taken by the agent to complete the maze, indicating efficiency improvements.
+    - **MSE Loss Measurement**:
+      - Formula:
+        - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+      - Visualization: ![MSE Loss](./images/mse_DDQN.png)
+    - **Reward Trend Analysis**:
+      - Chart: ![Reward History](./images/DDQN_reward_history.png)
+    - **Epsilon Decay Tracking**:
+      - Chart: ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+    - **Simulation Test Video**:
+      - Clip: ![Test Video](./videos/DDQN_withfailsave.gif)
 
-- **MSE Loss**
+  - **Real-World Metrics**
 
-  - ![MSE Loss](./images/mse_DDQN.png)
+    - **Maze Navigation**: Visual assessment of the RC car's capability to navigate the real-world maze.
+    - **Sensor Data Analysis**: Evaluating real-time sensor data for navigation and collision avoidance.
 
-- **Reward history**
+- **Web Application**
 
-  - ![reward History](./images/DDQN_reward_history.png)
-
-- **Epsilon Decay**
-
-  - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
-
-- **Test video**
-
-  - ![Test Video](./videos/DDQN_withfailsave.gif)
-
-- **Web Application**:
-
-  - The web app was created to have see the simulation and control the start/stop of the real life tests, further more it acts as a virtual twin of the real rc-car when not running the simulation.
-  - The web app was built using Flask, PYopenGL and SocketIO.
-  - Flask is used to create the web server and handle the routing.
-  - PYopenGL is used to render the simulation.
-  - SocketIO is used to communicate between the web app and the simulation.
-  - While the simulation is running in pyopengl, each time the render function is called, there is a snapshot taken of the current state of the simulation. This snapshot is then send to the web app using socketIO. The web app then renders the image on the screen. Thus creating a live feed of the simulation. Besides that also the sensor data and the Q-values are send to the web app, which are then displayed on the screen.
-  - The web app also has some controls and inputs:
-    - A drop down list with all the available models to test the simulation with.
-    - An input field for the IP address of the real esp32 for the motor control.
-    - A select box to choose between running the simulation and the real rc-car.
-    - A start/stop button to start and stop the simulation or the real rc-car.
-
-  ![web app](./images/web_app_v4.png)
+  - **Purpose**: Provides a visualization platform for the simulation and a control interface for real-life testing, acting as a virtual twin of the RC car.
+  - **Construction**:
+    - **Backend**: Flask for web server and routing.
+    - **Simulation Rendering**: PyOpenGL.
+    - **Real-Time Communication**: SocketIO for data transfer between the app and the simulation.
+  - **Functionality**:
+    - **Simulation Streaming**: Capturing and transmitting live simulation snapshots to the web interface.
+    - **Data Display**: Real-time visualization of sensor data and Q-values.
+    - **User Controls**: Model selection, IP configuration for ESP32, mode selection (simulation or real RC car), and simulation control (start/stop).
+  - **Visual and Interactive Interface**:
+    - Screenshot: ![Web App Interface](./images/web_app_v4.png)
+    - Video:
 
   <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
 

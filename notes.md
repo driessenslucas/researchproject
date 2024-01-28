@@ -96,3 +96,44 @@
 5. yes it has a significant impact on how easy it is to train, since I don't have to program the car to get back to the start position after each episode, nor do I have to observe the car so it doesn't crash while training (even with failsafe mechanisms in place, this can happen) or have to manually pick up the car and put it back at the start position after each episode. Which would also require me to write code that would tell me when I need to place the car back at the start position, and wait for me to do so before starting the next episode.
    The training in real life uses the RPI to train the model, which is significantly slower than training on my powerful computer.
    The trained model when training in real life is very similar to the model trained in the simulation, but given how much more difficult it is to train in real life, it is simply not worth it.
+
+- **Evaluation Metrics**
+
+  - The main evaluation metric in the simulation was to see if the trained agent could solve the maze. On the other hand, there was looked at the number of episodes needed to consistantly solve the maze with an optimal reward. Then I also looked at the amount of steps needed to solve the maze. This was done to see if the agent was able to solve the maze more efficiently.
+  - In the real world, the evaluation metric was to see if the car was able to solve the maze. This was done visually, by looking at the car's movement and the sensor data.
+
+  - $$ \text{MSE}(y, \hat{y}) = \frac{\sum\_{i=0}^{N - 1} (y_i - \hat{y}\_i)^2}{N} $$
+
+  - **MSE Loss**
+
+    - ![MSE Loss](./images/mse_DDQN.png)
+
+  - **Reward history**
+
+    - ![reward History](./images/DDQN_reward_history.png)
+
+  - **Epsilon Decay**
+
+    - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
+
+  - **Test video**
+
+    - ![Test Video](./videos/DDQN_withfailsave.gif)
+
+- **Web Application**
+
+  - The web app was created to have see the simulation and control the start/stop of the real life tests, further more it acts as a virtual twin of the real rc-car when not running the simulation.
+  - The web app was built using Flask, PYopenGL and SocketIO.
+  - Flask is used to create the web server and handle the routing.
+  - PYopenGL is used to render the simulation.
+  - SocketIO is used to communicate between the web app and the simulation.
+  - While the simulation is running in pyopengl, each time the render function is called, there is a snapshot taken of the current state of the simulation. This snapshot is then send to the web app using socketIO. The web app then renders the image on the screen. Thus creating a live feed of the simulation. Besides that also the sensor data and the Q-values are send to the web app, which are then displayed on the screen.
+  - The web app also has some controls and inputs:
+    - A drop down list with all the available models to test the simulation with.
+    - An input field for the IP address of the real esp32 for the motor control.
+    - A select box to choose between running the simulation and the real rc-car.
+    - A start/stop button to start and stop the simulation or the real rc-car.
+
+  ![web app](./images/web_app_v4.png)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
