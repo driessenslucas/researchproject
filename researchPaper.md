@@ -387,6 +387,13 @@ This section provides examples of how I attempted to solve some of the challenge
 
 - **test 2**: ![encoder test 2](./testvideos/new-car-with-encoders-2.mp4)
 
+#### video 5: Encoder implementation (original rc-car)
+
+- **Description**: This video demonstrates reading out the wheel rotations measured by the rotary encoder. This approach again looked promising, but shortly after this video one of the encoders broke, so no further tests with this specific encoder were done.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
+
 ### Real-World Application and Limitations
 
 #### Introduction to Sensor and Movement Discrepancies
