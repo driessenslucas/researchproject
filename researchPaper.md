@@ -115,6 +115,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - 2. **Robotic Car Actions**: The car's actions include moving forward, turning left, or right, considering its orientation (North, East, South, West).
     - 3. **Sensors**: Equipped with front, left, and right distance sensors for wall detection.
     - 4. **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
+
     - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
     - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
 

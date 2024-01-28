@@ -137,3 +137,11 @@
   ![web app](./images/web_app_v4.png)
 
   <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff>
+
+```latex
+R = \begin{cases}
+   -20 & \text{if sensor readings indicate collision or out-of-bounds} \\
+   500 - 200 \times \mathbb{I}(\text{steps} > 1000) & \text{if car\_position equals goal} \\
+   \frac{50}{\text{distance\_to\_goal} + 1} + 50 \times \mathbb{I}(\text{distance\_to\_goal} < \text{previous\_distance}) - 25 \times \mathbb{I}(\text{distance\_to\_goal} > \text{previous\_distance}) - 10 \times \mathbb{I}(\text{car\_position} \in \text{visited\_positions}) - 2 & \text{otherwise}
+\end{cases}
+```
