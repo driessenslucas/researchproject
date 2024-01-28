@@ -24,10 +24,11 @@ def map_distance(distance):
 def get_sensor_value(direction):
       try:
          sensor_front = DistanceSensor(echo=5, trigger=6)
-         sensor_left = DistanceSensor(echo=17, trigger=27)
-         sensor_right = DistanceSensor(echo=23, trigger=24)
+         sensor_left = DistanceSensor(echo=23, trigger=24)
+         sensor_right = DistanceSensor(echo=17, trigger=27)
+         
       
-         sleep(0.1)
+         sleep(1)
          try:
             distance = 0
             if direction == "front":
