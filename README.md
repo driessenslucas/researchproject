@@ -20,18 +20,14 @@ This research is partitioned into sub-questions, which collectively aim to creat
 
 Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
 
-## Introduction
-
-The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
-
 ## Table of Contents
 
 - [Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning](#exploring-the-feasibility-of-sim2real-transfer-in-reinforcement-learning)
   - [Author Information](#author-information)
   - [Description](#description)
   - [Abstract](#abstract)
-  - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
     - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
     - [Real-World Applications of RL](#real-world-applications-of-rl)
     - [Purpose and Significance of the Study](#purpose-and-significance-of-the-study)
@@ -95,6 +91,10 @@ The journey of developing autonomous vehicles using reinforcement learning (RL) 
     - [Other Online Resources](#other-online-resources)
     - [Conference Papers](#conference-papers)
     - [Blogs and Articles](#blogs-and-articles)
+
+## Introduction
+
+The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
 
 #### Background on Reinforcement Learning (RL)
 
@@ -232,8 +232,8 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
   - **Operational Flow**:
 
-  - The agent iteratively interacts with the environment, making movement decisions based on current sensor data.
-  - Its performance is continuously monitored and adjusted based on the reward system.
+    - The agent iteratively interacts with the environment, making movement decisions based on current sensor data.
+    - Its performance is continuously monitored and adjusted based on the reward system.
 
 - **Real-World Implementation**
 
@@ -271,11 +271,11 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Step Efficiency**: Monitoring the number of steps taken by the agent to complete the maze, indicating efficiency improvements.
     - **MSE Loss Measurement**:
 
-      - Formula:
+      - **Formula**:
 
         ![MSE Loss](./images/MSE_equation.png)
 
-      - Visualization: ![MSE Loss](./images/mse_DDQN.png)
+      - **Visualization**: ![MSE Loss](./images/mse_DDQN.png)
 
     - **Reward Trend Analysis**:
       - Chart:
@@ -285,7 +285,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
         - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
     - **Simulation Test Video**:
 
-      - Clip:
+      - **Clip**:
         ![DDQN test](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
 
         <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
@@ -301,9 +301,12 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
   - **Guide**: The complete construction process, including the list of materials, tools required, assembly instructions, is documented in detail in a separate installation guide. This guide provides step-by-step instructions, accompanied by images and diagrams, to replicate the physical maze accurately.
 
-  For the full assembly process, solutions, and final setup, please refer to the guide: [guide](https://github.com/driessenslucas/researchproject/blob/main/hardware_installtion.md).
+    - For the full assembly process, solutions, and final setup, please refer to the guide: [guide](https://github.com/driessenslucas/researchproject/blob/main/hardware_installtion.md).
 
-  Integration with the Research: The physical maze's role in the research extends beyond a mere testing ground. It allows for a direct comparison between virtual simulations and real-world applications, thereby enhancing the validity and applicability of my findings.
+    - Integration with the Research: The physical maze's role in the research extends beyond a mere testing ground. It allows for a direct comparison between virtual simulations and real-world applications, thereby enhancing the validity and applicability of my findings.
+
+  - **Visual Representation**:
+    - ![maze](./images/final_test/final_maze_build.jpeg)
 
 - **Web Application**
 
@@ -317,8 +320,8 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - **Data Display**: Real-time visualization of sensor data and Q-values.
     - **User Controls**: Model selection, IP configuration for ESP32, mode selection (simulation or real RC car), and simulation control (start/stop).
   - **Visual and Interactive Interface**:
-    - Screenshot: ![Web App Interface](./images/web_app_v4.png)
-    - Clip:
+    - **Visual Representation**: ![Web App Interface](./images/web_app_v4.png)
+    - **Clip**:
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f>
 
