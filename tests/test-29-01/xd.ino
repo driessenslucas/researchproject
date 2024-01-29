@@ -6,8 +6,9 @@
 #include <WiFi.h>
 #include <ArduinoOTA.h>
 
-const char* ssid = "telenet-799DCED";
-const char* password = "";
+
+
+const int numberOfNetworks = 2;
 
 WiFiServer server(80);
 
@@ -45,6 +46,31 @@ unsigned long lastTime = 0;
 
 bool isTurning = false;
 
+bool connectToWifi() {
+    for (int i = 0; i < numberOfNetworks; i++) {
+        Serial.print("Connecting to ");
+        Serial.println(ssids[i]);
+
+        WiFi.begin(ssids[i], passwords[i]);
+
+        int attempts = 0;
+        while (WiFi.status() != WL_CONNECTED && attempts < 10) {
+            delay(500);
+            Serial.print(".");
+            attempts++;
+        }
+
+        if(WiFi.status() == WL_CONNECTED) {
+            Serial.println("");
+            Serial.println("WiFi connected");
+            Serial.println("IP address: ");
+            Serial.println(WiFi.localIP());
+            return true;
+        }
+    }
+    return false;
+}
+
 
 void setup() {
 
@@ -55,12 +81,24 @@ void setup() {
   digitalWrite(M2, HIGH);  // Move forward
 
   Serial.begin(9600);
-  WiFi.begin(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  if (!connectToWifi()) {
+    Serial.println("Failed to connect to any specified network");
+    ssd1306_setFixedFont(ssd1306xled_font6x8);
+    ssd1306_128x64_i2c_init();
+    //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
+    ssd1306_clearScreen();
+    ssd1306_printFixed(0,  8, "failed to connect to wifi", STYLE_NORMAL);
+  }else{
+    ssd1306_setFixedFont(ssd1306xled_font6x8);
+    ssd1306_128x64_i2c_init();
+    //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
+    ssd1306_clearScreen();
+    ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
+    String ip = WiFi.localIP().toString();
+    ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
   }
+
   Wire.begin();
   mpu.initialize();
 
@@ -70,13 +108,7 @@ void setup() {
       ;
   }
 
-  ssd1306_setFixedFont(ssd1306xled_font6x8);
-  ssd1306_128x64_i2c_init();
-  //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
-  ssd1306_clearScreen();
-  ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
-  String ip = WiFi.localIP().toString();
-  ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
+
 
   Serial.println("");
   Serial.println("WiFi connected");
