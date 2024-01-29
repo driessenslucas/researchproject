@@ -540,7 +540,7 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
 
-### video 7: Maze Test Outdoors
+#### video 7: Maze Test Outdoors
 
 - **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
 - **test 1**:
@@ -551,7 +551,7 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
 
-### video 8: Maze Test Indoors
+#### video 8: Maze Test Indoors
 
 - **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
 - **test 1**:
