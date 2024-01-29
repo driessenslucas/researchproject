@@ -28,7 +28,7 @@ int M1 = 17;
 int E2 = 19;
 int M2 = 4;
 
-int turnDuration = 350;
+int turnDuration = 265;
 
 
 void setup() {
@@ -272,12 +272,12 @@ void move_forward() {
   digitalWrite(M1, LOW);   // Move forward
   digitalWrite(M2, HIGH);  // Move forward
 
-  delay(800);
+  delay(700);
 
   // Stop motors after turning
   analogWrite(E2, 0);
 
-  delay(25);
+  delay(20);
 
   analogWrite(E1, 0);
   digitalWrite(M2, HIGH);
