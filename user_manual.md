@@ -11,7 +11,7 @@
 
 ### Prerequisites
 
-Ensure you have Python 3.11, pip, git, and Docker installed.
+Ensure you have git and Docker installed. (optionally you can install Python 3.11 and pip along with the packages in the [requirements.txt](./training/requirements.txt) file if you want to be able to train your own model)
 
 ### Repository Setup
 
@@ -34,21 +34,15 @@ cd researchproject
 - Upload the code from the [esp32](./esp32) folder to the ESP32.
 - Modify the WiFi credentials in the code to your local network settings.
 
-### Raspberry Pi (RPI) Setup
-
-1. Install the Raspberry Pi OS on your Raspberry Pi 5. You can follow the official guide [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md).
+### Web App Setup
 
 #### Important Note
 
-- Always execute `docker-compose down` after use to ensure proper virtual display startup.
+- Always execute `docker-compose down` after each use to ensure proper virtual display startup.
 
 #### Setup Instructions
 
-- Make sure the i2c interface is enabled on the RPI. You can follow this guide [here](https://www.raspberrypi-spy.co.uk/2014/11/enabling-the-i2c-interface-on-the-raspberry-pi/).
-
-- Install Docker on the RPI. You can follow this nice guide here [here](https://pimylifeup.com/raspberry-pi-docker/).
-
-- The code for the RPI is in the [web app](./web_app/) folder from the main folder in the repository.
+- The code for the web app is in the [web app](./web_app/) folder.
 
 - Navigate to the [web app](./web_app/) folder.
 
@@ -63,28 +57,16 @@ cd researchproject
   docker-compose up -d
   ```
 
-- Navigate to the [RPI_display](./RPI_display/) folder from the main folder in the repository.
+### Usage
 
-  ```bash
-  cd ./RPI_display/
-  ```
+1. In the web app, enter the ESP's IP address and select the model you want to use.
+2. You can opt for a virtual demonstration of the project without moving the actual car.
+3. Click on the `Start Maze` button to start.
 
-- Enable the script at startup for the mini oled display to display the IP address of the RPI:
+A demo can be found: <https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f>
 
-  ```bash
-  sudo systemctl enable ./service/display_ip.service
-  sudo systemctl start display_ip.service
-  ```
-
-### Training
+### EXTRA: Training
 
 - Use the provided pre-trained model or train a new one using the [train](./training/train.py) script.
 - The [train](./training/train.py) script can be run on the RPI itself, it is not too resource intensive.
-  - This will require you to have the packages in the [requirements.txt](./training/requirements.txt) file installed. Along with python@11.7 and pip.
-- The script will ask you if you want to save the model. If you do, it will be saved in the [models](./models) folder.
-
-### Usage
-
-- In the web app, enter the ESP's IP address and select the model you want to use.
-- Click on the `Start Maze` button to start the project.
-- You can opt for a virtual demonstration of the project without moving the actual car.
+- The script will ask you if you want to save the model. If you do, it will be saved in the [models](./web_app/models) folder in de `web_app` directory.

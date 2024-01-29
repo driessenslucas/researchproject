@@ -1,0 +1,12 @@
+flask==3.0.0
+opencv-python==4.9.0.80
+gym==0.23
+PyOpenGL==3.1.7
+PyOpenGL-accelerate==3.1.7
+Pillow
+numpy==1.26.2
+tensorflow==2.15.0
+keras==2.15.0
+aiohttp
+gpiozero==2.0
+flask-socketio

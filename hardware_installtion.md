@@ -21,9 +21,9 @@
     - [Step 9.5: Place RPI 5 on top of the top plate](#step-95-place-rpi-5-on-top-of-the-top-plate)
     - [Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)](#step-10-connect-the-hc-sr04-sensor-to-the-rpi-5-and-try-to-fit-them-on-the-top-plate-togheter-with-the-battery-holder-for-the-esp32-and-the-mini-oled-screens)
   - [Wiring Guide](#wiring-guide)
-    - [RPI5 Wiring](#rpi5-wiring)
     - [ESP32 Wiring](#esp32-wiring)
-      - [esp32 Motor pins](#esp32-motor-pins)
+      - [esp32 pins](#esp32-pins)
+  - [Building the maze](#building-the-maze)
 
 ## Introduction
 
@@ -119,23 +119,37 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ## Wiring Guide
 
-### RPI5 Wiring
-
-![RPI5 Connections](./images/schematics/rpi_schema.png)
-The above diagram shows the wiring connections for the Raspberry Pi 5. The ultrasonic sensors are connected to the GPIO pins as per the sensor documentation, same thing for the mini oled screen.
-
 ### ESP32 Wiring
 
-![ESP32 Wiring](./images/schematics/esp_schema.png)
+![ESP32 Wiring](./images/schematics/esp_updated.png)
 The above diagram shows the wiring connections for the ESP32-WROOM-32 module. The motors are connected to the motor driver LN298N.
 
-#### esp32 Motor pins
+#### esp32 pins
+
+Since the schematic is not very clear (sorry for this), here is a list of the pins used on the ESP32:
 
 ```c
 
-int E1 = 2;
-int M1 = 17;
-int E2 = 19;
-int M2 = 4;
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+
+int sensor0Trig = 27; //GPIO right sensor
+int sensor0Echo = 26; //GPIO right sensor
+
+int sensor1Trig = 33; //GPIO left sensor
+int sensor1Echo = 32; //GPIO left sensor
+
+int sensor2Trig = 25; //GPIO front sensor
+int sensor2Echo = 35; //GPIO front sensor
+
+// OLED display pins
+#define SDA_PIN 21 // this is the default sda pin on the esp32
+#define SCL_PIN 22 // this is the default scl pin on the esp32
 
 ```
+
+## Building the maze
+
+// add documentation for building the maze

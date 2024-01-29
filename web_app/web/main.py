@@ -188,6 +188,9 @@ class RCMazeEnv(gym.Env):
          send_sensor_data()
       
    async def update_real_sensor_readings(self):
+      """
+         Get and update the readings from the real sensors.
+      """
       
       def map_distance(distance):
          """
@@ -197,7 +200,6 @@ class RCMazeEnv(gym.Env):
           
           @return The distance in cm
          """
-         
          if distance < 25:
             # No change for distances less than 20 cm
             return distance
@@ -205,22 +207,21 @@ class RCMazeEnv(gym.Env):
             distance = 25 + (distance - 25) * 0.5
             return float(distance)
       
-      url = "http://192.168.0.7/sensors/"
+      url = f"http://{self.esp_ip}/sensors/"
       Response =  requests.get(url)
       
-      sensor_data = Response.text
-      #GET FIRST LINE
-      sensor_data = sensor_data.split('\n', 1)[0]
-      #parse to json
-      sensor_data = json.loads(sensor_data)
-      # print(sensor_data)  # Print or process your sensor data
+      data = Response.text
+      data = data.split('\n', 1)[0]
+      data = json.loads(data)
       
-
-      
-      self.sensor_readings['front'] = map_distance(sensor_data['front'])
-      self.sensor_readings['left'] = map_distance(sensor_data['left'] )
-      self.sensor_readings['right'] = map_distance(sensor_data['right'])
+      self.sensor_readings['front'] = map_distance(data['front'])
+      self.sensor_readings['left'] = map_distance(data['left'] )
+      self.sensor_readings['right'] = map_distance(data['right'])
       print(self.sensor_readings)
+      
+      global sensor_data, sensor_data_lock
+      with sensor_data_lock:
+         sensor_data.update(self.sensor_readings)
    
    async def update_virtual_sensor_readings(self):
       """

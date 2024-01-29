@@ -13,9 +13,9 @@ This project explores the feasibility of transferring a trained Reinforcement Le
 
 ## Abstract
 
-In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of My investigation revolves around the challenging question: "Is it possible to transfer a trained RL agent from a simulation to the real world?" This inquiry is particularly examined in the context of maze navigation.
+In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question: "Is it possible to transfer a trained RL agent from a simulation to the real world?" This inquiry is particularly examined in the context of maze navigation.
 
-This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for My purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
+This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
 
 Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
 
@@ -31,10 +31,10 @@ The journey of developing autonomous vehicles using reinforcement learning (RL) 
   - [Abstract](#abstract)
   - [Introduction](#introduction)
   - [table of contents](#table-of-contents)
-      - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
-      - [Real-World Applications of RL](#real-world-applications-of-rl)
-      - [Purpose and Significance of the Study](#purpose-and-significance-of-the-study)
-      - [Overview of the Research Questions](#overview-of-the-research-questions)
+    - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
+    - [Real-World Applications of RL](#real-world-applications-of-rl)
+    - [Purpose and Significance of the Study](#purpose-and-significance-of-the-study)
+    - [Overview of the Research Questions](#overview-of-the-research-questions)
     - [Main Research Question](#main-research-question)
     - [Sub Research Questions](#sub-research-questions)
     - [Methodology](#methodology)
@@ -70,6 +70,7 @@ The journey of developing autonomous vehicles using reinforcement learning (RL) 
       - [Video 2: mpu6050 to align forward movement](#video-2-mpu6050-to-align-forward-movement)
       - [video 4: New RC-car with encoder and more powerful motor](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
       - [video 5: Encoder implementation (original RC-car)](#video-5-encoder-implementation-original-rc-car)
+      - [video 6: Robot v2](#video-6-robot-v2)
     - [Real-World Application and Limitations](#real-world-application-and-limitations)
       - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
       - [Real-World Application](#real-world-application)
@@ -230,28 +231,22 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
   - **Components and Assembly**:
 
-    - 1. **Core Components**: The robot is built using a Raspberry Pi 5, ESP32-WROOM-32 module, motor driver, sensors, and other necessary hardware parts.
+    - 1. **Core Components**: The robot is built using an ESP32-WROOM-32 module, motor driver, hc-sro04 ultrasonic sensors, mpu6050 and a mini oled screen.
     - 2. **Assembly Process**:
       - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
       - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
       - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement.
-      - **Microcontroller and Power Setup**: The Raspberry Pi 5 and ESP32 module are set up with respective power sources to control the robot and process sensor data.
+      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source to control the robot and process sensor data.
 
   - **Wiring and Configuration**
 
-    - 1. **Raspberry Pi Wiring**: The ultrasonic sensors are connected to specific GPIO pins on the Raspberry Pi for distance data acquisition. The mini OlED screen is connected to the Raspberry Pi for displaying sensor readings and the IP address.
+    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation. The HC-SR04 ultrasonic sensors are connected to the ESP32 module for measuring the distance to the walls.
 
       - **Refer to the wiring diagram below for details**:
 
-      ![RPI5 Connections](./images/schematics/rpi_schema.png)
+      ![ESP32 Wiring](./images/schematics/esp_updated.png)
 
-    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation.
-
-      - **Refer to the wiring diagram below for details**:
-
-      ![ESP32 Wiring](./images/schematics/esp_schema.png)
-
-    - 3. **Programming**: The ESP32 and Raspberry Pi are programmed to facilitate communication between the sensor data processing, motor control, and the reinforcement learning agent. (code for the Raspberry Pi can be found in the `web_app` folder along with the code for the mini OLED display in the `RPI_display` folder and the code for the ESP32 can be found in the `esp32` folder)
+    - 3. **Programming**: The ESP32 is are programmed to facilitate communication between the agent and the robot. The ESP32 module is programmed to receive commands from the agent and control the robot's movement accordingly. The ESP32 module is also programmed to send sensor data to the agent for decision-making. The web application on the other hand is programmed to send commands from the agent to the ESP32 module and receive sensor data from the ESP32 module, while also rendering the simulation.
 
   - **Challenges and Adjustments**:
 
@@ -452,14 +447,12 @@ This section provides a detailed overview of the hardware components used in the
 #### Components List
 
 - **Core Components**:
-  - Raspberry Pi 5 8gb ram - Available at [KiwiElectronics](https://www.kiwi-electronics.com/en/raspberry-pi-5-computers-accessories-415/raspberry-pi-5-8gb-11580)
   - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
   - 3D printed parts from Thingiverse ([hc-sr04](https://www.thingiverse.com/thing:3436448/files), [top plate + alternative for the robot kit](https://www.thingiverse.com/thing:2544002))
   - Motor Driver - available at [DFRobot](https://www.dfrobot.com/product-66.html)
   - 2WD robot kit - available at [DFRobot](https://www.dfrobot.com/product-367.html)
   - Mini OlED screen - available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF)
   - Sensors - available at [Amazon](https://www.amazon.com.be/dp/B07XF4815H)
-  - Battery For RPI 5 - available at [Amazon](https://www.amazon.com.be/dp/B09QRS666Y)
   - Battery For ESP 32 - available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW)
 - **Supplementary Materials**: List of additional materials like screws, wires, and tools required for assembly.
   - 4mm thick screws 5mm long to hold the wood together - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208)
@@ -467,12 +460,8 @@ This section provides a detailed overview of the hardware components used in the
 
 #### Wiring Guide
 
-1. **Raspberry Pi 5 Wiring**:
-
-   - ![RPI5 Connections](./images/schematics/rpi_schema.png)
-
-2. **ESP32 Wiring**:
-   - ![ESP32 Wiring](./images/schematics/esp_schema.png)
+1. **ESP32 Wiring**:
+   - ![ESP32 Wiring](./images/schematics/esp_updated.png)
 
 ## Challenges and Solutions in Implementing RL Techniques and Virtual Environments
 
@@ -497,6 +486,7 @@ This section provides a detailed overview of the hardware components used in the
 - **Solution Attempt 1**: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.
 - **Solution Attempt 2**: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car's weight increased, leading to the same problem. [view video](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
 - **Solution Attempt 3**: The use of a MPU6050 accelerometer was explored to measure the car's orientation and adjust the movement accordingly. Even though this approach succeeded to some extent (90 degrees turns were accurate), it was not able to solve the ~3-degree offset issue when moving forward.[vdeo of turning 90 degrees](#video-1-mpu6050-90-degree-turn) [video of moving forward](#video-2-mpu6050-to-align-forward-movement)
+- **Solution Attempt 4**: The final solution I tried was done by removing the RPI5 (previously used for sensor data and running the web app) from the robot all together and using the ESP32 to control both all the sensors and the motors. This allowed for a more lightweight robot, which was able to move forward more precisely but it failed to rotate 90 degrees accurately. [view video](#video-6-robot-v2)
 
 ### Challenge 5: Ensuring Consistent and Effective Training
 
@@ -522,7 +512,7 @@ This section provides a detailed overview of the hardware components used in the
 
     ![normalize_distance](./images/normalize_distance_equation.png)
 
-    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
+    In this function, the distance value is scaled by dividing it by `sensor_max_range` to ensure it falls within a 0 to 1 range. The result is then clamped to remain within these bounds, and finally multiplied by 1000 to normalize it within a 0 to 1000 range.
 
 ### Challenge 7: Integration of Failsafe Mechanisms
 
@@ -536,11 +526,13 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Conclusion
 
-This section provides an overview of the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous vehicles, specifically focusing on an RC-car. Each challenge, ranging from the selection of an appropriate virtual environment to the intricacies of sim2real transfer, was met with a series of solutions, both successful and attempted. The decision to use OpenAI Gym emerged from a need for simplicity and relevance to RL. The Double Deep Q-Network (DDQN) was identified as the most effective RL technique for navigating complex environments. However, the transfer of these simulated learnings to real-world application revealed significant discrepancies, particularly in movement control and sensor data alignment.
+This section outlines the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous RC cars. The journey began with selecting an appropriate virtual environment, for which OpenAI Gym was chosen due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
 
-The journey to resolve the RF car's alignment issues highlights the gap between theoretical models and their practical efficacy. Despite innovative attempts, including the implementation of motor encoders, power adjustments, and accelerometer integration, these solutions only partially addressed the core issues. The study's exploration into normalizing sensor data and implementing failsafe mechanisms further illustrates the nuanced challenges in aligning simulated training with real-world application.
+Despite this, transitioning from simulated models to real-world applications unveiled significant discrepancies, especially in movement control and sensor data alignment. Innovative solutions such as the implementation of motor encoders, power adjustments, and accelerometer integration were explored. These methods, however, only partially addressed the main issues. Efforts were also made to normalize sensor data and implement failsafe mechanisms for better real-world alignment.
 
-In conclusion, this section underscores the iterative and challenging nature of applying RL techniques to real-world scenarios. While theoretical knowledge serves as a crucial foundation, its application in practical settings often demands continuous refinement, innovation, and adaptation. The insights gained from addressing these challenges reinforce the importance of perseverance and creative problem-solving in the ever-evolving domain of autonomous vehicle technology.
+A notable stride was made by eliminating the Raspberry Pi from the robot's design and instead utilizing the ESP32 module for controlling both the sensors and motors. This adjustment resulted in a more lightweight and precise robot, marking a significant step in overcoming previous challenges.
+
+In essence, this section underscores the iterative and demanding process of applying RL techniques in real-world scenarios. It highlights that while theoretical knowledge forms a crucial base, its practical application necessitates continuous refinement, innovation, and adaptation. The journey through these challenges emphasizes the importance of perseverance and creative problem-solving in the advancing field of autonomous vehicle technology.
 
 ### Supplementary Materials: Video Demonstrations
 
@@ -591,6 +583,13 @@ This section provides examples of how I attempted to solve some of the challenge
 - **test 1**:
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
+
+#### video 6: Robot v2
+
+- **Description**: This video demonstrates the final version of the RC-car. This version uses the ESP32 to control both the sensors and the motors. This allowed for a more lightweight robot, which was able to move more precisely.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
 
 ### Real-World Application and Limitations
 
