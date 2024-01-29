@@ -473,13 +473,15 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Conclusion
 
-This section outlines the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous RC cars. The journey began with selecting an appropriate virtual environment, for which OpenAI Gym was chosen due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
+This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
 
-Despite this, transitioning from simulated models to real-world applications unveiled significant discrepancies, especially in movement control and sensor data alignment. Innovative solutions such as the implementation of motor encoders, power adjustments, and accelerometer integration were explored. These methods, however, only partially addressed the main issues. Efforts were also made to normalize sensor data and implement failsafe mechanisms for better real-world alignment.
+However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and accelerometer integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
 
-A notable stride was made by eliminating the Raspberry Pi from the robot's design and instead utilizing the ESP32 module for controlling both the sensors and motors. This adjustment resulted in a more lightweight and precise robot, marking a significant step in overcoming previous challenges.
+A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot's design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.
 
-In essence, this section underscores the iterative and demanding process of applying RL techniques in real-world scenarios. It highlights that while theoretical knowledge forms a crucial base, its practical application necessitates continuous refinement, innovation, and adaptation. The journey through these challenges emphasizes the importance of perseverance and creative problem-solving in the advancing field of autonomous vehicle technology.
+Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
+
+In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
 
 ### Supplementary Materials: Video Demonstrations
 
