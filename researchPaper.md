@@ -542,31 +542,31 @@ This section provides examples of how I attempted to solve some of the challenge
 
 - **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
 - **test 1**:
-- 
-https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
 
 - **test 2**:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137
+<https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
 
 ### video 8: Maze Test Indoors
 
 - **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
 - **test 1**:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b
+<https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
 
 - **test 2**:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3
+<https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
 
 - **test 3**:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e
+<https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
 
 - **test 4**:
 
-https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188
+<https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188>
 
 ### Real-World Application and Limitations
 
