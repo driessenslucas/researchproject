@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+		<title>RC Maze Visualization</title>
+		<style>
+			/* body {
+				display: flex;
+				justify-content: center;
+				flex-direction: row;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+				background-color: #f8f9fa;
+				font-family: Arial, sans-serif;
+			}
+
+			#container {
+				margin: 20px;
+				width: 40%;
+				padding: 20px;
+				background-color: white;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				border-radius: 10px;
+				max-height: 88vh;
+			} */
+
+			body,
+			html {
+				height: 100vh;
+				margin: 0;
+				font-family: Arial, sans-serif;
+				/* background: url('/frame') no-repeat center center fixed; */
+				background-size: cover;
+				overflow: hidden;
+			}
+
+			#container {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				width: auto;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				max-height: 80vh;
+				overflow-y: auto;
+			}
+
+			#sensor-readings {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				width: auto;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				max-height: 80vh;
+				overflow-y: auto;
+			}
+
+			/* Adjust the width and padding of the input elements if necessary */
+			input[type='text'],
+			button {
+				width: auto; /* Adjust as needed */
+				padding: 12px 20px;
+				margin: 8px 0;
+				display: block;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-sizing: border-box;
+			}
+
+			input[type='checkbox'] {
+				margin: 4px 10px 4px 0;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			button {
+				width: 49%;
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background-color: #45a049;
+			}
+
+			.stop-button {
+				background-color: red;
+			}
+
+			.stop-button:hover {
+				background-color: #333;
+			}
+
+			label {
+				display: block;
+				margin: 10px 0;
+				font-size: 18px;
+				color: #333;
+			}
+
+			.checkbox-label {
+				display: inline-block;
+				margin: 0 10px 0 0;
+				font-size: 18px;
+				color: #333;
+			}
+
+			h1 {
+				color: #333;
+			}
+
+			/* #video-container, */
+			#sensor-readings {
+				margin: 20px;
+				padding: 20px;
+				background: #fff;
+				border-radius: 10px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+				border-radius: 8px;
+			}
+
+			/* #sensor-readings {
+				background-color: rgba(255, 255, 255, 0.9);
+			} */
+
+			.alertbox {
+				/* Styles for visible state */
+				opacity: 1;
+				display: block;
+				/* Other styling properties like background-color, padding, etc. */
+				position: absolute;
+				top: 0;
+				left: 42vw;
+				margin: 20px;
+				padding: 20px;
+				background: red;
+				border-radius: 10px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+			.message {
+				color: white;
+				font-size: 36px;
+				font-weight: bold;
+			}
+			#maze-box {
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				background-color: rgba(255, 255, 255, 0.9);
+				border-radius: 10px;
+				padding: 20px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				overflow-y: auto;
+				z-index: -9999;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			#maze-frame {
+				height: 99vh !important;
+			}
+
+			.c-hidden {
+				opacity: 0;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="alertbox c-hidden">
+			<span class="message"></span>
+		</div>
+		<div id="maze-box">
+			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
+		</div>
+		<div id="container">
+			<h1>RC Maze Control</h1>
+			<label for="model-select">Select Model:</label>
+			<select id="model-select" name="model-select">
+				<option value="">--Select a Model--</option>
+				<!-- Options will be added dynamically -->
+			</select>
+			<label for="esp-ip">ESP IP:</label>
+			<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
+			<label class="checkbox-label" for="use-virtualized"
+				>Use Virtualized Maze:</label
+			>
+			<input
+				type="checkbox"
+				id="use-virtualized"
+				name="use-virtualized"
+				value="true"
+				checked />
+			<div class="buttonsbox">
+				<button onclick="startMaze()">Start Maze</button>
+				<button onclick="stopMaze()">Stop Maze</button>
+			</div>
+
+			<!-- <img id="maze-frame" src="/frame" alt="Maze Rendering" /> -->
+		</div>
+		<div id="video-container">
+			<div id="sensor-readings">
+				<h2>Sensor Readings:</h2>
+				<div id="sensor-data">
+					Front: <span id="sensor-front">N/A</span><br />
+					Left: <span id="sensor-left">N/A</span><br />
+					Right: <span id="sensor-right">N/A</span>
+				</div>
+				<div id="q-values"></div>
+			</div>
+			<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
+		</div>
+
+		<script>
+			function showAlert(message) {
+				var alertbox = document.querySelector('.alertbox');
+				alertbox.classList.remove('c-hidden'); // Corrected 'classlist' to 'classList'
+
+				var msgbox = document.querySelector('.message');
+				msgbox.innerHTML = message; // Corrected 'innerhtml' to 'innerHTML'
+			}
+
+			var socket = io(); // Connect to server
+
+			socket.on('connect', function () {
+				console.log('Connected to WebSocket server');
+				socket.emit('start_stream', {}); // Send message to start streaming
+			});
+
+			socket.on('warning', function (data) {
+				console.log(data);
+				fetch('/close-maze').then((response) => {
+					console.log(response);
+					showAlert(`stopped maze: ${data}`);
+					clearInterval(frameIntervalID); // Clear the frame refresh interval
+					clearInterval(sensorIntervalID); // Also clear the sensor data fetch interval
+					console.log('stopped maze');
+				});
+			});
+
+			socket.on('q_values', function (data) {
+				console.log(data);
+				// Get the list of Q-values from the data
+				var qValues = data.q_values;
+				var qValuesContainer = document.getElementById('q-values');
+				qValuesContainer.innerHTML = '<h2>Q-Values:</h2><ul>'; // Clear the previous Q-values and start a new list
+
+				// Loop through the Q-values array and add them to the list
+				for (var i = 0; i < qValues.length; i++) {
+					var listItem = document.createElement('li');
+					listItem.textContent = 'Q' + i + ': ' + qValues[i];
+					qValuesContainer.appendChild(listItem);
+				}
+
+				qValuesContainer.innerHTML += '</ul>'; // Close the list
+			});
+
+			socket.on('frame', function (data) {
+				//var img = document.getElementById('maze-frame');
+				var img = document.getElementById('maze-frame');
+				// get image data from socketio.emit('frame', {'image': image_data})
+				var imageData = data.image;
+				console.log(imageData);
+				// make blob
+				var blob = new Blob([imageData], { type: 'image/jpeg' });
+				// make objectURL
+				var objectURL = URL.createObjectURL(blob);
+				// set img.src to objectURL
+				img.src = objectURL;
+			});
+			// Initialize two background images, one visible and one hidden for buffering
+
+			// socket.on('frame', function (data) {
+
+			// 	// Add both to the body
+			// 	document.body.appendChild(bufferBackground);
+			// 	document.body.appendChild(visibleBackground);
+			// 	// get image data from socketio.emit('frame', {'image': image_data})
+			// 	var imageData = data.image;
+			// 	console.log(imageData);
+			// 	// make blob
+			// 	var blob = new Blob([imageData], { type: 'image/jpeg' });
+			// 	// make objectURL
+			// 	var objectURL = URL.createObjectURL(blob);
+			// 	// set buffer background to objectURL
+			// 	bufferBackground.style.backgroundImage = `url(${objectURL})`;
+
+			// 	// Swap z-indexes so the buffer becomes visible and the old becomes the buffer
+			// 	var temp = visibleBackground.style.zIndex;
+			// 	visibleBackground.style.zIndex = bufferBackground.style.zIndex;
+			// 	bufferBackground.style.zIndex = temp;
+
+			// 	// Now the previous 'bufferBackground' is on top and visible
+			// 	// Swap references so 'visibleBackground' points to the newly visible background
+			// 	var tempDiv = visibleBackground;
+			// 	visibleBackground = bufferBackground;
+			// 	bufferBackground = tempDiv;
+			// });
+
+			socket.on('sensor_data', function (data) {
+				document.getElementById('sensor-front').textContent = data.front;
+				document.getElementById('sensor-left').textContent = data.left;
+				document.getElementById('sensor-right').textContent = data.right;
+			});
+
+			socket.on('disconnect', function () {
+				console.log('Disconnected from WebSocket server');
+			});
+
+			function startMaze() {
+				var espIP = document.getElementById('esp-ip').value;
+				var useVirtualized = document.getElementById('use-virtualized').checked;
+				if (!useVirtualized && espIP) {
+					fetch(
+						'/start-maze/' +
+							useVirtualized +
+							'/' +
+							espIP +
+							'/' +
+							document.getElementById('model-select').value
+					).then((response) => {
+						// check if the response is ok
+						if (!response.ok) {
+							// altert with text from response
+							console.log(response);
+							response.text().then((text) => {
+								showAlert(text);
+							});
+						} else {
+							showAlert('started maze');
+						}
+					});
+				} else if (useVirtualized) {
+					if (espIP == '') {
+						espIP = '127';
+					}
+					fetch(
+						'/start-maze/' +
+							useVirtualized +
+							'/' +
+							espIP +
+							'/' +
+							document.getElementById('model-select').value
+					).then((response) => {
+						// check if the response is ok
+						if (!response.ok) {
+							// altert with text from response
+							console.log(response);
+							response.text().then((text) => {
+								// showAlert(text);
+							});
+						} else {
+							showAlert('started maze');
+							start_refresh();
+						}
+					});
+				} else {
+					showAlert('Please enter the ESP IP address.');
+				}
+			}
+			function stopMaze() {
+				fetch('/close-maze').then((response) => {
+					console.log(response);
+					showAlert('stopped maze');
+					clearInterval(frameIntervalID); // Clear the frame refresh interval
+					clearInterval(sensorIntervalID); // Also clear the sensor data fetch interval
+					console.log('stopped maze');
+				});
+			}
+
+			// Function to populate the model dropdown
+			function populateModelDropdown() {
+				fetch('/get-models') // Assuming '/get-models' is your server endpoint
+					.then((response) => response.json())
+					.then((models) => {
+						const select = document.getElementById('model-select');
+						models.forEach((model) => {
+							const option = document.createElement('option');
+							option.value = model;
+							option.textContent = model;
+							select.appendChild(option);
+						});
+						if (models.length > 0) {
+							select.selectedIndex = 1; // Set the first real option as default
+						}
+					})
+					.catch((error) => console.error('Error fetching models:', error));
+			}
+
+			populateModelDropdown();
+		</script>
+	</body>
+</html>

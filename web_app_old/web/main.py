@@ -21,8 +21,11 @@ from PIL import Image
 import queue
 import cv2
 import requests
+import aiohttp
 import asyncio
 from threading import Lock
+import gpiozero
+from gpiozero import DistanceSensor
 from flask_socketio import SocketIO
 
 ## write a little comment 
@@ -170,13 +173,13 @@ class RCMazeEnv(gym.Env):
       # Get the request to the ESP server.
       if direction == 'forward':
         esp_forward = f'http://{self.esp_ip}/forward'
-        response = requests.get(esp_forward)
+        requests.get(esp_forward)
       elif direction == 'left':
         esp_left = f'http://{self.esp_ip}/left'
-        response = requests.get(esp_left)
+        requests.get(esp_left)
       elif direction == 'right':
         esp_right = f'http://{self.esp_ip}/right'
-        response = requests.get(esp_right)
+        requests.get(esp_right)
         
    async def update_sensor_readings(self):
       if self.use_virtual_sensors:
@@ -185,92 +188,73 @@ class RCMazeEnv(gym.Env):
       else:
          await self.update_real_sensor_readings()
          send_sensor_data()
-      
-   async def update_real_sensor_readings(self):
-      import json
-      
-      url = "http://192.168.0.7/sensors/"
-      Response =  requests.get(url)
-      
-      sensor_data = Response.text
-      #GET FIRST LINE
-      sensor_data = sensor_data.split('\n', 1)[0]
-      #parse to json
-      sensor_data = json.loads(sensor_data)
-      # print(sensor_data)  # Print or process your sensor data
-      
-      self.sensor_readings['front'] = sensor_data['front']
-      self.sensor_readings['left'] = sensor_data['left'] 
-      self.sensor_readings['right'] = sensor_data['right']
-      print(self.sensor_readings)
-   
         
-   # ## for actual sensors
-   # async def update_real_sensor_readings(self):
-   #      """
-   #       Fetch sensor readings and update the sensor_readings
-   #      """
-   #      async with aiohttp.ClientSession() as session:
-   #          tasks = [
-   #              self.fetch_sensor_data('front'),
-   #              self.fetch_sensor_data('left'),
-   #              self.fetch_sensor_data('right')
-   #          ]
-   #          results = await asyncio.gather(*tasks)
+   ## for actual sensors
+   async def update_real_sensor_readings(self):
+        """
+         Fetch sensor readings and update the sensor_readings
+        """
+        async with aiohttp.ClientSession() as session:
+            tasks = [
+                self.fetch_sensor_data('front'),
+                self.fetch_sensor_data('left'),
+                self.fetch_sensor_data('right')
+            ]
+            results = await asyncio.gather(*tasks)
             
-   #          self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
+            self.sensor_readings['front'], self.sensor_readings['left'], self.sensor_readings['right'] = results
             
-   #          # Update shared sensor data structure
-   #          global sensor_data, sensor_data_lock
-   #          with sensor_data_lock:
-   #             sensor_data.update(self.sensor_readings)
+            # Update shared sensor data structure
+            global sensor_data, sensor_data_lock
+            with sensor_data_lock:
+               sensor_data.update(self.sensor_readings)
 
-   # async def fetch_sensor_data(self, direction):
-   #    """
-   #     Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
+   async def fetch_sensor_data(self, direction):
+      """
+       Fetch sensor data from sensor. This is a function to be used in order to get sensor data from sensor
        
-   #     @param session - connect to the session
+       @param session - connect to the session
        
-   #     @return Float value of sensor data from the HC-SR04
-   #    """
-   #    def map_distance(distance):
-   #       """
-   #        Map a distance so it acts closer to the simulated distances
+       @return Float value of sensor data from the HC-SR04
+      """
+      def map_distance(distance):
+         """
+          Map a distance so it acts closer to the simulated distances
           
-   #        @param distance - The distance to map.
+          @param distance - The distance to map.
           
-   #        @return The distance in cm
-   #       """
+          @return The distance in cm
+         """
          
-   #       if distance < 25:
-   #          # No change for distances less than 20 cm
-   #          return distance
-   #       else:
-   #          distance = 25 + (distance - 25) * 0.5
-   #          return float(distance)
-   #    time.sleep(0.1)
-   #    try:
-   #       sensor_front = DistanceSensor(echo=5, trigger=6)
-   #       sensor_left = DistanceSensor(echo=17, trigger=27)
-   #       sensor_right = DistanceSensor(echo=23, trigger=24)
-   #       try:
-   #          distance = 0
-   #          if direction == "front":
-   #             distance = sensor_front.distance * 100
-   #          elif direction == "left":
-   #             distance = sensor_left.distance * 100
-   #          elif direction == "right":
-   #             distance = sensor_right.distance * 100
+         if distance < 25:
+            # No change for distances less than 20 cm
+            return distance
+         else:
+            distance = 25 + (distance - 25) * 0.5
+            return float(distance)
+      time.sleep(0.1)
+      try:
+         sensor_front = DistanceSensor(echo=5, trigger=6)
+         sensor_left = DistanceSensor(echo=17, trigger=27)
+         sensor_right = DistanceSensor(echo=23, trigger=24)
+         try:
+            distance = 0
+            if direction == "front":
+               distance = sensor_front.distance * 100
+            elif direction == "left":
+               distance = sensor_left.distance * 100
+            elif direction == "right":
+               distance = sensor_right.distance * 100
                
-   #          mapped_distance = map_distance(distance)
+            mapped_distance = map_distance(distance)
 
-   #          return mapped_distance
-   #       except:
-   #          pass
-   #    except Exception as e:
-   #       print(f"Error: {e}")
-   #       send_warning("Error reading sensor")
-   #       return "Error reading sensor"
+            return mapped_distance
+         except:
+            pass
+      except Exception as e:
+         print(f"Error: {e}")
+         send_warning("Error reading sensor")
+         return "Error reading sensor"
 
 
    async def update_virtual_sensor_readings(self):
