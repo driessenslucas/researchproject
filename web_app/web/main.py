@@ -23,6 +23,7 @@ import cv2
 import requests
 import asyncio
 from threading import Lock
+import json
 from flask_socketio import SocketIO
 
 ## write a little comment 
@@ -187,7 +188,22 @@ class RCMazeEnv(gym.Env):
          send_sensor_data()
       
    async def update_real_sensor_readings(self):
-      import json
+      
+      def map_distance(distance):
+         """
+          Map a distance so it acts closer to the simulated distances
+          
+          @param distance - The distance to map.
+          
+          @return The distance in cm
+         """
+         
+         if distance < 25:
+            # No change for distances less than 20 cm
+            return distance
+         else:
+            distance = 25 + (distance - 25) * 0.5
+            return float(distance)
       
       url = "http://192.168.0.7/sensors/"
       Response =  requests.get(url)
@@ -199,9 +215,11 @@ class RCMazeEnv(gym.Env):
       sensor_data = json.loads(sensor_data)
       # print(sensor_data)  # Print or process your sensor data
       
-      self.sensor_readings['front'] = sensor_data['front']
-      self.sensor_readings['left'] = sensor_data['left'] 
-      self.sensor_readings['right'] = sensor_data['right']
+
+      
+      self.sensor_readings['front'] = map_distance(sensor_data['front'])
+      self.sensor_readings['left'] = map_distance(sensor_data['left'] )
+      self.sensor_readings['right'] = map_distance(sensor_data['right'])
       print(self.sensor_readings)
    
    async def update_virtual_sensor_readings(self):
