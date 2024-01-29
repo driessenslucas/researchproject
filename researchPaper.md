@@ -175,18 +175,14 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - 2. **Assembly Process**:
       - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
       - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
-      - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement.
-      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source to control the robot and process sensor data.
+      - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement. The MPU6050 accelerometer is used for accurate turning. The mini OlED screen is used for displaying the IP address.
+      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source.
 
   - **Wiring and Configuration**
 
-    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation. The HC-SR04 ultrasonic sensors are connected to the ESP32 module for measuring the distance to the walls.
+    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini OlED screen, the MPU6050 accelerometer and the HC-SR04 ultrasonic sensors are all connected to their respective pins on the ESP32 module. Refer to the wiring diagram shown later in this paper for more details.
 
-      - **Refer to the wiring diagram below for details**:
-
-      ![ESP32 Wiring](./images/schematics/esp_updated.png)
-
-    - 3. **Programming**: The ESP32 is are programmed to facilitate communication between the agent and the robot. The ESP32 module is programmed to receive commands from the agent and control the robot's movement accordingly. The ESP32 module is also programmed to send sensor data to the agent for decision-making. The web application on the other hand is programmed to send commands from the agent to the ESP32 module and receive sensor data from the ESP32 module, while also rendering the simulation.
+    - 3. **Programming**: The ESP32 is programmed and used to send the HC-SR04 sensor readings to the agent and receive commands based on those to control the robot's movement, with the help of the MPU6050 for accurate rotations.
 
   - **Challenges and Adjustments**:
 
@@ -226,6 +222,16 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
     - **Maze Navigation**: Visual assessment of the RC car's capability to navigate the real-world maze.
     - **Sensor Data Analysis**: Evaluating real-time sensor data for navigation and collision avoidance.
+
+- **Physical Maze Construction**:
+
+  - **Overview**: As an integral part of the research, a physical maze was constructed to mirror the virtual RCMazeEnv. This real-world maze serves as a crucial platform for testing and evaluating the RC robot's navigation capabilities and the effectiveness of the reinforcement learning algorithms in a tangible environment.
+
+  - **Guide**: The complete construction process, including the list of materials, tools required, assembly instructions, is documented in detail in a separate installation guide. This guide provides step-by-step instructions, accompanied by images and diagrams, to replicate the physical maze accurately.
+
+  For the full assembly process, solutions, and final setup, please refer to the guide: [guide](https://github.com/driessenslucas/researchproject/blob/main/hardware_installtion.md).
+
+  Integration with the Research: The physical maze's role in the research extends beyond a mere testing ground. It allows for a direct comparison between virtual simulations and real-world applications, thereby enhancing the validity and applicability of my findings.
 
 - **Web Application**
 
@@ -382,7 +388,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
 This section provides a detailed overview of the hardware components used in the research project, focusing on the assembly and configuration of the RC robot designed for maze navigation.
 
-![final_robot](./images/assembly_images/IMG_3476.jpeg)
+![final_robot](./images/final_test/jp_final.jpeg)
 
 #### Components List
 
@@ -397,6 +403,7 @@ This section provides a detailed overview of the hardware components used in the
 - **Supplementary Materials**: List of additional materials like screws, wires, and tools required for assembly.
   - 4mm thick screws 5mm long to hold the wood together - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208)
   - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
+  - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
 #### Wiring Guide
 
@@ -478,7 +485,7 @@ In essence, this section underscores the iterative and demanding process of appl
 
 #### Introduction
 
-This section provides examples of how I attempted to solve some of the challenges encountered in this research project.
+This section provides examples of how I attempted to solve some of the challenges encountered in this research project. For more videos, please refer to the [video folder](https://github.com/driessenslucas/researchproject/tree/main/testvideos)
 
 #### Video 1: mpu6050 90 degree turn
 
@@ -531,6 +538,26 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
 
+### video 7: Maze Test Outdoors
+
+- **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
+- **test 1**:
+  - ![Maze Test Outdoors](./images/final_test/test_outside.mp4)
+- **test 2**:
+  - ![Maze Test Outdoors](./images/final_test/test_outside2.mp4)
+
+### video 8: Maze Test Indoors
+
+- **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
+- **test 1**:
+  - ![Maze Test Indoors](./images/final_test/test_inside.mp4)
+- **test 2**:
+  - ![Maze Test Indoors](./images/final_test/test_inside2.mp4)
+- **test 3**:
+  - ![Maze Test Indoors](./images/final_test/test_inside3.mp4)
+- **test 4**:
+  - ![Maze Test Indoors](./images/final_test/test_inside4.mp4)
+
 ### Real-World Application and Limitations
 
 #### Introduction to Sensor and Movement Discrepancies
@@ -567,7 +594,7 @@ The transition from simulation to real-world application in autonomous vehicle n
 
 ## Credits
 
-I would like to thank my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be) for his guidance and support throughout this research project.
+I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest.
 
 ## Sources and Inspiration
 

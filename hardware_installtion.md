@@ -17,17 +17,20 @@
     - [Step 6: Mount all the supports on the bottom plate](#step-6-mount-all-the-supports-on-the-bottom-plate)
     - [Step 7: Attach the top plate (you will need to drill holes so that the supports can fit through the top plate)](#step-7-attach-the-top-plate-you-will-need-to-drill-holes-so-that-the-supports-can-fit-through-the-top-plate)
     - [Step 8: Attach the ultrasonic sensor to the top plate](#step-8-attach-the-ultrasonic-sensor-to-the-top-plate)
-    - [Step 9: Attatch the battery pack to the RPI 5](#step-9-attatch-the-battery-pack-to-the-rpi-5)
-    - [Step 9.5: Place RPI 5 on top of the top plate](#step-95-place-rpi-5-on-top-of-the-top-plate)
-    - [Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)](#step-10-connect-the-hc-sr04-sensor-to-the-rpi-5-and-try-to-fit-them-on-the-top-plate-togheter-with-the-battery-holder-for-the-esp32-and-the-mini-oled-screens)
+    - [Step 9: place the esp32 on the top plate togheter with a mini breadboard for the sensor wires](#step-9-place-the-esp32-on-the-top-plate-togheter-with-a-mini-breadboard-for-the-sensor-wires)
   - [Wiring Guide](#wiring-guide)
     - [ESP32 Wiring](#esp32-wiring)
       - [esp32 pins](#esp32-pins)
   - [Building the maze](#building-the-maze)
+    - [final result](#final-result)
+    - [prerequisites](#prerequisites)
+    - [Step 1: calculations](#step-1-calculations)
+    - [step 2: cut the wood](#step-2-cut-the-wood)
+    - [step 3: screw the wood together](#step-3-screw-the-wood-together)
 
 ## Introduction
 
-This guide provides step-by-step instructions for assembling and configuring the RC robot used in our research project. The RC robot, powered by a Raspberry Pi 5 and an ESP32-WROOM-32 module, is designed to navigate a maze using a combination of onboard sensors and reinforcement learning algorithms.
+This guide provides step-by-step instructions for assembling and configuring the RC robot used in our research project. The RC robot, powered by ESP32-WROOM-32 module, controlled by a web app is designed to navigate a maze using a combination of onboard sensors and reinforcement learning algorithms.
 
 ## Safety Precautions
 
@@ -37,7 +40,6 @@ This guide provides step-by-step instructions for assembling and configuring the
 
 ## Components List
 
-- Raspberry Pi 5 8gb ram - Available at [KiwiElectronics](https://www.kiwi-electronics.com/en/raspberry-pi-5-computers-accessories-415/raspberry-pi-5-8gb-11580)
 - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
 - 3D printed parts from Thingiverse ([hc-sr04](https://www.thingiverse.com/thing:3436448/files), [top plate + alternative for the robot kit](https://www.thingiverse.com/thing:2544002))
 - Motor Driver - available at [DFRobot](https://www.dfrobot.com/product-66.html)
@@ -47,7 +49,9 @@ This guide provides step-by-step instructions for assembling and configuring the
 - Battery For RPI 5 - available at [Amazon](https://www.amazon.com.be/dp/B09QRS666Y)
 - Battery Holder For ESP 32 - available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW)
 
-- Other miscellaneous components (screws, wires, etc.)
+- Nuts and bolts (M3) - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
+- Screws - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-40-x-5-mm-15-stuks/5368216)
+- wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
 ## Tools Required
 
@@ -71,9 +75,16 @@ Attach the motor driver to the base using the 2 screws that came with the kit. T
 
 ### Step 3: Attach ESP32-WROOM-32 module to the motor driver
 
-Connect the Wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below.
+Connect the Wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below. with
 
-![Base Assembly](./images/assembly_images/esp32_schema.png)
+```C
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+```
+
+![Base Assembly](./images/schematics/esp_updated.png)
 
 ### Step 4: Cut the support beams
 
@@ -83,7 +94,7 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ### Step 5: Screw in the supports on the bottom of the bottom plate
 
-![Base Assembly](./images/assembly_images/washers_underneath.jpeg)'
+![Base Assembly](./images/assembly_images/washers_underneath.jpeg)
 
 ### Step 6: Mount all the supports on the bottom plate
 
@@ -93,29 +104,25 @@ Cut the support beams so that we can securely attach the top plate to the base. 
 
 ### Step 7: Attach the top plate (you will need to drill holes so that the supports can fit through the top plate)
 
-![Base Assembly](./images/assembly_images/top_placed.jpeg)
+![Base Assembly](./images/assembly_images/top_plate_assembly.jpeg)
+
+![Base Assembly](./images/assembly_images/jp_bottom.jpeg)
 
 ### Step 8: Attach the ultrasonic sensor to the top plate
 
 ![Base Assembly](./images/assembly_images/hc-sr04.jpeg)
 
-![Base Assembly](./images/assembly_images/top_mounted.jpeg)
+![Base Assembly](./images/final_test/jp_sensors.jpeg)
 
-### Step 9: Attatch the battery pack to the RPI 5
+### Step 9: place the esp32 on the top plate togheter with a mini breadboard for the sensor wires
 
-![Base Assembly](./images/assembly_images/PI_sugar.jpg)
+As you can see the battery for the esp is attached to the top plate with zip ties.
 
-### Step 9.5: Place RPI 5 on top of the top plate
+![Base Assembly](./images/final_test/jp_final2.jpeg)
 
-![Base Assembly](./images/assembly_images/rpi_on_top.jpeg)
+![Base Assembly](./images/final_test/jp_final.jpeg)
 
-### Step 10: Connect the hc-sr04 sensor to the RPI 5 and try to fit them on the top plate, togheter with the battery holder for the ESP32 and the mini oled screen(s)
-
-![Base Assembly](./images/assembly_images/battery_holder.jpeg)
-
-![Base Assembly](./images/assembly_images/completed.jpeg)
-
-...
+![Base Assembly](./images/final_test/jp_final3.jpeg)
 
 ## Wiring Guide
 
@@ -152,4 +159,36 @@ int sensor2Echo = 35; //GPIO front sensor
 
 ## Building the maze
 
-// add documentation for building the maze
+### final result
+
+![maze](./images/final_test/maze_build.jpeg)
+![maze](./images/final_test/final_maze_build.jpeg)
+
+### prerequisites
+
+- screws used:
+  - ![screws](./images/assembly_images/screws_used.jpeg)
+- Nuts used:
+  - ![nuts](./images/assembly_images/m3_nuts.jpeg)
+- Supports used:
+  - ![supports](./images/assembly_images/m3_supports.jpeg)
+- Wood used:
+  - planks cut to 10cm width by 120cm length
+  - ![wood](./images/assembly_images/wooden_planks.jpeg)
+
+### Step 1: calculations
+
+- where 1 cell is 25cm x 25cm
+  ![calc](./images/assembly_images/size_calculations.jpeg)
+
+### step 2: cut the wood
+
+I let the store cut the wooden planks for me to the correct size, As you could see in the prerequisites.
+
+### step 3: screw the wood together
+
+![screw](./images/assembly_images/drilling_wood_frames.jpeg)
+
+It should turn out like this, repeat this for all the blocks in the maze:
+
+![screw](./images/assembly_images/wooden_frames.jpeg)
