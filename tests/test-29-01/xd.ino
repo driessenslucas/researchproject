@@ -1,6 +1,7 @@
 #include "I2Cdev.h"
 #include "MPU6050.h"
 #include "Wire.h"
+#include <ssd1306.h>
 
 #include <WiFi.h>
 #include <ArduinoOTA.h>
@@ -9,7 +10,6 @@ const char* ssid = "telenet-799DCED";
 const char* password = "";
 
 WiFiServer server(80);
-
 
 // Variable to store the HTTP request
 String header;
@@ -69,9 +69,14 @@ void setup() {
     while (1)
       ;
   }
-//  mpu.setXGyroOffset(302);
-//  mpu.setYGyroOffset(2);
-//  mpu.setZGyroOffset();
+
+  ssd1306_setFixedFont(ssd1306xled_font6x8);
+  ssd1306_128x64_i2c_init();
+  //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
+  ssd1306_clearScreen();
+  ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
+  String ip = WiFi.localIP().toString();
+  ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -158,52 +163,20 @@ void loop() {
         if (currentLine.endsWith("GET /forward")) {
           Serial.println("moving forward");
           move_forward();
-
-          client.println();
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-type:text/plain");
-          client.println("Connection: close");
-
-          client.println(createJsonResponse());
-          client.println("moving forward");
         } else if (currentLine.endsWith("GET /left")) {
           Serial.println("moving left");
           move_left();
-
-          client.println();
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-type:text/plain");
-          client.println("Connection: close");
-
-          client.println(createJsonResponse());
-          client.println("left moving");
         } else if (currentLine.endsWith("GET /right")) {
           Serial.println("moving right");
           move_right();
-
-          client.println();
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-type:text/plain");
-          client.println("Connection: close");
-
-          client.println(createJsonResponse());
-          client.println("right moving");
         } else if (currentLine.endsWith("GET /stop")) {
           stop_moving();
-
-          client.println();
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-type:text/plain");
-          client.println("Connection: close");
-
-          client.println(createJsonResponse());
-          client.println("stopped moving");
         } else if (currentLine.endsWith("GET /sensors")) {
-          client.println();
+
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
-
+          client.println();
           client.println(createJsonResponse());
           client.println("got sensors");
         }
@@ -244,6 +217,10 @@ String get_sensor1() {
   Serial.print("Distance (cm): ");
   Serial.println(distanceCm);
 
+  if(distanceCm > 100.0){
+    distanceCm = 100;
+  }
+
   return String(distanceCm);
 }
 String get_sensor2() {
@@ -266,6 +243,10 @@ String get_sensor2() {
   // Prints the distance in the Serial Monitor
   Serial.print("Distance (cm): ");
   Serial.println(distanceCm);
+
+  if(distanceCm > 100.0){
+    distanceCm = 100;
+  }
 
   return String(distanceCm);
 }
@@ -290,6 +271,10 @@ String get_sensor3() {
   Serial.print("Distance (cm): ");
   Serial.println(distanceCm);
 
+  if(distanceCm > 100.0){
+    distanceCm = 100;
+  }
+
   return String(distanceCm);
 }
 
@@ -300,13 +285,13 @@ void move_forward() {
   digitalWrite(M1, LOW);   // Move forward
   digitalWrite(M2, HIGH);  // Move forward
 
-  delay(500);
+  delay(700);
 
   // Stop motors after turning
 
   analogWrite(E2, 0);
 
-  delay(20);
+  delay(30);
   analogWrite(E1, 0);
 
   digitalWrite(M1, LOW);
@@ -425,7 +410,7 @@ void move_right() {
     Serial.println(angleDifference);
     angleDifference = abs(angleDifference);
 
-    if (initialAngleSet && (angleDifference > 80)) {
+    if (initialAngleSet && (angleDifference > 77)) {
         Serial.println("Rotated approximately 90 degrees from the initial position");
         // Reset the initial angle to start measuring again
         initialAngleSet = false;
