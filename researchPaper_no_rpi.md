@@ -525,11 +525,10 @@ This section provides examples of how I attempted to solve some of the challenge
 
 #### video 6: Robot v2
 
-https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088
-
-
 - **Description**: This video demonstrates the final version of the RC-car. This version uses the ESP32 to control both the sensors and the motors. This allowed for a more lightweight robot, which was able to move more precisely.
 - **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
 
 ### Real-World Application and Limitations
 
