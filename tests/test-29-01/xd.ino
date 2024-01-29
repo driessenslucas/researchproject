@@ -10,6 +10,7 @@ const char* password = "";
 
 WiFiServer server(80);
 
+
 // Variable to store the HTTP request
 String header;
 
@@ -68,6 +69,9 @@ void setup() {
     while (1)
       ;
   }
+//  mpu.setXGyroOffset(302);
+//  mpu.setYGyroOffset(2);
+//  mpu.setZGyroOffset();
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -312,15 +316,15 @@ void move_forward() {
 
 void move_left() {
   isTurning = true;
-  int speed = 50;
+  int speed = 70;
   // Read and handle MPU6050 data
   while(isTurning) {
-    if (speed > 200){
-      speed = 200;
+    if (speed > 100){
+      speed = 100;
     }
     // Left turn code for 90-degree stationary turn
-    analogWrite(E1, 100); // Set speed for motor 1
-    analogWrite(E2, 100); // Set speed for motor 2
+    analogWrite(E1, speed); // Set speed for motor 1
+    analogWrite(E2, speed); // Set speed for motor 2
     digitalWrite(M1, HIGH); // Run motor 1 forward
     digitalWrite(M2, HIGH); // Run motor 2 backward
 
@@ -366,20 +370,23 @@ void move_left() {
         stop_moving();
         isTurning = false;
     }
-  }
+    delay(100);
+    speed++;
+  }    
+  
 }
 
 void move_right() {
   isTurning = true;
-  int speed = 50;
+  int speed = 70;
     // Read and handle MPU6050 data
   while(isTurning) {
-    if (speed > 200){
-      speed = 200;
+    if (speed > 100){
+      speed = 100;
     }
   // Right turn code for 90-degree stationary turn
-    analogWrite(E1, 100); // Set speed for motor 1
-    analogWrite(E2, 100); // Set speed for motor 2
+    analogWrite(E1, speed); // Set speed for motor 1
+    analogWrite(E2, speed); // Set speed for motor 2
     digitalWrite(M1, LOW); // Run motor 1 backward
     digitalWrite(M2, LOW); // Run motor 2 forward
 
@@ -425,41 +432,11 @@ void move_right() {
         stop_moving();
         isTurning = false;
     }
+    delay(100);
     speed++;
   }
 }
 
-// void move_left() {
-//   // Left turn code for 90-degree stationary turn
-//   analogWrite(E1, 200);    // Set speed for motor 1
-//   analogWrite(E2, 200);    // Set speed for motor 2
-//   digitalWrite(M1, HIGH);  // Run motor 1 forward
-//   digitalWrite(M2, HIGH);  // Run motor 2 backward
-
-//   delay(turnDuration);  // Wait for the duration of the turn
-
-//   // Stop motors after turning
-//   analogWrite(E1, 0);
-//   analogWrite(E2, 0);
-//   digitalWrite(M1, LOW);
-//   digitalWrite(M2, HIGH);
-// }
-
-// void move_right() {
-//   // Right turn code for 90-degree stationary turn
-//   analogWrite(E1, 200);   // Set speed for motor 1
-//   analogWrite(E2, 200);   // Set speed for motor 2
-//   digitalWrite(M1, LOW);  // Run motor 1 backward
-//   digitalWrite(M2, LOW);  // Run motor 2 forward
-
-//   delay(turnDuration);  // Wait for the duration of the turn
-
-//   // Stop motors after turning
-//   analogWrite(E1, 0);
-//   analogWrite(E2, 0);
-//   digitalWrite(M1, LOW);
-//   digitalWrite(M2, HIGH);
-// }
 void stop_moving() {
   isTurning = false;
   analogWrite(E1, 0);  // Stop one motor for turning
