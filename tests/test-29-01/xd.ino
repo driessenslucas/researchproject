@@ -6,7 +6,8 @@
 #include <WiFi.h>
 #include <ArduinoOTA.h>
 
-
+const char* ssids[] = {"SSID1", "SSID2"}; // Enter your WiFi SSIDs
+const char* passwords[] = {"PASSWORD1", "PASSWORD2"}; // Enter your WiFi passwords
 
 const int numberOfNetworks = 2;
 
