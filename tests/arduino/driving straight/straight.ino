@@ -28,7 +28,7 @@ int M1 = 17;
 int E2 = 19;
 int M2 = 4;
 
-int turnDuration = 200;
+int turnDuration = 350;
 
 
 void setup() {
@@ -132,7 +132,6 @@ void loop() {
           Serial.println("moving forward");
           move_forward();
 
-          client.println();
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
@@ -143,7 +142,6 @@ void loop() {
           Serial.println("moving left");
           move_left();
 
-          client.println();
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
@@ -154,7 +152,6 @@ void loop() {
           Serial.println("moving right");
           move_right();
 
-          client.println();
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
@@ -164,7 +161,6 @@ void loop() {
         } else if (currentLine.endsWith("GET /stop")) {
           stop_moving();
           
-          client.println();
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
@@ -173,11 +169,11 @@ void loop() {
           client.println("stopped moving");
         }
         else if (currentLine.endsWith("GET /sensors")) {
-          client.println();
+          
           client.println("HTTP/1.1 200 OK");
           client.println("Content-type:text/plain");
           client.println("Connection: close");
-
+          client.println(); // Empty line to separate headers and body
           client.println(createJsonResponse());
           client.println("got sensors");
         }
@@ -209,17 +205,18 @@ String get_sensor1() {
   digitalWrite(sensor0Trig, LOW);
   
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  int duration = pulseIn(sensor0Echo, HIGH);
+  int duration1 = pulseIn(sensor0Echo, HIGH);
   
   // Calculate the distance
-  float distanceCm = duration * SOUND_SPEED/2;
+  float distanceCm1 = duration1 * SOUND_SPEED/2;
   
 
   // Prints the distance in the Serial Monitor
   Serial.print("Distance (cm): ");
-  Serial.println(distanceCm);
+  Serial.println(distanceCm1);
 
-  return String(distanceCm);
+  
+  return String(distanceCm1);
 }
 String get_sensor2() {
 
@@ -232,20 +229,20 @@ String get_sensor2() {
   digitalWrite(sensor1Trig, LOW);
   
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  int duration = pulseIn(sensor1Echo, HIGH);
+  int duration2 = pulseIn(sensor1Echo, HIGH);
   
   // Calculate the distance
-  float distanceCm = duration * SOUND_SPEED/2;
+  float distanceCm2 = duration2 * SOUND_SPEED/2;
   
 
   // Prints the distance in the Serial Monitor
   Serial.print("Distance (cm): ");
-  Serial.println(distanceCm);
+  Serial.println(distanceCm2);
 
-  return String(distanceCm);
+  return String(distanceCm2);
 }
 String get_sensor3() {
-
+  
   // Clears the trigPin
   digitalWrite(sensor2Trig, LOW);
   delayMicroseconds(2);
@@ -255,17 +252,17 @@ String get_sensor3() {
   digitalWrite(sensor2Trig, LOW);
   
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  int duration = pulseIn(sensor2Echo, HIGH);
+  int duration3 = pulseIn(sensor2Echo, HIGH);
   
   // Calculate the distance
-  float distanceCm = duration * SOUND_SPEED/2;
+  float distanceCm3 = duration3 * SOUND_SPEED/2;
   
 
   // Prints the distance in the Serial Monitor
   Serial.print("Distance (cm): ");
-  Serial.println(distanceCm);
+  Serial.println(distanceCm3);
 
-  return String(distanceCm);
+  return String(distanceCm3);
 }
 
 void move_forward() {
@@ -275,10 +272,13 @@ void move_forward() {
   digitalWrite(M1, LOW);   // Move forward
   digitalWrite(M2, HIGH);  // Move forward
 
-  delay(500);
+  delay(800);
 
   // Stop motors after turning
   analogWrite(E2, 0);
+
+  delay(25);
+
   analogWrite(E1, 0);
   digitalWrite(M2, HIGH);
   digitalWrite(M1, LOW);
