@@ -5,7 +5,8 @@
 **Name:** Lucas Driessens  
 **Institution:** Howest University of Applied Sciences  
 **Course:** Research Project  
-**Date:** 2024-30-01
+**Date:** 2024-30-01  
+**Github Repository:** <https://github.com/driessenslucas/researchproject>
 
 ## Description
 
@@ -23,14 +24,14 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
 
-## table of contents
+## Table of Contents
 
 - [Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning](#exploring-the-feasibility-of-sim2real-transfer-in-reinforcement-learning)
   - [Author Information](#author-information)
   - [Description](#description)
   - [Abstract](#abstract)
   - [Introduction](#introduction)
-  - [table of contents](#table-of-contents)
+  - [Table of Contents](#table-of-contents)
     - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
     - [Real-World Applications of RL](#real-world-applications-of-rl)
     - [Purpose and Significance of the Study](#purpose-and-significance-of-the-study)
@@ -71,6 +72,8 @@ The journey of developing autonomous vehicles using reinforcement learning (RL) 
       - [video 4: New RC-car with encoder and more powerful motor](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
       - [video 5: Encoder implementation (original RC-car)](#video-5-encoder-implementation-original-rc-car)
       - [video 6: Robot v2](#video-6-robot-v2)
+    - [video 7: Maze Test Outdoors](#video-7-maze-test-outdoors)
+    - [video 8: Maze Test Indoors](#video-8-maze-test-indoors)
     - [Real-World Application and Limitations](#real-world-application-and-limitations)
       - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
       - [Real-World Application](#real-world-application)
@@ -244,18 +247,14 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - 2. **Assembly Process**:
       - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
       - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
-      - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement.
-      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source to control the robot and process sensor data.
+      - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement. The MPU6050 accelerometer is used for accurate turning. The mini OlED screen is used for displaying the IP address.
+      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source.
 
   - **Wiring and Configuration**
 
-    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini olED screen is connected to the ESP32 module for displaying the IP address. The MPU6050 accelerometer is connected to the ESP32 module for measuring the car's orientation. The HC-SR04 ultrasonic sensors are connected to the ESP32 module for measuring the distance to the walls.
+    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini OlED screen, the MPU6050 accelerometer and the HC-SR04 ultrasonic sensors are all connected to their respective pins on the ESP32 module. Refer to the wiring diagram shown later in this paper for more details.
 
-      - **Refer to the wiring diagram below for details**:
-
-      ![ESP32 Wiring](./images/schematics/esp_updated.png)
-
-    - 3. **Programming**: The ESP32 is are programmed to facilitate communication between the agent and the robot. The ESP32 module is programmed to receive commands from the agent and control the robot's movement accordingly. The ESP32 module is also programmed to send sensor data to the agent for decision-making. The web application on the other hand is programmed to send commands from the agent to the ESP32 module and receive sensor data from the ESP32 module, while also rendering the simulation.
+    - 3. **Programming**: The ESP32 is programmed and used to send the HC-SR04 sensor readings to the agent and receive commands based on those to control the robot's movement, with the help of the MPU6050 for accurate rotations.
 
   - **Challenges and Adjustments**:
 
@@ -295,6 +294,16 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
     - **Maze Navigation**: Visual assessment of the RC car's capability to navigate the real-world maze.
     - **Sensor Data Analysis**: Evaluating real-time sensor data for navigation and collision avoidance.
+
+- **Physical Maze Construction**:
+
+  - **Overview**: As an integral part of the research, a physical maze was constructed to mirror the virtual RCMazeEnv. This real-world maze serves as a crucial platform for testing and evaluating the RC robot's navigation capabilities and the effectiveness of the reinforcement learning algorithms in a tangible environment.
+
+  - **Guide**: The complete construction process, including the list of materials, tools required, assembly instructions, is documented in detail in a separate installation guide. This guide provides step-by-step instructions, accompanied by images and diagrams, to replicate the physical maze accurately.
+
+  For the full assembly process, solutions, and final setup, please refer to the guide: [guide](https://github.com/driessenslucas/researchproject/blob/main/hardware_installtion.md).
+
+  Integration with the Research: The physical maze's role in the research extends beyond a mere testing ground. It allows for a direct comparison between virtual simulations and real-world applications, thereby enhancing the validity and applicability of my findings.
 
 - **Web Application**
 
@@ -451,7 +460,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
 This section provides a detailed overview of the hardware components used in the research project, focusing on the assembly and configuration of the RC robot designed for maze navigation.
 
-![final_robot](./images/assembly_images/IMG_3476.jpeg)
+![final_robot](./images/final_test/jp_final.jpeg)
 
 #### Components List
 
@@ -466,6 +475,7 @@ This section provides a detailed overview of the hardware components used in the
 - **Supplementary Materials**: List of additional materials like screws, wires, and tools required for assembly.
   - 4mm thick screws 5mm long to hold the wood together - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208)
   - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
+  - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
 #### Wiring Guide
 
@@ -521,7 +531,7 @@ This section provides a detailed overview of the hardware components used in the
 
     ![normalize_distance](./images/normalize_distance_equation.png)
 
-    In this function, the distance value is scaled by dividing it by `sensor_max_range` to ensure it falls within a 0 to 1 range. The result is then clamped to remain within these bounds, and finally multiplied by 1000 to normalize it within a 0 to 1000 range.
+    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
 
 ### Challenge 7: Integration of Failsafe Mechanisms
 
@@ -535,19 +545,21 @@ This section provides a detailed overview of the hardware components used in the
 
 ### Conclusion
 
-This section outlines the practical challenges encountered in the application of reinforcement learning (RL) techniques to autonomous RC cars. The journey began with selecting an appropriate virtual environment, for which OpenAI Gym was chosen due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
+This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
 
-Despite this, transitioning from simulated models to real-world applications unveiled significant discrepancies, especially in movement control and sensor data alignment. Innovative solutions such as the implementation of motor encoders, power adjustments, and accelerometer integration were explored. These methods, however, only partially addressed the main issues. Efforts were also made to normalize sensor data and implement failsafe mechanisms for better real-world alignment.
+However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and accelerometer integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
 
-A notable stride was made by eliminating the Raspberry Pi from the robot's design and instead utilizing the ESP32 module for controlling both the sensors and motors. This adjustment resulted in a more lightweight and precise robot, marking a significant step in overcoming previous challenges.
+A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot's design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.
 
-In essence, this section underscores the iterative and demanding process of applying RL techniques in real-world scenarios. It highlights that while theoretical knowledge forms a crucial base, its practical application necessitates continuous refinement, innovation, and adaptation. The journey through these challenges emphasizes the importance of perseverance and creative problem-solving in the advancing field of autonomous vehicle technology.
+Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
+
+In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
 
 ### Supplementary Materials: Video Demonstrations
 
 #### Introduction
 
-This section provides examples of how I attempted to solve some of the challenges encountered in this research project.
+This section provides examples of how I attempted to solve some of the challenges encountered in this research project. For more videos, please refer to the [video folder](https://github.com/driessenslucas/researchproject/tree/main/testvideos)
 
 #### Video 1: mpu6050 90 degree turn
 
@@ -600,6 +612,36 @@ This section provides examples of how I attempted to solve some of the challenge
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
 
+### video 7: Maze Test Outdoors
+
+- **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
+
+### video 8: Maze Test Indoors
+
+- **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
+
+- **test 3**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
+
+- **test 4**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188>
+
 ### Real-World Application and Limitations
 
 #### Introduction to Sensor and Movement Discrepancies
@@ -636,7 +678,7 @@ The transition from simulation to real-world application in autonomous vehicle n
 
 ## Credits
 
-I would like to thank my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be) for his guidance and support throughout this research project.
+I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest.
 
 ## Sources and Inspiration
 
