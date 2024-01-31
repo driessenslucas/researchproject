@@ -7,7 +7,6 @@ This project at Howest University investigates the transfer of a Reinforcement L
 ---
 
 [View the Research paper](https://github.com/driessenslucas/researchproject/blob/main/researchPaper.md)
-or the pdf version [here](https://github.com/driessenslucas/researchproject/blob/main/Paper.pdf)
 
 ## Author
 
