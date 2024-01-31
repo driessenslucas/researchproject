@@ -4,6 +4,11 @@
 
 This project at Howest University investigates the transfer of a Reinforcement Learning (RL) agent from a simulated environment to the real world, with a focus on maze navigation using a remote-controlled car. It aims to bridge theoretical RL models and real-world applications in AI and robotics.
 
+---
+
+[View the Research paper](https://github.com/driessenslucas/researchproject/blob/main/researchPaper.md)
+or the pdf version [here](https://github.com/driessenslucas/researchproject/blob/main/Paper.pdf)
+
 ## Author
 
 **Lucas Driessens**  
@@ -48,8 +53,3 @@ The research evaluates the feasibility of sim2real transfer in RL through a seri
 ## Virtual Environment Demo
 
 <https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f>
-
----
-
-[View the Research paper](https://github.com/driessenslucas/researchproject/blob/main/researchPaper.md)
-or the pdf version [here](https://github.com/driessenslucas/researchproject/blob/main/Paper.pdf)
