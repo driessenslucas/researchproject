@@ -48,7 +48,7 @@ The research evaluates the feasibility of sim2real transfer in RL through a seri
 
 ## Credits
 
-- Special thanks to supervisor Gevaert Wouter for his invaluable guidance and support.
+- Special thanks to coach Gevaert Wouter for his invaluable guidance.
 
 ## Virtual Environment Demo
 
