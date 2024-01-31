@@ -5,7 +5,7 @@
 // or for ESP32: #include <WiFi.h>
 
 const char* ssid = "telenet-799DCED";
-const char* password = "m7cnypsHjxhp";
+const char* password = "";
 
 WiFiServer server(80);
 
