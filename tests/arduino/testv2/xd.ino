@@ -1,6 +1,7 @@
 #include "I2Cdev.h"
 #include "MPU6050.h"
 #include "Wire.h"
+#include <ssd1306.h>
 
 #include <WiFi.h>
 #include <ArduinoOTA.h>
@@ -69,13 +70,13 @@ void setup() {
       ;
   }
 
-  // ssd1306_setFixedFont(ssd1306xled_font6x8);
-  // ssd1306_128x64_i2c_init();
-  // //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
-  // ssd1306_clearScreen();
-  // ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
-  // String ip = WiFi.localIP().toString();
-  // ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
+   ssd1306_setFixedFont(ssd1306xled_font6x8);
+   ssd1306_128x64_i2c_init();
+   //  ssd1306_128x64_spi_init(22, 5, 21); // Use this line for ESP32 (VSPI)  (gpio22=RST, gpio5=CE for VSPI, gpio21=D/C)
+   ssd1306_clearScreen();
+   ssd1306_printFixed(0,  8, "ESP IP address:", STYLE_NORMAL);
+   String ip = WiFi.localIP().toString();
+   ssd1306_printFixed(0, 16, ip.c_str(), STYLE_BOLD);
 
   Serial.println("");
   Serial.println("WiFi connected");
@@ -279,332 +280,31 @@ String get_sensor3() {
   return String(distanceCm);
 }
 
-// void move_forward() {
-//   // Forward movement code
-//   analogWrite(E1, 255);    // Set speed
-//   analogWrite(E2, 255);    // Set speed
-//   digitalWrite(M1, LOW);   // Move forward
-//   digitalWrite(M2, HIGH);  // Move forward
+ void move_forward() {
+   // Forward movement code
+   analogWrite(E1, 255);    // Set speed
+   analogWrite(E2, 255);    // Set speed
+   digitalWrite(M1, LOW);   // Move forward
+   digitalWrite(M2, HIGH);  // Move forward
 
-//   delay(700);
+   delay(700);
 
-//   // Stop motors after turning
+   // Stop motors after turning
 
-//   analogWrite(E2, 0);
+   analogWrite(E2, 0);
 
-//   delay(30);
-//   analogWrite(E1, 0);
+   delay(20);
+   analogWrite(E1, 0);
 
-//   digitalWrite(M1, LOW);
-//   digitalWrite(M2, HIGH);
-// }
+   digitalWrite(M1, LOW);
+   digitalWrite(M2, HIGH);
+ }
 
-float cumulativeOffset = 0.0;
-
-float getYawFromMPU6050()
-{
-    
-// Read raw gyro values
-    int16_t ax, ay, az;
-    int16_t gx, gy, gz;
-    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-
-    // Convert gyroscope values to degrees/sec
-    float gyroZ = gz / 131.0;
-
-    // Current time in milliseconds
-    unsigned long currentTime = millis();
-    if (lastTime == 0) {
-        lastTime = currentTime; // Initialize lastTime
-    }
-
-    // Time difference in seconds
-    float deltaTime = (currentTime - lastTime) / 1000.0;
-    lastTime = currentTime;
-
-    // Integrate the gyroscope data
-    angleZ += gyroZ * deltaTime;
-
-
-    cumulativeOffset += gyroZ * deltaTime;
-
-    Serial.print("inital value: ");
-    Serial.println(angleZ);
-    return angleZ;
-}
-
-
-
-// void move_forward() {
-//   cumulativeOffset = 0.0;
-//   angleZ = 0.0;
-//   int rampUpTime = 333; // milliseconds
-//   int steps = 255; // Number of steps for ramp-up
-//   int rampUpDelay = rampUpTime / steps; // Delay between each speed increment
-//   float initialYaw = getYawFromMPU6050();
-//   float kp = 1.0; // Proportional control constant, adjust based on testing
-
-//   float yawDifference = 0.0;
-//   for (int speed = 150; speed <= 200; speed++) {
-//     float currentYaw = getYawFromMPU6050();
-//     yawDifference = currentYaw - initialYaw;
-//     Serial.println(yawDifference);
-
-//     int adjustment = kp * yawDifference; // Proportional adjustment
-//     int leftWheelSpeed = constrain(speed - adjustment, 0, 255);
-//     int rightWheelSpeed = constrain(speed + adjustment, 0, 255);
-
-//     analogWrite(E1, leftWheelSpeed);
-//     analogWrite(E2, rightWheelSpeed);
-//     digitalWrite(M1, HIGH);
-//     digitalWrite(M2, LOW);
-
-//     delay(rampUpDelay);
-//   }
-
-
-//   analogWrite(E2, 0);
-
-//   delay(25);
-//   analogWrite(E1, 0);
-
-//   digitalWrite(M1, LOW);
-//   digitalWrite(M2, HIGH);
-
-//   delay(100);
-
-//   // Final check and correction
-//   float finalYaw = getYawFromMPU6050(); 
-//   float yawDifferencefinal = initialYaw - yawDifference;
-//   float yawThreshold = 1.0; // Set your acceptable threshold
-  
-
-//   Serial.print("final angle");
-//   Serial.println(yawDifference);
-//   Serial.print("final difference");
-//   Serial.println(yawDifferencefinal);
-//   if (abs(yawDifferencefinal) > yawThreshold) {
-//       // Corrective rotation
-//       if (yawDifference > 0) {
-//           // Turn left
-//           isTurning= true;
-//           correct_right(yawDifferencefinal); // Implement this function based on your robot's hardware
-//       } else {
-//           // Turn right
-//           isTurning= true;
-//           correct_left(yawDifferencefinal); // Implement this function based on your robot's hardware
-//       }
-//   }
-  
-// }
-
-void move_forward() {
-  cumulativeOffset = 0.0;
-  angleZ = 0.0;
-  int rampUpTime = 333; // milliseconds
-  int steps = 255; // Number of steps for ramp-up
-  int rampUpDelay = rampUpTime / steps; // Delay between each speed increment
-  float initialYaw = getYawFromMPU6050();
-  float kp_yaw = 1.0; // Proportional control constant for yaw correction, adjust based on testing
-
-  // New variables for sensor-based drift correction
-  float kp_drift = 0.5; // Proportional control constant for drift correction
-  int correctionThreshold = 10; // Minimum distance difference to start correction
-
-  float yawDifference = 0.0;
-  for (int speed = 150; speed <= 200; speed++) {
-    // Yaw correction code
-    float currentYaw = getYawFromMPU6050();
-    yawDifference = currentYaw - initialYaw;
-    Serial.println(yawDifference);
-
-    int yawAdjustment = kp_yaw * yawDifference; // Proportional adjustment for yaw
-
-    // Drift correction code
-    String leftDistanceStr = get_sensor1();
-    String rightDistanceStr = get_sensor2();
-    float leftDistance = leftDistanceStr.toFloat();
-    float rightDistance = rightDistanceStr.toFloat();
-
-    float drift = leftDistance - rightDistance; // Positive drift means closer to left
-    int driftAdjustment = 0;
-    if (abs(drift) > correctionThreshold) {
-      driftAdjustment = kp_drift * drift;
-    }
-
-    // Combining yaw and drift adjustments
-    int leftWheelSpeed = constrain(speed - yawAdjustment - driftAdjustment, 0, 255);
-    int rightWheelSpeed = constrain(speed + yawAdjustment + driftAdjustment, 0, 255);
-
-    analogWrite(E1, leftWheelSpeed);
-    analogWrite(E2, rightWheelSpeed);
-    digitalWrite(M1, LOW);   // Move forward
-    digitalWrite(M2, HIGH);  // Move forward
-
-
-    delay(rampUpDelay);
-  }
-
-  // Stopping motors
-  analogWrite(E2, 0);
-  delay(25);
-  analogWrite(E1, 0);
-  digitalWrite(M1, LOW);
-  digitalWrite(M2, HIGH);
-  delay(100);
-
-  // Final check and correction based on yaw
-  float finalYaw = getYawFromMPU6050(); 
-  float yawDifferencefinal = initialYaw - finalYaw;
-  float yawThreshold = 1.0; // Set your acceptable yaw threshold
-  
-  Serial.print("final angle: ");
-  Serial.println(finalYaw);
-  Serial.print("final difference: ");
-  Serial.println(yawDifferencefinal);
-
-  if (abs(yawDifferencefinal) > yawThreshold) {
-    // Corrective rotation based on final yaw difference
-    if (yawDifferencefinal > 0) {
-        // Turn left
-        isTurning= true;
-        correct_right(yawDifferencefinal);
-    } else {
-        // Turn right
-        isTurning= true;
-        correct_left(yawDifferencefinal);
-    }
-  }
-}
-
-
-
-
-void correct_left(float yawDifference) {
-
-  yawDifference -= cumulativeOffset;
-
-  int speed = 50;
-  // Read and handle MPU6050 data
-  while(isTurning) {
-    // Left turn code for 90-degree stationary turn
-    analogWrite(E1, speed); // Set speed for motor 1
-    analogWrite(E2, speed); // Set speed for motor 2
-    digitalWrite(M1, HIGH); // Run motor 1 forward
-    digitalWrite(M2, HIGH); // Run motor 2 backward
-
-    // Read raw gyro values
-    int16_t ax, ay, az;
-    int16_t gx, gy, gz;
-    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-
-    // Convert gyroscope values to degrees/sec
-    float gyroZ = gz / 131.0;
-
-    // Current time in milliseconds
-    unsigned long currentTime = millis();
-    if (lastTime == 0) {
-        lastTime = currentTime; // Initialize lastTime
-    }
-
-    // Time difference in seconds
-    float deltaTime = (currentTime - lastTime) / 1000.0;
-    lastTime = currentTime;
-
-    // Integrate the gyroscope data
-    angleZ += gyroZ * deltaTime;
-
-    // Set the initial angle when a certain condition is met (e.g., a button press)
-    if (!initialAngleSet) {
-        initialAngleZ = angleZ;
-        initialAngleSet = true;
-        Serial.print("Initial angle set: ");
-        Serial.println(initialAngleZ);
-    }
-
-    // Check if the rotation around Z-axis is close to 90 degrees from the initial angle
-    float angleDifference = angleZ - initialAngleZ;
-    Serial.print("Current Angle Difference: ");
-    Serial.println(angleDifference);
-    angleDifference = abs(angleDifference);
-
-    if (initialAngleSet && (angleDifference >= yawDifference)) {
-        Serial.println("Rotated approximately 90 degrees from the initial position");
-        // Reset the initial angle to start measuring again
-        initialAngleSet = false;
-        stop_moving();
-        isTurning = false;
-    }
-    delay(100);
-    speed++;
-  }
-  cumulativeOffset = 0.0;
-}
-
-void correct_right(float yawDifference ) {
-  yawDifference -= cumulativeOffset;
-
-  int speed = 50;
-    // Read and handle MPU6050 data
-  while(isTurning) {
-  // Right turn code for 90-degree stationary turn
-    analogWrite(E1, speed); // Set speed for motor 1
-    analogWrite(E2, speed); // Set speed for motor 2
-    digitalWrite(M1, LOW); // Run motor 1 backward
-    digitalWrite(M2, LOW); // Run motor 2 forward
-
-    // Read raw gyro values
-    int16_t ax, ay, az;
-    int16_t gx, gy, gz;
-    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-
-    // Convert gyroscope values to degrees/sec
-    float gyroZ = gz / 131.0;
-
-    // Current time in milliseconds
-    unsigned long currentTime = millis();
-    if (lastTime == 0) {
-        lastTime = currentTime; // Initialize lastTime
-    }
-
-    // Time difference in seconds
-    float deltaTime = (currentTime - lastTime) / 1000.0;
-    lastTime = currentTime;
-
-    // Integrate the gyroscope data
-    angleZ += gyroZ * deltaTime;
-
-    // Set the initial angle when a certain condition is met (e.g., a button press)
-    if (!initialAngleSet) {
-        initialAngleZ = angleZ;
-        initialAngleSet = true;
-        Serial.print("Initial angle set: ");
-        Serial.println(initialAngleZ);
-    }
-
-    // Check if the rotation around Z-axis is close to 90 degrees from the initial angle
-    float angleDifference = angleZ - initialAngleZ;
-    Serial.print("Current Angle Difference: ");
-    Serial.println(angleDifference);
-    angleDifference = abs(angleDifference);
-
-    if (initialAngleSet && (angleDifference >= yawDifference)) {
-        Serial.println("Rotated approximately 90 degrees from the initial position");
-        // Reset the initial angle to start measuring again
-        initialAngleSet = false;
-        stop_moving();
-        isTurning = false;
-    }
-    delay(100);
-    speed++;
-  }
-  cumulativeOffset = 0.0;
-}
 
 void move_left() {
   isTurning = true;
   int initialSpeed = 100; // Set a higher initial speed
-  int minSpeed = 68;      // Set a minimum speed
+  int minSpeed = 50;      // Set a minimum speed
   int speed = initialSpeed;
 
   // Right turn code for 90-degree stationary turn
@@ -645,6 +345,12 @@ void move_left() {
     speed = initialSpeed - (int)((angleDifference / 90) * (initialSpeed - minSpeed));
     speed = max(speed, minSpeed); // Ensure speed doesn't fall below minimum
 
+        // Increase speed slightly if within 4 degrees of target angle
+    if (angleDifference >= 84 && angleDifference < 90) {
+        speed += 5; // Increase the speed by a small amount, e.g., 20
+        speed = min(speed, initialSpeed); // Ensure speed doesn't exceed initial speed
+    }
+
     // Set the motor speeds
     analogWrite(E1, speed); // Set speed for motor 1
     analogWrite(E2, speed); // Set speed for motor 2
@@ -655,7 +361,7 @@ void move_left() {
     Serial.println(angleDifference);
 
     // Check if the rotation around Z-axis is close to 90 degrees from the initial angle
-    if (initialAngleSet && angleDifference >= 89) {
+    if (initialAngleSet && angleDifference >= 87) {
         Serial.println("Rotated approximately 90 degrees from the initial position");
         // Reset the initial angle to start measuring again
         initialAngleSet = false;
@@ -669,7 +375,7 @@ void move_left() {
 void move_right() {
   isTurning = true;
   int initialSpeed = 100; // Set a higher initial speed
-  int minSpeed = 68;      // Set a minimum speed
+  int minSpeed = 50;      // Set a minimum speed
   int speed = initialSpeed;
 
   // Right turn code for 90-degree stationary turn
@@ -710,6 +416,12 @@ void move_right() {
     speed = initialSpeed - (int)((angleDifference / 90) * (initialSpeed - minSpeed));
     speed = max(speed, minSpeed); // Ensure speed doesn't fall below minimum
 
+    // Increase speed slightly if within 4 degrees of target angle
+    if (angleDifference >= 84 && angleDifference < 90) {
+        speed += 10; // Increase the speed by a small amount, e.g., 20
+        speed = min(speed, initialSpeed); // Ensure speed doesn't exceed initial speed
+    }
+
     // Set the motor speeds
     analogWrite(E1, speed); // Set speed for motor 1
     analogWrite(E2, speed); // Set speed for motor 2
@@ -720,7 +432,7 @@ void move_right() {
     Serial.println(angleDifference);
 
     // Check if the rotation around Z-axis is close to 90 degrees from the initial angle
-    if (initialAngleSet && angleDifference >= 89) {
+    if (initialAngleSet && angleDifference >= 88) {
         Serial.println("Rotated approximately 90 degrees from the initial position");
         // Reset the initial angle to start measuring again
         initialAngleSet = false;
