@@ -15,7 +15,7 @@ services:
       - ./web/templates:/usr/src/app/templates
     ports:
       - '8500:5000'
-      - '5000:5000'
+      # - '5000:5000'
     networks:
       - rc-network
 
