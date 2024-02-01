@@ -490,7 +490,7 @@ In conclusion, this project underscores the iterative and demanding nature of ap
 
 #### Introduction
 
-This section provides examples of how I attempted to solve some of the challenges encountered in this research project. For more videos, please refer to the [video folder](https://github.com/driessenslucas/researchproject/tree/main/testvideos)
+This section provides examples of how I attempted to solve some of the challenges encountered in this research project. For more videos, please refer to the [video folder](https://github.com/driessenslucas/researchproject/tree/main/videos/testvideos)
 
 #### Video 1: mpu6050 90 degree turn
 
