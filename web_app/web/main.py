@@ -19,14 +19,13 @@ import time
 import io
 from PIL import Image
 import queue
-import cv2
 import requests
 import asyncio
+import aiohttp
 from threading import Lock
 import json
 from flask_socketio import SocketIO
 
-## write a little comment 
 class RCMazeEnv(gym.Env):
    def __init__(self, maze_size_x=12, maze_size_y=12, esp_ip='192.168.0.7', use_virtual_sensors=True):
       """
@@ -186,6 +185,12 @@ class RCMazeEnv(gym.Env):
       else:
          await self.update_real_sensor_readings()
          send_sensor_data()
+         
+
+   async def fetch_sensor_data(self, url):
+      async with aiohttp.ClientSession() as session:
+         async with session.get(url) as response:
+               return await response.text()
       
    async def update_real_sensor_readings(self):
       """
@@ -208,9 +213,9 @@ class RCMazeEnv(gym.Env):
             return float(distance)
       
       url = f"http://{self.esp_ip}/sensors/"
-      Response =  requests.get(url)
+      Response =  await self.fetch_sensor_data(url)
       
-      data = Response.text
+      data = Response
       data = data.split('\n', 1)[0]
       data = json.loads(data)
       
@@ -441,8 +446,15 @@ class RCMazeEnv(gym.Env):
          # This is a loop that is run in a loop.
          while not done:
             if not maze_running:
-                print("Stopping maze environment...")
-                break  # Exit the loop if maze_running is False
+               print("Stopping maze environment...")
+               #send stop command to the esp
+               try:
+                  esp_stop = f'http://{self.esp_ip}/stop'
+                  response = requests.get(esp_stop)
+                  break
+               except:
+                  print('error stopping the car')
+                  break  # Exit the loop if maze_running is False
              
             current_time = time.time()
             elapsed = current_time - last_time
@@ -889,15 +901,8 @@ class DQNAgent:
       self.target_model.set_weights(self.policy_model.get_weights())
 
 
-
-app = Flask(__name__)
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['CORS_RESOURCES'] = {r"/*": {"origins": "*"}}
-
-#set up socketio
-socketio = SocketIO(app)
-
-frame_queue = queue.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
+#global variables
+frame_queue = asyncio.Queue(maxsize=34)  # maxsize=1 to avoid holding too many frames
 
 maze_thread = None
 maze_running = False
@@ -906,6 +911,14 @@ maze_running = False
 sensor_data = {"front": 0, "left": 0, "right": 0}
 sensor_data_lock = Lock()
 
+
+#flask setup
+app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_RESOURCES'] = {r"/*": {"origins": "*"}}
+
+#set up socketio
+socketio = SocketIO(app)
 
 @socketio.on('connect')
 def handle_connect():
@@ -921,19 +934,9 @@ def handle_disconnect():
    """
    print("Client disconnected")
 
-@socketio.on('start_stream')
-def handle_start_stream(data):
-   """
-    Handle start stream event. This is called when we receive START_STREAM from the sensor
-    
-    @param data - Data that was recieved from
-   """
-   # Start sending frames and sensor data
-   pass
-
 def send_frame():
    """
-   Send frame to client and convert to binary or base64 if it's
+   Send rendered frame to client. This is called when we the environment is rendering a frame ( env.render() )
    """
    # Function to send frame to client
    try:
@@ -948,15 +951,10 @@ def send_q_values(q_values):
     
     @param q_values - Q values to send to the client
    """
-   
-   #qvalues are an array of 3 values
    # convert to a list
    q_values = q_values.tolist()
-   #send q values to client
-   
-   
+   # send q values to the client
    socketio.emit('q_values', {'q_values': q_values})
-
 
 def send_warning(msg):
    """
@@ -966,7 +964,6 @@ def send_warning(msg):
    """
    socketio.emit('warning' , msg)
    
-
 def send_sensor_data():
    """
     Send sensor data to socketio. This is called in a seperate thread
@@ -975,25 +972,6 @@ def send_sensor_data():
    with sensor_data_lock:
       data_copy = sensor_data.copy()
    socketio.emit('sensor_data', data_copy)
-
-
-def generate_frames():
-   """
-    Generate frames from mjpegstreamer and return them as a list of lines
-   """
-   cap = cv2.VideoCapture("http://mjpgstreamer:8080/?action=stream") # this is for the ESP32-CAM when using docker
-   #cap = cv2.VideoCapture(0) # for webcam access
-   # Yields frame content from the current buffer.
-   while True:
-      success, frame = cap.read()
-      # Yields frame frame in bytes.
-      if not success:
-         break
-      else:
-         ret, buffer = cv2.imencode('.jpg', frame)
-         frame = buffer.tobytes()
-         yield (b'--frame\r\n'
-                  b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 def run_flask_app():
    app.run(debug=True, use_reloader=False, threaded=True, host='0.0.0.0', port=5000)
@@ -1008,19 +986,6 @@ def run_async_function(func):
    asyncio.set_event_loop(loop)
    loop.run_until_complete(func)
    loop.close()
-        
-
-@app.route("/get_my_ip", methods=["GET"])
-def get_my_ip():
-   """
-    Get IP address of user. This is used to check if user is running host camera or not.
-    
-    
-    @return JSON with ip address of user or 404 if not
-   """
-   ## add something to get host camera??? 
-   return jsonify({'ip': request.remote_addr}), 200
-
 
 @app.route("/get-models")
 def get_models():
@@ -1057,7 +1022,8 @@ def start_maze(use_virtual,esp_ip,model):
          use_virtual = False
       
       if not use_virtual:
-          ## see if the esp is reachable
+         ## see if the esp is reachable
+         print('checking if esp is reachable')
          url = f'http://{esp_ip}'
          try:
             page = requests.get(url)
@@ -1075,7 +1041,7 @@ def start_maze(use_virtual,esp_ip,model):
       return "Maze started with ESP IP: " + esp_ip
    else:
       return "Maze is already running"
-   
+
 @app.route('/close-maze')
 def close_maze():
     """
@@ -1094,7 +1060,6 @@ def close_maze():
     else:
         return "Maze is not running"
 
-
 @app.route('/')
 def index():
    """
@@ -1105,25 +1070,8 @@ def index():
    """
    return render_template('index.html')        
 
-@app.route('/video')
-def video():
-   """
-    Generate and stream a video. This is a wrapper around : func : ` generate_frames ` that creates a thread to stream the video.
-    
-    
-    @return A : class : ` twisted. web. server. Response ` object
-   """
-   # Create and start the video thread
-   video_thread = threading.Thread(target=generate_frames)
-   video_thread.start()
-
-   # Return the response to stream the video
-   return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 # This is a wrapper around run_main__ to create a new thread and start the Flask app in its own thread.
 if __name__ == "__main__":
-   # maze_thread = threading.Thread(target=run_maze_env)
-   # maze_thread.start()
 
    # Create and start the Flask app in its own thread
    flask_thread = threading.Thread(target=run_flask_app)
@@ -1131,8 +1079,3 @@ if __name__ == "__main__":
    flask_thread.start()
 
    flask_thread.join()
-   # maze_thread.join()
-   
-   
-   
-

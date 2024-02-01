@@ -59,9 +59,10 @@ cd researchproject
 
 ### Usage
 
-1. In the web app, enter the ESP's IP address and select the model you want to use.
-2. You can opt for a virtual demonstration of the project without moving the actual car.
-3. Click on the `Start Maze` button to start.
+1. Navigate to the web app's IP address in your browser: <http://localhost:8500> or <http://localhost:5000>
+2. In the web app, enter the ESP's IP address and select the model you want to use.
+3. You can opt for a virtual demonstration of the project without moving the actual car.
+4. Click on the `Start Maze` button to start.
 
 A demo can be found: <https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f>
 

@@ -4,27 +4,6 @@
 		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 		<title>RC Maze Visualization</title>
 		<style>
-			/* body {
-				display: flex;
-				justify-content: center;
-				flex-direction: row;
-				align-items: center;
-				height: 100vh;
-				margin: 0;
-				background-color: #f8f9fa;
-				font-family: Arial, sans-serif;
-			}
-
-			#container {
-				margin: 20px;
-				width: 40%;
-				padding: 20px;
-				background-color: white;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-				border-radius: 10px;
-				max-height: 88vh;
-			} */
-
 			body,
 			html {
 				height: 100vh;
@@ -132,10 +111,6 @@
 				border-radius: 8px;
 			}
 
-			/* #sensor-readings {
-				background-color: rgba(255, 255, 255, 0.9);
-			} */
-
 			.alertbox {
 				/* Styles for visible state */
 				opacity: 1;
@@ -150,11 +125,13 @@
 				border-radius: 10px;
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 			}
+
 			.message {
 				color: white;
 				font-size: 36px;
 				font-weight: bold;
 			}
+
 			#maze-box {
 				position: absolute;
 				width: 100vw;
@@ -169,6 +146,7 @@
 				justify-content: center;
 				align-items: center;
 			}
+
 			#maze-frame {
 				height: 99vh !important;
 			}
@@ -221,23 +199,21 @@
 				</div>
 				<div id="q-values"></div>
 			</div>
-			<img id="video-stream" src="{{ url_for('video') }}" alt="Video Stream" />
 		</div>
 
 		<script>
 			function showAlert(message) {
 				var alertbox = document.querySelector('.alertbox');
-				alertbox.classList.remove('c-hidden'); // Corrected 'classlist' to 'classList'
+				alertbox.classList.remove('c-hidden');
 
 				var msgbox = document.querySelector('.message');
-				msgbox.innerHTML = message; // Corrected 'innerhtml' to 'innerHTML'
+				msgbox.innerHTML = message;
 			}
 
 			var socket = io(); // Connect to server
 
 			socket.on('connect', function () {
 				console.log('Connected to WebSocket server');
-				socket.emit('start_stream', {}); // Send message to start streaming
 			});
 
 			socket.on('warning', function (data) {
@@ -245,8 +221,6 @@
 				fetch('/close-maze').then((response) => {
 					console.log(response);
 					showAlert(`stopped maze: ${data}`);
-					clearInterval(frameIntervalID); // Clear the frame refresh interval
-					clearInterval(sensorIntervalID); // Also clear the sensor data fetch interval
 					console.log('stopped maze');
 				});
 			});
@@ -281,34 +255,6 @@
 				// set img.src to objectURL
 				img.src = objectURL;
 			});
-			// Initialize two background images, one visible and one hidden for buffering
-
-			// socket.on('frame', function (data) {
-
-			// 	// Add both to the body
-			// 	document.body.appendChild(bufferBackground);
-			// 	document.body.appendChild(visibleBackground);
-			// 	// get image data from socketio.emit('frame', {'image': image_data})
-			// 	var imageData = data.image;
-			// 	console.log(imageData);
-			// 	// make blob
-			// 	var blob = new Blob([imageData], { type: 'image/jpeg' });
-			// 	// make objectURL
-			// 	var objectURL = URL.createObjectURL(blob);
-			// 	// set buffer background to objectURL
-			// 	bufferBackground.style.backgroundImage = `url(${objectURL})`;
-
-			// 	// Swap z-indexes so the buffer becomes visible and the old becomes the buffer
-			// 	var temp = visibleBackground.style.zIndex;
-			// 	visibleBackground.style.zIndex = bufferBackground.style.zIndex;
-			// 	bufferBackground.style.zIndex = temp;
-
-			// 	// Now the previous 'bufferBackground' is on top and visible
-			// 	// Swap references so 'visibleBackground' points to the newly visible background
-			// 	var tempDiv = visibleBackground;
-			// 	visibleBackground = bufferBackground;
-			// 	bufferBackground = tempDiv;
-			// });
 
 			socket.on('sensor_data', function (data) {
 				document.getElementById('sensor-front').textContent = data.front;
@@ -357,7 +303,7 @@
 					).then((response) => {
 						// check if the response is ok
 						if (!response.ok) {
-							// altert with text from response
+							// alert with text from response
 							console.log(response);
 							response.text().then((text) => {
 								// showAlert(text);
@@ -375,8 +321,6 @@
 				fetch('/close-maze').then((response) => {
 					console.log(response);
 					showAlert('stopped maze');
-					clearInterval(frameIntervalID); // Clear the frame refresh interval
-					clearInterval(sensorIntervalID); // Also clear the sensor data fetch interval
 					console.log('stopped maze');
 				});
 			}
