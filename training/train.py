@@ -196,7 +196,7 @@ class RCMazeEnv(gym.Env):
         normalized_distance = distance / sensor_max_range
         normalized_distance = max(0, min(normalized_distance, 1))
 
-        return normalized_distance * 1000
+        return normalized_distance * 1000 # adding 5 to accomadate for making the maze bigger
     
     def compute_reward(self):
         # Initialize reward
@@ -553,7 +553,6 @@ if plot_results == 'y':
 else:
     print('Results not plotted')
     print('avg reward = ', np.mean(reward_history))
-    print('avg mse = ', np.mean(sampled_mse_history))
 
 # ask user if they want to save the model
 save_model = input('Do you want to save the model? (y/n)')
@@ -562,9 +561,17 @@ if save_model == 'y':
     from datetime import date
     today = date.today()
     d1 = today.strftime("%d-%m-%Y")
-    agent.policy_model.save('../models/DDQN_RCmaze_' + d1+ '.h5')
+    agent.policy_model.save('./models/DDQN_RCmaze_' + d1+ '.h5')
     #save model in the main web app folder
-    agent.policy_model.save('../web_app/models/DDQN_RCmaze_' + d1+ '.h5')
+    agent.policy_model.save('./web_app/models/DDQN_RCmaze_' + d1+ '.h5')
+    
+    model_path = './models/DDQN_RCmaze_' + d1+ '.h5'
+    import os
+    os.path.exists(model_path)
+    #full path
+    os.path.abspath(model_path)
+    
+    print(f'Model saved successfully in {os.path.abspath(model_path)}')
 else:
     print('Model not saved')
     

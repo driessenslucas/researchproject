@@ -311,7 +311,7 @@ class RCMazeEnv(gym.Env):
         normalized_distance = max(0, min(normalized_distance, 1))
         
 
-        return normalized_distance * 1000
+        return (normalized_distance * 1000) + 5
    
    def compute_reward(self):
         """
@@ -446,14 +446,6 @@ class RCMazeEnv(gym.Env):
          # This is a loop that is run in a loop.
          while not done:
             if not maze_running:
-               print("Stopping maze environment...")
-               #send stop command to the esp
-               try:
-                  esp_stop = f'http://{self.esp_ip}/stop'
-                  response = requests.get(esp_stop)
-                  break
-               except:
-                  print('error stopping the car')
                   break  # Exit the loop if maze_running is False
              
             current_time = time.time()
