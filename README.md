@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project at Howest University investigates the transfer of a Reinforcement Learning (RL) agent from a simulated environment to the real world, with a focus on maze navigation using a remote-controlled car. It aims to bridge theoretical RL models and real-world applications in AI and robotics.
+This project I did at Howest University investigates the transfer of a Reinforcement Learning (RL) agent from a simulated environment to the real world, with a focus on maze navigation using a remote-controlled car. It aims to bridge theoretical RL models and real-world applications in AI and robotics.
 
 ---
 
@@ -19,11 +19,65 @@ Date: 2024-30-01
 
 The research evaluates the feasibility of sim2real transfer in RL through a series of sub-questions addressing the choice of virtual environments, RL techniques, and the practical aspects of transitioning from simulation to reality.
 
+## Table of Contents
+
+- [Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning](#exploring-the-feasibility-of-sim2real-transfer-in-reinforcement-learning)
+  - [Introduction](#introduction)
+  - [Author](#author)
+  - [Project Summary](#project-summary)
+  - [Table of Contents](#table-of-contents)
+  - [Methodology](#methodology)
+    - [Virtual Environment Design](#virtual-environment-design)
+      - [RCMazeEnv Environment](#rcmazeenv-environment)
+      - [Agent Design: Double Deep Q-Network (Double DQN)](#agent-design-double-deep-q-network-double-dqn)
+      - [Experimental Setup](#experimental-setup)
+      - [Training Process of the Double DQN Agent](#training-process-of-the-double-dqn-agent)
+    - [Model Architecture](#model-architecture)
+      - [Training Parameters](#training-parameters)
+        - [Training Procedure](#training-procedure)
+      - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
+        - [1. Double Deep Q-Network (DDQN)](#1-double-deep-q-network-ddqn)
+      - [Hardware Setup and Assembly](#hardware-setup-and-assembly)
+        - [Introduction to Hardware Components](#introduction-to-hardware-components)
+        - [Components List](#components-list)
+        - [Wiring Guide](#wiring-guide)
+  - [Challenges and Solutions in Implementing RL Techniques and Virtual Environments](#challenges-and-solutions-in-implementing-rl-techniques-and-virtual-environments)
+    - [Challenge 1: Selection of an Appropriate Virtual Environment](#challenge-1-selection-of-an-appropriate-virtual-environment)
+    - [Challenge 2: Choosing the Optimal Reinforcement Learning Technique](#challenge-2-choosing-the-optimal-reinforcement-learning-technique)
+    - [Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies](#challenge-3-sim2real-transfer---addressing-movement-discrepancies)
+    - [Challenge 4: alignment Issue and Motor Encoder Implementation](#challenge-4-alignment-issue-and-motor-encoder-implementation)
+    - [Challenge 5: Ensuring Consistent and Effective Training](#challenge-5-ensuring-consistent-and-effective-training)
+    - [Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer](#challenge-6-accurate-sensor-data-normalization-for-sim2real-transfer)
+    - [Challenge 7: Integration of Failsafe Mechanisms](#challenge-7-integration-of-failsafe-mechanisms)
+    - [Challenge 8: Training Environment and Technique Efficacy](#challenge-8-training-environment-and-technique-efficacy)
+    - [Conclusion](#conclusion)
+    - [Supplementary Materials: Video Demonstrations](#supplementary-materials-video-demonstrations)
+      - [Introduction](#introduction-1)
+      - [Video 1: mpu6050 90 degree turn](#video-1-mpu6050-90-degree-turn)
+      - [Video 2: mpu6050 to align forward movement](#video-2-mpu6050-to-align-forward-movement)
+      - [video 4: New RC-car with encoder and more powerful motor](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
+      - [video 5: Encoder implementation (original RC-car)](#video-5-encoder-implementation-original-rc-car)
+      - [video 6: Robot v2](#video-6-robot-v2)
+      - [video 7: Maze Test Outdoors](#video-7-maze-test-outdoors)
+      - [video 8: Maze Test Indoors](#video-8-maze-test-indoors)
+    - [Real-World Application and Limitations](#real-world-application-and-limitations)
+      - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
+      - [Real-World Application](#real-world-application)
+        - [Sensor-Based Navigation](#sensor-based-navigation)
+        - [Impact on Autonomous Vehicle Movement](#impact-on-autonomous-vehicle-movement)
+      - [Limitations](#limitations)
+        - [Sensor Data Discrepancies](#sensor-data-discrepancies)
+        - [Movement Replication Challenges](#movement-replication-challenges)
+        - [Practical Considerations](#practical-considerations)
+      - [Conclusion](#conclusion-1)
+  - [Credits](#credits)
+  - [Virtual Environment Demo](#virtual-environment-demo)
+
 ## Methodology
 
-#### Virtual Environment Design
+### Virtual Environment Design
 
-##### RCMazeEnv Environment
+#### RCMazeEnv Environment
 
 - **Description**: The RCMazeEnv is a custom class derived from the OpenAI Gym library. It simulates a robotic car navigating through a maze. The environment is designed to replicate real-world physics and constraints within a virtual setting.
 
@@ -212,7 +266,7 @@ The research evaluates the feasibility of sim2real transfer in RL through a seri
 
 #### Training Process of the Double DQN Agent
 
-##### Model Architecture
+### Model Architecture
 
 The Double DQN model employed in this research is structured as follows:
 
