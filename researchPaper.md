@@ -255,9 +255,9 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
 <!-- <https://github.com/driessenslucas/researchproject/assets/91117911/99b584b8-4bc3-4195-8342-57bf62a456ff> -->
 
-### Training Process of the Double DQN Agent
+#### Training Process of the Double DQN Agent
 
-#### Model Architecture
+##### Model Architecture
 
 The Double DQN model employed in this research is structured as follows:
 
@@ -310,7 +310,7 @@ The training of the Double DQN agent was governed by the following parameters:
 - **Learning Rate**: 0.001
   - The rate at which the model learns from new observations.
 
-#### Training Procedure
+##### Training Procedure
 
 1. **Initialization**: Start with a high exploration rate (`EPSILON`) allowing the agent to explore the environment extensively.
 2. **Episodic Training**: For each episode, the agent interacts with the environment, collecting state, action, reward, and next state data.
@@ -320,9 +320,9 @@ The training of the Double DQN agent was governed by the following parameters:
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
 
-### Reinforcement Learning Techniques Overview
+#### Reinforcement Learning Techniques Overview
 
-#### 1. Deep Q-Network (DQN)
+##### 1. Deep Q-Network (DQN)
 
 - **Description**: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.
 - **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.
@@ -341,7 +341,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
   - **Performance**: DQN's performance, while competent, was limited by Q-value overestimation in intricate scenarios.
 
-#### 2. Double Deep Q-Network (DDQN)
+##### 2. Double Deep Q-Network (DDQN)
 
 - **Description**: The Double Deep Q-Network (DDQN) improves upon DQN by employing two neural networks. This structure effectively reduces overestimation bias by separating action selection from Q-value generation.
 
@@ -365,7 +365,7 @@ The training of the Double DQN agent was governed by the following parameters:
 
   - **Performance**: DDQN solved the environment in an average of 25 steps, compared to DQN's 34 steps, highlighting its efficiency.
 
-#### 3. Proximal Policy Optimization (PPO)
+##### 3. Proximal Policy Optimization (PPO)
 
 - **Description**: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It's known for its stability and efficiency in specific RL contexts.
 
@@ -385,15 +385,15 @@ The training of the Double DQN agent was governed by the following parameters:
 
   - **Performance**: PPO, while stable, did not align well with the precision requirements for RC-car maze navigation.
 
-### Hardware Setup and Assembly
+#### Hardware Setup and Assembly
 
-#### Introduction to Hardware Components
+##### Introduction to Hardware Components
 
 This section provides a detailed overview of the hardware components used in the research project, focusing on the assembly and configuration of the RC robot designed for maze navigation.
 
 ![final_robot](./images/final_test/jp_final.jpeg)
 
-#### Components List
+##### Components List
 
 - **Core Components**:
   - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
@@ -408,7 +408,7 @@ This section provides a detailed overview of the hardware components used in the
   - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
   - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
-#### Wiring Guide
+##### Wiring Guide
 
 1. **ESP32 Wiring**:
    - ![ESP32 Wiring](./images/schematics/esp_updated.png)
