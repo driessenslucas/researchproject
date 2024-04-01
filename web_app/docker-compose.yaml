@@ -4,7 +4,6 @@ services:
   mazecontrol:
     build:
       context: ./web
-      dockerfile: Dockerfile
     environment:
       - DISPLAY=:100
       - PYTHONUNBUFFERED=1

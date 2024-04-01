@@ -15,6 +15,8 @@
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Abstract](#abstract)
+  - [Glossary of Terms](#glossary-of-terms)
+  - [List of Abbreviations](#list-of-abbreviations)
   - [Introduction](#introduction)
     - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
     - [Real-World Applications of RL](#real-world-applications-of-rl)
@@ -117,6 +119,51 @@ This research is partitioned into sub-questions, which collectively aim to creat
 
 Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
 
+Based on your input, it looks like you're building a comprehensive list of key terms and abbreviations for your paper on reinforcement learning and its application to a remote-controlled car in a sim2real transfer scenario. Here's how you can structure these sections for clarity and easy reference:
+
+## Glossary of Terms
+
+1. **Artificial Intelligence (AI)**: The simulation of human intelligence processes by machines, especially computer systems, enabling them to perform tasks that typically require human intelligence.
+
+2. **Double Deep Q-Network (DDQN)**: An enhancement of the Deep Q-Network (DQN) algorithm that addresses the overestimation of action values, thus improving learning stability and performance.
+
+3. **Epsilon Decay**: A technique in reinforcement learning that gradually decreases the rate of exploration over time, allowing the agent to transition from exploring the environment to exploiting known actions for better outcomes.
+
+4. **Mean Squared Error (MSE)**: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.
+
+5. **Motion Processing Unit (MPU6050)**: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.
+
+6. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent's decisions based on the current policy.
+
+7. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
+
+8. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
+
+9. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
+
+10. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
+
+11. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
+
+12. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
+
+## List of Abbreviations
+
+1. **AI** - Artificial Intelligence
+2. **DDQN** - Double Deep Q-Network
+3. **DQN** - Deep Q-Network
+4. **ESP32** - Espressif Systems 32-bit Microcontroller
+5. **HC-SR04** - Ultrasonic Distance Sensor
+6. **MSE** - Mean Squared Error
+7. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
+8. **PPO** - Proximal Policy Optimization
+9. **RC** - Remote Controlled
+10. **RPI** - Raspberry Pi
+11. **RL** - Reinforcement Learning
+12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
+13. **Sim2Real** - Simulation to Reality Transfer
+
+
 ## Introduction
 
 The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
@@ -215,16 +262,15 @@ The main research question focuses on whether a trained RL agent can be effectiv
     - 4. **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
 
     ![reward equation](./images/reward_function.png)
-      <!-- ```tex
-        R =
-        \begin{cases}
-            -20 & \text{if sensor readings indicate collision or out-of-bounds} \\
-            500 - 200 \times \mathbb{I}(\text{steps} > 1000) & \text{if car\_position equals goal} \\
-            \frac{50}{\text{distance\_to\_goal} + 1} + 50 \times \mathbb{I}(\text{distance\_to\_goal} < \text{previous\_distance}) \\
-            \quad - 25 \times \mathbb{I}(\text{distance\_to\_goal} > \text{previous\_distance}) \\
-            \quad - 10 \times \mathbb{I}(\text{car\_position} \in \text{visited\_positions}) - 2 & \text{otherwise}
-        \end{cases}
-      ``` -->
+    $$
+    R(s, a, s') = \begin{cases} 
+    -20 & \text{if sensor readings indicate collision} \\
+    500 - 200 \times \mathbb{I}(\text{steps} > 1000) & \text{if } s' \text{ is the goal position} \\
+    \frac{50}{\text{distance\_to\_goal} + 1} + 50 \times \mathbb{I}(\text{distance\_to\_goal} < \text{previous\_distance}) - 25 \times \mathbb{I}(\text{distance\_to\_goal} > \text{previous\_distance}) & \text{if getting closer/farther from goal} \\
+    -10 \times \mathbb{I}(s' \in \text{visited\_positions}) - 2 & \text{otherwise}
+    \end{cases}
+    $$
+
 
     - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
     - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
@@ -871,10 +917,19 @@ The simulation offers considerable advantages in training the virtual RF-car, pa
 
 ### 5. How can I transfer my trained model to my physical RC car? (sim2real) How do you need to adjust the agent, environment and model for it to work in the real world?
 
--- TODO --
-
+<!-- -- # TODO: -- -->
 
 ## Reflection
+
+<!-- --
+  # TODO:
+  • Wat zijn volgens hen de sterke en zwakke punten van het resultaat uit jouw researchproject?   
+  • Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld?  
+  • Welke alternatieven/suggesties geven bedrijven en/of community?   
+  • Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?    
+  • Wat is de meerwaarde voor het bedrijf?   
+  • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig?  
+-- -->
 
 Reflecting on the journey of this research, it's clear that the path from simulation to real-world application is fraught with unexpected challenges. The process has underscored the critical importance of adaptability, precision in sensor data interpretation, and the intricacies of physical implementation. Despite rigorous simulation and testing, the transition to the real world highlighted discrepancies that demanded innovative solutions. This experience has been invaluable, revealing the necessity of continuous experimentation and the potential for unforeseen obstacles in bridging the gap between theoretical models and their practical execution.
 

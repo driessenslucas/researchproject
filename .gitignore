@@ -2,3 +2,6 @@ __pycache__
 .DS_Store
 testvideos/.DS_Store
 .vscode
+.idea
+/training/models/*
+/training/web_app/*
