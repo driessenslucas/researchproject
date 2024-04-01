@@ -3,224 +3,75 @@
 	<head>
 		<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 		<title>RC Maze Visualization</title>
-		<!-- <style>
-			body,
-			html {
-				height: 100vh;
-				margin: 0;
-				font-family: Arial, sans-serif;
-				/* background: url('/frame') no-repeat center center fixed; */
-				background-size: cover;
-				overflow: hidden;
-			}
-
-			#container {
-				position: absolute;
-				bottom: 10px;
-				left: 10px;
-				width: auto;
-				background-color: rgba(255, 255, 255, 0.9);
-				border-radius: 10px;
-				padding: 20px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-				max-height: 80vh;
-				overflow-y: auto;
-			}
-
-			#sensor-readings {
-				position: absolute;
-				top: 10px;
-				right: 10px;
-				width: auto;
-				background-color: rgba(255, 255, 255, 0.9);
-				border-radius: 10px;
-				padding: 20px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-				max-height: 80vh;
-				overflow-y: auto;
-			}
-
-			/* Adjust the width and padding of the input elements if necessary */
-			input[type='text'],
-			button {
-				width: auto; /* Adjust as needed */
-				padding: 12px 20px;
-				margin: 8px 0;
-				display: block;
-				border: 1px solid #ccc;
-				border-radius: 4px;
-				box-sizing: border-box;
-			}
-
-			input[type='checkbox'] {
-				margin: 4px 10px 4px 0;
-				vertical-align: middle;
-				display: inline-block;
-			}
-
-			button {
-				width: 49%;
-				background-color: #4caf50;
-				color: white;
-				border: none;
-				cursor: pointer;
-			}
-
-			button:hover {
-				background-color: #45a049;
-			}
-
-			.stop-button {
-				background-color: red;
-			}
-
-			.stop-button:hover {
-				background-color: #333;
-			}
-
-			label {
-				display: block;
-				margin: 10px 0;
-				font-size: 18px;
-				color: #333;
-			}
-
-			.checkbox-label {
-				display: inline-block;
-				margin: 0 10px 0 0;
-				font-size: 18px;
-				color: #333;
-			}
-
-			h1 {
-				color: #333;
-			}
-
-			/* #video-container, */
-			#sensor-readings {
-				margin: 20px;
-				padding: 20px;
-				background: #fff;
-				border-radius: 10px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			}
-
-			img {
-				max-width: 100%;
-				height: auto;
-				border-radius: 8px;
-			}
-
-			.alertbox {
-				/* Styles for visible state */
-				opacity: 1;
-				display: block;
-				/* Other styling properties like background-color, padding, etc. */
-				position: absolute;
-				top: 0;
-				left: 42vw;
-				margin: 20px;
-				padding: 20px;
-				background: red;
-				border-radius: 10px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-			}
-
-			.message {
-				color: white;
-				font-size: 36px;
-				font-weight: bold;
-			}
-
-			#maze-box {
-				position: absolute;
-				width: 100vw;
-				height: 100vh;
-				background-color: rgba(255, 255, 255, 0.9);
-				border-radius: 10px;
-				padding: 20px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-				overflow-y: auto;
-				z-index: -9999;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			#maze-frame {
-				height: 99vh !important;
-			}
-
-			.c-hidden {
-				opacity: 0;
-				display: none;
-			}
-
-			
-		</style> -->
-
 		<style>
-			body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #eaeef3;
-    color: #333;
+/* Basic Reset */
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
     padding: 20px;
+    color: #333;
 }
 
 .alertbox {
-    background-color: #ffcc00;
-    color: #333;
-    padding: 15px;
-    margin-bottom: 30px;
-    border-radius: 8px;
-    display: none; /* Initially hidden */
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    display: none; /* Hidden by default */
+}
+
+.c-hidden {
+    display: none;
 }
 
 #maze-box {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #maze-frame {
     max-width: 100%;
     height: auto;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    border: 3px solid #333;
+    border-radius: 5px;
 }
 
-.controller {
-    background: #ffffff;
+#container {
+    background-color: #fff;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
-    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.controller h1 {
-    margin-top: 0;
-    color: #4a69bd;
+.control-box h1 {
     margin-bottom: 20px;
+    color: #666;
 }
 
 label {
     display: block;
-    margin-top: 20px;
+    font-weight: bold;
 }
 
 input[type="text"], select {
     width: 100%;
     padding: 10px;
-    margin: 10px 0 20px;
-    border-radius: 8px;
-    border: 1px solid #cccccc;
-    box-shadow: inset 2px 2px 5px #d1d9e6, inset -2px -2px 5px #ffffff;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .checkbox-label {
-    display: block;
-    margin: 20px 0;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 input[type="checkbox"] {
@@ -228,54 +79,184 @@ input[type="checkbox"] {
 }
 
 .buttonsbox {
-    text-align: center;
-    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.buttonsbox button {
-    padding: 10px 30px;
-    margin: 0 10px;
-    background-color: #4a69bd;
-    color: #fff;
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
     border: none;
-    border-radius: 20px;
+    color: white;
+    background-color: green;
     cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 3px 3px 8px #b8b9be, -3px -3px 8px #ffffff;
 }
 
-.buttonsbox button:hover {
-    background-color: #3c528b;
+button:hover {
+    background-color: green;
 }
 
 #video-container {
-    background: #ffffff;
+    background-color: #fff;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#sensor-readings h2 {
+    margin-bottom: 10px;
+}
+
+#sensor-data {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
     margin-bottom: 20px;
 }
 
-#sensor-readings, #q-values {
-    padding: 20px;
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-#sensor-readings h2, #q-values h2 {
-    color: #4a69bd;
-    margin-top: 0;
+li {
+    margin-bottom: 5px;
 }
 
-#sensor-data, #q-values ul {
-    background: #f0f3f7;
-    padding: 15px;
+.buttonsbox {
+	flex-direction: column;
+}
+#maze-box {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative; /* Make this a positioning context for absolutely positioned children */
+}
+
+#video-container {
+    position: absolute; /* Position the container absolutely within #maze-box */
+    top: 10px; /* Distance from the top of #maze-box */
+    right: 10px; /* Distance from the right of #maze-box */
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: auto; /* Adjust width as necessary */
+    max-width: 300px; /* Maximum width to prevent overflow */
+    z-index: 10; /* Ensure it's above other content */
+}
+
+#maze-frame {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #333;
+    border-radius: 5px;
+    display: block; /* Ensures the image is a block element, centering it */
+    margin: 0 auto; /* Center the image within #maze-box */
+}
+
+/* Additional styling for sensor data for better visibility */
+#sensor-readings h2, #sensor-data, #q-values {
+    margin: 0;
+    padding: 0;
+    text-align: left; /* Align text to the left for readability */
+}
+
+#sensor-data span {
+    font-weight: bold; /* Make the sensor values stand out */
+}
+
+
+#maze-box {
+    width: 80%;
+    /* Full width of the container */
+    max-width: 1200px;
+    /* Maximum width of the maze box */
+    margin: 20px auto;
+    /* Center the box with some margin */
+    position: relative;
+    /* Allows absolute positioning of the maze frame relative to this box */
+    padding-bottom: 100%;
+    /* This percentage padding bottom maintains the aspect ratio of 1:1 */
+    background: #eee;
+    /* Just a placeholder background color */
+}
+
+#maze-frame {
+    position: absolute;
+    /* Absolutely position the frame within maze-box */
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Make the image take up all the available width */
+    height: 100%;
+    /* Make the image take up all the available height, maintained by padding on #maze-box */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    #maze-box {
+        margin: 10px auto;
+        /* Smaller margin for smaller screens */
+        padding-bottom: 100%;
+        /* Maintain aspect ratio */
+    }
+}
+
+@media (max-width: 768px) {
+    #maze-box {
+        /* Optional: You can reduce the max-width if needed, or let it stay full width */
+        max-width: 600px;
+    }
+}
+
+@media (max-width: 480px) {
+    #maze-box {
+        /* You may add additional styles if needed for very small devices */
+        max-width: 300px;
+    }
+}
+
+li {
+    list-style: none;
+}
+
+.alertbox {
+    opacity: 1;
+    display: block;
+    position: sticky;
+    top: 0;
+    background: red;
     border-radius: 10px;
-    box-shadow: inset 8px 8px 16px #d1d9e6, inset -8px -8px 16px #ffffff;
-    margin-top: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    left: 25vw;
 }
 
-#sensor-data span, #q-values li {
+.message {
+    color: white;
+    font-size: 36px;
     font-weight: bold;
-    color: #3c528b;
+}
+
+.c-hidden {
+    opacity: 0;
+    display: none;
+}
+
+.buttonsbox {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.virtualisation-options {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.virtualisation-options #use-virtualized {
+	margin-left: 10px;
 }
 
 		</style>
@@ -287,7 +268,7 @@ input[type="checkbox"] {
 		<div id="maze-box">
 			<img id="maze-frame" src="/frame" alt="Maze Rendering" />
 		</div>
-		<div id="container">
+		<div id="container" class="control-box">
 			<h1>RC Maze Control</h1>
 			<label for="model-select">Select Model:</label>
 			<select id="model-select" name="model-select">
@@ -296,15 +277,11 @@ input[type="checkbox"] {
 			</select>
 			<label for="esp-ip">ESP IP:</label>
 			<input type="text" id="esp-ip" name="esp-ip" placeholder="Enter ESP IP" />
-			<label class="checkbox-label" for="use-virtualized"
-				>Use Virtualized Maze:</label
-			>
-			<input
-				type="checkbox"
-				id="use-virtualized"
-				name="use-virtualized"
-				value="true"
-				checked />
+			<div class="virtualisation-options">
+				<label class="checkbox-label" for="use-virtualized">Use Virtualized Maze:</label>
+				<input type="checkbox" id="use-virtualized" name="use-virtualized" value="true" checked />
+			</div>
+			
 			<div class="buttonsbox">
 				<button onclick="startMaze()">Start Maze</button>
 				<button onclick="stopMaze()">Stop Maze</button>
@@ -326,11 +303,13 @@ input[type="checkbox"] {
 
 		<script>
 			function showAlert(message) {
-				var alertbox = document.querySelector('.alertbox');
-				alertbox.classList.remove('c-hidden');
+				// var alertbox = document.querySelector('.alertbox');
+				// alertbox.classList.remove('c-hidden');
 
-				var msgbox = document.querySelector('.message');
-				msgbox.innerHTML = message;
+				window.alert(message);
+
+				// var msgbox = document.querySelector('.message');
+				// msgbox.innerHTML = message;
 			}
 
 			var socket = io(); // Connect to server
@@ -348,22 +327,28 @@ input[type="checkbox"] {
 				});
 			});
 
-			socket.on('q_values', function (data) {
-				console.log(data);
-				// Get the list of Q-values from the data
-				var qValues = data.q_values;
-				var qValuesContainer = document.getElementById('q-values');
-				qValuesContainer.innerHTML = '<h2>Q-Values:</h2><ul>'; // Clear the previous Q-values and start a new list
+			//socket.on('q_values', function (data) {
+			//	console.log(data);
+			//	// Get the list of Q-values from the data
+			//	var qValues = data.q_values;
+			//	var qValuesContainer = document.getElementById('q-values');
+//
+			//	// Clear the previous Q-values and start a new header
+			//	qValuesContainer.innerHTML = '<h2>Q-Values:</h2>';
+//
+			//	// Create a new list element
+			//	var list = document.createElement('ul');
+//
+			//	// Loop through the Q-values array and add them to the list
+			//	for (var i = 0; i < qValues.length; i++) {
+			//		var listItem = document.createElement('li');
+			//		listItem.textContent = 'Q' + i + ': ' + qValues[i];
+			//		list.appendChild(listItem); // Append each listItem to the list
+			//	}
 
-				// Loop through the Q-values array and add them to the list
-				for (var i = 0; i < qValues.length; i++) {
-					var listItem = document.createElement('li');
-					listItem.textContent = 'Q' + i + ': ' + qValues[i];
-					qValuesContainer.appendChild(listItem);
-				}
-
-				qValuesContainer.innerHTML += '</ul>'; // Close the list
-			});
+				// Append the complete list to qValuesContainer
+			//	qValuesContainer.appendChild(list);
+			//});
 
 			socket.on('frame', function (data) {
 				//var img = document.getElementById('maze-frame');
