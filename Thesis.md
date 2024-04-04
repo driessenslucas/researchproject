@@ -1,5 +1,9 @@
 # Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning
 
+```bash
+pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --template eisvogel
+```
+
 ## Author Information
 
 **Name:** Lucas Driessens  
@@ -239,15 +243,14 @@ The main research question focuses on whether a trained RL agent can be effectiv
 
     <!-- ![reward equation](./images/reward_function.png) -->
     $$
-    R(s, a, s') = \begin{cases} 
+    R(s, a, s') =
+    \begin{cases}
     -20 & \text{if sensor readings indicate collision} \\
     500 - 200 \times \mathbb{I}(\text{steps} > 1000) & \text{if } s' \text{ is the goal position} \\
     \frac{50}{\text{distance\_to\_goal} + 1} + 50 \times \mathbb{I}(\text{distance\_to\_goal} < \text{previous\_distance}) - 25 \times \mathbb{I}(\text{distance\_to\_goal} > \text{previous\_distance}) & \text{if getting closer/farther from goal} \\
     -10 \times \mathbb{I}(s' \in \text{visited\_positions}) - 2 & \text{otherwise}
     \end{cases}
     $$
-
-
     - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
     - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
 
@@ -321,7 +324,9 @@ The main research question focuses on whether a trained RL agent can be effectiv
       - **Formula**:
 
         <!-- ![MSE Loss](./images/MSE_equation.png) -->
-        $$ MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2 \text{ is the mean squared error between the true values } y \text{ and the predicted values } \hat{y} $$
+      $$
+      MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2 \text{ is the mean squared error between the true values } y \text{ and the predicted values } \hat{y}
+      $$
 
       - **Visualization**: ![MSE Loss](./images/mse_DDQN.png)
 
