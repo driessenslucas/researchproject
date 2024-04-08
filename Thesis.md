@@ -23,9 +23,7 @@ pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --temp
   - [List of Abbreviations](#list-of-abbreviations)
   - [Introduction](#introduction)
     - [Background on Reinforcement Learning (RL)](#background-on-reinforcement-learning-rl)
-    - [Real-World Applications of RL](#real-world-applications-of-rl)
-    - [Purpose and Significance of the Study](#purpose-and-significance-of-the-study)
-    - [Overview of the Research Questions](#overview-of-the-research-questions)
+    - [Research Questions and Methodology](#research-questions-and-methodology)
   - [Main Research Question](#main-research-question)
     - [Sub Research Questions](#sub-research-questions)
   - [Methodology](#methodology)
@@ -84,8 +82,12 @@ pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --temp
   - [Advice for those Embarking on Similar Research Paths](#advice-for-those-embarking-on-similar-research-paths)
   - [General Conclusion](#general-conclusion)
   - [Credits](#credits)
-  - [Sources and Inspiration](#sources-and-inspiration)
-    - [References](#references)
+  - [Sources of Inspiration and Conceptual Framework](#sources-of-inspiration-and-conceptual-framework)
+    - [Micromouse Competitions and Reinforcement Learning](#micromouse-competitions-and-reinforcement-learning)
+    - [Influential YouTube Demonstrations and GitHub Insights](#influential-youtube-demonstrations-and-github-insights)
+    - [Technical Exploration and Academic Foundation](#technical-exploration-and-academic-foundation)
+    - [Synthesis and Research Direction](#synthesis-and-research-direction)
+  - [References](#references)
 
 ## Description
 
@@ -143,34 +145,34 @@ Based on your input, it looks like you're building a comprehensive list of key t
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
 13. **Sim2Real** - Simulation to Reality Transfer
 
-
 ## Introduction
 
-The journey of developing autonomous vehicles using reinforcement learning (RL) techniques in virtual environments is marked by continuous learning and adaptation. This paper, originally intended to showcase successful implementation strategies, has evolved to also highlight the challenges and iterative nature of such projects. The focus remains on the sim2real transfer and the specific challenges encountered in the alignment of an autonomous remote-controlled car.
-
-### Background on Reinforcement Learning (RL)
-
-Reinforcement Learning (RL) is a paradigm of machine learning where an agent learns to make decisions by interacting with its environment. In RL, the agent seeks to maximize cumulative rewards through a process of trial and error, guided by feedback from its actions. The fundamental elements of RL include the agent, environment, actions, states, and rewards. The RL process can be mathematically described using Markov Decision Processes (MDP) where:
-
-$$ S \text{ is a set of states} $$
-
-$$ A \text{ is a set of actions} $$
-
-$$ P(s*{t+1}|s_t, a_t) \text{ is the probability that action } a_t \text{ in state } s_t \text{ at time } t \text{ will lead to state } s*{t+1} $$
-
-$$ R(s*{t}, a_t) \text{ is the reward received after transitioning from state } s_t \text{ to state } s*{t+1}, \text{ due to action } a_t $$
-
-### Real-World Applications of RL
-
-RL has been successfully applied in various fields, including robotics, gaming, healthcare, finance, and autonomous vehicles. One notable example is the use of RL in AlphaGo, developed by DeepMind, which defeated the world champion in the game of Go. In robotics, RL enables robots to learn complex tasks like walking, manipulation, and navigation without explicit programming. In the financial sector, RL algorithms are used for algorithmic trading, optimizing portfolios, and managing risks.
-
-### Purpose and Significance of the Study
+In the evolving landscape of artificial intelligence and robotics, the distinction between virtual simulations and real-world applications increasingly narrows, presenting unprecedented opportunities and challenges. This thesis explores the potential of Reinforcement Learning (RL) to bridge this gap, with a specific focus on the domain of autonomous navigation using a remote-controlled (RC) car in a maze. The endeavor to transfer a trained RL agent from a simulated environment to the real world encapsulates the core challenge of sim-to-real transferability, a pivotal step towards realizing the full spectrum of RL's applicability in complex, real-world scenarios.
 
 The purpose of this study is to explore the feasibility and challenges of transferring a trained RL agent from a simulated environment to the real world. This transition, known as "sim2real," is particularly examined in the context of maze navigation using a remote-controlled (RC) car. The significance of this research lies in its potential to bridge the gap between theoretical RL models and practical, real-world applications, which is a critical step in advancing the field of AI and robotics.
 
-### Overview of the Research Questions
+### Background on Reinforcement Learning (RL)
 
-The main research question focuses on whether a trained RL agent can be effectively transferred from a simulation to a real-world environment. Sub-questions delve into the selection of virtual environments for training, the identification of suitable RL techniques, the practical aspects of the sim2real transfer, and the evaluation of real-time learning capabilities. These questions aim to comprehensively understand the intricacies involved in applying RL in real-world scenarios.
+Reinforcement Learning is a paradigm where agents learn to make decisions through trial and error, interacting with their environment to maximize cumulative rewards. Central to RL are the concepts of agents, environments, actions, states, and rewards, governed by Markov Decision Processes (MDP):
+
+- \(S\) represents a set of states.
+- \(A\) denotes a set of actions.
+- \(P(s_{t+1}|s_t, a_t)\) is the probability of transitioning to state \(s_{t+1}\) from state \(s_t\) due to action \(a_t\).
+- \(R(s_t, a_t)\) defines the reward received after moving to state \(s_{t+1}\) from \(s_t\) due to action \(a_t\).
+
+RL's versatility is showcased in its applications across various sectors, including autonomous vehicles, where it promises to enhance navigation, decision-making, and real-time adaptation.
+
+### Research Questions and Methodology
+
+This investigation is anchored by the question: "Can a trained RL agent be effectively transferred from a simulation to a real-world environment for maze navigation?" Addressing this question involves exploring multiple facets of RL training and implementation:
+
+1. Selection of virtual environments for effective RL training.
+2. Identification of RL techniques suited for autonomous navigation.
+3. Evaluation of sim-to-real transfer in adapting to real-world dynamics.
+4. Assessment of training efficacy and performance optimization through simulation.
+5. Adaptation and transfer of a trained model to a real RC car, including necessary adjustments for real-world application.
+
+A blend of qualitative and quantitative research methods, including simulation experiments, real-world trials, and literature review, form the methodological backbone of this study. This comprehensive approach aims to validate the sim-to-real transfer while contributing to the broader discourse on RL's practical applications and challenges.
 
 ## Main Research Question
 
@@ -298,7 +300,7 @@ The main research question focuses on whether a trained RL agent can be effectiv
       - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
       - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
       - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement. The MPU6050 gyroscope is used for accurate turning. The mini OlED screen is used for displaying the IP address.
-      - **Microcontroller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source.
+      - **Micro controller and Power Setup**: The ESP32 module is setup with a 1860 li ion battery as a power source.
 
   - **Wiring and Configuration**
 
@@ -827,18 +829,58 @@ This research has made significant strides in understanding the feasibility and 
 
 I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest.
 
-## Sources and Inspiration
+## Sources of Inspiration and Conceptual Framework
 
+The genesis of this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micromouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.
 
-### References
+### Micromouse Competitions and Reinforcement Learning
 
-1. Brockman, G., et al. (2016). OpenAI Gym. *arXiv preprint arXiv:1606.01540*.
-2. Dosovitskiy, A., et al. (2017). CARLA: An Open Urban Driving Simulator. *Proceedings of the 1st Annual Conference on Robot Learning*.
-3. Van Hasselt, H., Guez, A., & Silver, D. (2016). Deep Reinforcement Learning with Double Q-learning. *AAAI Conference on Artificial Intelligence*.
-4. Schulman, J., et al. (2017). Proximal Policy Optimization Algorithms. *arXiv preprint arXiv:1707.06347*.
-5. Tobin, J., et al. (2017). Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World. *2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*.
-6. Bousmalis, K., et al. (2018). Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping. *IEEE International Conference on Robotics and Automation (ICRA)*.
-7. Pan, Y., & Yang, Q. (2010). A Survey on Transfer Learning. *IEEE Transactions on Knowledge and Data Engineering*.
-8. Rusu, A. A., et al. (2016). Sim-to-Real Robot Learning from Pixels with Progressive Nets. *Conference on Robot Learning*.
-9. James, S., et al. (2019). Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks. *2019 International Conference on Robotics and Automation (ICRA)*.
-10. Sadeghi, F., & Levine, S. (2016). (CAD)2RL: Real Single-Image Flight without a Single Real Image. *Robotics: Science and Systems*.
+Micromouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest pathfinding, as detailed in the insightful Medium article by M. A. Dharmasiri[15], enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.
+
+### Influential YouTube Demonstrations and GitHub Insights
+
+YouTube videos such as "Self Driving and Drifting RC Car using Reinforcement Learning"[11] and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car"[16] provided vivid demonstrations of RL's applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the "Sim2Real_autonomous_vehicle" project[13], highlighted the practical steps and challenges in implementing RL in physical systems.
+
+### Technical Exploration and Academic Foundation
+
+The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.[12] and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund[17], which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.
+
+### Synthesis and Research Direction
+
+These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
+
+## References
+
+\[1\] G. Brockman et al., "OpenAI Gym," *arXiv preprint arXiv:1606.01540*, 2016.
+
+\[2\] A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," *Proceedings of the 1st Annual Conference on Robot Learning*, 2017.
+
+\[3\] H. Van Hasselt, A. Guez, and D. Silver, "Deep Reinforcement Learning with Double Q-learning," *AAAI Conference on Artificial Intelligence*, 2016.
+
+\[4\] J. Schulman et al., "Proximal Policy Optimization Algorithms," *arXiv preprint arXiv:1707.06347*, 2017.
+
+\[5\] J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," in *2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*, 2017.
+
+\[6\] K. Bousmalis et al., "Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping," *IEEE International Conference on Robotics and Automation (ICRA)*, 2018.
+
+\[7\] Y. Pan and Q. Yang, "A Survey on Transfer Learning," *IEEE Transactions on Knowledge and Data Engineering*, vol. 22, no. 10, pp. 1345-1359, Oct. 2010.
+
+\[8\] A. A. Rusu et al., "Sim-to-Real Robot Learning from Pixels with Progressive Nets," *Conference on Robot Learning*, 2016.
+
+\[9\] S. James et al., "Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks," *2019 International Conference on Robotics and Automation (ICRA)*, 2019.
+
+\[10\] F. Sadeghi and S. Levine, "(CAD)^2RL: Real Single-Image Flight without a Single Real Image," *Robotics: Science and Systems*, 2016.
+
+\[11\] "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: <https://www.youtube.com/watch?v=U0-Jswwf0hw>. [Accessed: Jan. 29, 2024].
+
+\[12\] Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," _Applied Sciences_, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: <https://www.mdpi.com/2076-3417/13/11/6400>. [Accessed: Jan. 29, 2024].
+
+\[13\] DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: <https://github.com/DailyL/Sim2Real_autonomous_vehicle>. [Accessed: Jan. 29, 2024].
+
+\[14\] "OpenGL inside Docker containers, this is how I did it," Reddit, r/docker. [Online]. Available: <www.reddit.com/r/docker/comments/8d3qox/opengl_inside_docker_containers_this_is_how_i_did/>. [Accessed: Jan. 29, 2024].
+
+\[15\] M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: <https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510>. [Accessed: Jan. 29, 2024].
+
+\[16\] "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: <https://www.youtube.com/watch?v=c_d0Is3bxXA>. [Accessed: Jan. 29, 2024].
+
+\[17\] W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: a Survey," in _2020 IEEE Symposium Series on Computational Intelligence (SSCI)_, Dec. 2020, pp. 737–744. [Online]. Available: <https://arxiv.org/pdf/2009.13303.pdf>.
