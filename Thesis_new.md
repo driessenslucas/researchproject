@@ -218,6 +218,14 @@ where $d$ is the Euclidean distance to the goal, encouraging the agent to minimi
 
 The episode terminates when the agent reaches the goal, collides with an obstacle, or exceeds a predefined step limit, aiming to learn an efficient navigation policy.
 
+### Scope of Real-World Testing
+
+This study focused on conducting experiments within indoor settings, where environmental conditions could be precisely regulated to mirror theoretical constructs closely. Experiments were predominantly carried out on a meticulously selected hard cloth surface to eliminate ground flaws and ensure a uniform testing ground. This strategic selection was crucial for the replication of simulation outcomes and for a controlled assessment of the transition from simulation to reality (sim-to-real) for autonomous technologies.
+
+Nevertheless, the ambit of real-world experimentation was not confined to indoor setups. Efforts were made to broaden the scope to outdoor environments to ascertain the adaptability and resilience of the proposed solutions under varied conditions. These ventures into the outdoors faced substantial obstacles, mainly due to the challenges in offsetting the differences in ground conditions. The variability and unpredictability of outdoor landscapes exposed significant gaps in the current method's capacity to adjust to diverse real-world settings.
+
+This issue became particularly pronounced in the section discussing "Overcoming Navigation Challenges in Varying Environments," where the adaptation of the autonomous system to outdoor navigation met with significant hurdles. While the system demonstrated successful sim-to-real transfers in controlled indoor environments, the outdoor experiments highlighted the imperative for additional research and enhancement of the system’s flexibility. The outdoor testing difficulties underscore the importance of broadening the experimental scope and advancing autonomous technologies to navigate the intricacies of unregulated terrains.
+
 ## Experimental Outcomes and Implementation Details
 
 The project embarked on a journey to bridge the virtual and real-world through a meticulously designed environment and a cutting-edge agent architecture.
@@ -422,7 +430,7 @@ The research project explored various reinforcement learning techniques to train
 
 ### Introduction to Hardware Components
 
-This section provides a detailed overview of the hardware components used in the research project, focusing on the assembly and configuration of the RC robot designed for maze navigation.
+This section provides an overview of the hardware components used in the research project.
 
 ![final_robot](./images/final_test/jp_final.jpeg)
 
@@ -630,9 +638,19 @@ The encouragement to explore sophisticated simulation environments and alternati
 
 Identifying anticipated challenges in corporate implementation, such as the need for significant investment and the integration of novel findings into established workflows, offers a grounded perspective on the path to practical application. This awareness is instrumental in bridging the gap between research outcomes and their industry adoption, guiding future strategies to mitigate these barriers.
 
-### Societal Contributions and Broader Impacts
+### Ethical Considerations
 
-Reflecting on the societal and economic impacts of the project broadens its significance beyond immediate industry application. The potential for safer, more efficient autonomous vehicle technologies underscores a broader contribution to societal welfare and technological advancement. This perspective enriches the reflection, highlighting the project's role in contributing to a future where autonomous technologies enhance safety, efficiency, and environmental sustainability.
+The deployment of autonomous systems, particularly those benefiting from sim2real transfer technologies, raises significant ethical considerations that must be addressed. Privacy concerns emerge as these systems often rely on collecting and processing vast amounts of data, potentially including personal information. Ensuring data protection and privacy standards are paramount to maintaining public trust.
+
+Safety is another critical concern, as the deployment of autonomous systems in public spaces must not compromise human safety. The robustness of sim2real transfer methodologies—ensuring systems can reliably operate in unpredictable real-world conditions—is essential. Additionally, the potential for job displacement cannot be overlooked. As autonomous systems take on roles traditionally filled by humans, strategies for workforce transition and re-skilling become necessary. Our sim2real approach aims to address these concerns by advocating for transparent, safe, and reliable system deployment, and suggesting avenues for supporting affected workers through education and new job opportunities in the evolving tech landscape.
+
+### Societal Impact
+
+The societal impacts of deploying advanced autonomous systems are wide-ranging. On the positive side, such systems can significantly improve accessibility for disabled and elderly populations, offering new levels of independence and mobility. Urban planning could also see transformative changes, with autonomous systems contributing to more efficient transportation networks and reduced traffic congestion. However, these benefits come with challenges, including the risk of increasing socio-economic divides if access to autonomous technologies is uneven. The environmental impact, while potentially positive through reduced emissions, also requires careful management to ensure sustainable practices in the production and deployment of autonomous systems.
+
+### Policy and Regulation
+
+Current policies and regulations around the deployment of autonomous systems are often outpaced by technological advancements. As sim2real transfer techniques mature, it is imperative that legislation evolves accordingly. This includes updating safety standards to account for the unique challenges of autonomous operation in dynamic environments, as well as establishing clear liability frameworks for when things go wrong. Engaging with policymakers and industry stakeholders is crucial to developing a regulatory environment that supports innovation while protecting public interests and safety. Our research suggests a proactive approach, where the development of sim2real transfer technologies goes hand-in-hand with policy formulation, ensuring a harmonious integration of autonomous systems into society.
 
 ### Lessons Learned and Forward Path
 
@@ -742,6 +760,73 @@ Toon's lecture further delved into the advancements in semantic search, revealin
 A key takeaway from the lecture was the importance of setting realistic expectations with clients regarding AI's capabilities and potential inaccuracies, emphasizing the experimental nature of these technologies. The journey through AI's evolving landscape highlighted the necessity of prompt engineering, the challenges of navigating an immature yet rapidly developing field, and the crucial role of client education in managing expectations around the capabilities of AI technologies like GPT.
 
 In conclusion, Toon Vanhoutte's presentation not only showcased Noest's cutting-edge work in AI and software engineering but also imparted valuable lessons on innovation, the importance of adaptable problem-solving strategies, and the need for continuous learning in the ever-evolving AI domain. It was a testament to Noest's commitment to pushing the boundaries of technology to create impactful, pragmatic solutions that leverage the full spectrum of AI's potential.
+
+Certainly! Let's refine the installation steps section to ensure it's clear, concise, and consistent with academic writing standards. I'll structure it in a way that smoothly integrates with your thesis:
+
+## Installation Steps
+
+This section outlines the required steps to install and set up the project environment. Adherence to these instructions will ensure the successful deployment of the autonomous navigation system.
+
+### Prerequisites
+
+Before initiating the setup process, ensure the following prerequisites are met:
+
+- **Git:** Necessary for cloning the project repository.
+- **Docker:** Utilized for containerizing the web application and ensuring a consistent runtime environment.
+- Optionally, **Python 3.11** and **pip** may be installed along with the dependencies listed in `requirements.txt` for running the project without Docker.
+
+### Repository Setup
+
+To clone the repository and navigate to the project directory, execute the following commands:
+
+```bash
+git clone https://github.com/driessenslucas/researchproject.git
+cd researchproject
+```
+
+### ESP32 Setup
+
+#### Hardware Installation
+
+1. **Hardware Connections:** Follow the instructions provided in the [Hardware Installation Guide](./hardware_installtion.md) for connecting the ESP32 modules.
+
+#### Software Configuration
+
+2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library to support the OLED display functionality.
+3. **Code Upload:** Transfer the scripts located in the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration for connectivity.
+
+### Web Application Setup
+
+#### Note: 
+To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
+
+#### Steps:
+1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
+
+    ```bash
+    cd ./web_app/
+    ```
+
+2. To launch the Docker containers, use the following commands:
+
+    ```bash
+    docker-compose up -d
+    ```
+
+### Usage Instructions
+
+1. Access the web application by navigating to <http://localhost:8500> or <http://localhost:5000> on your web browser.
+2. Enter the ESP32's IP address within the web app and select the desired model for deployment.
+3. The system provides an option for a virtual demonstration, allowing for operation without engaging the physical vehicle.
+4. Initiate the maze navigation by clicking the `Start Maze` button.
+
+A demonstration of the project is available [here](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f).
+
+### Additional Information: Model Training
+
+- Opt between utilizing a pre-trained model or conducting new training sessions using the script available in [train](./training/train.py).
+- This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.
+- Upon completion, you will be prompted to save the new model. If saved, it will be stored within the [models](./web_app/models) directory of the `web_app` folder.
 
 ## References
 
