@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Lucas Driessens" />
+  <meta name="dcterms.date" content="2024-06-01" />
+  <meta name="keywords" content="Markdown, Example" />
+  <title>Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #ffffff;
+        color: #a0a0a0;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+    div.sourceCode
+      { color: #1f1c1b; background-color: #ffffff; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #1f1c1b; } /* Normal */
+    code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+    code span.an { color: #ca60ca; } /* Annotation */
+    code span.at { color: #0057ae; } /* Attribute */
+    code span.bn { color: #b08000; } /* BaseN */
+    code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+    code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #924c9d; } /* Char */
+    code span.cn { color: #aa5500; } /* Constant */
+    code span.co { color: #898887; } /* Comment */
+    code span.cv { color: #0095ff; } /* CommentVar */
+    code span.do { color: #607880; } /* Documentation */
+    code span.dt { color: #0057ae; } /* DataType */
+    code span.dv { color: #b08000; } /* DecVal */
+    code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+    code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+    code span.fl { color: #b08000; } /* Float */
+    code span.fu { color: #644a9b; } /* Function */
+    code span.im { color: #ff5500; } /* Import */
+    code span.in { color: #b08000; } /* Information */
+    code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+    code span.op { color: #1f1c1b; } /* Operator */
+    code span.ot { color: #006e28; } /* Other */
+    code span.pp { color: #006e28; } /* Preprocessor */
+    code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+    code span.sc { color: #3daee9; } /* SpecialChar */
+    code span.ss { color: #ff5500; } /* SpecialString */
+    code span.st { color: #bf0303; } /* String */
+    code span.va { color: #0057ae; } /* Variable */
+    code span.vs { color: #bf0303; } /* VerbatimString */
+    code span.wa { color: #bf0303; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning</h1>
+<p class="author">Lucas Driessens</p>
+<p class="date">June 1, 2024</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<h2 id="toc-title">Table of Contents</h2>
+<ul>
+<li><a href="#abstract" id="toc-abstract"><span class="toc-section-number">1</span> Abstract</a></li>
+<li><a href="#glossary-of-terms" id="toc-glossary-of-terms"><span class="toc-section-number">2</span> Glossary of Terms</a></li>
+<li><a href="#list-of-abbreviations" id="toc-list-of-abbreviations"><span class="toc-section-number">3</span> List of Abbreviations</a></li>
+<li><a href="#introduction" id="toc-introduction"><span class="toc-section-number">4</span> Introduction</a>
+<ul>
+<li><a href="#background-on-reinforcement-learning-rl" id="toc-background-on-reinforcement-learning-rl"><span class="toc-section-number">4.1</span> Background on Reinforcement Learning (RL)</a></li>
+</ul></li>
+<li><a href="#research-questions" id="toc-research-questions"><span class="toc-section-number">5</span> Research Questions</a>
+<ul>
+<li><a href="#main-research-question" id="toc-main-research-question"><span class="toc-section-number">5.1</span> Main Research Question</a></li>
+<li><a href="#sub-research-questions" id="toc-sub-research-questions"><span class="toc-section-number">5.2</span> Sub Research Questions</a></li>
+</ul></li>
+<li><a href="#methodology" id="toc-methodology"><span class="toc-section-number">6</span> Methodology</a>
+<ul>
+<li><a href="#environment-setup-rcmazeenv" id="toc-environment-setup-rcmazeenv"><span class="toc-section-number">6.1</span> Environment Setup (RCMazeEnv)</a></li>
+<li><a href="#agent-design-ddqnagent" id="toc-agent-design-ddqnagent"><span class="toc-section-number">6.2</span> Agent Design (DDQNAgent)</a></li>
+<li><a href="#training-process" id="toc-training-process"><span class="toc-section-number">6.3</span> Training Process</a></li>
+<li><a href="#reward-function-components" id="toc-reward-function-components"><span class="toc-section-number">6.4</span> Reward Function Components</a></li>
+</ul></li>
+<li><a href="#experimental-outcomes-and-implementation-details" id="toc-experimental-outcomes-and-implementation-details"><span class="toc-section-number">7</span> Experimental Outcomes and Implementation Details</a>
+<ul>
+<li><a href="#virtual-environment-and-agent-design" id="toc-virtual-environment-and-agent-design"><span class="toc-section-number">7.1</span> Virtual Environment and Agent Design</a></li>
+<li><a href="#implementation-highlights" id="toc-implementation-highlights"><span class="toc-section-number">7.2</span> Implementation Highlights</a></li>
+<li><a href="#evaluation-and-metrics" id="toc-evaluation-and-metrics"><span class="toc-section-number">7.3</span> Evaluation and Metrics</a></li>
+<li><a href="#unique-features" id="toc-unique-features"><span class="toc-section-number">7.4</span> Unique Features</a></li>
+</ul></li>
+<li><a href="#model-architecture-and-training-insights" id="toc-model-architecture-and-training-insights"><span class="toc-section-number">8</span> Model Architecture and Training Insights</a>
+<ul>
+<li><a href="#training-parameters" id="toc-training-parameters"><span class="toc-section-number">8.1</span> Training Parameters</a></li>
+<li><a href="#training-procedure" id="toc-training-procedure"><span class="toc-section-number">8.2</span> Training Procedure</a></li>
+</ul></li>
+<li><a href="#visual-insights-and-further-exploration" id="toc-visual-insights-and-further-exploration"><span class="toc-section-number">9</span> Visual Insights and Further Exploration</a>
+<ul>
+<li><a href="#evaluation-metrics-overview" id="toc-evaluation-metrics-overview"><span class="toc-section-number">9.1</span> Evaluation Metrics Overview</a></li>
+</ul></li>
+<li><a href="#results" id="toc-results"><span class="toc-section-number">10</span> results</a>
+<ul>
+<li><a href="#reinforcement-learning-techniques-overview" id="toc-reinforcement-learning-techniques-overview"><span class="toc-section-number">10.1</span> Reinforcement Learning Techniques Overview</a></li>
+</ul></li>
+<li><a href="#hardware-setup-and-assembly" id="toc-hardware-setup-and-assembly"><span class="toc-section-number">11</span> Hardware Setup and Assembly</a>
+<ul>
+<li><a href="#introduction-to-hardware-components" id="toc-introduction-to-hardware-components"><span class="toc-section-number">11.1</span> Introduction to Hardware Components</a></li>
+<li><a href="#components-list" id="toc-components-list"><span class="toc-section-number">11.2</span> Components List</a></li>
+<li><a href="#wiring-guide" id="toc-wiring-guide"><span class="toc-section-number">11.3</span> Wiring Guide</a></li>
+</ul></li>
+<li><a href="#challenges-and-solutions-in-implementing-rl-techniques-and-virtual-environments" id="toc-challenges-and-solutions-in-implementing-rl-techniques-and-virtual-environments"><span class="toc-section-number">12</span> Challenges and Solutions in Implementing RL Techniques and Virtual Environments</a>
+<ul>
+<li><a href="#challenge-1-selection-of-an-appropriate-virtual-environment" id="toc-challenge-1-selection-of-an-appropriate-virtual-environment"><span class="toc-section-number">12.1</span> Challenge 1: Selection of an Appropriate Virtual Environment</a></li>
+<li><a href="#challenge-2-choosing-the-optimal-reinforcement-learning-technique" id="toc-challenge-2-choosing-the-optimal-reinforcement-learning-technique"><span class="toc-section-number">12.2</span> Challenge 2: Choosing the Optimal Reinforcement Learning Technique</a></li>
+<li><a href="#challenge-3-sim2real-transfer---addressing-movement-discrepancies" id="toc-challenge-3-sim2real-transfer---addressing-movement-discrepancies"><span class="toc-section-number">12.3</span> Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies</a></li>
+<li><a href="#challenge-4-alignment-issue-and-motor-encoder-implementation" id="toc-challenge-4-alignment-issue-and-motor-encoder-implementation"><span class="toc-section-number">12.4</span> Challenge 4: alignment Issue and Motor Encoder Implementation</a></li>
+<li><a href="#challenge-5-ensuring-consistent-and-effective-training" id="toc-challenge-5-ensuring-consistent-and-effective-training"><span class="toc-section-number">12.5</span> Challenge 5: Ensuring Consistent and Effective Training</a></li>
+<li><a href="#challenge-6-accurate-sensor-data-normalization-for-sim2real-transfer" id="toc-challenge-6-accurate-sensor-data-normalization-for-sim2real-transfer"><span class="toc-section-number">12.6</span> Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer</a></li>
+<li><a href="#challenge-7-integration-of-failsafe-mechanisms" id="toc-challenge-7-integration-of-failsafe-mechanisms"><span class="toc-section-number">12.7</span> Challenge 7: Integration of Failsafe Mechanisms</a></li>
+<li><a href="#challenge-8-training-environment-and-technique-efficacy" id="toc-challenge-8-training-environment-and-technique-efficacy"><span class="toc-section-number">12.8</span> Challenge 8: Training Environment and Technique Efficacy</a></li>
+<li><a href="#viewing-practical-experiments" id="toc-viewing-practical-experiments"><span class="toc-section-number">12.9</span> Viewing Practical Experiments</a></li>
+<li><a href="#conclusion" id="toc-conclusion"><span class="toc-section-number">12.10</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#real-world-application-and-limitations" id="toc-real-world-application-and-limitations"><span class="toc-section-number">13</span> Real-World Application and Limitations</a>
+<ul>
+<li><a href="#introduction-to-sensor-and-movement-discrepancies" id="toc-introduction-to-sensor-and-movement-discrepancies"><span class="toc-section-number">13.1</span> Introduction to Sensor and Movement Discrepancies</a></li>
+<li><a href="#real-world-application" id="toc-real-world-application"><span class="toc-section-number">13.2</span> Real-World Application</a></li>
+<li><a href="#limitations" id="toc-limitations"><span class="toc-section-number">13.3</span> Limitations</a></li>
+<li><a href="#conclusion-1" id="toc-conclusion-1"><span class="toc-section-number">13.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#answers-to-research-questions" id="toc-answers-to-research-questions"><span class="toc-section-number">14</span> Answers to Research Questions</a>
+<ul>
+<li><a href="#virtual-environments-for-rf-car-training" id="toc-virtual-environments-for-rf-car-training"><span class="toc-section-number">14.1</span> 1. Virtual Environments for RF-Car Training</a></li>
+<li><a href="#reinforcement-learning-techniques-for-virtual-rf-car-training" id="toc-reinforcement-learning-techniques-for-virtual-rf-car-training"><span class="toc-section-number">14.2</span> 2. Reinforcement Learning Techniques for Virtual RF-Car Training</a></li>
+<li><a href="#sim-to-real-transfer-challenges-and-solutions" id="toc-sim-to-real-transfer-challenges-and-solutions"><span class="toc-section-number">14.3</span> 3. Sim-to-Real Transfer Challenges and Solutions</a></li>
+<li><a href="#contributions-of-simulation-in-rf-car-training" id="toc-contributions-of-simulation-in-rf-car-training"><span class="toc-section-number">14.4</span> 4. Contributions of Simulation in RF-Car Training</a></li>
+<li><a href="#practical-application-of-simulated-training-to-real-world-rf-cars" id="toc-practical-application-of-simulated-training-to-real-world-rf-cars"><span class="toc-section-number">14.5</span> 5. Practical Application of Simulated Training to Real-World RF-Cars</a></li>
+</ul></li>
+<li><a href="#reflection" id="toc-reflection"><span class="toc-section-number">15</span> Reflection</a>
+<ul>
+<li><a href="#strengths-and-weaknesses" id="toc-strengths-and-weaknesses"><span class="toc-section-number">15.1</span> Strengths and Weaknesses</a></li>
+<li><a href="#practical-applicability-and-industry-relevance" id="toc-practical-applicability-and-industry-relevance"><span class="toc-section-number">15.2</span> Practical Applicability and Industry Relevance</a></li>
+<li><a href="#encountered-alternatives-and-flexibility" id="toc-encountered-alternatives-and-flexibility"><span class="toc-section-number">15.3</span> Encountered Alternatives and Flexibility</a></li>
+<li><a href="#anticipated-implementation-barriers" id="toc-anticipated-implementation-barriers"><span class="toc-section-number">15.4</span> Anticipated Implementation Barriers</a></li>
+<li><a href="#societal-contributions-and-broader-impacts" id="toc-societal-contributions-and-broader-impacts"><span class="toc-section-number">15.5</span> Societal Contributions and Broader Impacts</a></li>
+<li><a href="#lessons-learned-and-forward-path" id="toc-lessons-learned-and-forward-path"><span class="toc-section-number">15.6</span> Lessons Learned and Forward Path</a></li>
+</ul></li>
+<li><a href="#advice-for-those-embarking-on-similar-research-paths" id="toc-advice-for-those-embarking-on-similar-research-paths"><span class="toc-section-number">16</span> Advice for those Embarking on Similar Research Paths</a></li>
+<li><a href="#general-conclusion" id="toc-general-conclusion"><span class="toc-section-number">17</span> General Conclusion</a></li>
+<li><a href="#credits" id="toc-credits"><span class="toc-section-number">18</span> Credits</a></li>
+<li><a href="#sources-of-inspiration-and-conceptual-framework" id="toc-sources-of-inspiration-and-conceptual-framework"><span class="toc-section-number">19</span> Sources of Inspiration and Conceptual Framework</a>
+<ul>
+<li><a href="#micro-mouse-competitions-and-reinforcement-learning" id="toc-micro-mouse-competitions-and-reinforcement-learning"><span class="toc-section-number">19.1</span> Micro mouse Competitions and Reinforcement Learning</a></li>
+<li><a href="#influential-youtube-demonstrations-and-github-insights" id="toc-influential-youtube-demonstrations-and-github-insights"><span class="toc-section-number">19.2</span> Influential YouTube Demonstrations and GitHub Insights</a></li>
+<li><a href="#technical-exploration-and-academic-foundation" id="toc-technical-exploration-and-academic-foundation"><span class="toc-section-number">19.3</span> Technical Exploration and Academic Foundation</a></li>
+<li><a href="#synthesis-and-research-direction" id="toc-synthesis-and-research-direction"><span class="toc-section-number">19.4</span> Synthesis and Research Direction</a></li>
+</ul></li>
+<li><a href="#integration-of-practical-experiments" id="toc-integration-of-practical-experiments"><span class="toc-section-number">20</span> Integration of Practical Experiments</a>
+<ul>
+<li><a href="#addressing-alignment-and-orientation-challenges" id="toc-addressing-alignment-and-orientation-challenges"><span class="toc-section-number">20.1</span> Addressing Alignment and Orientation Challenges</a></li>
+<li><a href="#enhancing-movement-precision-with-encoders" id="toc-enhancing-movement-precision-with-encoders"><span class="toc-section-number">20.2</span> Enhancing Movement Precision with Encoders</a></li>
+<li><a href="#real-world-application-tests" id="toc-real-world-application-tests"><span class="toc-section-number">20.3</span> Real-World Application Tests</a></li>
+</ul></li>
+<li><a href="#guest-speakers" id="toc-guest-speakers"><span class="toc-section-number">21</span> Guest Speakers</a>
+<ul>
+<li><a href="#innovations-and-best-practices-in-ai-projects-by-jeroen-boeye-at-faktion" id="toc-innovations-and-best-practices-in-ai-projects-by-jeroen-boeye-at-faktion"><span class="toc-section-number">21.1</span> Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion</a></li>
+<li><a href="#pioneering-ai-solutions-at-noest-by-toon-vanhoutte" id="toc-pioneering-ai-solutions-at-noest-by-toon-vanhoutte"><span class="toc-section-number">21.2</span> Pioneering AI Solutions at Noest by Toon Vanhoutte</a></li>
+</ul></li>
+<li><a href="#references" id="toc-references"><span class="toc-section-number">22</span> References</a></li>
+</ul>
+</nav>
+<!-- pandoc thesis_new.md --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template template.tex --lua-filter pagebreak.lua -->
+<h2 data-number="1" id="abstract"><span class="header-section-number">1</span> Abstract</h2>
+<p>In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question: “Is it possible to transfer a trained RL agent from a simulation to the real world?” This inquiry is particularly examined in the context of maze navigation.</p>
+<p>This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.</p>
+<p>Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.</p>
+<h2 data-number="2" id="glossary-of-terms"><span class="header-section-number">2</span> Glossary of Terms</h2>
+<ol type="1">
+<li><p><strong>Artificial Intelligence (AI)</strong>: The simulation of human intelligence processes by machines, especially computer systems, enabling them to perform tasks that typically require human intelligence.</p></li>
+<li><p><strong>Double Deep Q-Network (DDQN)</strong>: An enhancement of the Deep Q-Network (DQN) algorithm that addresses the overestimation of action values, thus improving learning stability and performance.</p></li>
+<li><p><strong>Epsilon Decay</strong>: A technique in reinforcement learning that gradually decreases the rate of exploration over time, allowing the agent to transition from exploring the environment to exploiting known actions for better outcomes.</p></li>
+<li><p><strong>Mean Squared Error (MSE)</strong>: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.</p></li>
+<li><p><strong>Motion Processing Unit (MPU6050)</strong>: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.</p></li>
+<li><p><strong>Policy Network</strong>: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent’s decisions based on the current policy.</p></li>
+<li><p><strong>Raspberry Pi (RPI)</strong>: A small, affordable computer used for various programming projects, including robotics and educational applications.</p></li>
+<li><p><strong>RC Car</strong>: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.</p></li>
+<li><p><strong>Reinforcement Learning (RL)</strong>: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.</p></li>
+<li><p><strong>Sim2Real Transfer</strong>: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.</p></li>
+<li><p><strong>Target Network</strong>: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.</p></li>
+<li><p><strong>Virtual Environment</strong>: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.</p></li>
+</ol>
+<h2 data-number="3" id="list-of-abbreviations"><span class="header-section-number">3</span> List of Abbreviations</h2>
+<ol type="1">
+<li><strong>AI</strong> - Artificial Intelligence</li>
+<li><strong>DDQN</strong> - Double Deep Q-Network</li>
+<li><strong>DQN</strong> - Deep Q-Network</li>
+<li><strong>ESP32</strong> - Espressif Systems 32-bit Microcontroller</li>
+<li><strong>HC-SR04</strong> - Ultrasonic Distance Sensor</li>
+<li><strong>MSE</strong> - Mean Squared Error</li>
+<li><strong>MPU6050</strong> - Motion Processing Unit (Gyroscope + Accelerometer)</li>
+<li><strong>PPO</strong> - Proximal Policy Optimization</li>
+<li><strong>RC</strong> - Remote Controlled</li>
+<li><strong>RPI</strong> - Raspberry Pi</li>
+<li><strong>RL</strong> - Reinforcement Learning</li>
+<li><strong>RCMazeEnv</strong> - RC Maze Environment (Custom Virtual Environment for RL Training)</li>
+<li><strong>Sim2Real</strong> - Simulation to Reality Transfer</li>
+</ol>
+<h2 data-number="4" id="introduction"><span class="header-section-number">4</span> Introduction</h2>
+<p>In the evolving landscape of artificial intelligence and robotics, the distinction between virtual simulations and real-world applications increasingly narrows, presenting unprecedented opportunities and challenges. This thesis explores the potential of Reinforcement Learning (RL) to bridge this gap, with a specific focus on the domain of autonomous navigation using a remote-controlled (RC) car in a maze. The endeavor to transfer a trained RL agent from a simulated environment to the real world encapsulates the core challenge of sim-to-real transferability, a pivotal step towards realizing the full spectrum of RL’s applicability in complex, real-world scenarios.</p>
+<p>The purpose of this study is to explore the feasibility and challenges of transferring a trained RL agent from a simulated environment to the real world. This transition, known as “sim2real,” is particularly examined in the context of maze navigation using a remote-controlled (RC) car. The significance of this research lies in its potential to bridge the gap between theoretical RL models and practical, real-world applications, which is a critical step in advancing the field of AI and robotics.</p>
+<h3 data-number="4.1" id="background-on-reinforcement-learning-rl"><span class="header-section-number">4.1</span> Background on Reinforcement Learning (RL)</h3>
+<p>Reinforcement Learning is a paradigm where agents learn to make decisions through trial and error, interacting with their environment to maximize cumulative rewards. Central to RL are the concepts of agents, environments, actions, states, and rewards, governed by Markov Decision Processes (MDP):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is a set of states</mtext></mrow></mrow><annotation encoding="application/x-tex"> S \text{ is a set of states} </annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is a set of actions</mtext></mrow></mrow><annotation encoding="application/x-tex"> A \text{ is a set of actions} </annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>*</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>s</mi><mi>t</mi></msub><mo>,</mo><msub><mi>a</mi><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is the probability that action </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>a</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> in state </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>s</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> at time </mtext><mspace width="0.333em"></mspace></mrow><mi>t</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> will lead to state </mtext><mspace width="0.333em"></mspace></mrow><mi>s</mi><mo>*</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></mrow><annotation encoding="application/x-tex"> P(s*{t+1}|s_t, a_t) \text{ is the probability that action } a_t \text{ in state } s_t \text{ at time } t \text{ will lead to state } s*{t+1} </annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>*</mo><mi>t</mi><mo>,</mo><msub><mi>a</mi><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is the reward received after transitioning from state </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>s</mi><mi>t</mi></msub><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> to state </mtext><mspace width="0.333em"></mspace></mrow><mi>s</mi><mo>*</mo><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mo>,</mo><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> due to action </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>a</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex"> R(s*{t}, a_t) \text{ is the reward received after transitioning from state } s_t \text{ to state } s*{t+1}, \text{ due to action } a_t </annotation></semantics></math></p>
+<p>RL’s versatility is showcased in its applications across various sectors, including autonomous vehicles, where it promises to enhance navigation, decision-making, and real-time adaptation.</p>
+<h2 data-number="5" id="research-questions"><span class="header-section-number">5</span> Research Questions</h2>
+<p>This investigation is anchored by the question: “Can a trained RL agent be effectively transferred from a simulation to a real-world environment for maze navigation?” Addressing this question involves exploring multiple facets of RL training and implementation:</p>
+<ol type="1">
+<li>Selection of virtual environments for effective RL training.</li>
+<li>Identification of RL techniques suited for autonomous navigation.</li>
+<li>Evaluation of sim-to-real transfer in adapting to real-world dynamics.</li>
+<li>Assessment of training efficacy and performance optimization through simulation.</li>
+<li>Adaptation and transfer of a trained model to a real RC car, including necessary adjustments for real-world application.</li>
+</ol>
+<p>A blend of qualitative and quantitative research methods, including simulation experiments, real-world trials, and literature review, form the methodological backbone of this study. This comprehensive approach aims to validate the sim-to-real transfer while contributing to the broader discourse on RL’s practical applications and challenges.</p>
+<h3 data-number="5.1" id="main-research-question"><span class="header-section-number">5.1</span> Main Research Question</h3>
+<p><strong>Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)</strong></p>
+<h3 data-number="5.2" id="sub-research-questions"><span class="header-section-number">5.2</span> Sub Research Questions</h3>
+<ol type="1">
+<li><p>Which virtual environments exist to train a virtual RC-car?</p></li>
+<li><p>Which reinforcement learning techniques can I best use in this application?</p></li>
+<li><p>Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.</p></li>
+<li><p>Does the simulation have any useful contributions? In terms of training time or performance?</p></li>
+<li><p>How can the trained model be transferred to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?</p></li>
+</ol>
+<h2 data-number="6" id="methodology"><span class="header-section-number">6</span> Methodology</h2>
+<p>This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, utilizing a Double Deep Q-Network (DDQNAgent) architecture. It details the maze environment setup, the DDQN agent design, and the comprehensive training algorithm, incorporating mathematical functions to delineate the system’s mechanics.</p>
+<h3 data-number="6.1" id="environment-setup-rcmazeenv"><span class="header-section-number">6.1</span> Environment Setup (RCMazeEnv)</h3>
+<p>The RCMazeEnv, a custom maze navigation environment derived from the OpenAI Gym framework, is designed for a 12x12 cell grid maze navigation task. Each cell within this grid can be identified as either a wall, represented by ‘1’, or a path, represented by ‘0’, with the goal designated at cell position (10, 10). The agent, visualized as a car, commences its journey from the starting position at cell (1, 1), facing eastward initially. The agent’s navigation capabilities are enabled through a set of possible actions: moving forward, turning left, and turning right.</p>
+<p>To assist in navigation, the agent is equipped with sensors that provide readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, offering crucial environmental information that aids in decision-making. The environment’s state space, denoted as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒮</mi><annotation encoding="application/x-tex">\mathcal{S}</annotation></semantics></math>, encapsulates the agent’s current position <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x, y)</annotation></semantics></math>, its orientation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>, which can be one of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>N</mi><mo>,</mo><mi>E</mi><mo>,</mo><mi>S</mi><mo>,</mo><mi>W</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{N, E, S, W\}</annotation></semantics></math> representing north, east, south, and west respectively, and the sensor readings <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>s</mi><mtext mathvariant="normal">front</mtext></msub><mo>,</mo><msub><mi>s</mi><mtext mathvariant="normal">left</mtext></msub><mo>,</mo><msub><mi>s</mi><mtext mathvariant="normal">right</mtext></msub><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}</annotation></semantics></math>. The goal of the agent is to navigate through the maze, from its starting point to the goal location, efficiently while avoiding collisions with walls and optimizing the path taken based on the sensor inputs and past experiences.</p>
+<h3 data-number="6.2" id="agent-design-ddqnagent"><span class="header-section-number">6.2</span> Agent Design (DDQNAgent)</h3>
+<p>The agent employs a Double Deep Q-Network (DDQN) architecture to learn the optimal policy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>π</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\pi^*</annotation></semantics></math>. This is an enhancement over the standard DQN that aims to reduce overestimation of Q-values by decoupling the action selection from its evaluation:</p>
+<ul>
+<li><strong>Policy Network:</strong> Estimates the Q-value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo>;</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">Q(s, a; \theta)</annotation></semantics></math> for taking action <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> in state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>, parameterized by weights <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>.</li>
+<li><strong>Target Network:</strong> Independently parameterized by weights <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>−</mo></msup><annotation encoding="application/x-tex">\theta^-</annotation></semantics></math>, used to estimate the target Q-value for updating the policy network. It mirrors the architecture of the policy network but is updated less frequently to provide stable target values.</li>
+</ul>
+<p>The Q-function update equation in DDQN is modified to:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Y</mi><mi>t</mi><mrow><mi>D</mi><mi>D</mi><mi>Q</mi><mi>N</mi></mrow></msubsup><mo>=</mo><msub><mi>R</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>γ</mi><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><munder><mrow><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">x</mi></mrow><mi>a</mi></munder><mspace width="0.167em"></mspace><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>a</mi><mo>;</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>;</mo><msup><mi>θ</mi><mo>−</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+Y_t^{DDQN} = R_{t+1} + \gamma Q\left(S_{t+1}, \underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta); \theta^-\right)
+</annotation></semantics></math></p>
+<p>Where:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.222em"></mspace><mi>i</mi><mi>s</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>e</mi><mi>w</mi><mi>a</mi><mi>r</mi><mi>d</mi><mi>r</mi><mi>e</mi><mi>c</mi><mi>e</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi>d</mi><mi>a</mi><mi>f</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>t</mi><mi>a</mi><mi>k</mi><mi>i</mi><mi>n</mi><mi>g</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>a</mi><mspace width="0.222em"></mspace><mi>i</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>s</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex"> R_{t+1}\ is the reward received after taking action a\ in state s\ </annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mspace width="0.222em"></mspace><mi>i</mi><mi>s</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>s</mi><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>.</mi></mrow><annotation encoding="application/x-tex"> \gamma\ is the discount factor. </annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mrow><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">g</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">x</mi></mrow><mi>a</mi></munder><mspace width="0.167em"></mspace><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>a</mi><mo>;</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>s</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>u</mi><mi>s</mi><mi>i</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>p</mi><mi>o</mi><mi>l</mi><mi>i</mi><mi>c</mi><mi>y</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mi>.</mi></mrow><annotation encoding="application/x-tex"> \underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)\ selects the action using the policy network. </annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>a</mi><mo>;</mo><msup><mi>θ</mi><mo>−</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>e</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>s</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>u</mi><mi>s</mi><mi>i</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi><mi>n</mi><mi>e</mi><mi>t</mi><mi>w</mi><mi>o</mi><mi>r</mi><mi>k</mi><mi>.</mi></mrow><annotation encoding="application/x-tex"> Q\left(S_{t+1}, a; \theta^-\right)\ evaluates the action using the target network. </annotation></semantics></math></p>
+<p>The action space <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒜</mi><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math> and the rest of the agent’s setup remain as previously described. The DDQN architecture significantly improves the stability and performance of the agent by addressing the overestimation of Q-values, promoting a more accurate and reliable learning process.</p>
+<h3 data-number="6.3" id="training-process"><span class="header-section-number">6.3</span> Training Process</h3>
+<p>The training process utilizes the experience replay mechanism, storing transitions <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo>,</mo><mi>r</mi><mo>,</mo><mi>s</mi><mi>′</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(s, a, r, s&#39;)</annotation></semantics></math> in a replay buffer <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>. The DQN is trained by minimizing the loss function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">L(\theta)</annotation></semantics></math> defined as the mean squared error between the current Q-values and the target Q-values:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>𝔼</mi><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo>,</mo><mi>r</mi><mo>,</mo><mi>s</mi><mi>′</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∼</mo><mi>U</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow></msub><mrow><mo stretchy="true" form="prefix">[</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo>+</mo><mi>γ</mi><munder><mo>max</mo><mrow><mi>a</mi><mi>′</mi></mrow></munder><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mi>′</mi><mo>,</mo><mi>a</mi><mi>′</mi><mo>;</mo><msup><mi>θ</mi><mo>−</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo>;</mo><mi>θ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+L(\theta) = \mathbb{E}_{(s,a,r,s&#39;) \sim U(D)}\left[\left(r + \gamma \max_{a&#39;}Q(s&#39;, a&#39;; \theta^-) - Q(s, a; \theta)\right)^2\right]
+</annotation></semantics></math></p>
+<p>where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>θ</mi><mo>−</mo></msup><annotation encoding="application/x-tex">\theta^-</annotation></semantics></math> represents the weights of a target network, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math> is the discount factor. The target network’s weights are periodically updated to match the policy network, stabilizing training.</p>
+<p>The epsilon-greedy strategy is employed for action selection, with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϵ</mi><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math> gradually decaying from 1 to a minimum value, balancing exploration and exploitation.</p>
+<h3 data-number="6.4" id="reward-function-components"><span class="header-section-number">6.4</span> Reward Function Components</h3>
+<h4 data-number="6.4.1" id="collision-penalty-r_textcollision"><span class="header-section-number">6.4.1</span> Collision Penalty <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">collision</mtext></msub><annotation encoding="application/x-tex">R_{\text{collision}}</annotation></semantics></math></h4>
+<p>When the agent attempts to move into a wall or outside the designated maze boundaries, it triggers a collision state. To discourage such actions, which are counterproductive to the goal of reaching the destination, a significant penalty is applied. This penalty is critical for teaching the agent about the boundaries and obstacles within the environment, ensuring that it learns to navigate safely and effectively.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">collision</mtext></msub><mo>=</mo><mi>−</mi><mn>20</mn></mrow><annotation encoding="application/x-tex"> R_{\text{collision}} = -20 </annotation></semantics></math></p>
+<h4 data-number="6.4.2" id="goal-achievement-bonus-r_textgoal"><span class="header-section-number">6.4.2</span> Goal Achievement Bonus <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">goal</mtext></msub><annotation encoding="application/x-tex">R_{\text{goal}}</annotation></semantics></math></h4>
+<p>Reaching the goal is the primary objective of the maze navigation task. A substantial reward is given to the agent upon achieving this objective, signifying the completion of the episode. This reward serves as a strong positive reinforcement, guiding the agent’s learning towards the goal-oriented behavior. However, an additional mechanism penalizes the agent if it takes an excessively long route to reach the goal, promoting efficiency in navigation.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">goal</mtext></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>+</mi><mn>500</mn><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if goal is reached</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mn>200</mn><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if steps</mtext><mo>&gt;</mo><mn>1000</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex"> R_{\text{goal}} = \begin{cases} +500, &amp; \text{if goal is reached} \\ -200, &amp; \text{if steps} &gt; 1000 \end{cases} </annotation></semantics></math></p>
+<h4 data-number="6.4.3" id="proximity-reward-r_textproximity"><span class="header-section-number">6.4.3</span> Proximity Reward <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">proximity</mtext></msub><annotation encoding="application/x-tex">R_{\text{proximity}}</annotation></semantics></math></h4>
+<p>This component of the reward function incentivizes the agent to minimize its distance to the goal over time. By rewarding the agent based on its proximity to the goal, it encourages exploration and path optimization, guiding the agent to navigate the maze more effectively. The reward decreases as the distance to the goal increases, encouraging the agent to always move towards the goal.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">proximity</mtext></msub><mo>=</mo><mfrac><mn>50</mn><mrow><msub><mi>d</mi><mtext mathvariant="normal">goal</mtext></msub><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex"> R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1} </annotation></semantics></math></p>
+<h4 data-number="6.4.4" id="progress-reward-r_textprogress"><span class="header-section-number">6.4.4</span> Progress Reward <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">progress</mtext></msub><annotation encoding="application/x-tex">R_{\text{progress}}</annotation></semantics></math></h4>
+<p>The progress reward or penalty is designed to encourage the agent to make decisions that bring it closer to the goal and to penalize decisions that lead it away. This dynamic reward system provides immediate feedback based on the agent’s movement relative to the goal, promoting smarter navigation decisions.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">progress</mtext></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>+</mi><mn>50</mn><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if distance decreases</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mn>25</mn><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if distance increases</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex"> R_{\text{progress}} = \begin{cases} +50, &amp; \text{if distance decreases} \\ -25, &amp; \text{if distance increases} \end{cases} </annotation></semantics></math></p>
+<h4 data-number="6.4.5" id="exploration-penalty-r_textrevisit"><span class="header-section-number">6.4.5</span> Exploration Penalty <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">revisit</mtext></msub><annotation encoding="application/x-tex">R_{\text{revisit}}</annotation></semantics></math></h4>
+<p>To discourage repetitive exploration of the same areas, which indicates inefficient pathfinding, the agent receives a penalty for re-entering previously visited cells. This penalty is crucial for encouraging the exploration of new paths and preventing the agent from getting stuck in loops or dead ends.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">revisit</mtext></msub><mo>=</mo><mi>−</mi><mn>10</mn></mrow><annotation encoding="application/x-tex"> R_{\text{revisit}} = -10 </annotation></semantics></math></p>
+<h4 data-number="6.4.6" id="efficiency-penalty-r_textefficiency"><span class="header-section-number">6.4.6</span> Efficiency Penalty <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mtext mathvariant="normal">efficiency</mtext></msub><annotation encoding="application/x-tex">R_{\text{efficiency}}</annotation></semantics></math></h4>
+<p>Every step the agent takes incurs a small penalty. This mechanism ensures that the agent is incentivized to find the shortest possible path to the goal, balancing the need to explore the environment with the goal of reaching the destination as efficiently as possible.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">efficiency</mtext></msub><mo>=</mo><mi>−</mi><mn>5</mn></mrow><annotation encoding="application/x-tex"> R_{\text{efficiency}} = -5 </annotation></semantics></math></p>
+<h4 data-number="6.4.7" id="evaluation-and-termination-conditions"><span class="header-section-number">6.4.7</span> Evaluation and Termination Conditions</h4>
+<p>The reward function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">R(s, a)</annotation></semantics></math> is designed to encourage reaching the goal while penalizing collisions and inefficient paths. The reward for each step is defined as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>500</mn></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if goal is reached</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mn>20</mn></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">if collision</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>50</mn><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">otherwise</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
+R(s, a) = \begin{cases} 
+500 &amp; \text{if goal is reached} \\
+-20 &amp; \text{if collision} \\
+50 / (d + 1) &amp; \text{otherwise}
+\end{cases}
+</annotation></semantics></math></p>
+<p>where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math> is the Euclidean distance to the goal, encouraging the agent to minimize the distance to the goal.</p>
+<p>The episode terminates when the agent reaches the goal, collides with an obstacle, or exceeds a predefined step limit, aiming to learn an efficient navigation policy.</p>
+<h2 data-number="7" id="experimental-outcomes-and-implementation-details"><span class="header-section-number">7</span> Experimental Outcomes and Implementation Details</h2>
+<p>The project embarked on a journey to bridge the virtual and real-world through a meticulously designed environment and a cutting-edge agent architecture.</p>
+<h3 data-number="7.1" id="virtual-environment-and-agent-design"><span class="header-section-number">7.1</span> Virtual Environment and Agent Design</h3>
+<ul>
+<li><p><strong>RCMazeEnv</strong>: Customized for this project, the environment simulates a robotic car navigating a maze. Its design replicates real-world physics and constraints, offering a rich testing ground for reinforcement learning algorithms. The maze’s structure, from its starting position to the goal, and the robotic car’s specifications, including movement actions and sensor setups, are critical to the simulation’s realism.</p></li>
+<li><p><strong>Double Deep Q-Network (DDQN)</strong>: Employing two neural networks, this model enhances traditional reinforcement learning methods by reducing the overestimation of Q-values. The policy network and the target network work in tandem to refine the agent’s learning process through continuous interaction and sensor data interpretation.</p></li>
+</ul>
+<h3 data-number="7.2" id="implementation-highlights"><span class="header-section-number">7.2</span> Implementation Highlights</h3>
+<ul>
+<li><p><strong>Environment and Agent Interaction</strong>: Central to the DDQN agent’s strategy is its continuous adaptation to the environment, leveraging sensor inputs to inform its decisions and optimize its path through the maze. This iterative learning process is visually represented through a simulation platform that allows for detailed observation of the agent’s performance and strategy adjustments.</p></li>
+<li><p><strong>Real-World Application</strong>: Transferring the virtual training to a physical RC robot involved comprehensive hardware setup and calibration. Challenges such as sensor data normalization and precise movement control were addressed to ensure a seamless transition from virtual to real-world application.</p></li>
+</ul>
+<h3 data-number="7.3" id="evaluation-and-metrics"><span class="header-section-number">7.3</span> Evaluation and Metrics</h3>
+<p>The project employed specific metrics to evaluate the agent’s efficiency in navigating the maze, with emphasis on both simulation performance and real-world applicability. This involved monitoring the agent’s episodic performance, step efficiency, and adaptation to real-world conditions.</p>
+<h3 data-number="7.4" id="unique-features"><span class="header-section-number">7.4</span> Unique Features</h3>
+<ul>
+<li><strong>Physical Maze and Web Application</strong>: A constructed physical maze served as the tangible counterpart to the virtual <code>RCMazeEnv</code>, playing a crucial role in testing the RC robot’s navigation capabilities. Additionally, a web application was developed to act as a visualization and control interface, enhancing the interaction between the virtual and real-world applications.</li>
+</ul>
+<h2 data-number="8" id="model-architecture-and-training-insights"><span class="header-section-number">8</span> Model Architecture and Training Insights</h2>
+<p>The Double DQN model’s architecture is central to understanding the agent’s learning and decision-making capabilities. Structured with four dense layers, it outputs three actions tailored to the RC car’s movement, enabling sophisticated navigation strategies within the maze.</p>
+<p><strong>Model Architecture:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="an">Model:</span><span class="co"> &quot;sequential_52&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu"># Layer (type) Output Shape Param</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">=================================================================</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dense_200 (Dense) (None, 32) 224</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dense_201 (Dense) (None, 64) 2112</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>dense_202 (Dense) (None, 32) 2080</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>dense_203 (Dense) (None, 3) 99</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">=================================================================</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Total params: 4515 (17.64 KB)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Trainable params: 4515 (17.64 KB)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Non-trainable params: 0 (0.00 Byte)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>---</span></code></pre></div>
+<p>This model is instrumental in the agent’s ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.</p>
+<h3 data-number="8.1" id="training-parameters"><span class="header-section-number">8.1</span> Training Parameters</h3>
+<p>The training of the Double DQN agent was governed by the following parameters:</p>
+<ul>
+<li><strong>Discount Factor (<code>DISCOUNT</code>)</strong>: 0.90</li>
+<li><strong>Batch Size</strong>: 128
+<ul>
+<li>Number of steps (samples) used for training at a time.</li>
+</ul></li>
+<li><strong>Update Target Interval (<code>UPDATE_TARGET_INTERVAL</code>)</strong>: 2
+<ul>
+<li>Frequency of updating the target network.</li>
+</ul></li>
+<li><strong>Epsilon (<code>EPSILON</code>)</strong>: 0.99
+<ul>
+<li>Initial exploration rate.</li>
+</ul></li>
+<li><strong>Minimum Epsilon (<code>MIN_EPSILON</code>)</strong>: 0.01
+<ul>
+<li>Minimum value for exploration rate.</li>
+</ul></li>
+<li><strong>Epsilon Decay Rate (<code>DECAY</code>)</strong>: 0.99973
+<ul>
+<li>Rate at which exploration probability decreases.</li>
+</ul></li>
+<li><strong>Number of Episodes (<code>EPISODE_AMOUNT</code>)</strong>: 170
+<ul>
+<li>Total episodes for training the agent.</li>
+</ul></li>
+<li><strong>Replay Memory Capacity (<code>REPLAY_MEMORY_CAPACITY</code>)</strong>: 2,000,000
+<ul>
+<li>Maximum size of the replay buffer.</li>
+</ul></li>
+<li><strong>Learning Rate</strong>: 0.001
+<ul>
+<li>The rate at which the model learns from new observations.</li>
+</ul></li>
+</ul>
+<h3 data-number="8.2" id="training-procedure"><span class="header-section-number">8.2</span> Training Procedure</h3>
+<ol type="1">
+<li><strong>Initialization</strong>: Start with a high exploration rate (<code>EPSILON</code>) allowing the agent to explore the environment extensively.</li>
+<li><strong>Episodic Training</strong>: For each episode, the agent interacts with the environment, collecting state, action, reward, and next state data.</li>
+<li><strong>Replay Buffer</strong>: Store these experiences in a replay memory, which helps in breaking the correlation between sequential experiences.</li>
+<li><strong>Batch Learning</strong>: Randomly sample a batch of experiences from the replay buffer to train the network.</li>
+<li><strong>Target Network Update</strong>: Every <code>UPDATE_TARGET_INTERVAL</code> episodes, update the weights of the target network with those of the policy network.</li>
+<li><strong>Epsilon Decay</strong>: Gradually decrease the exploration rate (<code>EPSILON</code>) following the decay rate (<code>DECAY</code>), shifting the strategy from exploration to exploitation.</li>
+<li><strong>Performance Monitoring</strong>: Continuously monitor the agent’s performance in terms of rewards and success rate in navigating the maze.</li>
+</ol>
+<h2 data-number="9" id="visual-insights-and-further-exploration"><span class="header-section-number">9</span> Visual Insights and Further Exploration</h2>
+<p>The project’s innovative approach to sim-to-real transfer in reinforcement learning is encapsulated in a series of visual representations and demonstrations, from the detailed construction of the physical maze to the dynamic interface of the web application.</p>
+<ul>
+<li><strong>Maze Visualization:</strong></li>
+</ul>
+<figure>
+<img src="./images/final_test/final_maze_build.jpeg" alt="Final Maze Build" />
+<figcaption aria-hidden="true">Final Maze Build</figcaption>
+</figure>
+<ul>
+<li><strong>Web Application Interface:</strong></li>
+</ul>
+<figure>
+<img src="./images/web_app_v4.png" alt="Web App Interface" />
+<figcaption aria-hidden="true">Web App Interface</figcaption>
+</figure>
+<ul>
+<li><strong>Simulation Test Video:</strong></li>
+</ul>
+<p><a href="https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e">DDQN Test in Action</a></p>
+<h3 data-number="9.1" id="evaluation-metrics-overview"><span class="header-section-number">9.1</span> Evaluation Metrics Overview</h3>
+<p>Evaluating the performance of the Double Deep Q-Network (DDQN) agent both in simulation and real-world scenarios was essential to assess the effectiveness of reinforcement learning strategies applied to maze navigation. This evaluation provides insights into the agent’s learning progress, its decision-making efficiency, and the challenges faced when transitioning from a virtual to a tangible maze.</p>
+<h4 data-number="9.1.1" id="simulation-metrics"><span class="header-section-number">9.1.1</span> Simulation Metrics</h4>
+<p>The primary objective within the simulated environment was to determine the agent’s capability to solve the maze with optimal efficiency and minimal errors.</p>
+<ul>
+<li><p><strong>Episodic Performance</strong>: By analyzing the number of episodes required for consistent maze resolution, insights into the learning curve and adaptation of the agent were gained. Consistent maze resolution with fewer episodes indicates effective learning and strategy optimization.</p></li>
+<li><p><strong>Step Efficiency</strong>: The efficiency with which the agent completes the maze—measured in steps—sheds light on its decision-making process and path optimization capabilities. Fewer steps to reach the goal suggest a higher level of learning and efficiency.</p></li>
+<li><p><strong>MSE Loss Measurement</strong>: The mean squared error (MSE) formula quantifies the difference between the predicted values by the agent and the actual values, providing a mathematical measure of the agent’s prediction accuracy.</p></li>
+</ul>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mi>S</mi><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>y</mi><mo>,</mo><mover><mi>y</mi><mo accent="true">̂</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mover><mi>y</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">
+MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2
+</annotation></semantics></math></p>
+<ul>
+<li><p><strong>Reward Trend Analysis</strong>: Monitoring the reward history offers an understanding of how the agent’s actions lead to positive or negative outcomes over time, illustrating the agent’s growing proficiency in navigating the maze.</p></li>
+<li><p><strong>Epsilon Decay Tracking</strong>: The adjustment of the epsilon value—balancing exploration and exploitation—over episodes is crucial for fostering an optimal learning pace. This metric demonstrates the agent’s transition from exploring the maze to exploiting known paths for success.</p></li>
+</ul>
+<h4 data-number="9.1.2" id="real-world-metrics"><span class="header-section-number">9.1.2</span> Real-World Metrics</h4>
+<p>Transitioning to real-world application involved assessing how the simulation-trained agent’s strategies fared in a physical maze with tangible obstacles and limitations.</p>
+<ul>
+<li><p><strong>Maze Navigation</strong>: A visual assessment of the RC car’s ability to navigate a real-world maze provided direct evidence of the sim-to-real transfer’s effectiveness, highlighting the practical application of the trained agent.</p></li>
+<li><p><strong>Sensor Data Analysis</strong>: Evaluating the real-time sensor data in navigation scenarios enabled a detailed understanding of the agent’s interaction with the physical world, particularly in terms of collision avoidance and pathfinding efficiency.</p></li>
+</ul>
+<h2 data-number="10" id="results"><span class="header-section-number">10</span> results</h2>
+<h3 data-number="10.1" id="reinforcement-learning-techniques-overview"><span class="header-section-number">10.1</span> Reinforcement Learning Techniques Overview</h3>
+<h4 data-number="10.1.1" id="final-choice-ddqn"><span class="header-section-number">10.1.1</span> final choice: DDQN</h4>
+<p>The research project explored various reinforcement learning techniques to train an agent for maze navigation, focusing on their adaptability, efficiency, and real-world applicability. The following techniques were evaluated:</p>
+<ul>
+<li>Heatmap of the maze with the agent’s path
+<ul>
+<li>Steps taken in the maze, providing insights into the agent’s decision-making process and path optimization. (turns also count as an action)</li>
+</ul></li>
+</ul>
+<figure>
+<img src="./images/training_images/visit_heatmap_DDQN.png" alt="Heatmap" />
+<figcaption aria-hidden="true">Heatmap</figcaption>
+</figure>
+<ul>
+<li>Reward history of the agent’s performance</li>
+</ul>
+<figure>
+<img src="./images/training_images/reward_history_DDQN.png" alt="Reward History" />
+<figcaption aria-hidden="true">Reward History</figcaption>
+</figure>
+<ul>
+<li>Reward distribution across episodes</li>
+</ul>
+<figure>
+<img src="./images/training_images/reward_distribution_DDQN.png" alt="Reward Distribution" />
+<figcaption aria-hidden="true">Reward Distribution</figcaption>
+</figure>
+<ul>
+<li>Maze solving path visualization</li>
+</ul>
+<figure>
+<img src="./images/training_images/maze_solution_DDQN.png" alt="Maze Path" />
+<figcaption aria-hidden="true">Maze Path</figcaption>
+</figure>
+<ul>
+<li>Moving average of steps to solve the maze</li>
+</ul>
+<figure>
+<img src="./images/training_images/steps_per_episode_with_moving_avg_DDQN.png" alt="Moving Average" />
+<figcaption aria-hidden="true">Moving Average</figcaption>
+</figure>
+<h4 data-number="10.1.2" id="deep-q-network-dqn"><span class="header-section-number">10.1.2</span> 1. Deep Q-Network (DQN)</h4>
+<ul>
+<li><p><strong>Description</strong>: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.</p></li>
+<li><p><strong>Suitability</strong>: DQN’s advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.</p></li>
+<li><p><strong>Integration and Results</strong>:</p>
+<ul>
+<li><strong>Reward History</strong>:</li>
+</ul>
+<figure>
+<img src="./images/reward_history_dqn.png" alt="DQN Reward History" />
+<figcaption aria-hidden="true">DQN Reward History</figcaption>
+</figure>
+<ul>
+<li><strong>Performance</strong>: DQN’s performance, while competent, was limited by Q-value overestimation in intricate scenarios.</li>
+</ul></li>
+</ul>
+<h4 data-number="10.1.3" id="double-deep-q-network-ddqn"><span class="header-section-number">10.1.3</span> 2. Double Deep Q-Network (DDQN)</h4>
+<ul>
+<li><p><strong>Description</strong>: The Double Deep Q-Network (DDQN) improves upon DQN by employing two neural networks. This structure effectively reduces overestimation bias by separating action selection from Q-value generation.</p></li>
+<li><p><strong>Reason for Selection</strong>:</p>
+<ul>
+<li>DDQN’s accuracy in Q-value approximation is crucial for navigating complex environments, such as mazes.</li>
+<li>The RC-car’s sensor limitations, which could lead to Q-value overestimations, are better addressed by DDQN.</li>
+<li>Empirical trials showed DDQN’s superior performance in maze navigation tasks.</li>
+</ul></li>
+<li><p><strong>Integration and Results</strong>:</p>
+<ul>
+<li><strong>Reward History</strong>:</li>
+</ul>
+<figure>
+<img src="./images/DDQN_reward_history.png" alt="DDQN Reward History" />
+<figcaption aria-hidden="true">DDQN Reward History</figcaption>
+</figure>
+<ul>
+<li><strong>Performance</strong>: DDQN solved the environment in an average of 25 steps, compared to DQN’s 34 steps, highlighting its efficiency.</li>
+</ul></li>
+</ul>
+<h4 data-number="10.1.4" id="proximal-policy-optimization-ppo"><span class="header-section-number">10.1.4</span> 3. Proximal Policy Optimization (PPO)</h4>
+<ul>
+<li><p><strong>Description</strong>: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It’s known for its stability and efficiency in specific RL contexts.</p></li>
+<li><p><strong>Suitability</strong>: PPO’s emphasis on policy optimization over value estimation makes it less suitable for RC-car simulations, where accurate Q-value approximation is key.</p></li>
+<li><p><strong>Integration and Results</strong>:</p>
+<ul>
+<li><strong>Reward History</strong>:</li>
+</ul>
+<figure>
+<img src="./images/PPO_reward_history.png" alt="PPO Reward History" />
+<figcaption aria-hidden="true">PPO Reward History</figcaption>
+</figure>
+<ul>
+<li><strong>Performance</strong>: PPO, while stable, did not align well with the precision requirements for RC-car maze navigation.</li>
+</ul></li>
+</ul>
+<h2 data-number="11" id="hardware-setup-and-assembly"><span class="header-section-number">11</span> Hardware Setup and Assembly</h2>
+<h3 data-number="11.1" id="introduction-to-hardware-components"><span class="header-section-number">11.1</span> Introduction to Hardware Components</h3>
+<p>This section provides a detailed overview of the hardware components used in the research project, focusing on the assembly and configuration of the RC robot designed for maze navigation.</p>
+<figure>
+<img src="./images/final_test/jp_final.jpeg" alt="final_robot" />
+<figcaption aria-hidden="true">final_robot</figcaption>
+</figure>
+<h3 data-number="11.2" id="components-list"><span class="header-section-number">11.2</span> Components List</h3>
+<ul>
+<li><strong>Core Components</strong>:
+<ul>
+<li>ESP32-WROOM-32 module (Refer to the datasheet at <a href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf">Espressif</a>)</li>
+<li>3D printed parts from Thingiverse (<a href="https://www.thingiverse.com/thing:3436448/files">hc-sr04</a>, <a href="https://www.thingiverse.com/thing:2544002">top plate + alternative for the robot kit</a>)</li>
+<li>Motor Driver - available at <a href="https://www.dfrobot.com/product-66.html">DFRobot</a></li>
+<li>2WD robot kit - available at <a href="https://www.dfrobot.com/product-367.html">DFRobot</a></li>
+<li>Mini OlED screen - available at <a href="https://www.amazon.com.be/dp/B0BB1T23LF">Amazon</a></li>
+<li>Sensors - available at <a href="https://www.amazon.com.be/dp/B07XF4815H">Amazon</a></li>
+<li>Battery For ESP 32 - available at <a href="https://www.amazon.com.be/dp/B09Q4ZMNLW">Amazon</a></li>
+</ul></li>
+<li><strong>Supplementary Materials</strong>: List of additional materials like screws, wires, and tools required for assembly.
+<ul>
+<li>4mm thick screws 5mm long to hold the wood together - available at <a href="https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208">brico</a></li>
+<li>m3 bolt &amp; nuts - available at <a href="https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637">brico</a></li>
+<li>wood for the maze - available at <a href="https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349">brico</a></li>
+</ul></li>
+</ul>
+<h3 data-number="11.3" id="wiring-guide"><span class="header-section-number">11.3</span> Wiring Guide</h3>
+<p><strong>ESP32 Wiring:</strong>:</p>
+<figure>
+<img src="./images/schematics/esp_updated.png" alt="ESP32 Wiring" />
+<figcaption aria-hidden="true">ESP32 Wiring</figcaption>
+</figure>
+<h2 data-number="12" id="challenges-and-solutions-in-implementing-rl-techniques-and-virtual-environments"><span class="header-section-number">12</span> Challenges and Solutions in Implementing RL Techniques and Virtual Environments</h2>
+<h3 data-number="12.1" id="challenge-1-selection-of-an-appropriate-virtual-environment"><span class="header-section-number">12.1</span> Challenge 1: Selection of an Appropriate Virtual Environment</h3>
+<ul>
+<li><strong>Description</strong>: Choosing a virtual environment conducive to effective RC-car training is crucial.</li>
+<li><strong>Solution</strong>: After evaluating various platforms, <strong>OpenAI Gym</strong> was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.</li>
+</ul>
+<h3 data-number="12.2" id="challenge-2-choosing-the-optimal-reinforcement-learning-technique"><span class="header-section-number">12.2</span> Challenge 2: Choosing the Optimal Reinforcement Learning Technique</h3>
+<ul>
+<li><strong>Description</strong>: Selecting the most effective RL technique for training the virtual RC-car.</li>
+<li><strong>Solution</strong>: Through comparative analysis and empirical testing, the Double Deep Q-Network (DDQN) was identified as the most suitable technique, demonstrating superior performance in navigating complex environments with fewer episodes.</li>
+</ul>
+<h3 data-number="12.3" id="challenge-3-sim2real-transfer---addressing-movement-discrepancies"><span class="header-section-number">12.3</span> Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies</h3>
+<ul>
+<li><strong>Description</strong>: Bridging the gap between simulation and real-world in terms of RC-car movement and control.</li>
+<li><strong>Solution Attempt</strong>: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Further more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.</li>
+</ul>
+<h3 data-number="12.4" id="challenge-4-alignment-issue-and-motor-encoder-implementation"><span class="header-section-number">12.4</span> Challenge 4: alignment Issue and Motor Encoder Implementation</h3>
+<ul>
+<li><p><strong>Description</strong>: Difficulty in achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.</p></li>
+<li><p><strong>Solution Attempt 1</strong>: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.</p></li>
+<li><p><strong>Solution Attempt 2</strong>: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car’s weight increased, leading to the same problem.</p></li>
+<li><p><strong>Solution Attempt 3</strong>: The use of a MPU6050 gyroscope was explored to measure the car’s orientation and adjust the movement accordingly. Even though this approach succeeded to some extent (90 degrees turns were accurate), it was not able to solve the ~3-degree offset issue when moving forward.</p></li>
+<li><p><strong>Solution Attempt 4</strong>: The final solution I tried was done by removing the RPI5 (previously used for sensor data and running the web app) from the robot all together and using the ESP32 to control both all the sensors and the motors. This allowed for a more lightweight robot, which was able to move forward more precisely but it failed to rotate 90 degrees accurately.</p></li>
+</ul>
+<h3 data-number="12.5" id="challenge-5-ensuring-consistent-and-effective-training"><span class="header-section-number">12.5</span> Challenge 5: Ensuring Consistent and Effective Training</h3>
+<ul>
+<li><strong>Description</strong>: Maximizing training efficiency and performance while maintaining consistency between simulation and real-world scenarios.</li>
+<li><strong>Solution</strong>: The simulation demonstrated considerable advantages in terms of training efficiency, safety, and computational power, establishing it as an indispensable tool in autonomous vehicle model development.</li>
+</ul>
+<h3 data-number="12.6" id="challenge-6-accurate-sensor-data-normalization-for-sim2real-transfer"><span class="header-section-number">12.6</span> Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer</h3>
+<ul>
+<li><p><strong>Description</strong>: Aligning sensor data between simulated and real-world environments is critical for model accuracy.</p></li>
+<li><p><strong>Solution</strong>: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model’s accuracy in real-world applications.</p>
+<ul>
+<li><p><strong>Real-World Sensor Data Normalization:</strong></p>
+<p>The function <code>map_distance</code> normalizes real-world sensor data. It can be represented as follows:</p>
+<!-- ![map_distance](./images/map_distance_equation.png) -->
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">map_distance</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>d</mi></mtd><mtd columnalign="left" style="text-align: left"><mrow><mtext mathvariant="normal">if </mtext><mspace width="0.333em"></mspace></mrow><mi>d</mi><mo>&lt;</mo><mn>25</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>25</mn><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo>−</mo><mn>25</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mn>0.5</mn></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">otherwise</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
+\text{map\_distance}(d) = \begin{cases} 
+d &amp; \text{if } d &lt; 25 \\
+25 + (d - 25) \times 0.5 &amp; \text{otherwise}
+\end{cases}
+</annotation></semantics></math></p>
+<p>This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.</p></li>
+<li><p><strong>Simulation Sensor Data Normalization:</strong></p>
+<p>The function <code>normalize_distance</code> adjusts simulated sensor data to a 0-1 range. Its equation is:</p>
+<!-- ![normalize_distance](./images/normalize_distance_equation.png) -->
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">normalize_distance</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>d</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mtext mathvariant="normal">max</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mtext mathvariant="normal">min</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>d</mi><mtext mathvariant="normal">sensor_max_range</mtext></mfrac><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex">
+\text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
+</annotation></semantics></math></p>
+<p>In this function, the distance is first scaled by dividing by <code>sensor_max_range</code>. It’s then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.</p></li>
+</ul></li>
+</ul>
+<h3 data-number="12.7" id="challenge-7-integration-of-failsafe-mechanisms"><span class="header-section-number">12.7</span> Challenge 7: Integration of Failsafe Mechanisms</h3>
+<ul>
+<li><strong>Description</strong>: Preventing potential collisions and ensuring safe navigation in the real world.</li>
+<li><strong>Solution</strong>: Development of a failsafe system that prevents forward movement in hazardous situations, retraining the model with this protocol to align real-world behavior with the simulated environment.</li>
+</ul>
+<h3 data-number="12.8" id="challenge-8-training-environment-and-technique-efficacy"><span class="header-section-number">12.8</span> Challenge 8: Training Environment and Technique Efficacy</h3>
+<ul>
+<li><strong>Description</strong>: Determining the most effective environment and RL technique for training.</li>
+<li><strong>Solution</strong>: The DDQN solved the environment more efficiently than DQN, highlighting the importance of technique selection. The simulation provided a safer, more controlled environment for training, reinforcing its selection over real-world training.</li>
+</ul>
+<h3 data-number="12.9" id="viewing-practical-experiments"><span class="header-section-number">12.9</span> Viewing Practical Experiments</h3>
+<p>For visual insights into my practical experiments addressing these challenges, please refer to my supplementary video materials, which illustrate the implementation and testing of solutions, from gyroscopic adjustments to the integration of a more sophisticated control system using the ESP32.</p>
+<h3 data-number="12.10" id="conclusion"><span class="header-section-number">12.10</span> Conclusion</h3>
+<p>This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.</p>
+<p>However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.</p>
+<p>A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot’s design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.</p>
+<p>Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.</p>
+<p>In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.</p>
+<h2 data-number="13" id="real-world-application-and-limitations"><span class="header-section-number">13</span> Real-World Application and Limitations</h2>
+<h3 data-number="13.1" id="introduction-to-sensor-and-movement-discrepancies"><span class="header-section-number">13.1</span> Introduction to Sensor and Movement Discrepancies</h3>
+<p>The leap from simulated environments to real-world application unveils a complex landscape of challenges, especially in the interpretation of sensor data and the replication of vehicle movements. This discussion delves into these critical aspects, highlighting both the opportunities and constraints of applying simulation-derived insights to actual autonomous vehicle (AV) operations.</p>
+<h3 data-number="13.2" id="real-world-application"><span class="header-section-number">13.2</span> Real-World Application</h3>
+<h4 data-number="13.2.1" id="enhanced-sensor-based-navigation"><span class="header-section-number">13.2.1</span> Enhanced Sensor-Based Navigation</h4>
+<p>Sensor-based navigation technologies, refined through simulation, promise substantial improvements in autonomous vehicles’ functionality. In real-world applications, such technologies are pivotal for environments demanding high precision and adaptability. For instance, in congested urban settings or in automated delivery systems, the ability to dynamically navigate with high accuracy can significantly elevate both safety and efficiency. Integrating simulation insights into sensor-based navigation aids in refining these systems to better interpret complex, variable real-world conditions.</p>
+<h4 data-number="13.2.2" id="informing-autonomous-vehicle-movement"><span class="header-section-number">13.2.2</span> Informing Autonomous Vehicle Movement</h4>
+<p>Simulated environments offer a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems’ ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, thereby improving the overall functionality of autonomous transportation.</p>
+<h3 data-number="13.3" id="limitations"><span class="header-section-number">13.3</span> Limitations</h3>
+<h4 data-number="13.3.1" id="discrepancies-in-sensor-data-interpretation"><span class="header-section-number">13.3.1</span> Discrepancies in Sensor Data Interpretation</h4>
+<p>A substantial hurdle in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle’s decision-making processes and, by extension, its safety and operational efficiency.</p>
+<h4 data-number="13.3.2" id="challenges-in-movement-replication"><span class="header-section-number">13.3.2</span> Challenges in Movement Replication</h4>
+<p>The precise replication of simulated vehicle movements in real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.</p>
+<h4 data-number="13.3.3" id="practical-implementation-considerations"><span class="header-section-number">13.3.3</span> Practical Implementation Considerations</h4>
+<p>Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include, but are not limited to, sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system’s resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on sim2real insights.</p>
+<h3 data-number="13.4" id="conclusion-1"><span class="header-section-number">13.4</span> Conclusion</h3>
+<p>Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents a unique set of challenges and opportunities. While the application of simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.</p>
+<h2 data-number="14" id="answers-to-research-questions"><span class="header-section-number">14</span> Answers to Research Questions</h2>
+<h3 data-number="14.1" id="virtual-environments-for-rf-car-training"><span class="header-section-number">14.1</span> 1. Virtual Environments for RF-Car Training</h3>
+<p>The choice of a virtual environment is paramount in simulating the complex dynamics of autonomous driving. Platforms such as Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym offer varied features catering to different aspects of driving simulation. However, for RF-car training, OpenAI Gym is selected for its flexibility in custom environment creation and its compatibility with Python, facilitating ease of use and integration with existing advanced AI coursework [1].</p>
+<p>Unity 3D and AirSim, while providing realistic simulations, require expertise beyond Python, limiting their accessibility for the current project scope. CARLA offers comprehensive autonomous driving simulation capabilities but is tailored towards more traditional vehicle models rather than RF-cars. ISAAC Gym, with its focus on robotics, presents a similar mismatch in application. In contrast, OpenAI Gym’s simplicity and reinforcement learning focus make it an ideal platform for this project, supporting effective SIM2REAL transfer practices [2].</p>
+<h3 data-number="14.2" id="reinforcement-learning-techniques-for-virtual-rf-car-training"><span class="header-section-number">14.2</span> 2. Reinforcement Learning Techniques for Virtual RF-Car Training</h3>
+<p>The comparison of Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO) techniques reveals that DDQN offers the best fit for the project’s needs. DDQN’s architecture, designed to address the overestimation bias inherent in DQN, enhances accuracy in Q-value approximation—a critical factor in navigating the complex, sensor-driven environments of RF-car simulations [3].</p>
+<p>DQN, while powerful for high-dimensional sensory input processing, falls short in environments with unpredictable dynamics, a limitation DDQN effectively overcomes. PPO’s focus on direct policy optimization provides stability and efficiency but lacks the precision in value estimation necessary for RF-car training. Empirical trials further validate DDQN’s superior performance, demonstrating its suitability for the intricate maze-like environments encountered by virtual RF-cars [4].</p>
+<h3 data-number="14.3" id="sim-to-real-transfer-challenges-and-solutions"><span class="header-section-number">14.3</span> 3. Sim-to-Real Transfer Challenges and Solutions</h3>
+<p>Transferring simulation models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Solutions such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance [5].</p>
+<p>The introduction of failsafe mechanisms and adjustments in motor control timings proved critical in mitigating issues like collision risks and movement inaccuracies, underscoring the importance of iterative testing and adaptation in sim-to-real transfer [6].</p>
+<h3 data-number="14.4" id="contributions-of-simulation-in-rf-car-training"><span class="header-section-number">14.4</span> 4. Contributions of Simulation in RF-Car Training</h3>
+<p>Simulation training offers distinct advantages in efficiency, safety, and computational resources. It enables uninterrupted and automated training sessions, eliminates the risks associated with real-world training, and leverages powerful computing resources to accelerate the training process [7].</p>
+<p>The comparative analysis between simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models, making it an indispensable tool in the RF-car development process [8].</p>
+<h3 data-number="14.5" id="practical-application-of-simulated-training-to-real-world-rf-cars"><span class="header-section-number">14.5</span> 5. Practical Application of Simulated Training to Real-World RF-Cars</h3>
+<p>Applying a trained model to a physical RC car requires careful consideration of environment, agent, and model adjustments. Strategies for effective sim-to-real adaptation include fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror those of the simulation [9].</p>
+<p>This process ensures the successful application of simulation training to real-world scenarios, facilitating the development of robust and reliable autonomous driving systems [10].</p>
+<h2 data-number="15" id="reflection"><span class="header-section-number">15</span> Reflection</h2>
+<!-- --
+  # TODO: Interviews with Sam and Wouter for feedback (have not done these interviews yet)
+  • Wat zijn volgens hen de sterke en zwakke punten van het resultaat uit jouw researchproject?   
+  • Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld?  
+  • Welke alternatieven/suggesties geven bedrijven en/of community?   
+  • Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?    
+  • Wat is de meerwaarde voor het bedrijf?   
+  • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig?  
+-- -->
+<p>The path from conceptualizing a virtual RF-car training simulation to its real-world application traverses the rich terrain of integrating theoretical research with tangible, practical outcomes. Reflecting on feedback, along with the journey itself, unveils crucial insights into the research process, its achievements, and areas ripe for growth:</p>
+<h3 data-number="15.1" id="strengths-and-weaknesses"><span class="header-section-number">15.1</span> Strengths and Weaknesses</h3>
+<p>The project’s resilience in adapting to unforeseen challenges stands out as a testament to the robustness and flexibility of the research approach. This adaptability is underscored by the ability to pivot in methodology when confronted with real-world complexities not mirrored in the simulation. However, an initial hesitancy to venture beyond familiar tools and methodologies highlighted a potential limitation in fully leveraging the breadth of available technologies and approaches. This reticence, perhaps rooted in comfort with established practices, may have initially narrowed the scope of exploration and innovation.</p>
+<h3 data-number="15.2" id="practical-applicability-and-industry-relevance"><span class="header-section-number">15.2</span> Practical Applicability and Industry Relevance</h3>
+<p>The feedback collectively emphasizes the practical applicability and value of the project’s findings within the industry. The methodology and outcomes provide a concrete framework for navigating the intricacies of sim-to-real transitions, crucial for the development of autonomous vehicle technologies. This relevance extends beyond theoretical interest, suggesting a solid foundation for application in real-world autonomous system development.</p>
+<h3 data-number="15.3" id="encountered-alternatives-and-flexibility"><span class="header-section-number">15.3</span> Encountered Alternatives and Flexibility</h3>
+<p>The encouragement to explore sophisticated simulation environments and alternative machine learning methodologies resonates with a broader industry and academic expectation for versatile, dynamic research approaches. This suggests a pivotal learning moment: the importance of maintaining flexibility in both tools and conceptual frameworks to ensure research remains responsive and relevant to evolving technological landscapes and real-world demands.</p>
+<h3 data-number="15.4" id="anticipated-implementation-barriers"><span class="header-section-number">15.4</span> Anticipated Implementation Barriers</h3>
+<p>Identifying anticipated challenges in corporate implementation, such as the need for significant investment and the integration of novel findings into established workflows, offers a grounded perspective on the path to practical application. This awareness is instrumental in bridging the gap between research outcomes and their industry adoption, guiding future strategies to mitigate these barriers.</p>
+<h3 data-number="15.5" id="societal-contributions-and-broader-impacts"><span class="header-section-number">15.5</span> Societal Contributions and Broader Impacts</h3>
+<p>Reflecting on the societal and economic impacts of the project broadens its significance beyond immediate industry application. The potential for safer, more efficient autonomous vehicle technologies underscores a broader contribution to societal welfare and technological advancement. This perspective enriches the reflection, highlighting the project’s role in contributing to a future where autonomous technologies enhance safety, efficiency, and environmental sustainability.</p>
+<h3 data-number="15.6" id="lessons-learned-and-forward-path"><span class="header-section-number">15.6</span> Lessons Learned and Forward Path</h3>
+<p>This reflective journey underscores several key lessons: the value of openness to new methodologies, the importance of bridging theory with practice through versatile research approaches, and the critical role of anticipatory thinking in addressing implementation barriers. Looking forward, these insights pave the way for a research ethos characterized by adaptability, responsiveness to industry needs, and a commitment to contributing to societal progress through technological innovation.</p>
+<h2 data-number="16" id="advice-for-those-embarking-on-similar-research-paths"><span class="header-section-number">16</span> Advice for those Embarking on Similar Research Paths</h2>
+<ol type="1">
+<li><strong>Flexibility in Choosing Simulation Environments</strong>
+<ul>
+<li>Begin your research with an open mind regarding the choice of simulation environments. While familiarity and ease of use are important, they should not be the sole criteria. The initial selection of OpenAI Gym was based on previous coursework experience, but this choice later proved to be limiting in replicating real-world movements of the car. Exploring and testing multiple environments can provide a better understanding of their capabilities and limitations, ensuring a more robust preparation for real-world application challenges.</li>
+</ul></li>
+<li><strong>Expectation Management and Preparedness for the Unexpected</strong>
+<ul>
+<li>Anticipate and plan for unexpected challenges that arise when transitioning from a simulated to a real-world environment. The real world introduces complexities and variables that are difficult to simulate accurately. Being prepared to iterate on your model and adapt your approach in response to these challenges is crucial for success.</li>
+</ul></li>
+<li><strong>The Importance of Not Being Overly Committed to a Single Solution</strong>
+<ul>
+<li>Avoid becoming too attached to a specific solution or methodology. The research process should be dynamic, allowing for the exploration of alternative approaches and solutions. Being open to change, even late in the research process, can uncover more effective strategies and technologies. This adaptability is especially important in fields like autonomous vehicle development, where technological advancements occur rapidly.</li>
+</ul></li>
+<li><strong>Detailed Attention to Sensor Data and Real-World Variables</strong>
+<ul>
+<li>Precision in sensor data interpretation and calibration is paramount. Discrepancies between simulated and real-world sensor data can significantly impact the performance and reliability of autonomous systems. Ensuring that your simulation accurately reflects the nuances of real-world sensor data will enhance the validity of your model and the smoothness of the transition to real-world application.</li>
+</ul></li>
+<li><strong>Consideration of Socio-Economic Impacts</strong>
+<ul>
+<li>Reflect on the broader implications of your research, including its potential socio-economic benefits. Autonomous vehicle technologies can have significant societal impacts, from improving transportation safety to enhancing mobility and reducing environmental footprints. Research in this field should consider these broader outcomes, aiming to contribute positively to society and the economy.</li>
+</ul></li>
+</ol>
+<h2 data-number="17" id="general-conclusion"><span class="header-section-number">17</span> General Conclusion</h2>
+<p>This research has made significant strides in understanding the feasibility and challenges of Sim2Real transfers in reinforcement learning. While substantial progress was achieved, the journey illuminated the vast landscape of challenges that lie in the nuanced discrepancies between virtual and physical realms. Future endeavors in this domain should continue to push the boundaries of what is possible, leveraging the lessons learned to further bridge the gap between simulation and reality. The potential applications of successfully transferring RL agents to the real world are vast, promising advancements in robotics, autonomous vehicles, and beyond.</p>
+<h2 data-number="18" id="credits"><span class="header-section-number">18</span> Credits</h2>
+<p>I am immensely grateful to my coach and supervisor, <a href="wouter.gevaert@howest.be">Gevaert Wouter</a>, for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest.</p>
+<h2 data-number="19" id="sources-of-inspiration-and-conceptual-framework"><span class="header-section-number">19</span> Sources of Inspiration and Conceptual Framework</h2>
+<p>The genesis of this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micro mouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.</p>
+<h3 data-number="19.1" id="micro-mouse-competitions-and-reinforcement-learning"><span class="header-section-number">19.1</span> Micro mouse Competitions and Reinforcement Learning</h3>
+<p>Micro mouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest path finding, as detailed in the insightful Medium article by M. A. Dharmasiri[15], enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.</p>
+<h3 data-number="19.2" id="influential-youtube-demonstrations-and-github-insights"><span class="header-section-number">19.2</span> Influential YouTube Demonstrations and GitHub Insights</h3>
+<p>YouTube videos such as “Self Driving and Drifting RC Car using Reinforcement Learning”[11] and “Reinforcement Learning with Multi-Fidelity Simulators – RC Car”[16] provided vivid demonstrations of RL’s applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the “Sim2Real_autonomous_vehicle” project[13], highlighted the practical steps and challenges in implementing RL in physical systems.</p>
+<h3 data-number="19.3" id="technical-exploration-and-academic-foundation"><span class="header-section-number">19.3</span> Technical Exploration and Academic Foundation</h3>
+<p>The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.[12] and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund[17], which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.</p>
+<h3 data-number="19.4" id="synthesis-and-research-direction"><span class="header-section-number">19.4</span> Synthesis and Research Direction</h3>
+<p>These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.</p>
+<h2 data-number="20" id="integration-of-practical-experiments"><span class="header-section-number">20</span> Integration of Practical Experiments</h2>
+<p>Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.</p>
+<h3 data-number="20.1" id="addressing-alignment-and-orientation-challenges"><span class="header-section-number">20.1</span> Addressing Alignment and Orientation Challenges</h3>
+<p>One of the key challenges I faced was ensuring precise orientation and alignment of the RC-car during movement. To tackle this, I utilized the MPU6050 gyroscope, aiming to correct alignment issues and achieve accurate 90-degree turns.</p>
+<ul>
+<li><p><strong>Utilizing the MPU6050 Gyroscope for Precise Orientation</strong>: My first set of experiments focused on leveraging the gyroscope to correct the car’s orientation for accurate navigation. This approach was pivotal in my attempts to ensure the RC-car could navigate mazes with high precision.</p>
+<ul>
+<li>To address alignment issues when attempting precise 90-degree turns, I explored the potential of the MPU6050 gyroscope to adjust the car’s movement based on its orientation. This experiment aimed to refine my control over the vehicle’s navigation through the maze (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac">View Test 1</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13">View Test 2</a>).</li>
+<li>Further testing focused on using the gyroscope for realigning the car’s forward movement, aiming to rectify the persistent ~3-degree offset. Despite my efforts, completely eliminating this offset proved challenging, showcasing the complexities of simulating real-world physics (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/bb9aa643-9620-4979-a70c-ec2826c7dd33">View Test 1</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/689b590f-3a9a-4f63-ba9c-978ddd08ab53">View Test 2</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70">View Test 3</a>).</li>
+</ul></li>
+</ul>
+<h3 data-number="20.2" id="enhancing-movement-precision-with-encoders"><span class="header-section-number">20.2</span> Enhancing Movement Precision with Encoders</h3>
+<p>The pursuit of enhancing the RC-car’s movement precision led us to experiment with rotary encoders. These devices were integrated to measure wheel rotations accurately, aiming to improve straight-line movements and correct the noted ~3-degree offset.</p>
+<ul>
+<li><strong>Experimenting with Rotary Encoders</strong>: I introduced rotary encoders to my setup, hoping to gain more precise control over the car’s movements by accurately measuring wheel rotations. This experiment represented a significant effort to refine the vehicle’s navigation capabilities by ensuring more accurate movement and orientation.
+<ul>
+<li>Initial tests with a new RC-car model, equipped with an encoder and a more powerful motor, showed promise in addressing the forward movement precision. However, the addition of extra components increased the vehicle’s weight, impacting its movement and reintroducing the alignment challenge (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f">View Test 1</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442">View Test 2</a>).</li>
+<li>Despite an encouraging start, a malfunction with one of the encoders halted further tests using this specific setup, highlighting the practical challenges of hardware reliability in real-world applications (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5">View Test</a>).</li>
+</ul></li>
+</ul>
+<h3 data-number="20.3" id="real-world-application-tests"><span class="header-section-number">20.3</span> Real-World Application Tests</h3>
+<p>Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car’s performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings.</p>
+<ul>
+<li><p><strong>Outdoor and Indoor Maze Tests</strong>: Real-world testing scenarios presented unique challenges, such as varying surface textures and unpredictable environmental conditions, which significantly impacted the RC-car’s navigation capabilities.</p>
+<ul>
+<li>The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c">View Test 1</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137">View Test 2</a>).</li>
+<li>Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car’s navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer (<a href="https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b">View Test 1</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3">View Test 2</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e">View Test 3</a>, <a href="https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188">View Test 4</a>).</li>
+</ul></li>
+</ul>
+<h2 data-number="21" id="guest-speakers"><span class="header-section-number">21</span> Guest Speakers</h2>
+<h3 data-number="21.1" id="innovations-and-best-practices-in-ai-projects-by-jeroen-boeye-at-faktion"><span class="header-section-number">21.1</span> Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion</h3>
+<p>Jeroen Boeye’s comprehensive lecture, representing Faktion, offered profound insights into the symbiotic relationship between software engineering and artificial intelligence in the realm of AI solutions development. He emphasized the critical importance of not merely focusing on AI technology but also on the software engineering principles that underpin the development of robust, scalable, and maintainable AI systems. This approach ensures that AI solutions are not only technically proficient but also practical and sustainable in long-term applications.</p>
+<p>The discussion delved into various aspects of AI applications, notably highlighting Chatlayer’s contributions to the field of conversational AI. Jeroen detailed how Chatlayer enhances chatbot functionalities through dynamic conversational flows, significantly improving the accuracy and contextuality of user interactions. Another spotlight was on Metamaze, praised for its innovative approach to automating document processing. By generating concise summaries from documents and emails, Metamaze exemplifies the potential of supervised machine learning to streamline and improve administrative tasks.</p>
+<p>Jeroen provided a clear roadmap for the successful implementation of AI projects, emphasizing the importance of validating business cases and adopting a problem-first approach. He highlighted the necessity of quality data as the foundation for any AI initiative and discussed strategies for overcoming data limitations creatively. The lecture also touched on the crucial mindset of embracing failure as a stepping stone to innovation, stressing the importance of open communication with stakeholders about challenges and setbacks.</p>
+<p>The lecture further explored several practical use cases, demonstrating the versatility and potential of AI across various industries. From the detection of solar panels and unauthorized pools to the damage inspection of air freight containers and early warning systems for wind turbine gearboxes, Jeroen showcased how AI can address complex challenges through innovative data sourcing, synthetic data generation, and anomaly detection techniques. He also presented case studies on energy analysis in brick ovens and egg incubation processes, highlighting the critical role of data preprocessing and the application of machine learning models to enhance efficiency and outcomes.</p>
+<p>Key takeaways from Jeroen’s lecture underscored the importance of mastering data preprocessing and treating data as a dynamic asset to tailor AI models more precisely to specific needs. He offered practical advice on operational efficiency, including the use of host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.</p>
+<p>In conclusion, Jeroen Boeye’s lecture provided a rich and detailed perspective on the integration of AI technologies in real-world scenarios. His insights into the critical importance of software engineering principles, combined with a deep understanding of AI’s capabilities and limitations, offered valuable guidance for developing effective, sustainable AI solutions. This lecture not only highlighted the current state and future directions of AI but also imparted practical wisdom on navigating the complexities of AI project implementation.</p>
+<h3 data-number="21.2" id="pioneering-ai-solutions-at-noest-by-toon-vanhoutte"><span class="header-section-number">21.2</span> Pioneering AI Solutions at Noest by Toon Vanhoutte</h3>
+<p>Toon Vanhoutte’s enlightening lecture, representing Noest, a notable entity within the Cronos Group, shared profound insights into the harmonious blend of artificial intelligence and software engineering in crafting state-of-the-art business solutions. With a strong team of 56 local experts, Noest prides itself on its pragmatic approach to projects, aiming for a global impact while emphasizing craftsmanship, partnership, and pleasure as its foundational pillars. This philosophy extends across their diverse service offerings, including application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all underpinned by a strong partnership with Microsoft.</p>
+<p>A particularly captivating case study presented was a project for a packaging company, aimed at revolutionizing image search capabilities based on product labels. The project encountered various challenges, from dealing with inconsistent PDF formats to managing large file sizes and overcoming processing limitations. These hurdles were adeptly navigated using a combination of Azure Blob Storage for data management and event-driven processing strategies for efficient and cost-effective solutions, showcasing Noest’s adeptness in leveraging cloud technologies to solve complex problems.</p>
+<p>Enhancing searchability of images, a task that encompassed recognizing text and objects within images, was another significant challenge tackled by employing Azure AI Search, complemented by the power of Large Language Models (LLMs) and vector search techniques. This innovative approach enabled nuanced search functionalities beyond traditional text queries, demonstrating the advanced capabilities of AI in understanding and interpreting complex data.</p>
+<p>Toon’s lecture further delved into the advancements in semantic search, revealing how keyword, vector, and hybrid searches, alongside semantic ranking, could dramatically enhance the accuracy and contextuality of search results. Through practical demonstrations, including comparisons between OCR and GPT-4 vision, attendees were shown the potential of AI to transcend basic search functionalities and offer deeper, more meaningful insights based on semantic understanding.</p>
+<p>A key takeaway from the lecture was the importance of setting realistic expectations with clients regarding AI’s capabilities and potential inaccuracies, emphasizing the experimental nature of these technologies. The journey through AI’s evolving landscape highlighted the necessity of prompt engineering, the challenges of navigating an immature yet rapidly developing field, and the crucial role of client education in managing expectations around the capabilities of AI technologies like GPT.</p>
+<p>In conclusion, Toon Vanhoutte’s presentation not only showcased Noest’s cutting-edge work in AI and software engineering but also imparted valuable lessons on innovation, the importance of adaptable problem-solving strategies, and the need for continuous learning in the ever-evolving AI domain. It was a testament to Noest’s commitment to pushing the boundaries of technology to create impactful, pragmatic solutions that leverage the full spectrum of AI’s potential.</p>
+<h2 data-number="22" id="references"><span class="header-section-number">22</span> References</h2>
+<p>[1] G. Brockman et al., “OpenAI Gym,” <em>arXiv preprint arXiv:1606.01540</em>, 2016.</p>
+<p>[2] A. Dosovitskiy et al., “CARLA: An Open Urban Driving Simulator,” <em>Proceedings of the 1st Annual Conference on Robot Learning</em>, 2017.</p>
+<p>[3] H. Van Hasselt, A. Guez, and D. Silver, “Deep Reinforcement Learning with Double Q-learning,” <em>AAAI Conference on Artificial Intelligence</em>, 2016.</p>
+<p>[4] J. Schulman et al., “Proximal Policy Optimization Algorithms,” <em>arXiv preprint arXiv:1707.06347</em>, 2017.</p>
+<p>[5] J. Tobin et al., “Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World,” in <em>2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</em>, 2017.</p>
+<p>[6] K. Bousmalis et al., “Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping,” <em>IEEE International Conference on Robotics and Automation (ICRA)</em>, 2018.</p>
+<p>[7] Y. Pan and Q. Yang, “A Survey on Transfer Learning,” <em>IEEE Transactions on Knowledge and Data Engineering</em>, vol. 22, no. 10, pp. 1345-1359, Oct. 2010.</p>
+<p>[8] A. A. Rusu et al., “Sim-to-Real Robot Learning from Pixels with Progressive Nets,” <em>Conference on Robot Learning</em>, 2016.</p>
+<p>[9] S. James et al., “Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks,” <em>2019 International Conference on Robotics and Automation (ICRA)</em>, 2019.</p>
+<p>[10] F. Sadeghi and S. Levine, “(CAD)^2RL: Real Single-Image Flight without a Single Real Image,” <em>Robotics: Science and Systems</em>, 2016.</p>
+<p>[11] “Self Driving and Drifting RC Car using Reinforcement Learning,” YouTube, Aug. 19, 2019. [Online Video]. Available: <a href="https://www.youtube.com/watch?v=U0-Jswwf0hw" class="uri">https://www.youtube.com/watch?v=U0-Jswwf0hw</a>. [Accessed: Jan. 29, 2024].</p>
+<p>[12] Q. Song et al., “Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm,” <em>Applied Sciences</em>, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: <a href="https://www.mdpi.com/2076-3417/13/11/6400" class="uri">https://www.mdpi.com/2076-3417/13/11/6400</a>. [Accessed: Jan. 29, 2024].</p>
+<p>[13] DailyL, “Sim2Real_autonomous_vehicle,” GitHub repository, Nov. 14, 2023. [Online]. Available: <a href="https://github.com/DailyL/Sim2Real_autonomous_vehicle" class="uri">https://github.com/DailyL/Sim2Real_autonomous_vehicle</a>. [Accessed: Jan. 29, 2024].</p>
+<p>[14] “OpenGL inside Docker containers, this is how I did it,” Reddit, r/docker. [Online]. Available: &lt;www.reddit.com/r/docker/comments/8d3qox/opengl_inside_docker_containers_this_is_how_i_did/&gt;. [Accessed: Jan. 29, 2024].</p>
+<p>[15] M. A. Dharmasiri, “Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill,” Medium, [Online]. Available: <a href="https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510" class="uri">https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510</a>. [Accessed: Jan. 29, 2024].</p>
+<p>[16] “Reinforcement Learning with Multi-Fidelity Simulators – RC Car,” YouTube, Dec. 30, 2014. [Online Video]. Available: <a href="https://www.youtube.com/watch?v=c_d0Is3bxXA" class="uri">https://www.youtube.com/watch?v=c_d0Is3bxXA</a>. [Accessed: Jan. 29, 2024].</p>
+<p>[17] W. Zhao, J. P. Queralta, and T. Westerlund, “Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: a Survey,” in <em>2020 IEEE Symposium Series on Computational Intelligence (SSCI)</em>, Dec. 2020, pp. 737–744. [Online]. Available: <a href="https://arxiv.org/pdf/2009.13303.pdf" class="uri">https://arxiv.org/pdf/2009.13303.pdf</a>.</p>
+</body>
+</html>

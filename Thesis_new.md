@@ -14,7 +14,6 @@ caption-justification: justified
 titlepage-logo: mct_logo.png
 header-logo: header_image.png
 header-title: "Bachelor Thesis Howest"
-abstract: "In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question 'Is it possible to transfer a trained RL agent from a simulation to the real world?' This inquiry is particularly examined in the context of maze navigation. This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition. Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial."
 text1: Bachelor Multimedia and Creative Technologies
 text2: University of Applied Sciences
 text3: Howest Kortrijk
@@ -22,6 +21,15 @@ text4: 2022
 ---
 
 <!-- pandoc thesis_new.md --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template template.tex --lua-filter pagebreak.lua -->
+<!-- pandoc --from markdown --to html5 --standalone --toc --number-sections --citeproc --wrap=preserve --highlight-style=kate --mathml -->
+
+## Abstract
+
+In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question: "Is it possible to transfer a trained RL agent from a simulation to the real world?" This inquiry is particularly examined in the context of maze navigation.
+
+This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
+
+Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
 
 ## Glossary of Terms
 
@@ -85,7 +93,7 @@ $$ R(s*{t}, a_t) \text{ is the reward received after transitioning from state } 
 
 RL's versatility is showcased in its applications across various sectors, including autonomous vehicles, where it promises to enhance navigation, decision-making, and real-time adaptation.
 
-### Research Questions
+## Research Questions
 
 This investigation is anchored by the question: "Can a trained RL agent be effectively transferred from a simulation to a real-world environment for maze navigation?" Addressing this question involves exploring multiple facets of RL training and implementation:
 
@@ -97,7 +105,7 @@ This investigation is anchored by the question: "Can a trained RL agent be effec
 
 A blend of qualitative and quantitative research methods, including simulation experiments, real-world trials, and literature review, form the methodological backbone of this study. This comprehensive approach aims to validate the sim-to-real transfer while contributing to the broader discourse on RL's practical applications and challenges.
 
-## Main Research Question
+### Main Research Question
 
 **Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)**
 
@@ -113,17 +121,17 @@ A blend of qualitative and quantitative research methods, including simulation e
 
 5. How can the trained model be transferred to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world?
 
-### Methodology
+## Methodology
 
 This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, utilizing a Double Deep Q-Network (DDQNAgent) architecture. It details the maze environment setup, the DDQN agent design, and the comprehensive training algorithm, incorporating mathematical functions to delineate the system's mechanics.
 
-#### Environment Setup (RCMazeEnv)
+### Environment Setup (RCMazeEnv)
 
 The RCMazeEnv, a custom maze navigation environment derived from the OpenAI Gym framework, is designed for a 12x12 cell grid maze navigation task. Each cell within this grid can be identified as either a wall, represented by '1', or a path, represented by '0', with the goal designated at cell position (10, 10). The agent, visualized as a car, commences its journey from the starting position at cell (1, 1), facing eastward initially. The agent's navigation capabilities are enabled through a set of possible actions: moving forward, turning left, and turning right. 
 
 To assist in navigation, the agent is equipped with sensors that provide readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, offering crucial environmental information that aids in decision-making. The environment's state space, denoted as $\mathcal{S}$, encapsulates the agent's current position $(x, y)$, its orientation $\theta$, which can be one of $\{N, E, S, W\}$ representing north, east, south, and west respectively, and the sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The goal of the agent is to navigate through the maze, from its starting point to the goal location, efficiently while avoiding collisions with walls and optimizing the path taken based on the sensor inputs and past experiences.
 
-#### Agent Design (DDQNAgent)
+### Agent Design (DDQNAgent)
 
 The agent employs a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. This is an enhancement over the standard DQN that aims to reduce overestimation of Q-values by decoupling the action selection from its evaluation:
 
@@ -144,7 +152,7 @@ $$ Q\left(S_{t+1}, a; \theta^-\right)\ evaluates the action using the target net
 
 The action space $\mathcal{A}$ and the rest of the agent's setup remain as previously described. The DDQN architecture significantly improves the stability and performance of the agent by addressing the overestimation of Q-values, promoting a more accurate and reliable learning process.
 
-#### Training Process
+### Training Process
 
 The training process utilizes the experience replay mechanism, storing transitions $(s, a, r, s')$ in a replay buffer $D$. The DQN is trained by minimizing the loss function $L(\theta)$ defined as the mean squared error between the current Q-values and the target Q-values:
 
@@ -192,7 +200,7 @@ $$ R_{\text{revisit}} = -10 $$
 
 Every step the agent takes incurs a small penalty. This mechanism ensures that the agent is incentivized to find the shortest possible path to the goal, balancing the need to explore the environment with the goal of reaching the destination as efficiently as possible.
 
-$$ R_{\text{efficiency}} = -2 $$
+$$ R_{\text{efficiency}} = -5 $$
 
 #### Evaluation and Termination Conditions
 
@@ -210,31 +218,31 @@ where $d$ is the Euclidean distance to the goal, encouraging the agent to minimi
 
 The episode terminates when the agent reaches the goal, collides with an obstacle, or exceeds a predefined step limit, aiming to learn an efficient navigation policy.
 
-### Experimental Outcomes and Implementation Details
+## Experimental Outcomes and Implementation Details
 
 The project embarked on a journey to bridge the virtual and real-world through a meticulously designed environment and a cutting-edge agent architecture.
 
-#### Virtual Environment and Agent Design
+### Virtual Environment and Agent Design
 
 - **RCMazeEnv**: Customized for this project, the environment simulates a robotic car navigating a maze. Its design replicates real-world physics and constraints, offering a rich testing ground for reinforcement learning algorithms. The maze's structure, from its starting position to the goal, and the robotic car's specifications, including movement actions and sensor setups, are critical to the simulation's realism.
 
 - **Double Deep Q-Network (DDQN)**: Employing two neural networks, this model enhances traditional reinforcement learning methods by reducing the overestimation of Q-values. The policy network and the target network work in tandem to refine the agent's learning process through continuous interaction and sensor data interpretation.
 
-#### Implementation Highlights
+### Implementation Highlights
 
 - **Environment and Agent Interaction**: Central to the DDQN agent's strategy is its continuous adaptation to the environment, leveraging sensor inputs to inform its decisions and optimize its path through the maze. This iterative learning process is visually represented through a simulation platform that allows for detailed observation of the agent's performance and strategy adjustments.
 
 - **Real-World Application**: Transferring the virtual training to a physical RC robot involved comprehensive hardware setup and calibration. Challenges such as sensor data normalization and precise movement control were addressed to ensure a seamless transition from virtual to real-world application.
 
-#### Evaluation and Metrics
+### Evaluation and Metrics
 
 The project employed specific metrics to evaluate the agent's efficiency in navigating the maze, with emphasis on both simulation performance and real-world applicability. This involved monitoring the agent's episodic performance, step efficiency, and adaptation to real-world conditions.
 
-#### Unique Features
+### Unique Features
 
 - **Physical Maze and Web Application**: A constructed physical maze served as the tangible counterpart to the virtual `RCMazeEnv`, playing a crucial role in testing the RC robot's navigation capabilities. Additionally, a web application was developed to act as a visualization and control interface, enhancing the interaction between the virtual and real-world applications.
 
-### Model Architecture and Training Insights
+## Model Architecture and Training Insights
 
 The Double DQN model's architecture is central to understanding the agent's learning and decision-making capabilities. Structured with four dense layers, it outputs three actions tailored to the RC car's movement, enabling sophisticated navigation strategies within the maze.
 
@@ -258,7 +266,7 @@ Non-trainable params: 0 (0.00 Byte)
 
 This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
 
-#### Training Parameters
+### Training Parameters
 
 The training of the Double DQN agent was governed by the following parameters:
 
@@ -271,7 +279,7 @@ The training of the Double DQN agent was governed by the following parameters:
   - Initial exploration rate.
 - **Minimum Epsilon (`MIN_EPSILON`)**: 0.01
   - Minimum value for exploration rate.
-- **Epsilon Decay Rate (`DECAY`)**: 0.99993
+- **Epsilon Decay Rate (`DECAY`)**: 0.99973
   - Rate at which exploration probability decreases.
 - **Number of Episodes (`EPISODE_AMOUNT`)**: 170
   - Total episodes for training the agent.
@@ -280,7 +288,7 @@ The training of the Double DQN agent was governed by the following parameters:
 - **Learning Rate**: 0.001
   - The rate at which the model learns from new observations.
 
-#### Training Procedure
+### Training Procedure
 
 1. **Initialization**: Start with a high exploration rate (`EPSILON`) allowing the agent to explore the environment extensively.
 2. **Episodic Training**: For each episode, the agent interacts with the environment, collecting state, action, reward, and next state data.
@@ -290,7 +298,7 @@ The training of the Double DQN agent was governed by the following parameters:
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
 
-### Visual Insights and Further Exploration
+## Visual Insights and Further Exploration
 
 The project's innovative approach to sim-to-real transfer in reinforcement learning is encapsulated in a series of visual representations and demonstrations, from the detailed construction of the physical maze to the dynamic interface of the web application.
 
@@ -339,6 +347,31 @@ Transitioning to real-world application involved assessing how the simulation-tr
 ## results
 
 ### Reinforcement Learning Techniques Overview
+
+#### final choice: DDQN
+
+The research project explored various reinforcement learning techniques to train an agent for maze navigation, focusing on their adaptability, efficiency, and real-world applicability. The following techniques were evaluated:
+
+- Heatmap of the maze with the agent's path
+  - Steps taken in the maze, providing insights into the agent's decision-making process and path optimization. (turns also count as an action)
+
+![Heatmap](./images/training_images/visit_heatmap_DDQN.png)
+
+- Reward history of the agent's performance
+
+![Reward History](./images/training_images/reward_history_DDQN.png)
+
+- Reward distribution across episodes
+
+![Reward Distribution](./images/training_images/reward_distribution_DDQN.png)
+
+- Maze solving path visualization
+
+![Maze Path](./images/training_images/maze_solution_DDQN.png)
+
+- Moving average of steps to solve the maze
+
+![Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png)
 
 #### 1. Deep Q-Network (DQN)
 
