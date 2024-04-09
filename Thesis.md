@@ -1,7 +1,7 @@
 # Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning
 
 ```bash
-pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --template eisvogel
+pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template eisvogel 
 ```
 
 ## Author Information
@@ -30,15 +30,14 @@ pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --temp
     - [Virtual Environment Design](#virtual-environment-design)
       - [RCMazeEnv Environment](#rcmazeenv-environment)
       - [Agent Design: Double Deep Q-Network (Double DQN)](#agent-design-double-deep-q-network-double-dqn)
+    - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
+      - [1. Deep Q-Network (DQN)](#1-deep-q-network-dqn)
+      - [2. Double Deep Q-Network (DDQN)](#2-double-deep-q-network-ddqn)
+      - [3. Proximal Policy Optimization (PPO)](#3-proximal-policy-optimization-ppo)
     - [Experimental Setup](#experimental-setup)
       - [Training Process of the Double DQN Agent](#training-process-of-the-double-dqn-agent)
-        - [Model Architecture](#model-architecture)
       - [Training Parameters](#training-parameters)
-        - [Training Procedure](#training-procedure)
-      - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
-        - [1. Deep Q-Network (DQN)](#1-deep-q-network-dqn)
-        - [2. Double Deep Q-Network (DDQN)](#2-double-deep-q-network-ddqn)
-        - [3. Proximal Policy Optimization (PPO)](#3-proximal-policy-optimization-ppo)
+      - [Training Procedure](#training-procedure)
       - [Hardware Setup and Assembly](#hardware-setup-and-assembly)
         - [Introduction to Hardware Components](#introduction-to-hardware-components)
         - [Components List](#components-list)
@@ -53,31 +52,22 @@ pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --temp
     - [Challenge 7: Integration of Failsafe Mechanisms](#challenge-7-integration-of-failsafe-mechanisms)
     - [Challenge 8: Training Environment and Technique Efficacy](#challenge-8-training-environment-and-technique-efficacy)
     - [Conclusion](#conclusion)
-    - [Supplementary Materials: Video Demonstrations](#supplementary-materials-video-demonstrations)
-      - [Introduction](#introduction-1)
-      - [Video 1: mpu6050 90 degree turn](#video-1-mpu6050-90-degree-turn)
-      - [Video 2: mpu6050 to align forward movement](#video-2-mpu6050-to-align-forward-movement)
-      - [video 4: New RC-car with encoder and more powerful motor](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
-      - [video 5: Encoder implementation (original RC-car)](#video-5-encoder-implementation-original-rc-car)
-      - [video 6: Robot v2](#video-6-robot-v2)
-      - [video 7: Maze Test Outdoors](#video-7-maze-test-outdoors)
-      - [video 8: Maze Test Indoors](#video-8-maze-test-indoors)
-    - [Real-World Application and Limitations](#real-world-application-and-limitations)
-      - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
-      - [Real-World Application](#real-world-application)
-        - [Sensor-Based Navigation](#sensor-based-navigation)
-        - [Impact on Autonomous Vehicle Movement](#impact-on-autonomous-vehicle-movement)
-      - [Limitations](#limitations)
-        - [Sensor Data Discrepancies](#sensor-data-discrepancies)
-        - [Movement Replication Challenges](#movement-replication-challenges)
-        - [Practical Considerations](#practical-considerations)
-      - [Conclusion](#conclusion-1)
+  - [Real-World Application and Limitations](#real-world-application-and-limitations)
+    - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
+    - [Real-World Application](#real-world-application)
+      - [Sensor-Based Navigation](#sensor-based-navigation)
+      - [Impact on Autonomous Vehicle Movement](#impact-on-autonomous-vehicle-movement)
+    - [Limitations](#limitations)
+      - [Sensor Data Discrepancies](#sensor-data-discrepancies)
+      - [Movement Replication Challenges](#movement-replication-challenges)
+      - [Practical Considerations](#practical-considerations)
+    - [Conclusion](#conclusion-1)
   - [Answers to Research Questions](#answers-to-research-questions)
-      - [1. Virtual Environments for RF-Car Training](#1-virtual-environments-for-rf-car-training)
-      - [2. Reinforcement Learning Techniques for Virtual RF-Car Training](#2-reinforcement-learning-techniques-for-virtual-rf-car-training)
-      - [3. Sim-to-Real Transfer Challenges and Solutions](#3-sim-to-real-transfer-challenges-and-solutions)
-      - [4. Contributions of Simulation in RF-Car Training](#4-contributions-of-simulation-in-rf-car-training)
-      - [5. Practical Application of Simulated Training to Real-World RF-Cars](#5-practical-application-of-simulated-training-to-real-world-rf-cars)
+    - [1. Virtual Environments for RF-Car Training](#1-virtual-environments-for-rf-car-training)
+    - [2. Reinforcement Learning Techniques for Virtual RF-Car Training](#2-reinforcement-learning-techniques-for-virtual-rf-car-training)
+    - [3. Sim-to-Real Transfer Challenges and Solutions](#3-sim-to-real-transfer-challenges-and-solutions)
+    - [4. Contributions of Simulation in RF-Car Training](#4-contributions-of-simulation-in-rf-car-training)
+    - [5. Practical Application of Simulated Training to Real-World RF-Cars](#5-practical-application-of-simulated-training-to-real-world-rf-cars)
   - [Reflection](#reflection)
   - [Advice for those Embarking on Similar Research Paths](#advice-for-those-embarking-on-similar-research-paths)
   - [General Conclusion](#general-conclusion)
@@ -87,6 +77,14 @@ pandoc thesis.md --pdf-engine=pdflatex --o thesis_new.pdf -H deeplist.tex --temp
     - [Influential YouTube Demonstrations and GitHub Insights](#influential-youtube-demonstrations-and-github-insights)
     - [Technical Exploration and Academic Foundation](#technical-exploration-and-academic-foundation)
     - [Synthesis and Research Direction](#synthesis-and-research-direction)
+  - [Supplementary Materials: Video Demonstrations](#supplementary-materials-video-demonstrations)
+    - [Video 1: mpu6050 90 degree turn](#video-1-mpu6050-90-degree-turn)
+    - [Video 2: mpu6050 to align forward movement](#video-2-mpu6050-to-align-forward-movement)
+    - [video 4: New RC-car with encoder and more powerful motor](#video-4-new-rc-car-with-encoder-and-more-powerful-motor)
+    - [video 5: Encoder implementation (original RC-car)](#video-5-encoder-implementation-original-rc-car)
+    - [video 6: Robot v2](#video-6-robot-v2)
+    - [video 7: Maze Test Outdoors](#video-7-maze-test-outdoors)
+    - [video 8: Maze Test Indoors](#video-8-maze-test-indoors)
   - [References](#references)
 
 ## Description
@@ -100,8 +98,6 @@ In this research project, I delve into the fascinating realm of artificial intel
 This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
 
 Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
-
-Based on your input, it looks like you're building a comprehensive list of key terms and abbreviations for your paper on reinforcement learning and its application to a remote-controlled car in a sim2real transfer scenario. Here's how you can structure these sections for clarity and easy reference:
 
 ## Glossary of Terms
 
@@ -155,11 +151,14 @@ The purpose of this study is to explore the feasibility and challenges of transf
 
 Reinforcement Learning is a paradigm where agents learn to make decisions through trial and error, interacting with their environment to maximize cumulative rewards. Central to RL are the concepts of agents, environments, actions, states, and rewards, governed by Markov Decision Processes (MDP):
 
-- \(S\) represents a set of states.
-- \(A\) denotes a set of actions.
-- \(P(s_{t+1}|s_t, a_t)\) is the probability of transitioning to state \(s_{t+1}\) from state \(s_t\) due to action \(a_t\).
-- \(R(s_t, a_t)\) defines the reward received after moving to state \(s_{t+1}\) from \(s_t\) due to action \(a_t\).
+$$ S \text{ is a set of states} $$
 
+$$ A \text{ is a set of actions} $$
+
+$$ P(s*{t+1}|s_t, a_t) \text{ is the probability that action } a_t \text{ in state } s_t \text{ at time } t \text{ will lead to state } s*{t+1} $$
+
+$$ R(s*{t}, a_t) \text{ is the reward received after transitioning from state } s_t \text{ to state } s*{t+1}, \text{ due to action } a_t $$
+ 
 RL's versatility is showcased in its applications across various sectors, including autonomous vehicles, where it promises to enhance navigation, decision-making, and real-time adaptation.
 
 ### Research Questions and Methodology
@@ -230,6 +229,71 @@ A blend of qualitative and quantitative research methods, including simulation e
 
 - **Learning Process**: The agent continually adapts through interaction with the environment, using sensor data to inform movement decisions.
 
+### Reinforcement Learning Techniques Overview
+
+#### 1. Deep Q-Network (DQN)
+
+- **Description**: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.
+- **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.
+
+- **Integration and Results**:
+
+  - **Visual Representation**:
+
+  ![DQN-agent](https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2>
+
+  - **Reward History**:
+
+  ![DQN Reward History](./images/reward_history_dqn.png)
+
+  - **Performance**: DQN's performance, while competent, was limited by Q-value overestimation in intricate scenarios.
+
+#### 2. Double Deep Q-Network (DDQN)
+
+- **Description**: The Double Deep Q-Network (DDQN) improves upon DQN by employing two neural networks. This structure effectively reduces overestimation bias by separating action selection from Q-value generation.
+
+- **Reason for Selection**:
+
+  - DDQN's accuracy in Q-value approximation is crucial for navigating complex environments, such as mazes.
+  - The RC-car's sensor limitations, which could lead to Q-value overestimations, are better addressed by DDQN.
+  - Empirical trials showed DDQN's superior performance in maze navigation tasks.
+
+- **Integration and Results**:
+
+  - **Visual Representation**:
+
+  ![DDQN Integration](https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001>
+
+  - **Reward History**:
+
+  ![DDQN Reward History](./images/DDQN_reward_history.png)
+
+  - **Performance**: DDQN solved the environment in an average of 25 steps, compared to DQN's 34 steps, highlighting its efficiency.
+
+#### 3. Proximal Policy Optimization (PPO)
+
+- **Description**: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It's known for its stability and efficiency in specific RL contexts.
+
+- **Suitability**: PPO's emphasis on policy optimization over value estimation makes it less suitable for RC-car simulations, where accurate Q-value approximation is key.
+
+- **Integration and Results**:
+
+  - **Visual Representation**:
+
+  ![PPO Integration](https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790)
+
+  <https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790>
+
+  - **Reward History**:
+
+  ![PPO Reward History](./images/PPO_reward_history.png)
+
+  - **Performance**: PPO, while stable, did not align well with the precision requirements for RC-car maze navigation.
+
 ### Experimental Setup
 
 - **Environment Setup**:
@@ -238,10 +302,10 @@ A blend of qualitative and quantitative research methods, including simulation e
 
   - **Key Features**:
 
-    - 1. **Maze Configuration**: A customizable maze layout with a start position at the top-left and a goal at the bottom-right corner.
-    - 2. **Robotic Car Actions**: The car's actions include moving forward, turning left, or right, considering its orientation (North, East, South, West).
-    - 3. **Sensors**: Equipped with front, left, and right distance sensors for wall detection.
-    - 4. **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
+    - **Maze Configuration**: A customizable maze layout with a start position at the top-left and a goal at the bottom-right corner.
+    - **Robotic Car Actions**: The car's actions include moving forward, turning left, or right, considering its orientation (North, East, South, West).
+    - **Sensors**: Equipped with front, left, and right distance sensors for wall detection.
+    - **Reward System**: Designed to encourage efficiency, penalize wall collisions and revisiting positions, and reward goal proximity and achievement.
 
     <!-- ![reward equation](./images/reward_function.png) -->
     $$
@@ -253,8 +317,8 @@ A blend of qualitative and quantitative research methods, including simulation e
     -10 \times \mathbb{I}(s' \in \text{visited\_positions}) - 2 & \text{otherwise}
     \end{cases}
     $$
-    - 5. **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
-    - 6. **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
+    - **Reset Functionality**: Includes a `reset()` method to reinitialize the car's position and variables.
+    - **Visualization**: A `render()` method for graphical representation of the maze, car, exit, and sensor readings.
 
   - **Rendering Modes**:
 
@@ -270,17 +334,17 @@ A blend of qualitative and quantitative research methods, including simulation e
 
   - **Features**:
 
-  1. **Network Architecture**: Comprises a sequential model with dense layers, tailored for processing sensor data and selecting optimal actions.
-  2. **Learning Mechanisms**:
-     - Utilizes experiences stored in a replay memory for batch learning.
-     - Separates action selection (policy network) from Q-value generation (target network) to minimize overestimation bias.
-     - Employs periodic updates to the target network to maintain stability.
+    - **Network Architecture**: Comprises a sequential model with dense layers, tailored for processing sensor data and selecting optimal actions.
+    - **Learning Mechanisms**:
+      - Utilizes experiences stored in a replay memory for batch learning.
+      - Separates action selection (policy network) from Q-value generation (target network) to minimize overestimation bias.
+      - Employs periodic updates to the target network to maintain stability.
 
   - **Training Strategy**:
 
-  - **Policy Network Training**: Involves fitting the network to batches of experiences, updating Q-values based on both the policy and target network predictions.
-  - **Action Prediction**: Employs the policy network for action prediction during the maze navigation.
-  - **Target Network Updating**: Ensures the target network's weights are periodically aligned with the policy network.
+    - **Policy Network Training**: Involves fitting the network to batches of experiences, updating Q-values based on both the policy and target network predictions.
+    - **Action Prediction**: Employs the policy network for action prediction during the maze navigation.
+    - **Target Network Updating**: Ensures the target network's weights are periodically aligned with the policy network.
 
   - **Operational Flow**:
 
@@ -295,8 +359,8 @@ A blend of qualitative and quantitative research methods, including simulation e
 
   - **Components and Assembly**:
 
-    - 1. **Core Components**: The robot is built using an ESP32-WROOM-32 module, motor driver, hc-sro04 ultrasonic sensors, mpu6050 and a mini oled screen.
-    - 2. **Assembly Process**:
+    - **Core Components**: The robot is built using an ESP32-WROOM-32 module, motor driver, hc-sro04 ultrasonic sensors, mpu6050 and a mini oled screen.
+    - **Assembly Process**:
       - **Base Assembly**: The chassis, provided in the 2WD robot kit, forms the base of the robot.
       - **Motor and Driver Installation**: Motors are attached to the base and connected to the motor driver for movement control.
       - **Sensor Integration**: Ultrasonic sensors (HC-SR04) are mounted on the robot for distance measurement. The MPU6050 gyroscope is used for accurate turning. The mini OlED screen is used for displaying the IP address.
@@ -304,9 +368,9 @@ A blend of qualitative and quantitative research methods, including simulation e
 
   - **Wiring and Configuration**
 
-    - 2. **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini OlED screen, the MPU6050 gyroscope and the HC-SR04 ultrasonic sensors are all connected to their respective pins on the ESP32 module. Refer to the wiring diagram shown later in this paper for more details.
+    - **ESP32 Module Wiring**: The ESP32 module is wired to the motor driver for directing the movement of the robot based on the agent's decisions. The mini OlED screen, the MPU6050 gyroscope and the HC-SR04 ultrasonic sensors are all connected to their respective pins on the ESP32 module. Refer to the wiring diagram shown later in this paper for more details.
 
-    - 3. **Programming**: The ESP32 is programmed and used to send the HC-SR04 sensor readings to the agent and receive commands based on those to control the robot's movement, with the help of the MPU6050 for accurate rotations.
+    - **Programming**: The ESP32 is programmed and used to send the HC-SR04 sensor readings to the agent and receive commands based on those to control the robot's movement, with the help of the MPU6050 for accurate rotations.
 
   - **Challenges and Adjustments**:
 
@@ -340,8 +404,7 @@ A blend of qualitative and quantitative research methods, including simulation e
         - ![Epsilon Decay](./images/Epsilon_history_DDQN.png)
     - **Simulation Test Video**:
 
-      - **Clip**:
-        ![DDQN test](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
+      - ![DDQN test](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
 
         <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
 
@@ -361,7 +424,8 @@ A blend of qualitative and quantitative research methods, including simulation e
     - Integration with the Research: The physical maze's role in the research extends beyond a mere testing ground. It allows for a direct comparison between virtual simulations and real-world applications, thereby enhancing the validity and applicability of my findings.
 
   - **Visual Representation**:
-    - ![maze](./images/final_test/final_maze_build.jpeg)
+
+![maze](./images/final_test/final_maze_build.jpeg)
 
 - **Web Application**
 
@@ -384,7 +448,7 @@ A blend of qualitative and quantitative research methods, including simulation e
 
 #### Training Process of the Double DQN Agent
 
-##### Model Architecture
+**Model Architecture:**
 
 The Double DQN model employed in this research is structured as follows:
 
@@ -437,7 +501,7 @@ The training of the Double DQN agent was governed by the following parameters:
 - **Learning Rate**: 0.001
   - The rate at which the model learns from new observations.
 
-##### Training Procedure
+#### Training Procedure
 
 1. **Initialization**: Start with a high exploration rate (`EPSILON`) allowing the agent to explore the environment extensively.
 2. **Episodic Training**: For each episode, the agent interacts with the environment, collecting state, action, reward, and next state data.
@@ -446,71 +510,6 @@ The training of the Double DQN agent was governed by the following parameters:
 5. **Target Network Update**: Every `UPDATE_TARGET_INTERVAL` episodes, update the weights of the target network with those of the policy network.
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
-
-#### Reinforcement Learning Techniques Overview
-
-##### 1. Deep Q-Network (DQN)
-
-- **Description**: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.
-- **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.
-
-- **Integration and Results**:
-
-  - **Visual Representation**:
-
-  ![DQN-agent](https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2)
-
-  <https://github.com/driessenslucas/researchproject/assets/91117911/a7c5964e-139c-46a1-af79-85280a26c9d2>
-
-  - **Reward History**:
-
-  ![DQN Reward History](./images/reward_history_dqn.png)
-
-  - **Performance**: DQN's performance, while competent, was limited by Q-value overestimation in intricate scenarios.
-
-##### 2. Double Deep Q-Network (DDQN)
-
-- **Description**: The Double Deep Q-Network (DDQN) improves upon DQN by employing two neural networks. This structure effectively reduces overestimation bias by separating action selection from Q-value generation.
-
-- **Reason for Selection**:
-
-  - DDQN's accuracy in Q-value approximation is crucial for navigating complex environments, such as mazes.
-  - The RC-car's sensor limitations, which could lead to Q-value overestimations, are better addressed by DDQN.
-  - Empirical trials showed DDQN's superior performance in maze navigation tasks.
-
-- **Integration and Results**:
-
-  - **Visual Representation**:
-
-  ![DDQN Integration](https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001)
-
-  <https://github.com/driessenslucas/researchproject/assets/91117911/de50eaf8-49b9-4bf3-8083-8b2bc0963001>
-
-  - **Reward History**:
-
-  ![DDQN Reward History](./images/DDQN_reward_history.png)
-
-  - **Performance**: DDQN solved the environment in an average of 25 steps, compared to DQN's 34 steps, highlighting its efficiency.
-
-##### 3. Proximal Policy Optimization (PPO)
-
-- **Description**: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It's known for its stability and efficiency in specific RL contexts.
-
-- **Suitability**: PPO's emphasis on policy optimization over value estimation makes it less suitable for RC-car simulations, where accurate Q-value approximation is key.
-
-- **Integration and Results**:
-
-  - **Visual Representation**:
-
-  ![PPO Integration](https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790)
-
-  <https://github.com/driessenslucas/researchproject/assets/91117911/23a34a9d-7957-4484-a7ce-cfc74c4b9790>
-
-  - **Reward History**:
-
-  ![PPO Reward History](./images/PPO_reward_history.png)
-
-  - **Performance**: PPO, while stable, did not align well with the precision requirements for RC-car maze navigation.
 
 #### Hardware Setup and Assembly
 
@@ -536,9 +535,10 @@ This section provides a detailed overview of the hardware components used in the
   - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
 ##### Wiring Guide
- 
-1. **ESP32 Wiring**:
-   - ![ESP32 Wiring](./images/schematics/esp_updated.png)
+
+**ESP32 Wiring:**:
+
+![ESP32 Wiring](./images/schematics/esp_updated.png)
 
 ## Challenges and Solutions in Implementing RL Techniques and Virtual Environments
 
@@ -555,7 +555,7 @@ This section provides a detailed overview of the hardware components used in the
 ### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
 
 - **Description**: Bridging the gap between simulation and real-world in terms of RC-car movement and control.
-- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Futher more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
+- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Further more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
 
 ### Challenge 4: alignment Issue and Motor Encoder Implementation
 
@@ -575,7 +575,7 @@ This section provides a detailed overview of the hardware components used in the
 - **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
 - **Solution**: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model's accuracy in real-world applications.
 
-  - 1. **Real-World Sensor Data Normalization:**
+  - **Real-World Sensor Data Normalization:**
 
     The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
 
@@ -589,7 +589,7 @@ This section provides a detailed overview of the hardware components used in the
 
     This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.
 
-  - 2. **Simulation Sensor Data Normalization:**
+  - **Simulation Sensor Data Normalization:**
 
     The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
 
@@ -624,154 +624,67 @@ Although I made substantial progress, some challenges remain. This indicates a n
 
 In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
 
-### Supplementary Materials: Video Demonstrations
+## Real-World Application and Limitations
 
-#### Introduction
-
-This section provides examples of how I attempted to solve some of the challenges encountered in this research project. For more videos, please refer to the [video folder](https://github.com/driessenslucas/researchproject/tree/main/videos/testvideos)
-
-#### Video 1: mpu6050 90 degree turn
-
-- **Description**: This video demonstrates the use of the MPU6050 gyroscope to measure the car's orientation move until the car has rotated ~90 degrees since the start of the movement. This approach was used in an attempt to address the alignment issues when using a delay to measure the amount of time the car needs to make a 90 degree turn.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac>
-
-- **test 2**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13>
-
-#### Video 2: mpu6050 to align forward movement
-
-- **Description**: This video demonstrates the use of the MPU6050 gyroscope to measure the car's orientation while driving forward and adjust the movement accordingly. This approach was used in an attempt to address the alignment issues, but it was not able to solve the ~3-degree offset issue when moving forward.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/bb9aa643-9620-4979-a70c-ec2826c7dd33>
-
-- **test 2**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/689b590f-3a9a-4f63-ba9c-978ddd08ab53>
-
-- **test 3**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70>
-
-#### video 4: New RC-car with encoder and more powerful motor
-
-- **Description**: This video demonstrates the use of a rotary encoder to measure the amount of rotations the wheels have made. This approach was used in an attempt to address the address the ~3 degree offset when moving forward. This approach was looking promising, until adding the other components to the car, which increased the weight of the car, leading to the same problem.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
-
-- **test 2**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
-
-#### video 5: Encoder implementation (original RC-car)
-
-- **Description**: This video demonstrates reading out the wheel rotations measured by the rotary encoder. This approach again looked promising, but shortly after this video one of the encoders broke, so no further tests with this specific encoder were done.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
-
-#### video 6: Robot v2
-
-- **Description**: This video demonstrates the final version of the RC-car. This version uses the ESP32 to control both the sensors and the motors. This allowed for a more lightweight robot, which was able to move more precisely.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
-
-#### video 7: Maze Test Outdoors
-
-- **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
-
-- **test 2**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
-
-#### video 8: Maze Test Indoors
-
-- **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
-- **test 1**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
-
-- **test 2**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
-
-- **test 3**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
-
-- **test 4**:
-
-<https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188>
-
-### Real-World Application and Limitations
-
-#### Introduction to Sensor and Movement Discrepancies
+### Introduction to Sensor and Movement Discrepancies
 
 The transition from a simulated environment to real-world application introduces unique challenges, particularly in terms of sensor data interpretation and car movement replication. This section explores these aspects in detail.
 
-#### Real-World Application
+### Real-World Application
 
-##### Sensor-Based Navigation
+#### Sensor-Based Navigation
 
 In real-world scenarios, the application of sensor-based navigation, as developed in the simulation, can significantly enhance the capabilities of autonomous vehicles. This technology can be pivotal in environments where precision and adaptability are crucial, such as in urban traffic management or automated delivery systems.
 
-##### Impact on Autonomous Vehicle Movement
+#### Impact on Autonomous Vehicle Movement
 
 The insights gained from the simulation regarding vehicle movement can inform the development of more sophisticated autonomous vehicle behavior, particularly in navigating complex, dynamic environments. This knowledge is invaluable for improving the safety and efficiency of autonomous transportation systems.
 
-#### Limitations
+### Limitations
 
-##### Sensor Data Discrepancies
+#### Sensor Data Discrepancies
 
 One major challenge lies in the discrepancies between sensor data in the simulation and the real world. These differences can affect the accuracy of the navigational algorithms and, consequently, the vehicle's ability to make real-time decisions.
 
-##### Movement Replication Challenges
+#### Movement Replication Challenges
 
 Replicating the precise movements of the simulated car in a real-world setting poses significant challenges. Factors such as surface texture, vehicle weight, and mechanical limitations can lead to variations in movement that are not present in the controlled environment of the simulation.
 
-##### Practical Considerations
+#### Practical Considerations
 
 Practical implementation of these findings necessitates considering variables such as sensor calibration, environmental factors, and hardware capabilities. Overcoming these challenges is essential for the successful application of sim2real transfer in autonomous vehicle navigation.
 
-#### Conclusion
+### Conclusion
 
 The transition from simulation to real-world application in autonomous vehicle navigation, especially regarding sensor usage and car movement, presents both promising opportunities and significant challenges. Addressing these discrepancies is key to harnessing the full potential of sim2real transfer in practical, real-world scenarios.
 
 ## Answers to Research Questions
 
-#### 1. Virtual Environments for RF-Car Training
+### 1. Virtual Environments for RF-Car Training
 
 The choice of a virtual environment is paramount in simulating the complex dynamics of autonomous driving. Platforms such as Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym offer varied features catering to different aspects of driving simulation. However, for RF-car training, OpenAI Gym is selected for its flexibility in custom environment creation and its compatibility with Python, facilitating ease of use and integration with existing advanced AI coursework [1].
 
 Unity 3D and AirSim, while providing realistic simulations, require expertise beyond Python, limiting their accessibility for the current project scope. CARLA offers comprehensive autonomous driving simulation capabilities but is tailored towards more traditional vehicle models rather than RF-cars. ISAAC Gym, with its focus on robotics, presents a similar mismatch in application. In contrast, OpenAI Gym's simplicity and reinforcement learning focus make it an ideal platform for this project, supporting effective SIM2REAL transfer practices [2].
 
-#### 2. Reinforcement Learning Techniques for Virtual RF-Car Training
+### 2. Reinforcement Learning Techniques for Virtual RF-Car Training
 
 The comparison of Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO) techniques reveals that DDQN offers the best fit for the project's needs. DDQN's architecture, designed to address the overestimation bias inherent in DQN, enhances accuracy in Q-value approximation—a critical factor in navigating the complex, sensor-driven environments of RF-car simulations [3].
 
 DQN, while powerful for high-dimensional sensory input processing, falls short in environments with unpredictable dynamics, a limitation DDQN effectively overcomes. PPO's focus on direct policy optimization provides stability and efficiency but lacks the precision in value estimation necessary for RF-car training. Empirical trials further validate DDQN's superior performance, demonstrating its suitability for the intricate maze-like environments encountered by virtual RF-cars [4].
 
-#### 3. Sim-to-Real Transfer Challenges and Solutions
+### 3. Sim-to-Real Transfer Challenges and Solutions
 
 Transferring simulation models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Solutions such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance [5].
 
 The introduction of failsafe mechanisms and adjustments in motor control timings proved critical in mitigating issues like collision risks and movement inaccuracies, underscoring the importance of iterative testing and adaptation in sim-to-real transfer [6].
 
-#### 4. Contributions of Simulation in RF-Car Training
+### 4. Contributions of Simulation in RF-Car Training
 
 Simulation training offers distinct advantages in efficiency, safety, and computational resources. It enables uninterrupted and automated training sessions, eliminates the risks associated with real-world training, and leverages powerful computing resources to accelerate the training process [7].
 
 The comparative analysis between simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models, making it an indispensable tool in the RF-car development process [8].
 
-#### 5. Practical Application of Simulated Training to Real-World RF-Cars
+### 5. Practical Application of Simulated Training to Real-World RF-Cars
 
 Applying a trained model to a physical RC car requires careful consideration of environment, agent, and model adjustments. Strategies for effective sim-to-real adaptation include fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror those of the simulation [9].
 
@@ -848,6 +761,91 @@ The academic exploration was significantly shaped by articles on autonomous driv
 ### Synthesis and Research Direction
 
 These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
+
+## Supplementary Materials: Video Demonstrations
+
+This section provides examples of how I attempted to solve some of the challenges encountered in this research project.
+
+### Video 1: mpu6050 90 degree turn
+
+- **Description**: This video demonstrates the use of the MPU6050 gyroscope to measure the car's orientation move until the car has rotated ~90 degrees since the start of the movement. This approach was used in an attempt to address the alignment issues when using a delay to measure the amount of time the car needs to make a 90 degree turn.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13>
+
+### Video 2: mpu6050 to align forward movement
+
+- **Description**: This video demonstrates the use of the MPU6050 gyroscope to measure the car's orientation while driving forward and adjust the movement accordingly. This approach was used in an attempt to address the alignment issues, but it was not able to solve the ~3-degree offset issue when moving forward.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/bb9aa643-9620-4979-a70c-ec2826c7dd33>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/689b590f-3a9a-4f63-ba9c-978ddd08ab53>
+
+- **test 3**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70>
+
+### video 4: New RC-car with encoder and more powerful motor
+
+- **Description**: This video demonstrates the use of a rotary encoder to measure the amount of rotations the wheels have made. This approach was used in an attempt to address the address the ~3 degree offset when moving forward. This approach was looking promising, until adding the other components to the car, which increased the weight of the car, leading to the same problem.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
+
+### video 5: Encoder implementation (original RC-car)
+
+- **Description**: This video demonstrates reading out the wheel rotations measured by the rotary encoder. This approach again looked promising, but shortly after this video one of the encoders broke, so no further tests with this specific encoder were done.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
+
+### video 6: Robot v2
+
+- **Description**: This video demonstrates the final version of the RC-car. This version uses the ESP32 to control both the sensors and the motors. This allowed for a more lightweight robot, which was able to move more precisely.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/1773a4f5-8618-4114-ad4c-11781bee4088>
+
+### video 7: Maze Test Outdoors
+
+- **Description**: This video demonstrates an attempt to test the RC-car outdoors. This test was not successful due to surface texture.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
+
+### video 8: Maze Test Indoors
+
+- **Description**: This video demonstrates the RC-car navigating the maze indoors. This test was also not successful due imperfect conditions.
+- **test 1**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
+
+- **test 2**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
+
+- **test 3**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
+
+- **test 4**:
+
+<https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188>
 
 ## References
 
