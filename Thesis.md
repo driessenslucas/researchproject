@@ -87,6 +87,135 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
 13. **Sim2Real** - Simulation to Reality Transfer
 
+## Table of contents
+
+- [Glossary of Terms](#glossary-of-terms)
+- [List of Abbreviations](#list-of-abbreviations)
+- [Table of contents](#table-of-contents)
+- [Introduction](#introduction)
+  - [Background on Reinforcement Learning](#background-on-reinforcement-learning)
+- [Research Questions](#research-questions)
+  - [Main Research Question](#main-research-question)
+  - [Sub Research Questions](#sub-research-questions)
+- [Methodology](#methodology)
+  - [Environment Setup (RCMazeEnv)](#environment-setup-rcmazeenv)
+  - [Agent Design (DDQNAgent)](#agent-design-ddqnagent)
+  - [Training Process](#training-process)
+  - [Reward Function Components](#reward-function-components)
+    - [Collision Penalty $R\_{\\text{collision}}$](#collision-penalty-r_textcollision)
+    - [Goal Achievement Bonus $R\_{\\text{goal}}$](#goal-achievement-bonus-r_textgoal)
+    - [Proximity Reward $R\_{\\text{proximity}}$](#proximity-reward-r_textproximity)
+    - [Progress Reward $R\_{\\text{progress}}$](#progress-reward-r_textprogress)
+    - [Exploration Penalty $R\_{\\text{revisit}}$](#exploration-penalty-r_textrevisit)
+    - [Efficiency Penalty $R\_{\\text{efficiency}}$](#efficiency-penalty-r_textefficiency)
+    - [Generic Reward based on relative distance to goal](#generic-reward-based-on-relative-distance-to-goal)
+  - [Scope of Real-World Testing](#scope-of-real-world-testing)
+- [Answers to Research Questions](#answers-to-research-questions)
+  - [1. Virtual Environments for RF-Car Training](#1-virtual-environments-for-rf-car-training)
+  - [2. Reinforcement Learning Techniques for Virtual RF-Car Training](#2-reinforcement-learning-techniques-for-virtual-rf-car-training)
+  - [3. Sim-to-Real Transfer Challenges and Solutions](#3-sim-to-real-transfer-challenges-and-solutions)
+  - [4. Contributions of Simulation in RF-Car Training](#4-contributions-of-simulation-in-rf-car-training)
+  - [5. Practical Application of Simulated Training to Real-World RF-Cars](#5-practical-application-of-simulated-training-to-real-world-rf-cars)
+- [Experimental Outcomes and Implementation Details](#experimental-outcomes-and-implementation-details)
+  - [Virtual Environment and Agent Design](#virtual-environment-and-agent-design)
+  - [Implementation Highlights](#implementation-highlights)
+  - [Evaluation and Metrics](#evaluation-and-metrics)
+  - [Unique Features](#unique-features)
+- [Model Architecture and Training Insights](#model-architecture-and-training-insights)
+  - [Training Parameters](#training-parameters)
+  - [Training Procedure](#training-procedure)
+- [Visual Insights and Further Exploration](#visual-insights-and-further-exploration)
+  - [Evaluation Metrics Overview](#evaluation-metrics-overview)
+    - [Simulation Metrics](#simulation-metrics)
+      - [1. Episodic Performance](#1-episodic-performance)
+      - [2. Step Efficiency](#2-step-efficiency)
+      - [3. MSE Loss Measurement](#3-mse-loss-measurement)
+      - [4. Reward Trend Analysis](#4-reward-trend-analysis)
+      - [5. Epsilon Decay Tracking](#5-epsilon-decay-tracking)
+    - [Real-World Metrics](#real-world-metrics)
+- [results](#results)
+  - [Reinforcement Learning Techniques Overview](#reinforcement-learning-techniques-overview)
+    - [final choice: DDQN](#final-choice-ddqn)
+      - [1. **Visit Heatmap for DDQN:**](#1-visit-heatmap-for-ddqn)
+      - [2. **Reward History for DDQN:**](#2-reward-history-for-ddqn)
+      - [3. **Reward Distribution for DDQN:**](#3-reward-distribution-for-ddqn)
+      - [4. **Maze Solution for DDQN:**](#4-maze-solution-for-ddqn)
+      - [5. **Average Steps per Episode with Moving Average for DDQN:**](#5-average-steps-per-episode-with-moving-average-for-ddqn)
+      - [6. **Epsilon History for DDQN:**](#6-epsilon-history-for-ddqn)
+      - [7. **Mean Squared Error over time (Sampled) for DDQN:**](#7-mean-squared-error-over-time-sampled-for-ddqn)
+    - [1. Deep Q-Network (DQN)](#1-deep-q-network-dqn)
+    - [2. Double Deep Q-Network (DDQN)](#2-double-deep-q-network-ddqn)
+    - [3. Proximal Policy Optimization (PPO)](#3-proximal-policy-optimization-ppo)
+- [Hardware Setup and Assembly](#hardware-setup-and-assembly)
+  - [Introduction to Hardware Components](#introduction-to-hardware-components)
+  - [Components List](#components-list)
+  - [Wiring Guide](#wiring-guide)
+    - [esp32 pins](#esp32-pins)
+- [Challenges and Solutions in Implementing RL Techniques and Virtual Environments](#challenges-and-solutions-in-implementing-rl-techniques-and-virtual-environments)
+  - [Challenge 1: Selection of an Appropriate Virtual Environment](#challenge-1-selection-of-an-appropriate-virtual-environment)
+  - [Challenge 2: Choosing the Optimal Reinforcement Learning Technique](#challenge-2-choosing-the-optimal-reinforcement-learning-technique)
+  - [Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies](#challenge-3-sim2real-transfer---addressing-movement-discrepancies)
+  - [Challenge 4: alignment Issue and Motor Encoder Implementation](#challenge-4-alignment-issue-and-motor-encoder-implementation)
+  - [Challenge 5: Ensuring Consistent and Effective Training](#challenge-5-ensuring-consistent-and-effective-training)
+  - [Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer](#challenge-6-accurate-sensor-data-normalization-for-sim2real-transfer)
+  - [Challenge 7: Integration of Failsafe Mechanisms](#challenge-7-integration-of-failsafe-mechanisms)
+  - [Challenge 8: Training Environment and Technique Efficacy](#challenge-8-training-environment-and-technique-efficacy)
+  - [Viewing Practical Experiments](#viewing-practical-experiments)
+  - [Conclusion](#conclusion)
+- [Real-World Application and Limitations](#real-world-application-and-limitations)
+  - [Introduction to Sensor and Movement Discrepancies](#introduction-to-sensor-and-movement-discrepancies)
+  - [Real-World Application](#real-world-application)
+    - [Enhanced Sensor-Based Navigation](#enhanced-sensor-based-navigation)
+    - [Informing Autonomous Vehicle Movement](#informing-autonomous-vehicle-movement)
+  - [Limitations](#limitations)
+    - [Discrepancies in Sensor Data Interpretation](#discrepancies-in-sensor-data-interpretation)
+    - [Challenges in Movement Replication](#challenges-in-movement-replication)
+    - [Practical Implementation Considerations](#practical-implementation-considerations)
+  - [Conclusion](#conclusion-1)
+- [Reflection](#reflection)
+  - [Strengths and Weaknesses](#strengths-and-weaknesses)
+  - [Practical Applicability and Industry Relevance](#practical-applicability-and-industry-relevance)
+  - [Encountered Alternatives and Flexibility](#encountered-alternatives-and-flexibility)
+  - [Anticipated Implementation Barriers](#anticipated-implementation-barriers)
+  - [Ethical Considerations](#ethical-considerations)
+  - [Societal Impact](#societal-impact)
+  - [Policy and Regulation](#policy-and-regulation)
+  - [Lessons Learned and Forward Path](#lessons-learned-and-forward-path)
+- [Advice for those Embarking on Similar Research Paths](#advice-for-those-embarking-on-similar-research-paths)
+- [General Conclusion](#general-conclusion)
+- [Sources of Inspiration and Conceptual Framework](#sources-of-inspiration-and-conceptual-framework)
+  - [Micro mouse Competitions and Reinforcement Learning](#micro-mouse-competitions-and-reinforcement-learning)
+  - [Influential YouTube Demonstrations and GitHub Insights](#influential-youtube-demonstrations-and-github-insights)
+  - [Technical Exploration and Academic Foundation](#technical-exploration-and-academic-foundation)
+  - [Synthesis and Research Direction](#synthesis-and-research-direction)
+- [Integration of Practical Experiments](#integration-of-practical-experiments)
+  - [Addressing Alignment and Orientation Challenges](#addressing-alignment-and-orientation-challenges)
+  - [Enhancing Movement Precision with Encoders](#enhancing-movement-precision-with-encoders)
+  - [Real-World Application Tests](#real-world-application-tests)
+- [Implementation of Real-World Control Algorithms](#implementation-of-real-world-control-algorithms)
+  - [Introduction](#introduction-1)
+  - [System Overview](#system-overview)
+  - [Code Architecture and Integration](#code-architecture-and-integration)
+  - [Practical Challenges in Sim2Real Transfer](#practical-challenges-in-sim2real-transfer)
+  - [Testing and Validation](#testing-and-validation)
+  - [Conclusion](#conclusion-2)
+- [Guest Speakers](#guest-speakers)
+  - [Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion](#innovations-and-best-practices-in-ai-projects-by-jeroen-boeye-at-faktion)
+  - [Pioneering AI Solutions at Noest by Toon Vanhoutte](#pioneering-ai-solutions-at-noest-by-toon-vanhoutte)
+- [Installation Steps](#installation-steps)
+  - [Prerequisites](#prerequisites)
+  - [Repository Setup](#repository-setup)
+  - [ESP32 Setup](#esp32-setup)
+    - [Hardware Installation](#hardware-installation)
+    - [Software Configuration](#software-configuration)
+  - [Web Application Setup](#web-application-setup)
+    - [Note:](#note)
+    - [Steps:](#steps)
+  - [Usage Instructions](#usage-instructions)
+  - [Additional Information: Model Training](#additional-information-model-training)
+- [References](#references)
+
+
 ## Introduction
 
 In the evolving landscape of artificial intelligence and robotics, the distinction between virtual simulations and real-world applications increasingly narrows, presenting unprecedented opportunities and challenges. This thesis explores the potential of Reinforcement Learning (RL) to bridge this gap, with a specific focus on the domain of autonomous navigation using a remote-controlled (RC) car in a maze. The endeavor to transfer a trained RL agent from a simulated environment to the real world encapsulates the core challenge of sim-to-real transferability, a pivotal step towards realizing the full spectrum of RL's applicability in complex, real-world scenarios.
@@ -238,6 +367,38 @@ This study focused on conducting experiments within indoor settings, where envir
 Nevertheless, the ambit of real-world experimentation was not confined to indoor setups. Efforts were made to broaden the scope to outdoor environments to ascertain the adaptability and resilience of the proposed solutions under varied conditions. These ventures into the outdoors faced substantial obstacles, mainly due to the challenges in offsetting the differences in ground conditions. The variability and unpredictability of outdoor landscapes exposed significant gaps in the current method's capacity to adjust to diverse real-world settings.
 
 This issue became particularly pronounced in the section discussing "Overcoming Navigation Challenges in Varying Environments," where the adaptation of the autonomous system to outdoor navigation met with significant hurdles. While the system demonstrated successful sim-to-real transfers in controlled indoor environments, the outdoor experiments highlighted the imperative for additional research and enhancement of the system’s flexibility. The outdoor testing difficulties underscore the importance of broadening the experimental scope and advancing autonomous technologies to navigate the intricacies of unregulated terrains.
+
+## Answers to Research Questions
+
+### 1. Virtual Environments for RF-Car Training
+
+The choice of a virtual environment is paramount in simulating the complex dynamics of autonomous driving. Platforms such as Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym offer varied features catering to different aspects of driving simulation. However, for RF-car training, OpenAI Gym is selected for its flexibility in custom environment creation and its compatibility with Python, facilitating ease of use and integration with existing advanced AI coursework \hyperref[ref1]{[1]}.
+
+Unity 3D and AirSim, while providing realistic simulations, require expertise beyond Python, limiting their accessibility for the current project scope. CARLA offers comprehensive autonomous driving simulation capabilities but is tailored towards more traditional vehicle models rather than RF-cars. ISAAC Gym, with its focus on robotics, presents a similar mismatch in application. In contrast, OpenAI Gym's simplicity and reinforcement learning focus make it an ideal platform for this project, supporting effective SIM2REAL transfer practices \hyperref[ref2]{[2]}.
+
+### 2. Reinforcement Learning Techniques for Virtual RF-Car Training
+
+The comparison of Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO) techniques reveals that DDQN offers the best fit for the project's needs. DDQN's architecture, designed to address the overestimation bias inherent in DQN, enhances accuracy in Q-value approximation—a critical factor in navigating the complex, sensor-driven environments of RF-car simulations \hyperref[ref3]{[3]}.
+
+DQN, while powerful for high-dimensional sensory input processing, falls short in environments with unpredictable dynamics, a limitation DDQN effectively overcomes. PPO's focus on direct policy optimization provides stability and efficiency but lacks the precision in value estimation necessary for RF-car training. Empirical trials further validate DDQN's superior performance, demonstrating its suitability for the intricate maze-like environments encountered by virtual RF-cars \hyperref[ref4]{[4]}.
+
+### 3. Sim-to-Real Transfer Challenges and Solutions
+
+Transferring simulation models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Solutions such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance \hyperref[ref5]{[5]}.
+
+The introduction of failsafe mechanisms and adjustments in motor control timings proved critical in mitigating issues like collision risks and movement inaccuracies, underscoring the importance of iterative testing and adaptation in sim-to-real transfer \hyperref[ref6]{[6]}.
+
+### 4. Contributions of Simulation in RF-Car Training
+
+Simulation training offers distinct advantages in efficiency, safety, and computational resources. It enables uninterrupted and automated training sessions, eliminates the risks associated with real-world training, and leverages powerful computing resources to accelerate the training process \hyperref[ref7]{[7]}.
+
+The comparative analysis between simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models, making it an indispensable tool in the RF-car development process \hyperref[ref8]{[8]}.
+
+### 5. Practical Application of Simulated Training to Real-World RF-Cars
+
+Applying a trained model to a physical RC car requires careful consideration of environment, agent, and model adjustments. Strategies for effective sim-to-real adaptation include fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror those of the simulation \hyperref[ref9]{[9]}.
+
+This process ensures the successful application of simulation training to real-world scenarios, facilitating the development of robust and reliable autonomous driving systems \hyperref[ref10]{[10]}.
 
 ## Experimental Outcomes and Implementation Details
 
@@ -509,7 +670,7 @@ This section provides an overview of the hardware components used in the researc
 
 #### esp32 pins
 
-Since the schematic is not very clear (sorry for this), here is a list of the pins used on the ESP32:
+- Since the schematic is not very clear (sorry for this), here is a list of the pins used on the ESP32:
 
 ```c
 int E1 = 2; //PWM motor 1
@@ -526,7 +687,7 @@ int sensor1Echo = 32; //GPIO left sensor
 int sensor2Trig = 25; //GPIO front sensor
 int sensor2Echo = 35; //GPIO front sensor
 
-// OLED and MPU6050 display pins
+// OLED display and MPU6050 pins
 #define SDA_PIN 21 // this is the default sda pin on the esp32
 #define SCL_PIN 22 // this is the default scl pin on the esp32
 ```
@@ -656,38 +817,6 @@ Successfully translating simulation insights into real-world applications requir
 
 Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents a unique set of challenges and opportunities. While the application of simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
 
-## Answers to Research Questions
-
-### 1. Virtual Environments for RF-Car Training
-
-The choice of a virtual environment is paramount in simulating the complex dynamics of autonomous driving. Platforms such as Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym offer varied features catering to different aspects of driving simulation. However, for RF-car training, OpenAI Gym is selected for its flexibility in custom environment creation and its compatibility with Python, facilitating ease of use and integration with existing advanced AI coursework \hyperref[ref1]{[1]}.
-
-Unity 3D and AirSim, while providing realistic simulations, require expertise beyond Python, limiting their accessibility for the current project scope. CARLA offers comprehensive autonomous driving simulation capabilities but is tailored towards more traditional vehicle models rather than RF-cars. ISAAC Gym, with its focus on robotics, presents a similar mismatch in application. In contrast, OpenAI Gym's simplicity and reinforcement learning focus make it an ideal platform for this project, supporting effective SIM2REAL transfer practices \hyperref[ref2]{[2]}.
-
-### 2. Reinforcement Learning Techniques for Virtual RF-Car Training
-
-The comparison of Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO) techniques reveals that DDQN offers the best fit for the project's needs. DDQN's architecture, designed to address the overestimation bias inherent in DQN, enhances accuracy in Q-value approximation—a critical factor in navigating the complex, sensor-driven environments of RF-car simulations \hyperref[ref3]{[3]}.
-
-DQN, while powerful for high-dimensional sensory input processing, falls short in environments with unpredictable dynamics, a limitation DDQN effectively overcomes. PPO's focus on direct policy optimization provides stability and efficiency but lacks the precision in value estimation necessary for RF-car training. Empirical trials further validate DDQN's superior performance, demonstrating its suitability for the intricate maze-like environments encountered by virtual RF-cars \hyperref[ref4]{[4]}.
-
-### 3. Sim-to-Real Transfer Challenges and Solutions
-
-Transferring simulation models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Solutions such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance \hyperref[ref5]{[5]}.
-
-The introduction of failsafe mechanisms and adjustments in motor control timings proved critical in mitigating issues like collision risks and movement inaccuracies, underscoring the importance of iterative testing and adaptation in sim-to-real transfer \hyperref[ref6]{[6]}.
-
-### 4. Contributions of Simulation in RF-Car Training
-
-Simulation training offers distinct advantages in efficiency, safety, and computational resources. It enables uninterrupted and automated training sessions, eliminates the risks associated with real-world training, and leverages powerful computing resources to accelerate the training process \hyperref[ref7]{[7]}.
-
-The comparative analysis between simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models, making it an indispensable tool in the RF-car development process \hyperref[ref8]{[8]}.
-
-### 5. Practical Application of Simulated Training to Real-World RF-Cars
-
-Applying a trained model to a physical RC car requires careful consideration of environment, agent, and model adjustments. Strategies for effective sim-to-real adaptation include fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror those of the simulation \hyperref[ref9]{[9]}.
-
-This process ensures the successful application of simulation training to real-world scenarios, facilitating the development of robust and reliable autonomous driving systems \hyperref[ref10]{[10]}.
-
 ## Reflection
 
 <!-- --
@@ -757,9 +886,9 @@ This reflective journey underscores several key lessons: the value of openness t
 
 This research has made significant strides in understanding the feasibility and challenges of Sim2Real transfers in reinforcement learning. While substantial progress was achieved, the journey illuminated the vast landscape of challenges that lie in the nuanced discrepancies between virtual and physical realms. Future endeavors in this domain should continue to push the boundaries of what is possible, leveraging the lessons learned to further bridge the gap between simulation and reality. The potential applications of successfully transferring RL agents to the real world are vast, promising advancements in robotics, autonomous vehicles, and beyond.
 
-## Credits
+<!-- ## Credits
 
-I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest.
+I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest. -->
 
 ## Sources of Inspiration and Conceptual Framework
 
