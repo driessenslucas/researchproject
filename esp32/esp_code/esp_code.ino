@@ -37,10 +37,10 @@ void setupWifiAndOTA();
 void setupSensorsAndDisplay();
 void handleClientRequests(WiFiClient& client);
 String readSensor(int trigPin, int echoPin);
-void moveForward();
-void moveLeft();
-void moveRight();
-void stopMoving();
+void move_forward();
+void move_left();
+void move_right();
+void stop_moving();
 void setupMPU();
 void setupMotors();
 
@@ -220,37 +220,27 @@ String readSensor(int trigPin, int echoPin) {
   return String(distance);
 }
 
- void move_forward() {
-  if (shouldStop) { // Check if should stop before starting
-    shouldStop = false; // Reset the flag
-    return;
+void move_forward() {
+if (shouldStop) { // Check if should stop before starting
+  shouldStop = false; // Reset the flag
+  return;
+}
+
+// Forward movement code
+analogWrite(motorEnablePins[0], 255);    // Set speed
+analogWrite(motorEnablePins[1], 255);    // Set speed
+digitalWrite(motorPins[0], LOW);   // Move forward
+digitalWrite(motorPins[1], HIGH);  // Move forward
+
+for (int i = 0; i < 7; ++i) {
+  delay(100); // Break long delay into smaller parts
+  if (shouldStop) {
+    break; // Exit early if stop requested
   }
-  
-  // Forward movement code
-  analogWrite(motorEnablePins[0], 255);    // Set speed
-  analogWrite(motorEnablePins[1], 255);    // Set speed
-  digitalWrite(motorPins[0], LOW);   // Move forward
-  digitalWrite(motorPins[1], HIGH);  // Move forward
-  
-  for (int i = 0; i < 7; ++i) {
-    delay(100); // Break long delay into smaller parts
-    if (shouldStop) {
-      break; // Exit early if stop requested
-    }
-  }
-  
-  if (shouldStop) { // Additional check if stop was requested during delay
-    shouldStop = false; // Reset the flag
-    // Stop motors after turning with offset in mind
-    analogWrite(motorEnablePins[1], 0);
-    delay(20);
-    analogWrite(motorEnablePins[0], 0);
-    
-    digitalWrite(motorPins[0], LOW);
-    digitalWrite(motorPins[1], HIGH);
-    return;
-  }
-  
+}
+
+if (shouldStop) { // Additional check if stop was requested during delay
+  shouldStop = false; // Reset the flag
   // Stop motors after turning with offset in mind
   analogWrite(motorEnablePins[1], 0);
   delay(20);
@@ -258,7 +248,17 @@ String readSensor(int trigPin, int echoPin) {
   
   digitalWrite(motorPins[0], LOW);
   digitalWrite(motorPins[1], HIGH);
- }
+  return;
+}
+
+// Stop motors after turning with offset in mind
+analogWrite(motorEnablePins[1], 0);
+delay(20);
+analogWrite(motorEnablePins[0], 0);
+
+digitalWrite(motorPins[0], LOW);
+digitalWrite(motorPins[1], HIGH);
+}
 
 
 void move_left() {

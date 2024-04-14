@@ -1,3 +1,7 @@
+"""
+This module contains the implementation of a reinforcement learning environment for an RC car navigating a maze using a DDQN algorithm. It includes classes for the environment setup, agent behavior, and a Flask application for real-time interaction and visualization.
+"""
+
 import collections
 import threading
 import time

@@ -22,3 +22,13 @@
 \setlist[enumerate,8]{label=$\alph*.$}
 \setlist[enumerate,9]{label=$\roman*.$}
 \renewlist{enumerate}{enumerate}{9}
+
+
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}

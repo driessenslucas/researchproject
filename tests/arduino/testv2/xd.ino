@@ -280,25 +280,25 @@ String get_sensor3() {
   return String(distanceCm);
 }
 
- void move_forward() {
-   // Forward movement code
-   analogWrite(E1, 255);    // Set speed
-   analogWrite(E2, 255);    // Set speed
-   digitalWrite(M1, LOW);   // Move forward
-   digitalWrite(M2, HIGH);  // Move forward
+void move_forward() {
+  // Forward movement code
+  analogWrite(E1, 255);    // Set speed
+  analogWrite(E2, 255);    // Set speed
+  digitalWrite(M1, LOW);   // Move forward
+  digitalWrite(M2, HIGH);  // Move forward
 
-   delay(700);
+  delay(700);
 
-   // Stop motors after turning
+  // Stop motors after turning
 
-   analogWrite(E2, 0);
+  analogWrite(E2, 0);
 
-   delay(20);
-   analogWrite(E1, 0);
+  delay(20);
+  analogWrite(E1, 0);
 
-   digitalWrite(M1, LOW);
-   digitalWrite(M2, HIGH);
- }
+  digitalWrite(M1, LOW);
+  digitalWrite(M2, HIGH);
+}
 
 
 void move_left() {

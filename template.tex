@@ -1016,6 +1016,7 @@ $abstract$
 \pagebreak
 $endif$
 
+
 $if(acknowledgements)$
 \begin{center}
  {\LARGE \textbf{\textsf{Acknowledgements}}}
@@ -1072,6 +1073,9 @@ $endif$
 $endif$
 $if(lof)$
 \listoffigures
+$if(lof-own-page)$
+\newpage
+$endif$
 $endif$
 $if(lot)$
 \listoftables
