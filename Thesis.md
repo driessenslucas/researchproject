@@ -63,7 +63,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 
 8. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
 
-9.  **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
+9. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
 
 10. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
 
@@ -87,7 +87,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
 13. **Sim2Real** - Simulation to Reality Transfer
 
-## Table of contents
+<!-- ## Table of contents
 
 - [Glossary of Terms](#glossary-of-terms)
 - [List of Abbreviations](#list-of-abbreviations)
@@ -213,8 +213,7 @@ Through this study, I aspire to contribute significantly to the field of AI and 
     - [Steps:](#steps)
   - [Usage Instructions](#usage-instructions)
   - [Additional Information: Model Training](#additional-information-model-training)
-- [References](#references)
-
+- [References](#references) -->
 
 ## Introduction
 
@@ -368,6 +367,30 @@ Nevertheless, the ambit of real-world experimentation was not confined to indoor
 
 This issue became particularly pronounced in the section discussing "Overcoming Navigation Challenges in Varying Environments," where the adaptation of the autonomous system to outdoor navigation met with significant hurdles. While the system demonstrated successful sim-to-real transfers in controlled indoor environments, the outdoor experiments highlighted the imperative for additional research and enhancement of the system’s flexibility. The outdoor testing difficulties underscore the importance of broadening the experimental scope and advancing autonomous technologies to navigate the intricacies of unregulated terrains.
 
+## Experimental Outcomes and Implementation Details
+
+The project embarked on a journey to bridge the virtual and real-world through a meticulously designed environment and a cutting-edge agent architecture.
+
+### Virtual Environment and Agent Design
+
+- **RCMazeEnv**: Customized for this project, the environment simulates a robotic car navigating a maze. Its design replicates real-world physics and constraints, offering a rich testing ground for reinforcement learning algorithms. The maze's structure, from its starting position to the goal, and the robotic car's specifications, including movement actions and sensor setups, are critical to the simulation's realism.
+
+- **Double Deep Q-Network (DDQN)**: Employing two neural networks, this model enhances traditional reinforcement learning methods by reducing the overestimation of Q-values. The policy network and the target network work in tandem to refine the agent's learning process through continuous interaction and sensor data interpretation.
+
+### Implementation Highlights
+
+- **Environment and Agent Interaction**: Central to the DDQN agent's strategy is its continuous adaptation to the environment, leveraging sensor inputs to inform its decisions and optimize its path through the maze. This iterative learning process is visually represented through a simulation platform that allows for detailed observation of the agent's performance and strategy adjustments.
+
+- **Real-World Application**: Transferring the virtual training to a physical RC robot involved comprehensive hardware setup and calibration. Challenges such as sensor data normalization and precise movement control were addressed to ensure a seamless transition from virtual to real-world application.
+
+### Evaluation and Metrics
+
+The project employed specific metrics to evaluate the agent's efficiency in navigating the maze, with emphasis on both simulation performance and real-world applicability. This involved monitoring the agent's episodic performance, step efficiency, and adaptation to real-world conditions.
+
+### Unique Features
+
+- **Physical Maze and Web Application**: A constructed physical maze served as the tangible counterpart to the virtual `RCMazeEnv`, playing a crucial role in testing the RC robot's navigation capabilities. Additionally, a web application was developed to act as a visualization and control interface, enhancing the interaction between the virtual and real-world applications.
+
 ## Answers to Research Questions
 
 ### 1. Virtual Environments for RF-Car Training
@@ -400,29 +423,92 @@ Applying a trained model to a physical RC car requires careful consideration of 
 
 This process ensures the successful application of simulation training to real-world scenarios, facilitating the development of robust and reliable autonomous driving systems \hyperref[ref10]{[10]}.
 
-## Experimental Outcomes and Implementation Details
+## Challenges and Solutions in Implementing RL Techniques and Virtual Environments
 
-The project embarked on a journey to bridge the virtual and real-world through a meticulously designed environment and a cutting-edge agent architecture.
+### Challenge 1: Selection of an Appropriate Virtual Environment
 
-### Virtual Environment and Agent Design
+- **Description**: Choosing a virtual environment conducive to effective RC-car training is crucial.
+- **Solution**: After evaluating various platforms, **OpenAI Gym** was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.
 
-- **RCMazeEnv**: Customized for this project, the environment simulates a robotic car navigating a maze. Its design replicates real-world physics and constraints, offering a rich testing ground for reinforcement learning algorithms. The maze's structure, from its starting position to the goal, and the robotic car's specifications, including movement actions and sensor setups, are critical to the simulation's realism.
+### Challenge 2: Choosing the Optimal Reinforcement Learning Technique
 
-- **Double Deep Q-Network (DDQN)**: Employing two neural networks, this model enhances traditional reinforcement learning methods by reducing the overestimation of Q-values. The policy network and the target network work in tandem to refine the agent's learning process through continuous interaction and sensor data interpretation.
+- **Description**: Selecting the most effective RL technique for training the virtual RC-car.
+- **Solution**: Through comparative analysis and empirical testing, the Double Deep Q-Network (DDQN) was identified as the most suitable technique, demonstrating superior performance in navigating complex environments with fewer episodes.
 
-### Implementation Highlights
+### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
 
-- **Environment and Agent Interaction**: Central to the DDQN agent's strategy is its continuous adaptation to the environment, leveraging sensor inputs to inform its decisions and optimize its path through the maze. This iterative learning process is visually represented through a simulation platform that allows for detailed observation of the agent's performance and strategy adjustments.
+- **Description**: Bridging the gap between simulation and real-world in terms of RC-car movement and control.
+- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Further more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
 
-- **Real-World Application**: Transferring the virtual training to a physical RC robot involved comprehensive hardware setup and calibration. Challenges such as sensor data normalization and precise movement control were addressed to ensure a seamless transition from virtual to real-world application.
+### Challenge 4: alignment Issue and Motor Encoder Implementation
 
-### Evaluation and Metrics
+- **Description**: Difficulty in achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.
+- **Solution Attempt 1**: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.
+- **Solution Attempt 2**: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car's weight increased, leading to the same problem.
+- **Solution Attempt 3**: The use of a MPU6050 gyroscope was explored to measure the car's orientation and adjust the movement accordingly. Even though this approach succeeded to some extent (90 degrees turns were accurate), it was not able to solve the ~3-degree offset issue when moving forward.
 
-The project employed specific metrics to evaluate the agent's efficiency in navigating the maze, with emphasis on both simulation performance and real-world applicability. This involved monitoring the agent's episodic performance, step efficiency, and adaptation to real-world conditions.
+- **Solution Attempt 4**: The final solution I tried was done by removing the RPI5 (previously used for sensor data and running the web app) from the robot all together and using the ESP32 to control both all the sensors and the motors. This allowed for a more lightweight robot, which was able to move forward more precisely but it failed to rotate 90 degrees accurately.
 
-### Unique Features
+### Challenge 5: Ensuring Consistent and Effective Training
 
-- **Physical Maze and Web Application**: A constructed physical maze served as the tangible counterpart to the virtual `RCMazeEnv`, playing a crucial role in testing the RC robot's navigation capabilities. Additionally, a web application was developed to act as a visualization and control interface, enhancing the interaction between the virtual and real-world applications.
+- **Description**: Maximizing training efficiency and performance while maintaining consistency between simulation and real-world scenarios.
+- **Solution**: The simulation demonstrated considerable advantages in terms of training efficiency, safety, and computational power, establishing it as an indispensable tool in autonomous vehicle model development.
+
+### Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
+
+- **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
+- **Solution**: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model's accuracy in real-world applications.
+
+  - **Real-World Sensor Data Normalization:**
+
+    The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
+
+    <!-- ![map_distance](./images/map_distance_equation.png) -->
+    $$
+    \text{map\_distance}(d) = \begin{cases} 
+    d & \text{if } d < 25 \\
+    25 + (d - 25) \times 0.5 & \text{otherwise}
+    \end{cases}
+    $$
+
+    This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.
+
+  - **Simulation Sensor Data Normalization:**
+
+    The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
+
+    <!-- ![normalize_distance](./images/normalize_distance_equation.png) -->
+    $$
+    \text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
+    $$
+
+    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
+
+### Challenge 7: Integration of Failsafe Mechanisms
+
+- **Description**: Preventing potential collisions and ensuring safe navigation in the real world.
+- **Solution**: Development of a failsafe system that prevents forward movement in hazardous situations, retraining the model with this protocol to align real-world behavior with the simulated environment.
+
+### Challenge 8: Training Environment and Technique Efficacy
+
+- **Description**: Determining the most effective environment and RL technique for training.
+- **Solution**: The DDQN solved the environment more efficiently than DQN, highlighting the importance of technique selection. The simulation provided a safer, more controlled environment for training, reinforcing its selection over real-world training.
+
+### Viewing Practical Experiments
+
+For visual insights into my practical experiments addressing these challenges, please refer to my supplementary video materials, which illustrate the implementation and testing of solutions, from gyroscopic adjustments to the integration of a more sophisticated control system using the ESP32.
+
+### Conclusion
+
+This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
+
+However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
+
+A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot's design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.
+
+Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
+
+In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
 
 ## Model Architecture and Training Insights
 
@@ -695,93 +781,6 @@ int sensor2Echo = 35; //GPIO front sensor
 **ESP32 Wiring:**
 
 ![ESP32 Wiring](./images/schematics/esp_updated.png)
-
-## Challenges and Solutions in Implementing RL Techniques and Virtual Environments
-
-### Challenge 1: Selection of an Appropriate Virtual Environment
-
-- **Description**: Choosing a virtual environment conducive to effective RC-car training is crucial.
-- **Solution**: After evaluating various platforms, **OpenAI Gym** was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.
-
-### Challenge 2: Choosing the Optimal Reinforcement Learning Technique
-
-- **Description**: Selecting the most effective RL technique for training the virtual RC-car.
-- **Solution**: Through comparative analysis and empirical testing, the Double Deep Q-Network (DDQN) was identified as the most suitable technique, demonstrating superior performance in navigating complex environments with fewer episodes.
-
-### Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
-
-- **Description**: Bridging the gap between simulation and real-world in terms of RC-car movement and control.
-- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Further more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
-
-### Challenge 4: alignment Issue and Motor Encoder Implementation
-
-- **Description**: Difficulty in achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.
-- **Solution Attempt 1**: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.
-- **Solution Attempt 2**: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car's weight increased, leading to the same problem.
-- **Solution Attempt 3**: The use of a MPU6050 gyroscope was explored to measure the car's orientation and adjust the movement accordingly. Even though this approach succeeded to some extent (90 degrees turns were accurate), it was not able to solve the ~3-degree offset issue when moving forward.
-
-- **Solution Attempt 4**: The final solution I tried was done by removing the RPI5 (previously used for sensor data and running the web app) from the robot all together and using the ESP32 to control both all the sensors and the motors. This allowed for a more lightweight robot, which was able to move forward more precisely but it failed to rotate 90 degrees accurately.
-
-### Challenge 5: Ensuring Consistent and Effective Training
-
-- **Description**: Maximizing training efficiency and performance while maintaining consistency between simulation and real-world scenarios.
-- **Solution**: The simulation demonstrated considerable advantages in terms of training efficiency, safety, and computational power, establishing it as an indispensable tool in autonomous vehicle model development.
-
-### Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
-
-- **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
-- **Solution**: Implementing specific normalization techniques for both real-world and simulation sensor data ensured consistency and compatibility, enhancing the model's accuracy in real-world applications.
-
-  - **Real-World Sensor Data Normalization:**
-
-    The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
-
-    <!-- ![map_distance](./images/map_distance_equation.png) -->
-    $$
-    \text{map\_distance}(d) = \begin{cases} 
-    d & \text{if } d < 25 \\
-    25 + (d - 25) \times 0.5 & \text{otherwise}
-    \end{cases}
-    $$
-
-    This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.
-
-  - **Simulation Sensor Data Normalization:**
-
-    The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
-
-    <!-- ![normalize_distance](./images/normalize_distance_equation.png) -->
-    $$
-    \text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
-    $$
-
-    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
-
-### Challenge 7: Integration of Failsafe Mechanisms
-
-- **Description**: Preventing potential collisions and ensuring safe navigation in the real world.
-- **Solution**: Development of a failsafe system that prevents forward movement in hazardous situations, retraining the model with this protocol to align real-world behavior with the simulated environment.
-
-### Challenge 8: Training Environment and Technique Efficacy
-
-- **Description**: Determining the most effective environment and RL technique for training.
-- **Solution**: The DDQN solved the environment more efficiently than DQN, highlighting the importance of technique selection. The simulation provided a safer, more controlled environment for training, reinforcing its selection over real-world training.
-
-### Viewing Practical Experiments
-
-For visual insights into my practical experiments addressing these challenges, please refer to my supplementary video materials, which illustrate the implementation and testing of solutions, from gyroscopic adjustments to the integration of a more sophisticated control system using the ESP32.
-
-### Conclusion
-
-This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
-
-However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
-
-A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot's design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.
-
-Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
-
-In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
 
 ## Real-World Application and Limitations
 
@@ -1185,9 +1184,11 @@ cd researchproject
 ### Web Application Setup
 
 #### Note: 
+
 To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
 
 #### Steps:
+
 1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
 
     ```bash
