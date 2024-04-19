@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  mazecontrol:
+    build:
+      context: ./web
+    environment:
+      - DISPLAY=:100
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./web/:/usr/src/app
+      - ./web/templates:/usr/src/app/templates
+    ports:
+      - '8500:5000'
+      # - '5000:5000'
+    networks:
+      - rc-network
+
+networks:
+  rc-network: {}
