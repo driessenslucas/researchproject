@@ -55,7 +55,7 @@ $endif$
 $if(papersize)$
   $papersize$paper,
 $else$
-  paper=a4,
+  paper=letter,
 $endif$
 $if(beamer)$
   ignorenonframetext,
@@ -1100,6 +1100,6 @@ $endif$
 $endif$
 $for(include-after)$
 $include-after$
-
+\center{text}
 $endfor$
 \end{document}

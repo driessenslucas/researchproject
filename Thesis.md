@@ -9,6 +9,8 @@ keywords: [Markdown, Example]
 titlepage-text-color: "000000"
 titlepage-rule-color: "FFFFFF"
 titlepage-rule-height: 0
+geometry: margin=1.5in
+
 toc-title: Table of Contents
 caption-justification: justified
 titlepage-logo: mctlogo.png
@@ -1222,8 +1224,6 @@ This section provides an overview of the hardware components used in the researc
 #### Wiring Guide
 
 **esp32 pins**
-
-- Since the schematic is not very clear (sorry for this), here is a list of the pins used on the ESP32:
 
 ```c
 int E1 = 2; //PWM motor 1
