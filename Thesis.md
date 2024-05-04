@@ -22,21 +22,21 @@ text4: 2024
 lof: true
 lof-own-page: True
 abstract: |
-  In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question: 'Is it possible to transfer a trained RL agent from a simulation to the real world?' This inquiry is particularly examined in the context of maze navigation.
+  In this research project, I delve into the fascinating realm of artificial intelligence, with a specific focus on reinforcement learning (RL) and its practical application in real-world scenarios. The central question driving my investigation is: “Is it possible to transfer a trained RL agent from a simulation to the real world?” This inquiry takes center stage as we explore the intricacies of maze navigation.
 
-  \noindent \newline This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
+  \noindent \newline This research is structured around several sub-questions, collectively aimed at creating a comprehensive understanding of the process. First, I explore various virtual environments suitable for training a virtual RC car, seeking the most effective platform for my purposes. Next, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors such as efficiency, adaptability, and real-world applicability. Finally, the research endeavors to bridge the gap between simulation and reality, investigating the practical challenges involved in this transition.
 
-  \noindent \newline Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
+  \noindent \newline Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training plays a crucial role.
 acknowledgements: |
-  This bachelor thesis, entitled "Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning," marks the culmination of my academic journey in New Media & Communication Technology at Howest, University of Applied Sciences. It investigates a pivotal question in the field of artificial intelligence: "Is it possible to transfer a trained RL-agent from a simulation to the real world?" This question emerges from my deep-seated curiosity about the intersection of virtual simulations and tangible applications, reflecting a broader challenge in AI to create adaptive, real-world systems from controlled simulations.
+  This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” marks the culmination of my academic journey in New Media & Communication Technology at Howest, University of Applied Sciences. The pivotal question at its core—“Is it possible to transfer a trained RL agent from a simulation to the real world?”—reflects my deep-seated curiosity about the intersection of virtual simulations and tangible applications. It also underscores a broader challenge in AI: creating adaptive, real-world systems from controlled simulations.
 
-  \noindent \newline My fascination with the concept of Sim2Real transfer originated during the 'Researchproject' module. Witnessing the potential of simulated environments to approximate complex real-world behaviors sparked my interest in exploring their practical applicability. I have structured this thesis to not only probe the theoretical foundations of Sim2Real transfer but to also experimentally test its viability through a series of innovative applications. These experiments aim to refine the methods of Sim2Real transfer, enhancing their effectiveness and reliability.
+  \noindent \newline My fascination with the concept of Sim2Real transfer originated during the ‘Researchproject’ module. Witnessing the potential of simulated environments to approximate complex real-world behaviors sparked my interest in exploring their practical applicability. In structuring this thesis, I not only probe the theoretical foundations of Sim2Real transfer but also experimentally test its viability through a series of innovative applications. These experiments aim to refine the methods of Sim2Real transfer, enhancing their effectiveness and reliability.
 
-  \noindent \newline The research methodology adopted for this thesis involves a combination of qualitative analyses and quantitative experiments. Theoretical studies provide a comprehensive background, setting the stage for empirical tests conducted in controlled environments. By systematically assessing the performance of RL agents in various scenarios, the research seeks to identify optimal strategies for effective Sim2Real transitions.
+  \noindent \newline The research methodology adopted for this thesis combines qualitative analyses with quantitative experiments. Theoretical studies provide a comprehensive background, setting the stage for empirical tests conducted in controlled environments. By systematically assessing the performance of RL agents in various scenarios, the research seeks to identify optimal strategies for effective Sim2Real transitions.
 
   \noindent \newline I extend heartfelt thanks to my coach and supervisor, Gevaert Wouter, for his invaluable guidance and insights throughout this research. His expertise and mentorship have been fundamental to my scholarly and personal growth. Gratitude is also due to Amaury Van Naemen for his technical support with 3D printing components crucial for my experiments. His assistance was pivotal in navigating the practical challenges of my research.
 
-  \noindent \newline Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their support has been instrumental in my pursuit of technology and innovation.
+  \noindent \newline Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their unwavering support has been instrumental in my pursuit of technology and innovation.
 
   \noindent \newline Lucas Driessens
   \noindent \newline 01-06-2024
@@ -52,6 +52,8 @@ In this research project, I delve into the fascinating realm of artificial intel
 This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
 
 Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial. -->
+
+\pagebreak
 
 ## Glossary of Terms
 
@@ -78,6 +80,8 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 11. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
 
 12. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
+
+\pagebreak
 
 ## List of Abbreviations
 
@@ -226,10 +230,38 @@ Through this study, I aspire to contribute significantly to the field of AI and 
 \pagebreak
 
 ## Introduction
+<!-- 
+Drawing inspiration from the blurring lines between virtual simulations and real-world applications in AI and robotics, this thesis explores the potential of Reinforcement Learning (RL) to bridge this gap. Specifically, it investigates the transferability of a trained RL agent from a simulated maze navigation task to controlling a physical RC car. This concept, known as "sim-to-real transfer," holds immense potential for expanding RL's utility in intricate real-world scenarios.
 
-In the evolving landscape of artificial intelligence and robotics, the distinction between virtual simulations and real-world applications increasingly narrows, presenting unprecedented opportunities and challenges. This thesis explores the potential of Reinforcement Learning (RL) to bridge this gap, with a specific focus on the domain of autonomous navigation using a remote-controlled (RC) car in a maze. The endeavor to transfer a trained RL agent from a simulated environment to the real world encapsulates the core challenge of sim-to-real transferability, a pivotal step towards realizing the full spectrum of RL's applicability in complex, real-world scenarios.
+This research delves into the feasibility and challenges associated with transferring an RL agent from simulation to a physical environment. By focusing on maze navigation with an RC car, the study aims to contribute valuable insights to the field. The significance lies in its potential to bridge the theoretical foundations of RL with practical applications, marking a crucial advancement in AI and robotics. -->
 
-The purpose of this study is to explore the feasibility and challenges of transferring a trained RL agent from a simulated environment to the real world. This transition, known as "sim2real," is particularly examined in the context of maze navigation using a remote-controlled (RC) car. The significance of this research lies in its potential to bridge the gap between theoretical RL models and practical, real-world applications, which is a critical step in advancing the field of AI and robotics.
+### Navigating the Maze: Sim-to-Real Transfer in Reinforcement Learning
+
+In our ever-evolving world, the boundaries between virtual simulations and tangible reality are becoming increasingly porous. Imagine a scenario: you, meticulously training a robot within the confines of a computer simulation, now face the daunting task of navigating a physical maze to rescue a stranded hiker. This seemingly straightforward challenge, however, unravels profound questions about the transferability of knowledge from the digital realm to the palpable environment. Welcome to the captivating intersection of **Reinforcement Learning (RL)** and the elusive concept of **sim-to-real transfer.**
+
+### Sim-to-Real Transfer: Bridging the Gap
+
+**Sim-to-real transfer** - a term that resonates with roboticists, AI enthusiasts, and anyone intrigued by the future—refers to the process of translating learned behaviors from simulated environments into effective actions in the real world. Why does this matter? Because while simulations provide a safe and controlled space for training, they often diverge significantly from reality. Factors like sensor noise, friction, lighting conditions, and unexpected obstacles can confound even the most sophisticated algorithms.
+
+### The Maze Navigation Challenge: RC Cars and Algorithms
+
+The spotlight shines squarely on maze navigation. Imagine an RC car—a miniature explorer—equipped with sensors, wheels, and your curious algorithmic mind. Within the simulated maze, it learns optimal paths, avoids dead ends, and optimizes its trajectory. But can this digital prowess seamlessly translate to the physical maze, where friction, uneven terrain, and unforeseen obstacles await?
+
+### The Expedition: Four Key Steps
+
+  1. **Simulator Design:** I embark on creating a realistic maze simulator—one that captures physical nuances like wheel slippage, sensor noise, and limited field of view. The virtual car will explore a maze while learning through trial and error.
+
+  2. **Transfer Learning Strategies:** How do I bridge the gap? I'll delve into techniques such as domain adaptation, fine-tuning, and meta-learning. Can we distill the essence of maze-solving without overfitting to the simulation?
+
+  3. **Sensor Calibration:** The RC car’s sensors—lidar, cameras, and encoders—differ from their virtual counterparts. Calibrating them effectively is crucial. I’ll explore sensor fusion and adaptation methods to ensure seamless transitions.
+
+  4. **Robust Policies:** The car won’t encounter neatly defined corridors; it’ll face real-world messiness. Robust policies—resilient to noisy data and unexpected scenarios—are essential.
+
+### Beyond Mazes: A Broader Canvas
+
+While my focus remains on mazes, the implications extend far beyond. Picture autonomous drones navigating urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim-to-real transfer is the bridge that makes these scenarios feasible.
+
+So fasten your seatbelt (or tighten your wheel nuts), as we embark on this thrilling expedition. The RC car awaits, ready to decipher the labyrinthine mysteries of both simulation and reality.
 
 ### Background on Reinforcement Learning
 
@@ -242,6 +274,8 @@ Reinforcement Learning (RL) employs a computational approach where agents learn 
 
 The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
 
+\pagebreak
+
 ## Research Questions
 
 This investigation is anchored by the question: "Can a trained RL agent be effectively transferred from a simulation to a real-world environment for maze navigation?" Addressing this question involves exploring multiple facets of RL training and implementation:
@@ -252,7 +286,7 @@ This investigation is anchored by the question: "Can a trained RL agent be effec
 4. Assessment of training efficacy and performance optimization through simulation.
 5. Adaptation and transfer of a trained model to a real RC car, including necessary adjustments for real-world application.
 
-A combination of qualitative and quantitative research methodologies underpins this study, encompassing simulation experiments, real-world trials, and an extensive review of existing literature. This multifaceted strategy not only seeks to corroborate the effectiveness of transferring simulations to real-world applications but also endeavors to enrich the ongoing conversation regarding the practical implementation and obstacles associated with Reinforcement Learning (RL).
+A combination of qualitative and quantitative research methodologies underpins this study, encompassing simulation experiments, real-world trials. This multifaceted strategy not only seeks to corroborate the effectiveness of transferring simulations to real-world applications but also endeavors to enrich the ongoing conversation regarding the practical implementation and obstacles associated with Reinforcement Learning (RL).
 
 ### Main Research Question
 
@@ -404,7 +438,7 @@ The project employed specific metrics to evaluate the agent's efficiency in navi
 
 - **Physical Maze and Web Application**: A constructed physical maze served as the tangible counterpart to the virtual `RCMazeEnv`, playing a crucial role in testing the RC robot's navigation capabilities. Additionally, a web application was developed to act as a visualization and control interface, enhancing the interaction between the virtual and real-world applications.
 
-## Answers to Research Questions
+## Analysis and Results: Addressing the Research Questions
 
 ### 1. Virtual Environments for RF-Car Training
 
@@ -442,7 +476,7 @@ The Double DQN model's architecture is central to understanding the agent's lear
 
 **Model Architecture:**
 
-```markdown
+<!-- ```markdown
 ## Model: "sequential_52"
 
 # Layer (type) Output Shape Param
@@ -458,7 +492,9 @@ Trainable params: 4515 (17.64 KB)
 Non-trainable params: 0 (0.00 Byte)
 
 ---
-```
+``` -->
+
+![Model Architecture](/Users/lucasdriessens/Documents/researchproject/DDQN_RCmaze_v2.h5.png){ width=80% }
 
 This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
 
@@ -509,8 +545,6 @@ The project's innovative approach to sim-to-real transfer in reinforcement learn
 - **Simulation Test Video:**
 
 [DDQN Test in Action](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e){ width=50% }
-
-\newpage
 
 ### Evaluation Metrics Overview
 
@@ -564,7 +598,7 @@ Transitioning to real-world application involved assessing how the simulation-tr
 
 ## Implementation of Real-World Control Algorithms
 
-### Introduction
+### Introduction to Real-World Implementation
 
 This section outlines the practical implementation of control algorithms developed and refined through simulations. We focus on their application in a physical robot equipped with motion, orientation, and communication systems. The primary objective is to evaluate the fidelity of simulated behaviors when transferred to real-world scenarios, demonstrating both the effectiveness and the limitations of the sim2real transfer.
 
@@ -720,9 +754,7 @@ void calibrateSensors()
 }
 ```
 
-\pagebreak
-
-## results
+## Comprehensive Results of RL Techniques and Simulations
 
 ### Reinforcement Learning Techniques Overview
 
@@ -847,11 +879,11 @@ The precise replication of simulated vehicle movements in real-world conditions 
 
 Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include, but are not limited to, sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system's resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on sim2real insights.
 
-### Conclusion
+### Conclusion for Real-World Application
 
 Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents a unique set of challenges and opportunities. While the application of simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
 
-## Challenges and Solutions in Implementing RL Techniques and Virtual Environments
+## Challenges and Solutions in RL Implementation
 
 ### Challenge 1: Selection of an Appropriate Virtual Environment
 
@@ -928,7 +960,7 @@ Transitioning from simulation-based research to practical real-world application
 
 For visual insights into my practical experiments addressing these challenges, please refer to my supplementary video materials, which illustrate the implementation and testing of solutions, from gyroscopic adjustments to the integration of a more sophisticated control system using the ESP32.
 
-### Conclusion
+### Conclusion for Challenges and Solutions
 
 This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
 
@@ -989,6 +1021,8 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
 
   - The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137)).
   - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3), [View Test 3](https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e), [View Test 4](https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188)).
+
+\pagebreak
 
 ## Reflection
 
@@ -1070,9 +1104,9 @@ The jury’s feedback was overwhelmingly positive, with expressions of admiratio
 
 ### Practical Utilization of Simulations
 
-Simulations offer a controlled environment that minimizes risks and enables the manipulation of variables with ease, which is ideal for refining algorithms and testing hypotheses.
+Simulations offer a controlled environment that minimizes risks and enables the manipulation of variables with ease, making them ideal for refining algorithms and testing hypotheses.
 
-- **Cost-Effectiveness:** By utilizing simulations, significant cost reductions can be achieved as they negate the need for physical prototypes and extensive real-world testing, especially during the preliminary stages of research.
+- **Cost-Effectiveness:** By utilizing simulations, significant cost reductions can be achieved, negating the need for physical prototypes and extensive real-world testing, especially during the preliminary stages of research.
 
 ### Strategies for Effective Transition from Simulation to Reality
 
@@ -1086,7 +1120,7 @@ Transitioning from simulation environments to real-world applications requires c
 Adjustments are often necessary to bridge the gap between simulated environments and actual conditions, particularly concerning sensor data and mechanical operations.
 
 - **Sensor Discrepancy Adjustments:** Ensure sensors used in real-world testing are regularly calibrated to match simulation inputs, maintaining consistency and reliability.
-- **Movement and Mechanics Alignment:** Prioritize the alignment of physical movements and mechanics with those predicted by simulations to facilitate seamless transitions.
+- **Movement and Mechanics Alignment:** Prioritize aligning physical movements and mechanics with those predicted by simulations to facilitate seamless transitions.
 
 ### Insights from My Research
 
@@ -1105,19 +1139,19 @@ Adjustments are often necessary to bridge the gap between simulated environments
 
 ### Guidelines for Future Research
 
-#### Introduction
+#### Introduction for Future Research
 
 This chapter offers a comprehensive methodology and advice for researchers engaged in simulation-based studies, aiming to transition successfully from theoretical models to practical applications.
 
 #### Step-by-Step Plan
 
-##### Step 1: Selection of Simulation Environments
+##### step 1: Selection of Simulation Environments
 
 - **Research and Evaluation:** Investigate available simulation tools appropriate for your study, considering platforms like OpenAI Gym, Unity 3D, and CARLA.
 - **Criteria Development:** Establish criteria based on fidelity, scalability, and integration capabilities.
 - **Preliminary Testing:** Evaluate the environments against these criteria through initial testing.
 
-##### Step 2: Managing Expectations and Adaptability
+##### step 2: Managing Expectations and Adaptability
 
 - **Expectation Setting:** Define realistic expectations for what simulations can achieve.
 - **Adaptation Strategies:** Prepare to adjust your research approach based on simulation outcomes and data discrepancies.
@@ -1125,25 +1159,21 @@ This chapter offers a comprehensive methodology and advice for researchers engag
 ##### Step 3: Methodology Flexibility
 
 - **Continuous Evaluation:** Regularly reassess the effectiveness of your methodologies.
-- **Integration of New Technologies:** Incorporate emerging technologies to enhance simulation outcomes.
+- **Integration of New Technologies:** Incorporate emerging technologies as they become relevant to enhance your research.
 
-##### Step 4: Sensor Data and Validation
-
-- **Data Calibration:** Calibrate sensors to ensure alignment with real-world conditions.
-- **Data Validation:** Consistently validate simulated data against real-world outcomes for accuracy.
-
-##### Step 5: Socio-Economic Impact Consideration
-
-- **Impact Assessment:** Evaluate how your research could impact societal issues like safety and sustainability.
-- **Alignment with Broader Goals:** Align your research objectives with these broader societal impacts.
+\pagebreak
 
 ## General Conclusion
 
-This research has made significant strides in understanding the feasibility and challenges of Sim2Real transfers in reinforcement learning. While substantial progress was achieved, the journey illuminated the vast landscape of challenges that lie in the nuanced discrepancies between virtual and physical realms. Future endeavors in this domain should continue to push the boundaries of what is possible, leveraging the lessons learned to further bridge the gap between simulation and reality. The potential applications of successfully transferring RL agents to the real world are vast, promising advancements in robotics, autonomous vehicles, and beyond.
+This thesis has successfully demonstrated the feasibility of transitioning a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, with a specific focus on navigating a maze using a remote-controlled (RC) car. The comprehensive experiments and discussions presented in previous chapters provide a thorough exploration of this concept.
 
-<!-- ## Credits
+The research conclusively shows that such a transfer is possible, but it also highlights the substantial challenges involved. The crucial experiments in **Chapter 5: Analysis and Results: Addressing the Research Questions** emphasize the importance of sensor data normalization and the necessary adjustments to control algorithms to accommodate the unpredictable dynamics of the real world. These adjustments were essential to reconcile the simulated models with the tangible realities encountered during implementation.
 
-I am immensely grateful to my coach and supervisor, [Gevaert Wouter](wouter.gevaert@howest.be), for his guidance and clever insights that significantly shaped the course of this research project. In addition to his invaluable assistance during the project, I would also like to extend my thanks for the enjoyable courses he delivered during my time at Howest. -->
+The selection of suitable virtual environments and reinforcement learning techniques, discussed in **Chapter 3: Methodology**, was pivotal in shaping the experimental approach, ensuring the applicability of the simulation training. The Double Deep Q-Network (DDQN) proved to be the most effective technique for the requirements, offering a resilient framework to navigate the complexities encountered in practical applications.
+
+This study not only affirms the possibility of sim-to-real transfer but also delves deep into the nuanced mechanics of this process, a burgeoning area of significance in AI and robotics. By merging theoretical insights with practical applications, this study contributes meaningfully to the ongoing discourse on the viability and constraints of applying reinforcement learning in real-world contexts.
+
+In conclusion, while transitioning a trained RL agent from simulation to a real environment is achievable, it demands meticulous preparation, adaptation, and ongoing refinement. The challenges encountered underscore the imperative for continued research to enhance the robustness and reliability of sim-to-real applications.
 
 \pagebreak
 
@@ -1176,6 +1206,8 @@ Toon's lecture further delved into the advancements in semantic search, revealin
 A key takeaway from the lecture was the importance of setting realistic expectations with clients regarding AI's capabilities and potential inaccuracies, emphasizing the experimental nature of these technologies. The journey through AI's evolving landscape highlighted the necessity of prompt engineering, the challenges of navigating an immature yet rapidly developing field, and the crucial role of client education in managing expectations around the capabilities of AI technologies like GPT.
 
 In conclusion, Toon Vanhoutte's presentation not only showcased Noest's cutting-edge work in AI and software engineering but also imparted valuable lessons on innovation, the importance of adaptable problem-solving strategies, and the need for continuous learning in the ever-evolving AI domain. It was a testament to Noest's commitment to pushing the boundaries of technology to create impactful, pragmatic solutions that leverage the full spectrum of AI's potential.
+
+\pagebreak
 
 ## Installation Steps
 
