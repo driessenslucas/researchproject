@@ -9,8 +9,7 @@ keywords: [Markdown, Example]
 titlepage-text-color: "000000"
 titlepage-rule-color: "FFFFFF"
 titlepage-rule-height: 0
-geometry: margin=1.5in
-
+geometry: margin=1in
 toc-title: Table of Contents
 caption-justification: justified
 titlepage-logo: mctlogo.png
@@ -22,11 +21,11 @@ text3: Howest Kortrijk
 text4: 2024
 lof: true
 lof-own-page: True
-abstract: | 
+abstract: |
   In this research project, I delve into the fascinating realm of artificial intelligence, specifically focusing on reinforcement learning (RL) and its application in real-world scenarios. The crux of my investigation revolves around the challenging question: 'Is it possible to transfer a trained RL agent from a simulation to the real world?' This inquiry is particularly examined in the context of maze navigation.
-  
+
   \noindent \newline This research is partitioned into sub-questions, which collectively aim to create a comprehensive understanding of the process. Firstly, I explore the various virtual environments available for training a virtual RF-car, seeking the most effective platform for my purposes. Secondly, I delve into identifying the most suitable reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Lastly, the research seeks to bridge the gap between simulation and reality, investigating the practicality and challenges involved in this transition.
-  
+
   \noindent \newline Through this study, I aspire to contribute significantly to the field of AI and robotics, offering insights and methodologies that could potentially advance the implementation of RL in real-world applications. The outcomes of this research could have far-reaching implications, not only in robotics but also in areas where simulation-based training is crucial.
 acknowledgements: |
   This bachelor thesis, entitled "Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning," marks the culmination of my academic journey in New Media & Communication Technology at Howest, University of Applied Sciences. It investigates a pivotal question in the field of artificial intelligence: "Is it possible to transfer a trained RL-agent from a simulation to the real world?" This question emerges from my deep-seated curiosity about the intersection of virtual simulations and tangible applications, reflecting a broader challenge in AI to create adaptive, real-world systems from controlled simulations.
@@ -243,7 +242,6 @@ Reinforcement Learning (RL) employs a computational approach where agents learn 
 
 The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
 
-
 ## Research Questions
 
 This investigation is anchored by the question: "Can a trained RL agent be effectively transferred from a simulation to a real-world environment for maze navigation?" Addressing this question involves exploring multiple facets of RL training and implementation:
@@ -280,7 +278,7 @@ This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) met
 
 ### Environment Setup (RCMazeEnv)
 
-The RCMazeEnv, a custom maze navigation environment derived from the OpenAI Gym framework, is designed for a 12x12 cell grid maze navigation task. Each cell within this grid can be identified as either a wall, represented by '1', or a path, represented by '0', with the goal designated at cell position (10, 10). The agent, visualized as a car, commences its journey from the starting position at cell (1, 1), facing eastward initially. The agent's navigation capabilities are enabled through a set of possible actions: moving forward, turning left, and turning right. 
+The RCMazeEnv, a custom maze navigation environment derived from the OpenAI Gym framework, is designed for a 12x12 cell grid maze navigation task. Each cell within this grid can be identified as either a wall, represented by '1', or a path, represented by '0', with the goal designated at cell position (10, 10). The agent, visualized as a car, commences its journey from the starting position at cell (1, 1), facing eastward initially. The agent's navigation capabilities are enabled through a set of possible actions: moving forward, turning left, and turning right.
 
 To assist in navigation, the agent is equipped with sensors that provide readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, offering crucial environmental information that aids in decision-making. The environment's state space, denoted as $\mathcal{S}$, encapsulates the agent's current position $(x, y)$, its orientation $\theta$, which can be one of $\{N, E, S, W\}$ representing north, east, south, and west respectively, and the sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The goal of the agent is to navigate through the maze, from its starting point to the goal location, efficiently while avoiding collisions with walls and optimizing the path taken based on the sensor inputs and past experiences.
 
@@ -298,6 +296,7 @@ Y_t^{DDQN} = R_{t+1} + \gamma Q\left(S_{t+1}, \underset{a}{\mathrm{argmax}}\, Q(
 $$
 
 Where:
+
 - $R_{t+1}$ is the reward received after taking action $a$ in state $s$.
 - $\gamma$ is the discount factor.
 - $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
@@ -325,44 +324,44 @@ The epsilon-greedy strategy is employed for action selection, with $\epsilon$ gr
 
 When the agent attempts to move into a wall or outside the designated maze boundaries, it triggers a collision state. To discourage such actions, which are counterproductive to the goal of reaching the destination, a significant penalty is applied. This penalty is critical for teaching the agent about the boundaries and obstacles within the environment, ensuring that it learns to navigate safely and effectively.
 
-$$ R_{\text{collision}} = -20 $$
+$$ R\_{\text{collision}} = -20 $$
 
 #### Goal Achievement Bonus $R_{\text{goal}}$
 
 Reaching the goal is the primary objective of the maze navigation task. A substantial reward is given to the agent upon achieving this objective, signifying the completion of the episode. This reward serves as a strong positive reinforcement, guiding the agent's learning towards the goal-oriented behavior. However, an additional mechanism penalizes the agent if it takes an excessively long route to reach the goal, promoting efficiency in navigation.
 
-$$ R_{\text{goal}} = \begin{cases} +500, & \text{if goal is reached} \\ -200, & \text{if steps} > 1000 \end{cases} $$
+$$ R\_{\text{goal}} = \begin{cases} +500, & \text{if goal is reached} \\ -200, & \text{if steps} > 1000 \end{cases} $$
 
 #### Proximity Reward $R_{\text{proximity}}$
 
 This component of the reward function incentivizes the agent to minimize its distance to the goal over time. By rewarding the agent based on its proximity to the goal, it encourages exploration and path optimization, guiding the agent to navigate the maze more effectively. The reward decreases as the distance to the goal increases, encouraging the agent to always move towards the goal.
 
-$$ R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1} $$
+$$ R*{\text{proximity}} = \frac{50}{d*{\text{goal}} + 1} $$
 
 #### Progress Reward $R_{\text{progress}}$
 
 The progress reward or penalty is designed to encourage the agent to make decisions that bring it closer to the goal and to penalize decisions that lead it away. This dynamic reward system provides immediate feedback based on the agent's movement relative to the goal, promoting smarter navigation decisions.
 
-$$ R_{\text{progress}} = \begin{cases} +50, & \text{if distance decreases} \\ -25, & \text{if distance increases} \end{cases} $$
+$$ R\_{\text{progress}} = \begin{cases} +50, & \text{if distance decreases} \\ -25, & \text{if distance increases} \end{cases} $$
 
 #### Exploration Penalty $R_{\text{revisit}}$
 
 To discourage repetitive exploration of the same areas, which indicates inefficient pathfinding, the agent receives a penalty for re-entering previously visited cells. This penalty is crucial for encouraging the exploration of new paths and preventing the agent from getting stuck in loops or dead ends.
 
-$$ R_{\text{revisit}} = -10 $$
+$$ R\_{\text{revisit}} = -10 $$
 
 #### Efficiency Penalty $R_{\text{efficiency}}$
 
 Every step the agent takes incurs a small penalty. This mechanism ensures that the agent is incentivized to find the shortest possible path to the goal, balancing the need to explore the environment with the goal of reaching the destination as efficiently as possible.
 
-$$ R_{\text{efficiency}} = -5 $$
+$$ R\_{\text{efficiency}} = -5 $$
 
 #### Generic Reward based on relative distance to goal
 
 The reward function $R(s, a)$ is designed to encourage reaching the goal while penalizing collisions and inefficient paths. The reward for each step is defined as:
 
 $$
-R(s, a) = \begin{cases} 
+R(s, a) = \begin{cases}
 500 & \text{if goal is reached} \\
 -20 & \text{if collision} \\
 50 / (d + 1) & \text{otherwise}
@@ -380,7 +379,6 @@ This study focused on conducting experiments within indoor settings, where envir
 Nevertheless, the ambit of real-world experimentation was not confined to indoor setups. Efforts were made to broaden the scope to outdoor environments to ascertain the adaptability and resilience of the proposed solutions under varied conditions. These ventures into the outdoors faced substantial obstacles, mainly due to the challenges in offsetting the differences in ground conditions. The variability and unpredictability of outdoor landscapes exposed significant gaps in the current method's capacity to adjust to diverse real-world settings.
 
 This issue became particularly pronounced in the section discussing "Overcoming Navigation Challenges in Varying Environments," where the adaptation of the autonomous system to outdoor navigation met with significant hurdles. While the system demonstrated successful sim-to-real transfers in controlled indoor environments, the outdoor experiments highlighted the imperative for additional research and enhancement of the system’s flexibility. The outdoor testing difficulties underscore the importance of broadening the experimental scope and advancing autonomous technologies to navigate the intricacies of unregulated terrains.
-
 
 ## Experimental Outcomes and Implementation Details
 
@@ -445,9 +443,10 @@ The Double DQN model's architecture is central to understanding the agent's lear
 **Model Architecture:**
 
 ```markdown
-Model: "sequential_52"
----
+## Model: "sequential_52"
+
 # Layer (type) Output Shape Param
+
 =================================================================
 dense_200 (Dense) (None, 32) 224
 dense_201 (Dense) (None, 64) 2112
@@ -457,6 +456,7 @@ dense_203 (Dense) (None, 3) 99
 Total params: 4515 (17.64 KB)
 Trainable params: 4515 (17.64 KB)
 Non-trainable params: 0 (0.00 Byte)
+
 ---
 ```
 
@@ -540,7 +540,7 @@ $$
 - **How it's Assessed:** Through the mathematical formula provided, which averages the squared differences across all predictions (N) in a given episode or batch of episodes.
 - **Analytical Techniques:** MSE calculation is straightforward but interpreting its trend over time requires understanding its relationship with the agent’s learning phase (e.g., initial learning vs. strategy refinement).
 - **Accuracy and Consistency Measures:** Regular evaluation against a validation set or within a consistent testing framework can provide reliable insights into the agent's prediction accuracy and learning progress.
-  
+
 ##### 4. Reward Trend Analysis
 
 - **Objective and Goal:** To understand how the agent's actions lead to outcomes (rewards) and how this affects its ability to navigate the maze efficiently, indicating learning proficiency and strategy development.
@@ -560,7 +560,6 @@ $$
 Transitioning to real-world application involved assessing how the simulation-trained agent's strategies fared in a physical maze with tangible obstacles and limitations.
 
 - **Maze Navigation**: A visual assessment of the RC car's ability to navigate a real-world maze provided direct evidence of the sim-to-real transfer's effectiveness, highlighting the practical application of the trained agent.
-  
 - **Sensor Data Analysis**: Evaluating the real-time sensor data in navigation scenarios enabled a detailed understanding of the agent's interaction with the physical world, particularly in terms of collision avoidance and pathfinding efficiency.
 
 ## Implementation of Real-World Control Algorithms
@@ -629,11 +628,11 @@ This subsection describes in detail the implementation of movement functions, sh
         break;
       }
     }
-  
+
     stop_moving();  // Stop movement by resetting motor speeds
   }
   ``` -->
-  
+
   The `move_forward` function initiates forward motion at maximum speed, incorporating real-time checks for emergency stops to enhance safety. This reflects real-world conditions where response to dynamic changes is critical.
 
 - **Left Turn**
@@ -733,46 +732,45 @@ void calibrateSensors()
 
 ##### 1. **Visit Heatmap for DDQN:**
 
-  - The visit heatmap offers a graphical representation of the agent’s frequency of visits to various states within the maze. The pattern displayed suggests the agent’s favored paths and identifies potential bottlenecks where the agent might have struggled. The heatmap serves as a tool for analyzing the agent's exploration patterns and its strategy development throughout training.
+- The visit heatmap offers a graphical representation of the agent’s frequency of visits to various states within the maze. The pattern displayed suggests the agent’s favored paths and identifies potential bottlenecks where the agent might have struggled. The heatmap serves as a tool for analyzing the agent's exploration patterns and its strategy development throughout training.
 
-
-  ![DDQN Heatmap](./images/training_images/visit_heatmap_DDQN.png)
+![DDQN Heatmap](./images/training_images/visit_heatmap_DDQN.png)
 
 ##### 2. **Reward History for DDQN:**
 
-  - The reward history graph illustrates that the rewards stabilized at around episode 50, indicating the agent's learning progress and improved decision-making. The consistent positive rewards signify the agent's successful navigation through the maze, with occasional dips reflecting exploratory actions or suboptimal decisions. The upward trend in rewards over time demonstrates the agent's learning efficiency and strategy optimization.
+- The reward history graph illustrates that the rewards stabilized at around episode 50, indicating the agent's learning progress and improved decision-making. The consistent positive rewards signify the agent's successful navigation through the maze, with occasional dips reflecting exploratory actions or suboptimal decisions. The upward trend in rewards over time demonstrates the agent's learning efficiency and strategy optimization.
 
-  ![DDQN Reward History](./images/training_images/reward_history_DDQN.png)
+![DDQN Reward History](./images/training_images/reward_history_DDQN.png)
 
 ##### 3. **Reward Distribution for DDQN:**
 
-  - Analyzing the reward distribution histogram reveals the frequency of the received rewards. The concentration of instances near higher rewards implies that the agent often achieved positive outcomes, while the long tail towards negative rewards indicates the agent's occasional exploratory actions or suboptimal decisions.
+- Analyzing the reward distribution histogram reveals the frequency of the received rewards. The concentration of instances near higher rewards implies that the agent often achieved positive outcomes, while the long tail towards negative rewards indicates the agent's occasional exploratory actions or suboptimal decisions.
 
-  ![DDQN Reward Distribution](./images/training_images/reward_distribution_DDQN.png)
+![DDQN Reward Distribution](./images/training_images/reward_distribution_DDQN.png)
 
 ##### 4. **Maze Solution for DDQN:**
 
-  - The maze solution visualization illustrates the agent's path to solving the maze. Notably, the agent achieved the goal in just 25 steps, a testament to the DDQN's efficiency in learning and path optimization. This graphical representation highlights the agent’s capability to derive an optimal route, avoiding backtracking and unnecessary detours.
-  
-  ![DDQN Maze Path](./images/training_images/maze_solution_DDQN.png)
+- The maze solution visualization illustrates the agent's path to solving the maze. Notably, the agent achieved the goal in just 25 steps, a testament to the DDQN's efficiency in learning and path optimization. This graphical representation highlights the agent’s capability to derive an optimal route, avoiding backtracking and unnecessary detours.
+
+![DDQN Maze Path](./images/training_images/maze_solution_DDQN.png)
 
 ##### 5. **Average Steps per Episode with Moving Average for DDQN:**
 
-  - The plot for the average steps per episode, smoothed by a moving average, clearly shows the agent’s learning progression. The decrease in the number of steps required to solve the maze, as portrayed by the moving average line, underscores the DDQN’s ability to enhance the agent’s efficiency in maze resolution.
+- The plot for the average steps per episode, smoothed by a moving average, clearly shows the agent’s learning progression. The decrease in the number of steps required to solve the maze, as portrayed by the moving average line, underscores the DDQN’s ability to enhance the agent’s efficiency in maze resolution.
 
-  ![DDQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png)
+![DDQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png)
 
 ##### 6. **Epsilon History for DDQN:**
 
-  - The graph depicting the epsilon decay showcases the agent’s transition from exploration to exploitation over time. Initially, a higher epsilon value encouraged exploration, aiding the agent in acquiring diverse experiences. As training progressed, the epsilon value decayed, as evident in the graph's steady decline, indicating the agent's increasing reliance on its learned policy. This adaptive strategy was crucial for fine-tuning the agent’s decision-making process, ensuring a balance between exploring new paths and exploiting known ones for improved maze navigation.
+- The graph depicting the epsilon decay showcases the agent’s transition from exploration to exploitation over time. Initially, a higher epsilon value encouraged exploration, aiding the agent in acquiring diverse experiences. As training progressed, the epsilon value decayed, as evident in the graph's steady decline, indicating the agent's increasing reliance on its learned policy. This adaptive strategy was crucial for fine-tuning the agent’s decision-making process, ensuring a balance between exploring new paths and exploiting known ones for improved maze navigation.
 
-  ![DDQN Epsilon Decay](./images/training_images/epsilon_history_DDQN.png)
+![DDQN Epsilon Decay](./images/training_images/epsilon_history_DDQN.png)
 
 ##### 7. **Mean Squared Error over time (Sampled) for DDQN:**
 
-  - The MSE graph, a reflection of the agent’s prediction accuracy, demonstrates a downward trend, indicative of the agent's improved learning over episodes. The initial spikes suggest a period of trial and error, where the agent was developing its understanding of the maze. Over time, the reduced variability in MSE values points towards the agent making more accurate predictions, further underscoring the DDQN's effective learning curve.
-  
-  ![Loss Trend](./images/training_images/mse_history_sampled_DDQN.png)
+- The MSE graph, a reflection of the agent’s prediction accuracy, demonstrates a downward trend, indicative of the agent's improved learning over episodes. The initial spikes suggest a period of trial and error, where the agent was developing its understanding of the maze. Over time, the reduced variability in MSE values points towards the agent making more accurate predictions, further underscoring the DDQN's effective learning curve.
+
+![Loss Trend](./images/training_images/mse_history_sampled_DDQN.png)
 
 #### 1. Deep Q-Network (DQN)
 
@@ -894,8 +892,9 @@ Transitioning from simulation-based research to practical real-world application
     The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
 
     <!-- ![map_distance](./images/map_distance_equation.png) -->
+
     $$
-    \text{map\_distance}(d) = \begin{cases} 
+    \text{map\_distance}(d) = \begin{cases}
     d & \text{if } d < 25 \\
     25 + (d - 25) \times 0.5 & \text{otherwise}
     \end{cases}
@@ -908,6 +907,7 @@ Transitioning from simulation-based research to practical real-world application
     The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
 
     <!-- ![normalize_distance](./images/normalize_distance_equation.png) -->
+
     $$
     \text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
     $$
@@ -986,7 +986,7 @@ The pursuit of enhancing the RC-car's movement precision led us to experiment wi
 Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car's performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings.
 
 - **Outdoor and Indoor Maze Tests**: Real-world testing scenarios presented unique challenges, such as varying surface textures and unpredictable environmental conditions, which significantly impacted the RC-car's navigation capabilities.
-  
+
   - The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137)).
   - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3), [View Test 3](https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e), [View Test 4](https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188)).
 
@@ -1010,7 +1010,7 @@ The project's resilience in adapting to unforeseen challenges stands out as a te
 
 ### Practical Applicability and Industry Relevance
 
-The feedback collectively emphasizes the practical applicability and value of the project's findings within the industry. The methodology and outcomes provide a concrete framework for navigating the intricacies of sim-to-real transitions, crucial for the development of autonomous vehicle technologies. This relevance extends beyond theoretical interest, suggesting a solid foundation for application in real-world autonomous system development. 
+The feedback collectively emphasizes the practical applicability and value of the project's findings within the industry. The methodology and outcomes provide a concrete framework for navigating the intricacies of sim-to-real transitions, crucial for the development of autonomous vehicle technologies. This relevance extends beyond theoretical interest, suggesting a solid foundation for application in real-world autonomous system development.
 
 ### Encountered Alternatives and Flexibility
 
@@ -1256,23 +1256,23 @@ int sensor2Echo = 35; //GPIO front sensor
 
 ### Web Application Setup
 
-#### Note:
+#### Note
 
 To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
 
-#### Steps:
+#### Steps
 
 1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
 
-    ```bash
-    cd ./web_app/
-    ```
+   ```bash
+   cd ./web_app/
+   ```
 
 2. To launch the Docker containers, use the following commands:
 
-    ```bash
-    docker-compose up -d
-    ```
+   ```bash
+   docker-compose up -d
+   ```
 
 ### Usage Instructions
 
@@ -1313,24 +1313,24 @@ A demonstration of the project is available [here](https://github.com/driessensl
 
 \[10\]\label{ref10} F. Sadeghi and S. Levine, "(CAD)^2RL: Real Single-Image Flight without a Single Real Image," in Proceedings of Robotics: Science and Systems, 2016.
 
-\[11\]\label{ref11} "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: https://www.youtube.com/watch?v=U0-Jswwf0hw. [Accessed: Jan. 29, 2024].
+\[11\]\label{ref11} "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: <https://www.youtube.com/watch?v=U0-Jswwf0hw>. [Accessed: Jan. 29, 2024].
 
-\[12\]\label{ref12} Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," Applied Sciences, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: https://www.mdpi.com/2076-3417/13/11/6400. [Accessed: Jan. 29, 2024].
+\[12\]\label{ref12} Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," Applied Sciences, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: <https://www.mdpi.com/2076-3417/13/11/6400>. [Accessed: Jan. 29, 2024].
 
-\[13\]\label{ref13} DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: https://github.com/DailyL/Sim2Real_autonomous_vehicle. [Accessed: Jan. 29, 2024].
+\[13\]\label{ref13} DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: <https://github.com/DailyL/Sim2Real_autonomous_vehicle>. [Accessed: Jan. 29, 2024].
 
-\[14\]\label{ref14} "OpenGL inside Docker containers, this is how I did it," Reddit, r/docker. [Online]. Available: https://www.reddit.com/r/docker/comments/8d3qox/opengl_inside_docker_containers_this_is_how_i_did/. [Accessed: Jan. 29, 2024].
+\[14\]\label{ref14} "OpenGL inside Docker containers, this is how I did it," Reddit, r/docker. [Online]. Available: <https://www.reddit.com/r/docker/comments/8d3qox/opengl_inside_docker_containers_this_is_how_i_did/>. [Accessed: Jan. 29, 2024].
 
-\[15\]\label{ref15} M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510. [Accessed: Jan. 29, 2024].
+\[15\]\label{ref15} M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: <https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510>. [Accessed: Jan. 29, 2024].
 
-\[16\]\label{ref16} "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: https://www.youtube.com/watch?v=c_d0Is3bxXA. [Accessed: Jan. 29, 2024].
+\[16\]\label{ref16} "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: <https://www.youtube.com/watch?v=c_d0Is3bxXA>. [Accessed: Jan. 29, 2024].
 
-\[17\]\label{ref17} W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in 2020 IEEE Symposium Series on Computational Intelligence (SSCI), Dec. 2020, pp. 737–744. [Online]. Available: https://arxiv.org/pdf/2009.13303.pdf.
+\[17\]\label{ref17} W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in 2020 IEEE Symposium Series on Computational Intelligence (SSCI), Dec. 2020, pp. 737–744. [Online]. Available: <https://arxiv.org/pdf/2009.13303.pdf>.
 
 \[18\]\label{ref18} R. S. Sutton and A.G. Barto, Reinforcement Learning: An Introduction, 2nd ed. Cambridge, MA: The MIT Press, 2018.
 
 \[19\]\label{ref19} H. van Hasselt, A. Guez, D. Silver, et al., "Deep Reinforcement Learning with Double Q-learning," arXiv preprint arXiv:1509.06461, 2015.
 
-\[20\]\label{ref20} Papers With Code, "Double DQN Explained," [Online]. Available: https://paperswithcode.com/method/double-dqn.
+\[20\]\label{ref20} Papers With Code, "Double DQN Explained," [Online]. Available: <https://paperswithcode.com/method/double-dqn>.
 
-\[21\]\label{ref21} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/.
+\[21\]\label{ref21} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: <https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/>.
