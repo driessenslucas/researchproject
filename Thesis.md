@@ -476,7 +476,9 @@ The Double DQN model's architecture is central to understanding the agent's lear
 
 **Model Architecture:**
 
-<!-- ```markdown
+This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
+
+```markdown
 ## Model: "sequential_52"
 
 # Layer (type) Output Shape Param
@@ -492,11 +494,9 @@ Trainable params: 4515 (17.64 KB)
 Non-trainable params: 0 (0.00 Byte)
 
 ---
-``` -->
+```
 
-![Model Architecture](/Users/lucasdriessens/Documents/researchproject/DDQN_RCmaze_v2.h5.png){ width=80% }
-
-This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
+![Model Architecture](./images/thesis/model_architecture.png){ width=100% }
 
 ### Training Parameters
 
@@ -550,21 +550,21 @@ The project's innovative approach to sim-to-real transfer in reinforcement learn
 
 #### Simulation Metrics
 
-##### 1. Episodic Performance
+##### Episodic Performance
 
 - **Objective and Goal:** This metric assesses the agent's learning curve and its ability to solve the maze with optimal efficiency over successive episodes. The primary goal is to evaluate how quickly and effectively the agent learns to reach the maze's end, reflecting on its strategy optimization and adaptation abilities.
 - **How it's Assessed:** By tracking the number of episodes required before the agent can consistently solve the maze. A decreasing trend in episode count needed over time indicates effective learning and adaptation.
 - **Analytical Techniques:** Statistical analysis or visual plots (e.g., learning curves) are used to assess changes in episodic performance across training sessions.
 - **Accuracy and Consistency Measures:** Ensuring data integrity and a controlled environment allows for consistent episode comparison. Techniques might include averaging over multiple runs to mitigate randomness in the agent's learning process.
 
-##### 2. Step Efficiency
+##### Step Efficiency
 
 - **Objective and Goal:** This measures the decision-making process and path optimization capabilities of the agent by counting the steps taken to solve the maze. Fewer steps indicate higher efficiency and learning.
 - **How it's Assessed:** Tracking the number of steps required to reach the goal in each episode and analyzing the trend over time.
 - **Analytical Techniques:** Quantitative analysis of step count trends, possibly applying smoothing techniques to observe the overall trend amidst the variability.
 - **Accuracy and Consistency Measures:** Replication and averaging, as well as maintaining a consistent maze configuration across tests, help ensure reliable measurements.
 
-##### 3. MSE Loss Measurement
+##### MSE Loss Measurement
 
 $$
 MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2
@@ -575,14 +575,14 @@ $$
 - **Analytical Techniques:** MSE calculation is straightforward but interpreting its trend over time requires understanding its relationship with the agent’s learning phase (e.g., initial learning vs. strategy refinement).
 - **Accuracy and Consistency Measures:** Regular evaluation against a validation set or within a consistent testing framework can provide reliable insights into the agent's prediction accuracy and learning progress.
 
-##### 4. Reward Trend Analysis
+##### Reward Trend Analysis
 
 - **Objective and Goal:** To understand how the agent's actions lead to outcomes (rewards) and how this affects its ability to navigate the maze efficiently, indicating learning proficiency and strategy development.
 - **How it's Assessed:** Monitoring and analyzing the history of rewards received by the agent, looking for trends of increasing reward accumulation over time.
 - **Analytical Techniques:** Time series analysis or cumulative reward plots can illustrate the agent’s learning and decision-making improvements.
 - **Accuracy and Consistency Measures:** Averaging reward trends over multiple runs and ensuring that reward distribution remains unchanged throughout experiments.
 
-##### 5. Epsilon Decay Tracking
+##### Epsilon Decay Tracking
 
 - **Objective and Goal:** This metric assesses the agent's balance between exploring new paths and exploiting known successful routes, crucial for adaptive learning strategies.
 - **How it's Assessed:** By tracking the epsilon parameter’s value over episodes, observing how it decreases according to a predefined decay strategy, signaling a shift from exploration to exploitation.
@@ -762,43 +762,43 @@ void calibrateSensors()
 
 - The research project explored various reinforcement learning techniques to train an agent for maze navigation, focusing on their adaptability, efficiency, and real-world applicability. The following techniques were evaluated:
 
-##### 1. **Visit Heatmap for DDQN:**
+**Visit Heatmap for DDQN:**
 
 - The visit heatmap offers a graphical representation of the agent’s frequency of visits to various states within the maze. The pattern displayed suggests the agent’s favored paths and identifies potential bottlenecks where the agent might have struggled. The heatmap serves as a tool for analyzing the agent's exploration patterns and its strategy development throughout training.
 
 ![DDQN Heatmap](./images/training_images/visit_heatmap_DDQN.png)
 
-##### 2. **Reward History for DDQN:**
+**Reward History for DDQN:**
 
 - The reward history graph illustrates that the rewards stabilized at around episode 50, indicating the agent's learning progress and improved decision-making. The consistent positive rewards signify the agent's successful navigation through the maze, with occasional dips reflecting exploratory actions or suboptimal decisions. The upward trend in rewards over time demonstrates the agent's learning efficiency and strategy optimization.
 
 ![DDQN Reward History](./images/training_images/reward_history_DDQN.png)
 
-##### 3. **Reward Distribution for DDQN:**
+**Reward Distribution for DDQN:**
 
 - Analyzing the reward distribution histogram reveals the frequency of the received rewards. The concentration of instances near higher rewards implies that the agent often achieved positive outcomes, while the long tail towards negative rewards indicates the agent's occasional exploratory actions or suboptimal decisions.
 
 ![DDQN Reward Distribution](./images/training_images/reward_distribution_DDQN.png)
 
-##### 4. **Maze Solution for DDQN:**
+**Maze Solution for DDQN:**
 
 - The maze solution visualization illustrates the agent's path to solving the maze. Notably, the agent achieved the goal in just 25 steps, a testament to the DDQN's efficiency in learning and path optimization. This graphical representation highlights the agent’s capability to derive an optimal route, avoiding backtracking and unnecessary detours.
 
 ![DDQN Maze Path](./images/training_images/maze_solution_DDQN.png)
 
-##### 5. **Average Steps per Episode with Moving Average for DDQN:**
+**Average Steps per Episode with Moving Average for DDQN:**
 
 - The plot for the average steps per episode, smoothed by a moving average, clearly shows the agent’s learning progression. The decrease in the number of steps required to solve the maze, as portrayed by the moving average line, underscores the DDQN’s ability to enhance the agent’s efficiency in maze resolution.
 
 ![DDQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png)
 
-##### 6. **Epsilon History for DDQN:**
+**Epsilon History for DDQN:**
 
 - The graph depicting the epsilon decay showcases the agent’s transition from exploration to exploitation over time. Initially, a higher epsilon value encouraged exploration, aiding the agent in acquiring diverse experiences. As training progressed, the epsilon value decayed, as evident in the graph's steady decline, indicating the agent's increasing reliance on its learned policy. This adaptive strategy was crucial for fine-tuning the agent’s decision-making process, ensuring a balance between exploring new paths and exploiting known ones for improved maze navigation.
 
 ![DDQN Epsilon Decay](./images/training_images/epsilon_history_DDQN.png)
 
-##### 7. **Mean Squared Error over time (Sampled) for DDQN:**
+**Mean Squared Error over time (Sampled) for DDQN:**
 
 - The MSE graph, a reflection of the agent’s prediction accuracy, demonstrates a downward trend, indicative of the agent's improved learning over episodes. The initial spikes suggest a period of trial and error, where the agent was developing its understanding of the maze. Over time, the reduced variability in MSE values points towards the agent making more accurate predictions, further underscoring the DDQN's effective learning curve.
 
@@ -1024,8 +1024,6 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
 
 \pagebreak
 
-## Reflection
-
 <!-- --
   # TODO: Interviews with Sam and Wouter for feedback (have not done these interviews yet)
   • Wat zijn volgens hen de sterke en zwakke punten van het resultaat uit jouw researchproject?   
@@ -1035,6 +1033,83 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
   • Wat is de meerwaarde voor het bedrijf?   
   • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig?  
 -- -->
+
+## Reflections on the Research Project
+
+### Lessons Learned and the Path Ahead
+
+As I stand on the precipice of this research voyage, I gather the fragments of wisdom—the lessons etched into my journey. Let me weave them into a tapestry of reflection:
+
+### The Value of Openness
+
+In the quiet corners of experimentation, I discovered the allure of openness. The willingness to embrace new methodologies, to venture beyond the familiar, became my compass. It's easy to cling to the tried and tested, but innovation thrives in the uncharted. So, I vow to keep my sails unfurled, ready to catch the winds of novelty.
+
+### Bridging Theory and Practice
+
+The ivory towers of theory whispered their secrets, but it was the real world that roared. Bridging the gap between abstract equations and tangible outcomes—this was my tightrope walk. The virtual RF-car danced to algorithms, but the maze—ah, the maze—demanded more. It yearned for friction, for unpredictability. And so, I learned to waltz with both—the elegant theory and the gritty reality.
+
+### Anticipatory Thinking: Navigating Barriers
+
+The horizon brimmed with barriers—some visible, others lurking beneath the waves. Anticipatory thinking became my sextant. Corporate implementation loomed—a tempest of investment, integration, and adaptation. Policies lagged behind technology, like ships chasing a comet. Safety standards needed recalibration—the dance of liability and risk. But I charted my course, eyes fixed on the unseen reefs. For every barrier held a lesson—a chance to steer better, to navigate with foresight.
+
+### Policy and Regulation: A Symbiotic Dance
+
+The legal currents swirled—a tango of legislation and innovation. Autonomous systems, like silent partners, awaited their cues. Policies, often trailing behind technological leaps, needed an upgrade. Safety standards—my lodestar—must adapt to the dynamic dance of autonomy. Liability frameworks—my compass—needed clarity. And so, I engage with policymakers, industry captains, and lawmakers. Together, we compose the score—a harmonious integration of progress and protection.
+
+### Societal Impact: Echoes in Time
+
+Beyond algorithms and sensors, I glimpsed the societal ripple. Autonomous systems—once confined to sci-fi tales—now touch lives. The disabled regain independence, the elderly find mobility. Urban planning shifts—traffic eases, emissions wane. But I tread carefully—the socio-economic gaps mustn't widen. Sustainability—my lodestar—guides production and deployment. For every innovation echoes through generations, leaving footprints on the shore.
+
+### The Forward Path: A Research Ethos
+
+As this chapter closes, another beckons—a blank parchment awaiting ink. I etch my ethos: adaptability, responsiveness, societal stewardship. The next voyage—unfurling sails, recalibrating compasses—awaits. I'll dance with data, converse with code, and listen to the whispers of the maze. For research isn't solitary—it's a symphony, played across time and tides.
+
+And so, I step forward, gaze at the horizon—the virtual and the real—and smile. The journey continues, and I, like my RF-car, navigate the twists, recalibrate, and dance on.
+
+## Self-Reflection on the Research Project
+
+As the dust settles on my research journey—a voyage that spanned virtual simulations and tangible reality—I find myself pausing to reflect. Here, in the quiet harbor of introspection, I gather the fragments of insights, setbacks, and triumphs. Let me lay them bare:
+
+### Proposed Success Criteria: A North Star
+
+In the beginning, I set my compass by proposing success criteria. They were my North Star—the guiding lights that illuminated the path ahead. The vision was clear: an RC car, autonomously navigating mazes, its every move orchestrated by a trained model. And if time allowed, the tantalizing prospect of continual learning—an RC car that evolves with experience. These criteria fueled my determination, urging me forward.
+
+### Achieved Success Criteria: The Joy of Control
+
+The RC car—my mechanical companion—bowed to my commands. Its wheels turned, its sensors scanned, and its digital brain made decisions. Success! I had achieved the core goal: complete control. The reinforcement learning techniques had bridged the gap from simulation to reality. The RC car danced to the rhythm of algorithms, and I reveled in the joy of creation.
+
+### Unachieved Success Criteria: The Elusive Consistency
+
+Yet, the maze—oh, that labyrinth of twists and turns—proved elusive. The RC car, like a spirited explorer, ventured forth but stumbled. Consistency remained a mirage. The real world, it seemed, had its own rules, its own caprices. The sim2real transfer, my compass needle, wavered. But perhaps therein lay the heart of the challenge—the delicate balance between precision and chaos.
+
+### Smooth Sailing and Hidden Currents
+
+Certain waters flowed smoothly. The virtual environment, birthed from OpenAI Gym, welcomed me. I sculpted its contours, calibrated its winds. And the web application—a bridge between bits and atoms—stood firm. It whispered data, visualized trajectories, and connected me to the RC car's soul. These were the tranquil seas, where progress sailed unimpeded.
+
+### The Murmurs of Complexity
+
+Yet, complexity—like an undertow—tugged at my vessel. The virtual environment, while faithful, lacked depth. Its simplicity betrayed me. The RC car demanded more—a higher precision, a sharper intuition. The real world scoffed at my abstractions. It yearned for imperfections—the friction of tires, the gusts of wind, the unpredictability of terrain. I listened, humbled.
+
+### Jury Feedback: Winds of Wisdom
+
+The jury—a council of seasoned sailors—offered their wisdom. Hans Ameel, a weathered navigator, pointed to solutions. "Increase the buffer," he said, "let the RC car breathe." And a camera—my new sextant—would chart its position. The gyroscope, not the accelerometer, corrected my course. Their feedback, like salt-laden winds, refreshed my sails.
+
+### The Ethical Compass: Navigating Humanity
+
+Beyond algorithms and sensors, I glimpsed the ethical horizon. Privacy—how much data is too much? Safety—can we guarantee it? Job displacement—the human toll. Autonomous systems, silent companions, tread our streets. Their impact—far-reaching. I vowed to steer with care, to honor humanity's values. For innovation without ethics is a ship adrift.
+
+### The Ripple Effect: Echoes in Time
+
+Research—more than equations and code—is a ripple. It echoes in boardrooms, classrooms, and living rooms. The RC car, once a mere toy, now whispers to policymakers, engineers, and dreamers. Its dance—sim2real, theory to practice—shapes our world. And so, I cast my pebble, knowing its ripples will touch shores unseen.
+
+### The Next Voyage: Beyond the Horizo
+
+As this chapter closes, another beckons. The RC car rests, its wheels still humming algorithms. But beyond lies uncharted territory. How can we balance progress with ethics? Can safety coexist with innovation? And amidst the ones and zeros, how do we keep humanity at the helm? The next voyage awaits—a quest for answers, a dance with the unknown.
+
+And so, I step back, gaze at the maze—the virtual and the real—and smile. The journey continues, and I, like my RC car, navigate the twists, recalibrate, and dance on.
+
+
+<!-- ## Reflection
 
 The path from conceptualizing a virtual RF-car training simulation to its real-world application traverses the rich terrain of integrating theoretical research with tangible, practical outcomes. Reflecting on feedback, along with the journey itself, unveils crucial insights into the research process, its achievements, and areas ripe for growth:
 
@@ -1070,9 +1145,9 @@ Current policies and regulations around the deployment of autonomous systems are
 
 ### Lessons Learned and Forward Path
 
-This reflective journey underscores several key lessons: the value of openness to new methodologies, the importance of bridging theory with practice through versatile research approaches, and the critical role of anticipatory thinking in addressing implementation barriers. Looking forward, these insights pave the way for a research ethos characterized by adaptability, responsiveness to industry needs, and a commitment to contributing to societal progress through technological innovation.
+This reflective journey underscores several key lessons: the value of openness to new methodologies, the importance of bridging theory with practice through versatile research approaches, and the critical role of anticipatory thinking in addressing implementation barriers. Looking forward, these insights pave the way for a research ethos characterized by adaptability, responsiveness to industry needs, and a commitment to contributing to societal progress through technological innovation. -->
 
-### Self-reflection on the Research Project
+<!-- ### Self-reflection on the Research Project
 
 **Proposed Success Criteria:**
 The project aimed to autonomously drive an RC car, with each action decided by the trained model. If completed ahead of schedule, continual learning would be applied to enable ongoing learning for the RC car.
@@ -1096,7 +1171,7 @@ The project aimed to autonomously drive an RC car, with each action decided by t
 
 **Jury Feedback:**
 
-The jury’s feedback was overwhelmingly positive, with expressions of admiration for the depth of the research. Hans Ameel suggested potential solutions for encountered challenges, such as increasing the distance from the walls to reduce the impact of deviations. Another suggestion was the use of a camera to monitor the position of the RC car within the maze. Additionally, a correction was made to my presentation: although I had indicated using an accelerometer to measure the rotation of my RC car, in reality, I used the gyroscope that is part of the MPU6050, which also includes an accelerometer and magnetometer.
+The jury’s feedback was overwhelmingly positive, with expressions of admiration for the depth of the research. Hans Ameel suggested potential solutions for encountered challenges, such as increasing the distance from the walls to reduce the impact of deviations. Another suggestion was the use of a camera to monitor the position of the RC car within the maze. Additionally, a correction was made to my presentation: although I had indicated using an accelerometer to measure the rotation of my RC car, in reality, I used the gyroscope that is part of the MPU6050, which also includes an accelerometer and magnetometer. -->
 
 \pagebreak
 

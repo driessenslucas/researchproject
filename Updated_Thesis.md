@@ -354,43 +354,43 @@ The epsilon-greedy strategy is employed for action selection, with $\epsilon$ gr
 
 ### 3.4. Reward Function Components
 
-#### Collision Penalty $R_{\text{collision}}$
+#### 3.4.1. Collision Penalty $R_{\text{collision}}$
 
 When the agent attempts to move into a wall or outside the designated maze boundaries, it triggers a collision state. To discourage such actions, which are counterproductive to the goal of reaching the destination, a significant penalty is applied. This penalty is critical for teaching the agent about the boundaries and obstacles within the environment, ensuring that it learns to navigate safely and effectively.
 
 $$ R\_{\text{collision}} = -20 $$
 
-#### Goal Achievement Bonus $R_{\text{goal}}$
+#### 3.4.2. Goal Achievement Bonus $R_{\text{goal}}$
 
 Reaching the goal is the primary objective of the maze navigation task. A substantial reward is given to the agent upon achieving this objective, signifying the completion of the episode. This reward serves as a strong positive reinforcement, guiding the agent's learning towards the goal-oriented behavior. However, an additional mechanism penalizes the agent if it takes an excessively long route to reach the goal, promoting efficiency in navigation.
 
 $$ R\_{\text{goal}} = \begin{cases} +500, & \text{if goal is reached} \\ -200, & \text{if steps} > 1000 \end{cases} $$
 
-#### Proximity Reward $R_{\text{proximity}}$
+#### 3.4.3. Proximity Reward $R_{\text{proximity}}$
 
 This component of the reward function incentivizes the agent to minimize its distance to the goal over time. By rewarding the agent based on its proximity to the goal, it encourages exploration and path optimization, guiding the agent to navigate the maze more effectively. The reward decreases as the distance to the goal increases, encouraging the agent to always move towards the goal.
 
 $$ R*{\text{proximity}} = \frac{50}{d*{\text{goal}} + 1} $$
 
-#### Progress Reward $R_{\text{progress}}$
+#### 3.4.4. Progress Reward $R_{\text{progress}}$
 
 The progress reward or penalty is designed to encourage the agent to make decisions that bring it closer to the goal and to penalize decisions that lead it away. This dynamic reward system provides immediate feedback based on the agent's movement relative to the goal, promoting smarter navigation decisions.
 
 $$ R\_{\text{progress}} = \begin{cases} +50, & \text{if distance decreases} \\ -25, & \text{if distance increases} \end{cases} $$
 
-#### Exploration Penalty $R_{\text{revisit}}$
+#### 3.4.5. Exploration Penalty $R_{\text{revisit}}$
 
 To discourage repetitive exploration of the same areas, which indicates inefficient pathfinding, the agent receives a penalty for re-entering previously visited cells. This penalty is crucial for encouraging the exploration of new paths and preventing the agent from getting stuck in loops or dead ends.
 
 $$ R\_{\text{revisit}} = -10 $$
 
-#### Efficiency Penalty $R_{\text{efficiency}}$
+#### 3.4.6. Efficiency Penalty $R_{\text{efficiency}}$
 
 Every step the agent takes incurs a small penalty. This mechanism ensures that the agent is incentivized to find the shortest possible path to the goal, balancing the need to explore the environment with the goal of reaching the destination as efficiently as possible.
 
 $$ R\_{\text{efficiency}} = -5 $$
 
-#### Generic Reward based on relative distance to goal
+#### 3.4.7. Generic Reward based on relative distance to goal
 
 The reward function $R(s, a)$ is designed to encourage reaching the goal while penalizing collisions and inefficient paths. The reward for each step is defined as:
 
@@ -476,7 +476,9 @@ The Double DQN model's architecture is central to understanding the agent's lear
 
 **Model Architecture:**
 
-<!-- ```markdown
+This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
+
+```markdown
 ## Chapter 7. Model: "sequential_52"
 
 # Layer (type) Output Shape Param
@@ -492,11 +494,9 @@ Trainable params: 4515 (17.64 KB)
 Non-trainable params: 0 (0.00 Byte)
 
 ---
-``` -->
+```
 
-![Model Architecture](/Users/lucasdriessens/Documents/researchproject/DDQN_RCmaze_v2.h5.png){ width=80% }
-
-This model is instrumental in the agent's ability to learn from its environment, adapting its strategy to optimize for both efficiency and effectiveness in maze navigation.
+![Model Architecture](./images/thesis/model_architecture.png){ width=100% }
 
 ### 7.1. Training Parameters
 
@@ -548,23 +548,23 @@ The project's innovative approach to sim-to-real transfer in reinforcement learn
 
 ### 8.1. Evaluation Metrics Overview
 
-#### Simulation Metrics
+#### 8.1.1. Simulation Metrics
 
-##### 1. Episodic Performance
+##### Episodic Performance
 
 - **Objective and Goal:** This metric assesses the agent's learning curve and its ability to solve the maze with optimal efficiency over successive episodes. The primary goal is to evaluate how quickly and effectively the agent learns to reach the maze's end, reflecting on its strategy optimization and adaptation abilities.
 - **How it's Assessed:** By tracking the number of episodes required before the agent can consistently solve the maze. A decreasing trend in episode count needed over time indicates effective learning and adaptation.
 - **Analytical Techniques:** Statistical analysis or visual plots (e.g., learning curves) are used to assess changes in episodic performance across training sessions.
 - **Accuracy and Consistency Measures:** Ensuring data integrity and a controlled environment allows for consistent episode comparison. Techniques might include averaging over multiple runs to mitigate randomness in the agent's learning process.
 
-##### 2. Step Efficiency
+##### Step Efficiency
 
 - **Objective and Goal:** This measures the decision-making process and path optimization capabilities of the agent by counting the steps taken to solve the maze. Fewer steps indicate higher efficiency and learning.
 - **How it's Assessed:** Tracking the number of steps required to reach the goal in each episode and analyzing the trend over time.
 - **Analytical Techniques:** Quantitative analysis of step count trends, possibly applying smoothing techniques to observe the overall trend amidst the variability.
 - **Accuracy and Consistency Measures:** Replication and averaging, as well as maintaining a consistent maze configuration across tests, help ensure reliable measurements.
 
-##### 3. MSE Loss Measurement
+##### MSE Loss Measurement
 
 $$
 MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2
@@ -575,21 +575,21 @@ $$
 - **Analytical Techniques:** MSE calculation is straightforward but interpreting its trend over time requires understanding its relationship with the agent’s learning phase (e.g., initial learning vs. strategy refinement).
 - **Accuracy and Consistency Measures:** Regular evaluation against a validation set or within a consistent testing framework can provide reliable insights into the agent's prediction accuracy and learning progress.
 
-##### 4. Reward Trend Analysis
+##### Reward Trend Analysis
 
 - **Objective and Goal:** To understand how the agent's actions lead to outcomes (rewards) and how this affects its ability to navigate the maze efficiently, indicating learning proficiency and strategy development.
 - **How it's Assessed:** Monitoring and analyzing the history of rewards received by the agent, looking for trends of increasing reward accumulation over time.
 - **Analytical Techniques:** Time series analysis or cumulative reward plots can illustrate the agent’s learning and decision-making improvements.
 - **Accuracy and Consistency Measures:** Averaging reward trends over multiple runs and ensuring that reward distribution remains unchanged throughout experiments.
 
-##### 5. Epsilon Decay Tracking
+##### Epsilon Decay Tracking
 
 - **Objective and Goal:** This metric assesses the agent's balance between exploring new paths and exploiting known successful routes, crucial for adaptive learning strategies.
 - **How it's Assessed:** By tracking the epsilon parameter’s value over episodes, observing how it decreases according to a predefined decay strategy, signaling a shift from exploration to exploitation.
 - **Analytical Techniques:** Analysis involves plotting epsilon values over time to visualize the agent's transition in learning strategy.
 - **Accuracy and Consistency Measures:** Consistent application of the epsilon decay strategy across training sessions and ensuring environmental stability for comparable results.
 
-#### Real-World Metrics
+#### 8.1.2. Real-World Metrics
 
 Transitioning to real-world application involved assessing how the simulation-trained agent's strategies fared in a physical maze with tangible obstacles and limitations.
 
@@ -758,53 +758,53 @@ void calibrateSensors()
 
 ### 10.1. Reinforcement Learning Techniques Overview
 
-#### final choice: DDQN
+#### 10.1.1. final choice: DDQN
 
 - The research project explored various reinforcement learning techniques to train an agent for maze navigation, focusing on their adaptability, efficiency, and real-world applicability. The following techniques were evaluated:
 
-##### 1. **Visit Heatmap for DDQN:**
+**Visit Heatmap for DDQN:**
 
 - The visit heatmap offers a graphical representation of the agent’s frequency of visits to various states within the maze. The pattern displayed suggests the agent’s favored paths and identifies potential bottlenecks where the agent might have struggled. The heatmap serves as a tool for analyzing the agent's exploration patterns and its strategy development throughout training.
 
 ![DDQN Heatmap](./images/training_images/visit_heatmap_DDQN.png)
 
-##### 2. **Reward History for DDQN:**
+**Reward History for DDQN:**
 
 - The reward history graph illustrates that the rewards stabilized at around episode 50, indicating the agent's learning progress and improved decision-making. The consistent positive rewards signify the agent's successful navigation through the maze, with occasional dips reflecting exploratory actions or suboptimal decisions. The upward trend in rewards over time demonstrates the agent's learning efficiency and strategy optimization.
 
 ![DDQN Reward History](./images/training_images/reward_history_DDQN.png)
 
-##### 3. **Reward Distribution for DDQN:**
+**Reward Distribution for DDQN:**
 
 - Analyzing the reward distribution histogram reveals the frequency of the received rewards. The concentration of instances near higher rewards implies that the agent often achieved positive outcomes, while the long tail towards negative rewards indicates the agent's occasional exploratory actions or suboptimal decisions.
 
 ![DDQN Reward Distribution](./images/training_images/reward_distribution_DDQN.png)
 
-##### 4. **Maze Solution for DDQN:**
+**Maze Solution for DDQN:**
 
 - The maze solution visualization illustrates the agent's path to solving the maze. Notably, the agent achieved the goal in just 25 steps, a testament to the DDQN's efficiency in learning and path optimization. This graphical representation highlights the agent’s capability to derive an optimal route, avoiding backtracking and unnecessary detours.
 
 ![DDQN Maze Path](./images/training_images/maze_solution_DDQN.png)
 
-##### 5. **Average Steps per Episode with Moving Average for DDQN:**
+**Average Steps per Episode with Moving Average for DDQN:**
 
 - The plot for the average steps per episode, smoothed by a moving average, clearly shows the agent’s learning progression. The decrease in the number of steps required to solve the maze, as portrayed by the moving average line, underscores the DDQN’s ability to enhance the agent’s efficiency in maze resolution.
 
 ![DDQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png)
 
-##### 6. **Epsilon History for DDQN:**
+**Epsilon History for DDQN:**
 
 - The graph depicting the epsilon decay showcases the agent’s transition from exploration to exploitation over time. Initially, a higher epsilon value encouraged exploration, aiding the agent in acquiring diverse experiences. As training progressed, the epsilon value decayed, as evident in the graph's steady decline, indicating the agent's increasing reliance on its learned policy. This adaptive strategy was crucial for fine-tuning the agent’s decision-making process, ensuring a balance between exploring new paths and exploiting known ones for improved maze navigation.
 
 ![DDQN Epsilon Decay](./images/training_images/epsilon_history_DDQN.png)
 
-##### 7. **Mean Squared Error over time (Sampled) for DDQN:**
+**Mean Squared Error over time (Sampled) for DDQN:**
 
 - The MSE graph, a reflection of the agent’s prediction accuracy, demonstrates a downward trend, indicative of the agent's improved learning over episodes. The initial spikes suggest a period of trial and error, where the agent was developing its understanding of the maze. Over time, the reduced variability in MSE values points towards the agent making more accurate predictions, further underscoring the DDQN's effective learning curve.
 
 ![Loss Trend](./images/training_images/mse_history_sampled_DDQN.png)
 
-#### 1. Deep Q-Network (DQN)
+#### 10.1.2. 1. Deep Q-Network (DQN)
 
 - **Description**: The Deep Q-Network (DQN) combines a deep neural network with a Q-learning framework. It excels in handling high-dimensional sensory inputs, making it ideal for environments demanding detailed interaction.
 - **Suitability**: DQN's advanced learning capabilities are tempered by its tendency to overestimate Q-values in complex environments. This limitation could affect its effectiveness in training RC-cars, where environmental dynamics are unpredictable.
@@ -817,7 +817,7 @@ void calibrateSensors()
 
   - **Performance**: DQN's performance, while competent, was limited by Q-value overestimation in intricate scenarios.
 
-#### 2. Double Deep Q-Network (DDQN)
+#### 10.1.3. 2. Double Deep Q-Network (DDQN)
 
 - **Description**: The Double Deep Q-Network (DDQN) improves upon DQN by employing two neural networks. This structure effectively reduces overestimation bias by separating action selection from Q-value generation.
 
@@ -835,7 +835,7 @@ void calibrateSensors()
 
   - **Performance**: DDQN solved the environment in an average of 25 steps, compared to DQN's 34 steps, highlighting its efficiency.
 
-#### 3. Proximal Policy Optimization (PPO)
+#### 10.1.4. 3. Proximal Policy Optimization (PPO)
 
 - **Description**: Proximal Policy Optimization (PPO) is a policy gradient method that directly optimizes decision-making policies. It's known for its stability and efficiency in specific RL contexts.
 
@@ -857,25 +857,25 @@ The leap from simulated environments to real-world application unveils a complex
 
 ### 11.2. Real-World Application
 
-#### Enhanced Sensor-Based Navigation
+#### 11.2.1. Enhanced Sensor-Based Navigation
 
 Sensor-based navigation technologies, refined through simulation, promise substantial improvements in autonomous vehicles' functionality. In real-world applications, such technologies are pivotal for environments demanding high precision and adaptability. For instance, in congested urban settings or in automated delivery systems, the ability to dynamically navigate with high accuracy can significantly elevate both safety and efficiency. Integrating simulation insights into sensor-based navigation aids in refining these systems to better interpret complex, variable real-world conditions.
 
-#### Informing Autonomous Vehicle Movement
+#### 11.2.2. Informing Autonomous Vehicle Movement
 
 Simulated environments offer a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems' ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, thereby improving the overall functionality of autonomous transportation.
 
 ### 11.3. Limitations
 
-#### Discrepancies in Sensor Data Interpretation
+#### 11.3.1. Discrepancies in Sensor Data Interpretation
 
 A substantial hurdle in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle's decision-making processes and, by extension, its safety and operational efficiency.
 
-#### Challenges in Movement Replication
+#### 11.3.2. Challenges in Movement Replication
 
 The precise replication of simulated vehicle movements in real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.
 
-#### Practical Implementation Considerations
+#### 11.3.3. Practical Implementation Considerations
 
 Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include, but are not limited to, sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system's resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on sim2real insights.
 
@@ -1024,8 +1024,6 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
 
 \pagebreak
 
-## Chapter 15. Reflection
-
 <!-- --
   # TODO: Interviews with Sam and Wouter for feedback (have not done these interviews yet)
   • Wat zijn volgens hen de sterke en zwakke punten van het resultaat uit jouw researchproject?   
@@ -1036,43 +1034,120 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
   • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig?  
 -- -->
 
+## Chapter 15. Reflections on the Research Project
+
+### 15.1. Lessons Learned and the Path Ahead
+
+As I stand on the precipice of this research voyage, I gather the fragments of wisdom—the lessons etched into my journey. Let me weave them into a tapestry of reflection:
+
+### 15.2. The Value of Openness
+
+In the quiet corners of experimentation, I discovered the allure of openness. The willingness to embrace new methodologies, to venture beyond the familiar, became my compass. It's easy to cling to the tried and tested, but innovation thrives in the uncharted. So, I vow to keep my sails unfurled, ready to catch the winds of novelty.
+
+### 15.3. Bridging Theory and Practice
+
+The ivory towers of theory whispered their secrets, but it was the real world that roared. Bridging the gap between abstract equations and tangible outcomes—this was my tightrope walk. The virtual RF-car danced to algorithms, but the maze—ah, the maze—demanded more. It yearned for friction, for unpredictability. And so, I learned to waltz with both—the elegant theory and the gritty reality.
+
+### 15.4. Anticipatory Thinking: Navigating Barriers
+
+The horizon brimmed with barriers—some visible, others lurking beneath the waves. Anticipatory thinking became my sextant. Corporate implementation loomed—a tempest of investment, integration, and adaptation. Policies lagged behind technology, like ships chasing a comet. Safety standards needed recalibration—the dance of liability and risk. But I charted my course, eyes fixed on the unseen reefs. For every barrier held a lesson—a chance to steer better, to navigate with foresight.
+
+### 15.5. Policy and Regulation: A Symbiotic Dance
+
+The legal currents swirled—a tango of legislation and innovation. Autonomous systems, like silent partners, awaited their cues. Policies, often trailing behind technological leaps, needed an upgrade. Safety standards—my lodestar—must adapt to the dynamic dance of autonomy. Liability frameworks—my compass—needed clarity. And so, I engage with policymakers, industry captains, and lawmakers. Together, we compose the score—a harmonious integration of progress and protection.
+
+### 15.6. Societal Impact: Echoes in Time
+
+Beyond algorithms and sensors, I glimpsed the societal ripple. Autonomous systems—once confined to sci-fi tales—now touch lives. The disabled regain independence, the elderly find mobility. Urban planning shifts—traffic eases, emissions wane. But I tread carefully—the socio-economic gaps mustn't widen. Sustainability—my lodestar—guides production and deployment. For every innovation echoes through generations, leaving footprints on the shore.
+
+### 15.7. The Forward Path: A Research Ethos
+
+As this chapter closes, another beckons—a blank parchment awaiting ink. I etch my ethos: adaptability, responsiveness, societal stewardship. The next voyage—unfurling sails, recalibrating compasses—awaits. I'll dance with data, converse with code, and listen to the whispers of the maze. For research isn't solitary—it's a symphony, played across time and tides.
+
+And so, I step forward, gaze at the horizon—the virtual and the real—and smile. The journey continues, and I, like my RF-car, navigate the twists, recalibrate, and dance on.
+
+## Chapter 16. Self-Reflection on the Research Project
+
+As the dust settles on my research journey—a voyage that spanned virtual simulations and tangible reality—I find myself pausing to reflect. Here, in the quiet harbor of introspection, I gather the fragments of insights, setbacks, and triumphs. Let me lay them bare:
+
+### 16.1. Proposed Success Criteria: A North Star
+
+In the beginning, I set my compass by proposing success criteria. They were my North Star—the guiding lights that illuminated the path ahead. The vision was clear: an RC car, autonomously navigating mazes, its every move orchestrated by a trained model. And if time allowed, the tantalizing prospect of continual learning—an RC car that evolves with experience. These criteria fueled my determination, urging me forward.
+
+### 16.2. Achieved Success Criteria: The Joy of Control
+
+The RC car—my mechanical companion—bowed to my commands. Its wheels turned, its sensors scanned, and its digital brain made decisions. Success! I had achieved the core goal: complete control. The reinforcement learning techniques had bridged the gap from simulation to reality. The RC car danced to the rhythm of algorithms, and I reveled in the joy of creation.
+
+### 16.3. Unachieved Success Criteria: The Elusive Consistency
+
+Yet, the maze—oh, that labyrinth of twists and turns—proved elusive. The RC car, like a spirited explorer, ventured forth but stumbled. Consistency remained a mirage. The real world, it seemed, had its own rules, its own caprices. The sim2real transfer, my compass needle, wavered. But perhaps therein lay the heart of the challenge—the delicate balance between precision and chaos.
+
+### 16.4. Smooth Sailing and Hidden Currents
+
+Certain waters flowed smoothly. The virtual environment, birthed from OpenAI Gym, welcomed me. I sculpted its contours, calibrated its winds. And the web application—a bridge between bits and atoms—stood firm. It whispered data, visualized trajectories, and connected me to the RC car's soul. These were the tranquil seas, where progress sailed unimpeded.
+
+### 16.5. The Murmurs of Complexity
+
+Yet, complexity—like an undertow—tugged at my vessel. The virtual environment, while faithful, lacked depth. Its simplicity betrayed me. The RC car demanded more—a higher precision, a sharper intuition. The real world scoffed at my abstractions. It yearned for imperfections—the friction of tires, the gusts of wind, the unpredictability of terrain. I listened, humbled.
+
+### 16.6. Jury Feedback: Winds of Wisdom
+
+The jury—a council of seasoned sailors—offered their wisdom. Hans Ameel, a weathered navigator, pointed to solutions. "Increase the buffer," he said, "let the RC car breathe." And a camera—my new sextant—would chart its position. The gyroscope, not the accelerometer, corrected my course. Their feedback, like salt-laden winds, refreshed my sails.
+
+### 16.7. The Ethical Compass: Navigating Humanity
+
+Beyond algorithms and sensors, I glimpsed the ethical horizon. Privacy—how much data is too much? Safety—can we guarantee it? Job displacement—the human toll. Autonomous systems, silent companions, tread our streets. Their impact—far-reaching. I vowed to steer with care, to honor humanity's values. For innovation without ethics is a ship adrift.
+
+### 16.8. The Ripple Effect: Echoes in Time
+
+Research—more than equations and code—is a ripple. It echoes in boardrooms, classrooms, and living rooms. The RC car, once a mere toy, now whispers to policymakers, engineers, and dreamers. Its dance—sim2real, theory to practice—shapes our world. And so, I cast my pebble, knowing its ripples will touch shores unseen.
+
+### 16.9. The Next Voyage: Beyond the Horizo
+
+As this chapter closes, another beckons. The RC car rests, its wheels still humming algorithms. But beyond lies uncharted territory. How can we balance progress with ethics? Can safety coexist with innovation? And amidst the ones and zeros, how do we keep humanity at the helm? The next voyage awaits—a quest for answers, a dance with the unknown.
+
+And so, I step back, gaze at the maze—the virtual and the real—and smile. The journey continues, and I, like my RC car, navigate the twists, recalibrate, and dance on.
+
+
+<!-- ## Reflection
+
 The path from conceptualizing a virtual RF-car training simulation to its real-world application traverses the rich terrain of integrating theoretical research with tangible, practical outcomes. Reflecting on feedback, along with the journey itself, unveils crucial insights into the research process, its achievements, and areas ripe for growth:
 
-### 15.1. Strengths and Weaknesses
+### 16.10. Strengths and Weaknesses
 
 The project's resilience in adapting to unforeseen challenges stands out as a testament to the robustness and flexibility of the research approach. This adaptability is underscored by the ability to pivot in methodology when confronted with real-world complexities not mirrored in the simulation. However, an initial hesitancy to venture beyond familiar tools and methodologies highlighted a potential limitation in fully leveraging the breadth of available technologies and approaches. This reticence, perhaps rooted in comfort with established practices, may have initially narrowed the scope of exploration and innovation.
 
-### 15.2. Practical Applicability and Industry Relevance
+### 16.11. Practical Applicability and Industry Relevance
 
 The feedback collectively emphasizes the practical applicability and value of the project's findings within the industry. The methodology and outcomes provide a concrete framework for navigating the intricacies of sim-to-real transitions, crucial for the development of autonomous vehicle technologies. This relevance extends beyond theoretical interest, suggesting a solid foundation for application in real-world autonomous system development.
 
-### 15.3. Encountered Alternatives and Flexibility
+### 16.12. Encountered Alternatives and Flexibility
 
 The encouragement to explore sophisticated simulation environments and alternative machine learning methodologies resonates with a broader industry and academic expectation for versatile, dynamic research approaches. This suggests a pivotal learning moment: the importance of maintaining flexibility in both tools and conceptual frameworks to ensure research remains responsive and relevant to evolving technological landscapes and real-world demands.
 
-### 15.4. Anticipated Implementation Barriers
+### 16.13. Anticipated Implementation Barriers
 
 Identifying anticipated challenges in corporate implementation, such as the need for significant investment and the integration of novel findings into established workflows, offers a grounded perspective on the path to practical application. This awareness is instrumental in bridging the gap between research outcomes and their industry adoption, guiding future strategies to mitigate these barriers.
 
-### 15.5. Ethical Considerations
+### 16.14. Ethical Considerations
 
 The deployment of autonomous systems, particularly those benefiting from sim2real transfer technologies, raises significant ethical considerations that must be addressed. Privacy concerns emerge as these systems often rely on collecting and processing vast amounts of data, potentially including personal information. Ensuring data protection and privacy standards are paramount to maintaining public trust.
 
 Safety is another critical concern, as the deployment of autonomous systems in public spaces must not compromise human safety. The robustness of sim2real transfer methodologies—ensuring systems can reliably operate in unpredictable real-world conditions—is essential. Additionally, the potential for job displacement cannot be overlooked. As autonomous systems take on roles traditionally filled by humans, strategies for workforce transition and re-skilling become necessary. Our sim2real approach aims to address these concerns by advocating for transparent, safe, and reliable system deployment, and suggesting avenues for supporting affected workers through education and new job opportunities in the evolving tech landscape.
 
-### 15.6. Societal Impact
+### 16.15. Societal Impact
 
 The societal impacts of deploying advanced autonomous systems are wide-ranging. On the positive side, such systems can significantly improve accessibility for disabled and elderly populations, offering new levels of independence and mobility. Urban planning could also see transformative changes, with autonomous systems contributing to more efficient transportation networks and reduced traffic congestion. However, these benefits come with challenges, including the risk of increasing socio-economic divides if access to autonomous technologies is uneven. The environmental impact, while potentially positive through reduced emissions, also requires careful management to ensure sustainable practices in the production and deployment of autonomous systems.
 
-### 15.7. Policy and Regulation
+### 16.16. Policy and Regulation
 
 Current policies and regulations around the deployment of autonomous systems are often outpaced by technological advancements. As sim2real transfer techniques mature, it is imperative that legislation evolves accordingly. This includes updating safety standards to account for the unique challenges of autonomous operation in dynamic environments, as well as establishing clear liability frameworks for when things go wrong. Engaging with policymakers and industry stakeholders is crucial to developing a regulatory environment that supports innovation while protecting public interests and safety. Our research suggests a proactive approach, where the development of sim2real transfer technologies goes hand-in-hand with policy formulation, ensuring a harmonious integration of autonomous systems into society.
 
-### 15.8. Lessons Learned and Forward Path
+### 16.17. Lessons Learned and Forward Path
 
-This reflective journey underscores several key lessons: the value of openness to new methodologies, the importance of bridging theory with practice through versatile research approaches, and the critical role of anticipatory thinking in addressing implementation barriers. Looking forward, these insights pave the way for a research ethos characterized by adaptability, responsiveness to industry needs, and a commitment to contributing to societal progress through technological innovation.
+This reflective journey underscores several key lessons: the value of openness to new methodologies, the importance of bridging theory with practice through versatile research approaches, and the critical role of anticipatory thinking in addressing implementation barriers. Looking forward, these insights pave the way for a research ethos characterized by adaptability, responsiveness to industry needs, and a commitment to contributing to societal progress through technological innovation. -->
 
-### 15.9. Self-reflection on the Research Project
+<!-- ### Self-reflection on the Research Project
 
 **Proposed Success Criteria:**
 The project aimed to autonomously drive an RC car, with each action decided by the trained model. If completed ahead of schedule, continual learning would be applied to enable ongoing learning for the RC car.
@@ -1096,54 +1171,54 @@ The project aimed to autonomously drive an RC car, with each action decided by t
 
 **Jury Feedback:**
 
-The jury’s feedback was overwhelmingly positive, with expressions of admiration for the depth of the research. Hans Ameel suggested potential solutions for encountered challenges, such as increasing the distance from the walls to reduce the impact of deviations. Another suggestion was the use of a camera to monitor the position of the RC car within the maze. Additionally, a correction was made to my presentation: although I had indicated using an accelerometer to measure the rotation of my RC car, in reality, I used the gyroscope that is part of the MPU6050, which also includes an accelerometer and magnetometer.
+The jury’s feedback was overwhelmingly positive, with expressions of admiration for the depth of the research. Hans Ameel suggested potential solutions for encountered challenges, such as increasing the distance from the walls to reduce the impact of deviations. Another suggestion was the use of a camera to monitor the position of the RC car within the maze. Additionally, a correction was made to my presentation: although I had indicated using an accelerometer to measure the rotation of my RC car, in reality, I used the gyroscope that is part of the MPU6050, which also includes an accelerometer and magnetometer. -->
 
 \pagebreak
 
-## Chapter 16. Advice
+## Chapter 17. Advice
 
-### 16.1. Practical Utilization of Simulations
+### 17.1. Practical Utilization of Simulations
 
 Simulations offer a controlled environment that minimizes risks and enables the manipulation of variables with ease, making them ideal for refining algorithms and testing hypotheses.
 
 - **Cost-Effectiveness:** By utilizing simulations, significant cost reductions can be achieved, negating the need for physical prototypes and extensive real-world testing, especially during the preliminary stages of research.
 
-### 16.2. Strategies for Effective Transition from Simulation to Reality
+### 17.2. Strategies for Effective Transition from Simulation to Reality
 
 Transitioning from simulation environments to real-world applications requires careful planning and execution to ensure the reliability and validity of research outcomes.
 
 - **Incremental Testing:** Begin with simulations to hone algorithms and methodologies, then progressively move towards real-world testing to validate results and adjust for environmental variables.
 - **Feedback Loops:** Implement continuous feedback mechanisms to integrate insights from real-world tests back into the simulation models, enhancing their accuracy and relevance.
 
-### 16.3. Overcoming Common Challenges in Simulation-to-Reality Transitions
+### 17.3. Overcoming Common Challenges in Simulation-to-Reality Transitions
 
 Adjustments are often necessary to bridge the gap between simulated environments and actual conditions, particularly concerning sensor data and mechanical operations.
 
 - **Sensor Discrepancy Adjustments:** Ensure sensors used in real-world testing are regularly calibrated to match simulation inputs, maintaining consistency and reliability.
 - **Movement and Mechanics Alignment:** Prioritize aligning physical movements and mechanics with those predicted by simulations to facilitate seamless transitions.
 
-### 16.4. Insights from My Research
+### 17.4. Insights from My Research
 
 - **Simulation Platforms:** The selection of an appropriate simulation platform, such as OpenAI Gym, is crucial, though it may require supplementary tools for complex scenarios.
 - **DDQN Superiority:** My research indicates that the Double Deep Q-Network (DDQN) outperforms other models like DQN or PPO by minimizing overestimations and stabilizing learning outcomes.
 
-### 16.5. Methodological Advice
+### 17.5. Methodological Advice
 
 - **Comprehensive Evaluation:** Employ both qualitative and quantitative methods to assess the effectiveness of simulations and real-world tests comprehensively.
 - **Adaptive Techniques:** Remain flexible and responsive to results and external feedback, which are vital for addressing unforeseen challenges effectively.
 
-### 16.6. Practical Experiment Integration
+### 17.6. Practical Experiment Integration
 
 - **Prototyping and Iteration:** Employ iterative designs and prototyping to refine systems incrementally, bridging the theoretical and practical aspects of research.
 - **Continuous Feedback:** Actively seek and incorporate feedback from stakeholders and peers, utilizing their insights to refine both simulation models and real-world applications.
 
-### 16.7. Guidelines for Future Research
+### 17.7. Guidelines for Future Research
 
-#### Introduction for Future Research
+#### 17.7.1. Introduction for Future Research
 
 This chapter offers a comprehensive methodology and advice for researchers engaged in simulation-based studies, aiming to transition successfully from theoretical models to practical applications.
 
-#### Step-by-Step Plan
+#### 17.7.2. Step-by-Step Plan
 
 ##### step 1: Selection of Simulation Environments
 
@@ -1163,7 +1238,7 @@ This chapter offers a comprehensive methodology and advice for researchers engag
 
 \pagebreak
 
-## Chapter 17. General Conclusion
+## Chapter 18. General Conclusion
 
 This thesis has successfully demonstrated the feasibility of transitioning a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, with a specific focus on navigating a maze using a remote-controlled (RC) car. The comprehensive experiments and discussions presented in previous chapters provide a thorough exploration of this concept.
 
@@ -1177,9 +1252,9 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 \pagebreak
 
-## Chapter 18. Guest Speakers
+## Chapter 19. Guest Speakers
 
-### 18.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
+### 19.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
 
 Jeroen Boeye's comprehensive lecture, representing Faktion, offered profound insights into the symbiotic relationship between software engineering and artificial intelligence in the realm of AI solutions development. He emphasized the critical importance of not merely focusing on AI technology but also on the software engineering principles that underpin the development of robust, scalable, and maintainable AI systems. This approach ensures that AI solutions are not only technically proficient but also practical and sustainable in long-term applications.
 
@@ -1193,7 +1268,7 @@ Key takeaways from Jeroen's lecture underscored the importance of mastering data
 
 In conclusion, Jeroen Boeye's lecture provided a rich and detailed perspective on the integration of AI technologies in real-world scenarios. His insights into the critical importance of software engineering principles, combined with a deep understanding of AI's capabilities and limitations, offered valuable guidance for developing effective, sustainable AI solutions. This lecture not only highlighted the current state and future directions of AI but also imparted practical wisdom on navigating the complexities of AI project implementation.
 
-### 18.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
+### 19.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
 
 Toon Vanhoutte's enlightening lecture, representing Noest, a notable entity within the Cronos Group, shared profound insights into the harmonious blend of artificial intelligence and software engineering in crafting state-of-the-art business solutions. With a strong team of 56 local experts, Noest prides itself on its pragmatic approach to projects, aiming for a global impact while emphasizing craftsmanship, partnership, and pleasure as its foundational pillars. This philosophy extends across their diverse service offerings, including application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all underpinned by a strong partnership with Microsoft.
 
@@ -1209,11 +1284,11 @@ In conclusion, Toon Vanhoutte's presentation not only showcased Noest's cutting-
 
 \pagebreak
 
-## Chapter 19. Installation Steps
+## Chapter 20. Installation Steps
 
 This section outlines the required steps to install and set up the project environment. Adherence to these instructions will ensure the successful deployment of the autonomous navigation system.
 
-### 19.1. Prerequisites
+### 20.1. Prerequisites
 
 Before initiating the setup process, ensure the following prerequisites are met:
 
@@ -1221,7 +1296,7 @@ Before initiating the setup process, ensure the following prerequisites are met:
 - **Docker:** Utilized for containerizing the web application and ensuring a consistent runtime environment.
 - Optionally, **Python 3.11** and **pip** may be installed along with the dependencies listed in `requirements.txt` for running the project without Docker.
 
-### 19.2. Repository Setup
+### 20.2. Repository Setup
 
 To clone the repository and navigate to the project directory, execute the following commands:
 
@@ -1230,15 +1305,15 @@ git clone https://github.com/driessenslucas/researchproject.git
 cd researchproject
 ```
 
-### 19.3. Hardware Setup and Assembly
+### 20.3. Hardware Setup and Assembly
 
-#### Introduction to Hardware Components
+#### 20.3.1. Introduction to Hardware Components
 
 This section provides an overview of the hardware components used in the research project.
 
 ![Final rc-car](./images/final_test/jp_final.jpeg)
 
-#### Components List
+#### 20.3.2. Components List
 
 - **Core Components**:
   - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
@@ -1253,7 +1328,7 @@ This section provides an overview of the hardware components used in the researc
   - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
   - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
-#### Wiring Guide
+#### 20.3.3. Wiring Guide
 
 **esp32 pins**
 
@@ -1281,18 +1356,18 @@ int sensor2Echo = 35; //GPIO front sensor
 
 ![ESP32 Wiring](./images/schematics/esp_updated.png)
 
-#### Software Configuration
+#### 20.3.4. Software Configuration
 
 2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library to support the OLED display functionality.
 3. **Code Upload:** Transfer the scripts located in the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration for connectivity.
 
-### 19.4. Web Application Setup
+### 20.4. Web Application Setup
 
-#### Note
+#### 20.4.1. Note
 
 To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
 
-#### Steps
+#### 20.4.2. Steps
 
 1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
 
@@ -1306,7 +1381,7 @@ To ensure a seamless setup of the virtual display, it is recommended to execute 
    docker-compose up -d
    ```
 
-### 19.5. Usage Instructions
+### 20.5. Usage Instructions
 
 1. Access the web application by navigating to <http://localhost:8500> or <http://localhost:5000> on your web browser.
 2. Enter the ESP32's IP address within the web app and select the desired model for deployment.
@@ -1315,7 +1390,7 @@ To ensure a seamless setup of the virtual display, it is recommended to execute 
 
 A demonstration of the project is available [here](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f).
 
-### 19.6. Additional Information: Model Training
+### 20.6. Additional Information: Model Training
 
 - Opt between utilizing a pre-trained model or conducting new training sessions using the script available in [train](./training/train.py).
 - This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.

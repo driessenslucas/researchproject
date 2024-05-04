@@ -55,8 +55,18 @@ def process_markdown_file(input_path, output_path):
         # Check for section headings
         elif line.startswith("### ") and chapter_number > 0 and line.strip() not in lines_to_ignore:  # Ensure we're within a chapter
             section_number += 1
+            subsection_number = 0  # Reset subsection number for new section
             section_title = line.strip('# ').strip()
             processed_line = f"### {chapter_number}.{section_number}. {section_title}\n"
+        elif line.startswith("#### ") and chapter_number > 0 and line.strip() not in lines_to_ignore:
+            subsection_number += 1
+            sub_subsection_number = 0  # Reset sub-subsection number for new subsection
+            sub_section_title = line.strip('# ').strip()
+            processed_line = f"#### {chapter_number}.{section_number}.{subsection_number}. {sub_section_title}\n"
+        # elif line.startswith("##### ") and chapter_number > 0 and line.strip() not in lines_to_ignore:
+        #     sub_sub_section_title = line.strip('# ').strip()
+        #     sub_subsection_number += 1
+        #     processed_line = f"##### {chapter_number}.{section_number}.{subsection_number}.{sub_subsection_number}. {sub_sub_section_title}\n"
         else:
             processed_line = line
 
