@@ -478,8 +478,6 @@ To gauge the agent's effectiveness in maze navigation, specific metrics were use
 
 - **Physical Maze and Digital Interface**: A real maze was built to mirror the virtual `RCMazeEnv`, playing a pivotal role in assessing the RC robot's ability to navigate. In addition, a web application was crafted to serve as both a visualization tool and a control interface, bridging the gap between virtual simulations and real-world execution.
 
-Certainly! I apologize for any oversight. Here's the revised version of your text with the references intact:
-
 ## Analysis and Results: Addressing Research Questions
 
 ### 1. Virtual Environments for RF-Car Training
@@ -576,7 +574,7 @@ This project takes an innovative approach to sim-to-real transfer in reinforceme
 
 - **Maze Visualization:**
 
-Here's a picutre of the maze that I have build in real life:
+The following image provides a more detailed look at the real-world maze setup. This physical representation mirrors the virtual maze environment.
 
 ![Final Maze Build](./images/final_test/final_maze_build.jpeg){ width=50% }
 
@@ -590,7 +588,7 @@ This web application serves as a control interface for the RC car, allowing me t
 
 Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a real sense of how the algorithm navigates through the maze.
 
-  - DDQN Simulation test: <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
+  - **DDQN Simulation test:** <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
 
 ### Evaluation Metrics Overview
 
@@ -942,7 +940,7 @@ The academic exploration was significantly shaped by articles on autonomous driv
 
 These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
 
-## Integration of Practical Experiments
+<!-- ## Integration of Practical Experiments
 
 Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.
 
@@ -970,7 +968,35 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
 - **Outdoor and Indoor Maze Tests**: Real-world testing scenarios presented unique challenges, such as varying surface textures and unpredictable environmental conditions, which significantly impacted the RC-car's navigation capabilities.
 
   - The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137)).
-  - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3), [View Test 3](https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e), [View Test 4](https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188)).
+  - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer ([View Test 1](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b), [View Test 2](https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3), [View Test 3](https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e), [View Test 4](https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188)). -->
+## Integration of Practical Experiments
+
+Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.
+
+### Addressing Alignment and Orientation Challenges
+
+One of the key challenges I faced was ensuring precise orientation and alignment of the RC-car during movement. To tackle this, I utilized the MPU6050 gyroscope, aiming to correct alignment issues and achieve accurate 90-degree turns.
+
+#### Utilizing the MPU6050 Gyroscope for Precise Orientation
+
+My first set of experiments focused on leveraging the gyroscope to correct the car's orientation for accurate navigation. This approach was pivotal in my attempts to ensure the RC-car could navigate mazes with high precision.
+
+- To address alignment issues when attempting precise 90-degree turns, I explored the potential of the MPU6050 gyroscope to adjust the car's movement based on its orientation. This experiment aimed to refine my control over the vehicle's navigation through the maze. See \hyperref[ref22]{[22]} and \hyperref[ref23]{[23]}.
+- Further testing focused on using the gyroscope for realigning the car's forward movement, aiming to rectify the persistent ~3-degree offset. Despite my efforts, completely eliminating this offset proved challenging, showcasing the complexities of simulating real-world physics. See \hyperref[ref24]{[24]}, \hyperref[ref25]{[25]}, and \hyperref[ref26]{[26]}.
+
+### Enhancing Movement Precision with Encoders
+
+The pursuit of enhancing the RC-car's movement precision led us to experiment with rotary encoders. These devices were integrated to measure wheel rotations accurately, aiming to improve straight-line movements and correct the noted ~3-degree offset.
+
+- I introduced rotary encoders to my setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations. This experiment represented a significant effort to refine the vehicle's navigation capabilities by ensuring more accurate movement and orientation. See \hyperref[ref27]{[27]} and \hyperref[ref28]{[28]}.
+- Despite an encouraging start, a malfunction with one of the encoders halted further tests using this specific setup, highlighting the practical challenges of hardware reliability in real-world applications. See \hyperref[ref29]{[29]}.
+
+### Real-World Application Tests
+
+Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car's performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings.
+
+- The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation. See \hyperref[ref30]{[30]} and \hyperref[ref31]{[31]}.
+- Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer. See \hyperref[ref32]{[32]}, \hyperref[ref33]{[33]}, \hyperref[ref34]{[34]}, and \hyperref[ref35]{[35]}.
 
 \pagebreak
 
@@ -1146,7 +1172,7 @@ This chapter outlines a detailed methodology and provides advice for researchers
 
 This thesis has effectively demonstrated the potential of transferring a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, focusing specifically on navigating a maze using a remote-controlled (RC) car. The detailed experiments and analyses discussed in earlier chapters offer a comprehensive exploration of this transition.
 
-The research conclusively shows that such a transfer is not only possible but also fraught with significant challenges. The critical experiments detailed in **Chapter 7: Analysis and Results: Addressing the Research Questions** highlight the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were crucial for aligning the simulated models with the real-world scenarios encountered during implementation.
+The research conclusively shows that such a transfer is not only possible but also fraught with significant challenges. The critical experiments detailed in **Chapter 8: Analysis and Results: Addressing the Research Questions** highlight the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were crucial for aligning the simulated models with the real-world scenarios encountered during implementation.
 
 The selection of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 5: Methodology**, played a key role in shaping the experimental approach and ensuring the effectiveness of the simulation training. The Double Deep Q-Network (DDQN) emerged as the most suitable technique, providing a robust framework to navigate the complexities of practical applications.
 
@@ -1299,6 +1325,56 @@ A demonstration of the project is available [here](https://github.com/driessensl
 - Opt between utilizing a pre-trained model or conducting new training sessions using the script available in [train](./training/train.py).
 - This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.
 - Upon completion, you will be prompted to save the new model. If saved, it will be stored within the [models](./web_app/models) directory of the `web_app` folder.
+
+\pagebreak
+
+## Supplementary Materials
+
+### Experiment Links
+
+Below are links to video demonstrations and detailed documentation of the experiments conducted during this research.
+
+- **Experiment E1 - Utilizing the MPU6050 Gyroscope for Precise Orientation, Test 1**:  
+  \[22\]\label{ref22} <https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac>
+
+- **Experiment E2 - Utilizing the MPU6050 Gyroscope for Precise Orientation, Test 2**:  
+  \[23\]\label{ref23} <https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13>
+
+- **Experiment E3 - Addressing Persistent Alignment Issue, Test 1**:  
+  \[24\]\label{ref24} <https://github.com/driessenslucas/researchproject/assets/91117911/bb9aa643-9620-4979-a70c-ec2826c7dd33>
+
+- **Experiment E4 - Addressing Persistent Alignment Issue, Test 2**:  
+  \[25\]\label{ref25} <https://github.com/driessenslucas/researchproject/assets/91117911/689b590f-3a9a-4f63-ba9c-978ddd08ab53>
+
+- **Experiment E5 - Addressing Persistent Alignment Issue, Test 3**:  
+  \[26\]\label{ref26} <https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70>
+
+- **Experiment E6 - Enhancing Movement Precision with Encoders, Test 1**:  
+  \[27\]\label{ref27} <https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
+
+- **Experiment E7 - Enhancing Movement Precision with Encoders, Test 2**:  
+  \[28\]\label{ref28} <https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
+
+- **Experiment E8 - Malfunction During Encoder Testing**:  
+  \[29\]\label{ref29} <https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
+
+- **Experiment E9 - Outdoor Maze Test, Uneven Surfaces Test 1**:  
+  \[30\]\label{ref30} <https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
+
+- **Experiment E10 - Outdoor Maze Test, Uneven Surfaces Test 2**:  
+  \[31\]\label{ref31} <https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
+
+- **Experiment E11 - Indoor Maze Test 1**:  
+  \[32\]\label{ref32} <https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
+
+- **Experiment E12 - Indoor Maze Test 2**:  
+  \[33\]\label{ref33} <https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
+
+- **Experiment E13 - Indoor Maze Test 3**:  
+  \[34\]\label{ref34} <https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
+
+- **Experiment E14 - Indoor Maze Test 4**:  
+  \[35\]\label{ref35} <https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188>
 
 \pagebreak
 
