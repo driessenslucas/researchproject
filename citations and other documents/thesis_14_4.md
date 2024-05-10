@@ -207,6 +207,8 @@ $$
 \text{if out of bounds} \end{cases}
 $$
 
+
+
 ### Scope of Real-World Testing
 
 This study focused on conducting experiments within indoor settings, where environmental conditions could be precisely regulated to mirror theoretical constructs closely. Experiments were predominantly carried out on a meticulously selected hard cloth surface to eliminate ground flaws and ensure a uniform testing ground. This strategic selection was crucial for the replication of simulation outcomes and for a controlled assessment of the transition from simulation to reality (sim-to-real) for autonomous technologies.

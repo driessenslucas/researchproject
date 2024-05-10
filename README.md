@@ -15,6 +15,7 @@ This repository contains the research and implementation files for the bachelor 
 This thesis investigates the transition of reinforcement learning algorithms from simulated environments to real-world applications. The core of this research revolves around the practical deployment of a Double Deep Q-Network (DDQN) for controlling an RC car in a physical maze setting, highlighting both the potential and challenges of such technological transfers.
 
 ### Objectives
+
 - Validate the practical application of simulated RL algorithms in real-world scenarios.
 - Assess the efficacy of DDQN in real-world maze navigation.
 - Explore the interplay between theoretical concepts and their real-world implementations.
