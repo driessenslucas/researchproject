@@ -83,6 +83,8 @@ acknowledgements: |
 
 15. **Over the air updates (OTA)**: A method of remotely updating software or firmware on devices, allowing for seamless upgrades and maintenance without physical access to the device.
 
+16. **autonomous vehicle (AV):** A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+
 \pagebreak
 
 ## List of Abbreviations
@@ -101,6 +103,7 @@ acknowledgements: |
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
 13. **Sim2Real** - Simulation to Reality Transfer
 14. **OTA** Over the air updates
+15. **AV** - autonomous vehicle
 
 <!-- ## Table of contents
 
@@ -973,40 +976,45 @@ void calibrateSensors()
 
 <!-- TODO : Vooral nog wat dieper ingaan op het feit dat jouw sensoren niet voldoende data opleveren om de exacte positie te bepalen binnen de real-world grid. Je doet dat dan wel binnen jouw conclusies, maar hier mag je er ook al wat dieper op ingaan -->
 <!-- rewrite this seciont, too many subtitles and too little information to make it a valuable additions -->
+### Real-World Application and Limitations
 
-## Real-World Application and Limitations
-
-### Introduction to Sensor and Movement Discrepancies
-
-The leap from simulated environments to real-world application unveils a complex landscape of challenges, especially in the interpretation of sensor data and the replication of vehicle movements. This discussion delves into these critical aspects, highlighting both the opportunities and constraints of applying simulation-derived insights to actual autonomous vehicle (AV) operations.
-
-### Real-World Application
+Transitioning from simulated environments to real-world applications presents a complex set of challenges, especially regarding sensor data interpretation and vehicle movement replication. This section explores these critical aspects, emphasizing both opportunities and constraints in applying simulation-derived insights to actual autonomous vehicle (AV) operations.
 
 #### Enhanced Sensor-Based Navigation
 
-Sensor-based navigation technologies, refined through simulation, promise substantial improvements in autonomous vehicles' functionality. In real-world applications, such technologies are pivotal for environments demanding high precision and adaptability. For instance, in congested urban settings or in automated delivery systems, the ability to dynamically navigate with high accuracy can significantly elevate both safety and efficiency. Integrating simulation insights into sensor-based navigation aids in refining these systems to better interpret complex, variable real-world conditions.
+Sensor-based navigation technologies, refined through simulation, promise significant improvements in the functionality of autonomous vehicles. In real-world applications, such technologies are crucial for environments demanding high precision and adaptability. For example, in congested urban settings or automated delivery systems, dynamic navigation with high accuracy can enhance both safety and efficiency. By integrating insights from simulations, sensor-based navigation systems can be better tuned to interpret the complex and variable conditions of the real world.
 
 #### Informing Autonomous Vehicle Movement
 
-Simulated environments offer a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems' ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, thereby improving the overall functionality of autonomous transportation.
+Simulated environments provide a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems' ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, improving the overall functionality of autonomous transportation.
 
 ### Limitations
 
 #### Discrepancies in Sensor Data Interpretation
 
-A substantial hurdle in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle's decision-making processes and, by extension, its safety and operational efficiency.
+A significant challenge in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle’s decision-making processes, safety, and operational efficiency.
+
+#### Insufficient Data for Exact Positioning
+
+One of the most critical limitations encountered was the inability of the sensors to provide enough data to determine the car's exact position within the real-world grid. In the simulation, sensors provided precise, reliable data, enabling accurate positioning and movement control. However, in real-world conditions, the sensor data was often noisy, incomplete, and affected by various environmental factors. 
+
+- **Limited Sensor Resolution**: The sensors, such as ultrasonic distance sensors, had limited resolution and range, which affected their ability to detect fine details necessary for precise positioning.
+- **Environmental Noise**: Real-world environments introduced noise from various sources such as other electronic devices, surface irregularities, and ambient conditions, which interfered with sensor readings.
+- **Dynamic Obstacles**: Unlike the controlled simulation, real-world environments had dynamic obstacles that the sensors could not always accurately detect or interpret, leading to positioning errors.
+
+These limitations meant that the vehicle often had a rough estimate of its position rather than a precise one, which hindered its ability to navigate accurately within a defined grid.
 
 #### Challenges in Movement Replication
 
-The precise replication of simulated vehicle movements in real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.
+Replicating precise vehicle movements from simulated to real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.
 
 #### Practical Implementation Considerations
 
-Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include, but are not limited to, sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system's resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on sim2real insights.
+Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system’s resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on simulation-to-reality (sim2real) insights.
 
 ### Conclusion for Real-World Application
 
-Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents a unique set of challenges and opportunities. While the application of simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
+Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents unique challenges and opportunities. While applying simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
 
 ## Challenges and Solutions in RL Implementation
 

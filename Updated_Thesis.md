@@ -83,6 +83,8 @@ acknowledgements: |
 
 15. **Over the air updates (OTA)**: A method of remotely updating software or firmware on devices, allowing for seamless upgrades and maintenance without physical access to the device.
 
+16. **autonomous vehicle (AV):** A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+
 \pagebreak
 
 ## List of Abbreviations
@@ -101,6 +103,7 @@ acknowledgements: |
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
 13. **Sim2Real** - Simulation to Reality Transfer
 14. **OTA** Over the air updates
+15. **AV** - autonomous vehicle
 
 <!-- ## Table of contents
 
@@ -973,202 +976,165 @@ void calibrateSensors()
 
 <!-- TODO : Vooral nog wat dieper ingaan op het feit dat jouw sensoren niet voldoende data opleveren om de exacte positie te bepalen binnen de real-world grid. Je doet dat dan wel binnen jouw conclusies, maar hier mag je er ook al wat dieper op ingaan -->
 <!-- rewrite this seciont, too many subtitles and too little information to make it a valuable additions -->
+### 13.4. Real-World Application and Limitations
 
-## Chapter 14. Real-World Application and Limitations
+Transitioning from simulated environments to real-world applications presents a complex set of challenges, especially regarding sensor data interpretation and vehicle movement replication. This section explores these critical aspects, emphasizing both opportunities and constraints in applying simulation-derived insights to actual autonomous vehicle (AV) operations.
 
-### 14.1. Introduction to Sensor and Movement Discrepancies
+#### 13.4.1. Enhanced Sensor-Based Navigation
 
-The leap from simulated environments to real-world application unveils a complex landscape of challenges, especially in the interpretation of sensor data and the replication of vehicle movements. This discussion delves into these critical aspects, highlighting both the opportunities and constraints of applying simulation-derived insights to actual autonomous vehicle (AV) operations.
+Sensor-based navigation technologies, refined through simulation, promise significant improvements in the functionality of autonomous vehicles. In real-world applications, such technologies are crucial for environments demanding high precision and adaptability. For example, in congested urban settings or automated delivery systems, dynamic navigation with high accuracy can enhance both safety and efficiency. By integrating insights from simulations, sensor-based navigation systems can be better tuned to interpret the complex and variable conditions of the real world.
 
-### 14.2. Real-World Application
+#### 13.4.2. Informing Autonomous Vehicle Movement
 
-#### 14.2.1. Enhanced Sensor-Based Navigation
+Simulated environments provide a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems' ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, improving the overall functionality of autonomous transportation.
 
-Sensor-based navigation technologies, refined through simulation, promise substantial improvements in autonomous vehicles' functionality. In real-world applications, such technologies are pivotal for environments demanding high precision and adaptability. For instance, in congested urban settings or in automated delivery systems, the ability to dynamically navigate with high accuracy can significantly elevate both safety and efficiency. Integrating simulation insights into sensor-based navigation aids in refining these systems to better interpret complex, variable real-world conditions.
+### 13.5. Limitations
 
-#### 14.2.2. Informing Autonomous Vehicle Movement
+#### 13.5.1. Discrepancies in Sensor Data Interpretation
 
-Simulated environments offer a controlled setting to study vehicle dynamics and movement responses. Applying these insights to the development of autonomous vehicles can lead to advanced algorithms capable of handling the unpredictable nature of real-world environments. This knowledge is instrumental in enhancing autonomous systems' ability to safely and efficiently navigate through dynamic and often chaotic traffic conditions, thereby improving the overall functionality of autonomous transportation.
+A significant challenge in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle’s decision-making processes, safety, and operational efficiency.
 
-### 14.3. Limitations
+#### 13.5.2. Insufficient Data for Exact Positioning
 
-#### 14.3.1. Discrepancies in Sensor Data Interpretation
+One of the most critical limitations encountered was the inability of the sensors to provide enough data to determine the car's exact position within the real-world grid. In the simulation, sensors provided precise, reliable data, enabling accurate positioning and movement control. However, in real-world conditions, the sensor data was often noisy, incomplete, and affected by various environmental factors. 
 
-A substantial hurdle in the real-world application of simulation-based insights is the variation in sensor data accuracy between simulated and actual environments. These discrepancies can directly impact the effectiveness of navigational algorithms, potentially compromising the vehicle's decision-making processes and, by extension, its safety and operational efficiency.
+- **Limited Sensor Resolution**: The sensors, such as ultrasonic distance sensors, had limited resolution and range, which affected their ability to detect fine details necessary for precise positioning.
+- **Environmental Noise**: Real-world environments introduced noise from various sources such as other electronic devices, surface irregularities, and ambient conditions, which interfered with sensor readings.
+- **Dynamic Obstacles**: Unlike the controlled simulation, real-world environments had dynamic obstacles that the sensors could not always accurately detect or interpret, leading to positioning errors.
 
-#### 14.3.2. Challenges in Movement Replication
+These limitations meant that the vehicle often had a rough estimate of its position rather than a precise one, which hindered its ability to navigate accurately within a defined grid.
 
-The precise replication of simulated vehicle movements in real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.
+#### 13.5.3. Challenges in Movement Replication
 
-#### 14.3.3. Practical Implementation Considerations
+Replicating precise vehicle movements from simulated to real-world conditions encounters numerous obstacles. External factors such as road surface variations, environmental conditions, vehicle load, and mechanical constraints can introduce unforeseen deviations in vehicle behavior. These real-world variances necessitate adjustments and recalibration of the algorithms developed in simulated environments to ensure their effectiveness and reliability outside the lab.
 
-Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include, but are not limited to, sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system's resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on sim2real insights.
+#### 13.5.4. Practical Implementation Considerations
 
-### 14.4. Conclusion for Real-World Application
+Successfully translating simulation insights into real-world applications requires meticulous attention to several practical aspects. These include sensor calibration to account for environmental influences, adapting algorithms to hardware limitations, and ensuring the system’s resilience to real-world unpredictabilities. Addressing these factors is crucial for the effective deployment and operational success of autonomous vehicles based on simulation-to-reality (sim2real) insights.
 
-Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents a unique set of challenges and opportunities. While the application of simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
+### 13.6. Conclusion for Real-World Application
 
-## Chapter 15. Challenges and Solutions in RL Implementation
+Transitioning from simulation-based research to practical real-world applications in autonomous vehicle navigation presents unique challenges and opportunities. While applying simulation-derived insights into sensor use and vehicle movement has the potential to revolutionize autonomous vehicle technologies, significant effort is required to bridge the gap between simulated accuracy and real-world variability. Overcoming these challenges is essential for the successful integration of sim2real technologies in enhancing the safety, efficiency, and reliability of autonomous transportation systems.
 
-### 15.1. Challenge 1: Selection of an Appropriate Virtual Environment
+## Chapter 14. Challenges and Solutions in RL Implementation
 
-- **Description**: Choosing a virtual environment where our RC car will learn to drive is without a doubt an important decision.
-- **Solution**: After evaluating various platforms, **OpenAI Gym** was selected for its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.
+### 14.1. Challenge 1: Choosing the Right Virtual Environment
 
-### 15.2. Challenge 2: Choosing the Optimal Reinforcement Learning Technique
+- **Description**: Selecting a suitable virtual environment for training the RC car.
+- **Solution**: I chose **OpenAI Gym** due to its simplicity, familiarity from previous coursework, and its focus on reinforcement learning.
 
-- **Description**: Selecting the most effective RL technique for training the virtual RC-car.
-- **Solution**: Through comparative analysis and empirical testing, the Double Deep Q-Network (DDQN) was came out as the most suitable technique, since it was able to consistantly solve the maze in fewer steps than its competitors and this with fewer episodes needed to achive this.
+### 14.2. Challenge 2: Selecting the Optimal Reinforcement Learning Technique
 
-### 15.3. Challenge 3: Sim2Real Transfer - Addressing Movement Discrepancies
+- **Description**: Finding the best RL technique for training the virtual RC car.
+- **Solution**: Through comparative analysis and testing, the Double Deep Q-Network (DDQN) emerged as the best technique, consistently solving the maze in fewer steps and episodes than other methods.
 
-- **Description**: Bridging the gap between simulation and real-world in terms of RC-car movement and control.
-- **Solution Attempt**: Fine-tuning the frequency of action commands with an async method, waiting for the motor to finish moving or considering a queued action system. Further more the importance of precise movement in the real world was highlighted, which was not a problem in the simulation.
+### 14.3. Challenge 3: Addressing Movement Discrepancies in Sim2Real Transfer
 
-### 15.4. Challenge 4: alignment Issue and Motor Encoder Implementation
+- **Description**: Bridging the gap between simulation and real-world RC car movement and control.
+- **Solution Attempt**: I fine-tuned the frequency of action commands using an async method, waiting for the motor to finish moving, or considering a queued action system. Precise movement in the real world was highlighted as more critical compared to the simulation.
 
-- **Description**: Difficulty in achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.
-- **Solution Attempt 1**: Implementation of motor encoders was pursued to enhance movement accuracy. However, this approach faced the same limitations in achieving the desired precision.
-- **Solution Attempt 2**: The motor was replaced with a more powerful one, which initially showed promise in addressing the alignment issue. However, after adding all the other components, the car's weight increased, leading to the same problem.
-- **Solution Attempt 3**: The use of a MPU6050 gyroscope was used to measure the car's orientation and adjust the movement accordingly. Even though this approach succeeded to some extent: 90 degrees turns were accurate for the first few turns until the wheels got out ever so slightly misaligned, besides that it was not able to solve the ~3-degree offset issue when moving forward.
+### 14.4. Challenge 4: Alignment Issues and Motor Encoder Implementation
 
-- **Solution Attempt 4**: The final solution I tried was done by removing the RPI5 (previously used for sensor data and hosting the web app) from the robot all together and using the ESP32 to control both all the sensors and the motors. This allowed for a more lightweight robot, which was able to move forward more precisely but it failed to consistantly make 90-degree turns.
+- **Description**: Achieving precise straight-line movement in the RC car, with a persistent ~3-degree offset.
+- **Solution Attempts**:
+  - **Attempt 1**: Implemented motor encoders to improve movement accuracy but faced limitations in precision.
+  - **Attempt 2**: Replaced the motor with a more powerful one, but the added weight led to the same alignment issue.
+  - **Attempt 3**: Used an MPU6050 gyroscope to measure and adjust the car's orientation, achieving accurate 90-degree turns initially but failing to solve the ~3-degree offset issue.
+  - **Attempt 4**: Removed the Raspberry Pi and used only the ESP32 to control all sensors and motors, resulting in a lighter robot that moved forward more precisely but still struggled with consistent 90-degree turns.
 
-### 15.5. Challenge 5: Ensuring Consistent and Effective Training
+### 14.5. Challenge 5: Ensuring Consistent and Effective Training
 
 - **Description**: Maximizing training efficiency and performance while maintaining consistency between simulation and real-world scenarios.
-- **Solution**: The simulation allowed for efficient and safe training, while in some cases it's more useful to train the agent directly on the robot or machine, this wasn't one of them. The contanstly resetting the RC-car to the start position, the manual interferences in case of hardware failure and limited battery all added to the conclusion that training in a simulation was much, much more efficient.
+- **Solution**: Training in a simulation proved much more efficient due to the challenges of resetting the RC car, manual interferences, and limited battery life.
 
-### 15.6. Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
+### 14.6. Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
 
-- **Description**: Aligning sensor data between simulated and real-world environments is critical for model accuracy.
-- **Solution**: I needed to implement several functions to ensure that the sensor data that gets fed into the agent was as close as possible to the data it was trained on.
-
-  - **Real-World Sensor Data Normalization:**
-
-    The function `map_distance` normalizes real-world sensor data. It can be represented as follows:
-
-    <!-- ![map_distance](./images/map_distance_equation.png) -->
-
+- **Description**: Aligning sensor data between simulated and real-world environments for model accuracy.
+- **Solution**: Implemented functions to ensure sensor data fed into the agent matched the data it was trained on.
+  - **Real-World Sensor Data Normalization**:
     $$
     \text{map\_distance}(d) = \begin{cases}
     d & \text{if } d < 25 \\
     25 + (d - 25) \times 0.5 & \text{otherwise}
     \end{cases}
     $$
-
-    This function keeps distances under 25 cm unchanged and applies a scaling factor of 0.5 to distances beyond 25 cm, adding this scaled value to a base of 25 cm.
-
-  - **Simulation Sensor Data Normalization:**
-
-    The function `normalize_distance` adjusts simulated sensor data to a 0-1 range. Its equation is:
-
-    <!-- ![normalize_distance](./images/normalize_distance_equation.png) -->
-
+  - **Simulation Sensor Data Normalization**:
     $$
     \text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
     $$
 
-    In this function, the distance is first scaled by dividing by `sensor_max_range`. It's then clamped between 0 and 1 before multiplying by 1000 to normalize it within a specific range.
-
-### 15.7. Challenge 7: Integration of Failsafe Mechanisms
+### 14.7. Challenge 7: Integration of Failsafe Mechanisms
 
 - **Description**: Preventing potential collisions and ensuring safe navigation in the real world.
-- **Solution**: Development of a failsafe system that prevents forward movement in unwanted situation, retraining the model with this addition solved the issue of the robot driving into the walls and getting stuck.
+- **Solution**: Developed a failsafe system to prevent unwanted forward movement, retraining the model with this addition to solve the issue of the robot driving into walls and getting stuck.
 
-### 15.8. Challenge 8: Training Environment and Technique Efficacy
+### 14.8. Challenge 8: Training Environment and Technique Efficacy
 
 - **Description**: Determining the most effective environment and RL technique for training.
-- **Solution**: The DDQN solved the environment more efficiently than DQN, Q-agent, PPO and a ActorCritic approach. Highlighting the importance of technique selection.
+- **Solution**: The DDQN technique was more efficient than DQN, Q-agent, PPO, and ActorCritic approaches, highlighting the importance of technique selection.
 
-### 15.9. Viewing Practical Experiments
+### 14.9. Conclusion for Challenges and Solutions
 
-For visual insights into my practical experiments addressing these challenges, please refer to my supplementary video materials, which illustrate the implementation and testing of solutions, from gyroscopic adjustments to the integration of a more sophisticated control system using the ESP32.
+This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with selecting OpenAI Gym as the virtual environment due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
 
-### 15.10. Conclusion for Challenges and Solutions
+However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
 
-This section has outlined the practical challenges encountered in applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with the selection of OpenAI Gym as the virtual environment, chosen for its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
+A significant advancement was achieved by simplifying the robot's design to use only the ESP32 module, making it lighter and more precise. This change marked a considerable step in overcoming the challenges previously faced.
 
-However, transitioning from simulated models to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored innovative solutions such as the implementation of motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
-
-A significant advancement was achieved by replacing the Raspberry Pi and ESP32 with just the ESP32 module in the robot's design, leading to a more lightweight and precise robot. This change marked a considerable step in overcoming the challenges previously faced.
-
-Although I made substantial progress, some challenges remain. This indicates a need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
-
-In conclusion, this project underscores the iterative and demanding nature of applying RL techniques in real-world scenarios. It highlights the importance of continuous refinement, innovation, and adaptation, beyond the theoretical knowledge base. The journey through these challenges has emphasized the significance of perseverance and creative problem-solving in the evolving field of autonomous vehicle technology.
-
-## Chapter 16. Sources of Inspiration and Conceptual Framework
-
-The inspiration for this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micro mouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.
-
-### 16.1. Micro mouse Competitions and Reinforcement Learning
-
-Micro mouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest path finding, as detailed in the insightful Medium article by M. A. Dharmasiri \hyperref[ref15]{[15]}, enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.
-
-### 16.2. Influential YouTube Demonstrations and GitHub Insights
-
-YouTube videos such as "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} provided vivid demonstrations of RL's applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, highlighted the practical steps and challenges in implementing RL in physical systems.
-
-### 16.3. Technical Exploration and Academic Foundation
-
-The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.\hyperref[ref12]{[12]} and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund \hyperref[ref17]{[17]}, which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.
-
-### 16.4. Synthesis and Research Direction
-
-These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
+Although substantial progress was made, some challenges remain, indicating the need for ongoing research and development to fully harness the potential of RL in autonomous RC car navigation.
 
 <!-- ## Old Integration of Practical Experiments
 
 Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.
 
-### 16.5. Addressing Alignment and Orientation Challenges
+### 14.10. Addressing Alignment and Orientation Challenges
 
 One of the key challenges I faced was ensuring precise orientation and alignment of the RC-car during movement. To tackle this, I utilized the MPU6050 gyroscope, aiming to correct alignment issues and achieve accurate 90-degree turns.
 
-#### 16.5.1. Utilizing the MPU6050 Gyroscope for Precise Orientation
+#### 14.10.1. Utilizing the MPU6050 Gyroscope for Precise Orientation
 
 My first set of experiments focused on leveraging the gyroscope to correct the car's orientation for accurate navigation. This approach was pivotal in my attempts to ensure the RC-car could navigate mazes with high precision.
 
 - To address alignment issues when attempting precise 90-degree turns, I explored the potential of the MPU6050 gyroscope to adjust the car's movement based on its orientation. This experiment aimed to refine my control over the vehicle's navigation through the maze. See \hyperref[ref22]{[22]} and \hyperref[ref23]{[23]}.
 - Further testing focused on using the gyroscope for realigning the car's forward movement, aiming to rectify the persistent ~3-degree offset. Despite my efforts, completely eliminating this offset proved challenging, showcasing the complexities of simulating real-world physics. See \hyperref[ref24]{[24]}, \hyperref[ref25]{[25]}, and \hyperref[ref26]{[26]}.
 
-### 16.6. Enhancing Movement Precision with Encoders
+### 14.11. Enhancing Movement Precision with Encoders
 
 The pursuit of enhancing the RC-car's movement precision led us to experiment with rotary encoders. These devices were integrated to measure wheel rotations accurately, aiming to improve straight-line movements and correct the noted ~3-degree offset.
 
 - I introduced rotary encoders to my setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations. This experiment represented a significant effort to refine the vehicle's navigation capabilities by ensuring more accurate movement and orientation. See \hyperref[ref27]{[27]} and \hyperref[ref28]{[28]}.
 - Despite an encouraging start, a malfunction with one of the encoders halted further tests using this specific setup, highlighting the practical challenges of hardware reliability in real-world applications. See \hyperref[ref29]{[29]}.
 
-### 16.7. Real-World Application Tests
+### 14.12. Real-World Application Tests
 
 Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car's performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings.
 
 - The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation. See \hyperref[ref30]{[30]} and \hyperref[ref31]{[31]}.
 - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer. See \hyperref[ref32]{[32]}, \hyperref[ref33]{[33]}, \hyperref[ref34]{[34]}, and \hyperref[ref35]{[35]}. -->
 
-## Chapter 17. Integration of Practical Experiments
+## Chapter 15. Integration of Practical Experiments
 
-Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.
+Throughout my research, I used various practical experiments to solve the challenges I encountered. These experiments, documented through video demonstrations, provide clear insights into my problem-solving process.
 
-### 17.1. Addressing Alignment and Orientation Challenges
+### 15.1. Addressing Alignment and Orientation Challenges
 
-One of the key challenges I faced was ensuring precise orientation and alignment of the RC-car during movement. To tackle this, I utilized the MPU6050 gyroscope, aiming to correct alignment issues and achieve accurate 90-degree turns. My efforts focused on leveraging the gyroscope to maintain and correct the car's orientation, pivotal for navigating complex mazes with high precision.
+One of the main challenges was ensuring the RC-car's precise orientation and alignment during movement. To address this, I used the MPU6050 gyroscope to correct alignment issues and achieve accurate 90-degree turns. My efforts focused on using the gyroscope to maintain and correct the car's orientation, crucial for navigating complex mazes with high precision.
 
-#### 17.1.1. Utilizing the MPU6050 Gyroscope for Precise Orientation
+#### 15.1.1. Using the MPU6050 Gyroscope for Precise Orientation
 
-- **Experiment E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments (see Video E1 in the Video References section).
-- **Experiment E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset (see Video E2 in the Video References section).
+- **Experiment E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope to correct the car's orientation for accurate navigation, aiming to improve control over the vehicle's movement through maze environments (see Video E1 in the Video References section).
+- **Experiment E2 - Navigational Corrections**: Addressing alignment issues for precise 90-degree turns and realigning the car's forward movement to fix a persistent ~3-degree offset (see Video E2 in the Video References section).
 
-### 17.2. Enhancing Movement Precision with Encoders
+### 15.2. Improving Movement Precision with Encoders
 
-The pursuit of enhancing the RC-car's movement precision led us to experiment with rotary encoders. These devices, integrated to measure wheel rotations accurately, were essential in our efforts to improve straight-line movements and address the challenges of hardware reliability in real-world applications.
+To enhance the RC-car's movement precision, I experimented with rotary encoders. These devices, which accurately measure wheel rotations, were essential for improving straight-line movements and addressing hardware reliability challenges in real-world applications.
 
-- **Experiment E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities (see Video E6 in the Video References section).
+- **Experiment E6 - Encoder Implementation**: Adding rotary encoders to the setup to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities (see Video E6 in the Video References section).
 - **Experiment E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability (see Video E7 in the Video References section).
 
-### 17.3. Real-World Application Tests
+### 15.3. Real-World Application Tests
 
-Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car's performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
+Moving beyond controlled environments, I tested the RC-car in both outdoor and indoor settings to evaluate its performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
 
 - **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
 - **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer (see Video E11 in the Video References section).
@@ -1187,141 +1153,80 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
   Rewrite this yourself
 -- -->
 
-## Chapter 18. Reflections on the Research Project
+## Chapter 16. Reflection
 
-### 18.1. Lessons Learned and the Path Ahead
+Reflecting on this research project, I've gained essential insights that have profoundly influenced my approach and perspective.
 
-At the culmination of this research journey, I've distilled essential insights that have profoundly influenced my approach and perspective:
+One of the key lessons learned is the value of openness. Embracing new ideas and venturing beyond familiar territory was crucial for fostering creativity and discovering innovative solutions. Moving forward, I am committed to maintaining this exploratory spirit, keen to harness the winds of novelty.
 
-### 18.2. The Value of Openness
+Bridging the gap between theory and practice proved challenging. While the virtual environments were controlled, the real world demanded adaptability to unforeseen complexities. This experience has sharpened my ability to navigate between the elegance of theory and the unpredictability of real-world applications.
 
-My experiments underscored the importance of embracing new ideas and venturing beyond familiar territory. This openness not only spurred creativity but was also vital for discovering innovative solutions. Moving forward, I am committed to maintaining this exploratory spirit, keen to harness the winds of novelty.
+Overcoming barriers taught me the importance of anticipatory thinking. From navigating corporate hurdles to adapting to evolving safety standards, looking ahead has become an integral part of my approach, transforming potential obstacles into opportunities for innovation.
 
-### 18.3. Bridging Theory and Practice
-
-The real challenge lay in translating theoretical knowledge into practical applications. The virtual environments were controlled, yet the real-world demanded adaptability to unforeseen complexities. This experience has sharpened my ability to navigate between the elegance of theory and the unpredictability of real-world applications.
-
-### 18.4. Anticipatory Thinking: Navigating Barriers
-
-Encountering and overcoming barriers taught me the value of anticipatory thinking. From navigating corporate hurdles to adapting to evolving safety standards, looking ahead has become an integral part of my approach, transforming potential obstacles into opportunities for innovation.
-
-### 18.5. Policy and Regulation: A Symbiotic Dance
-
-Engaging with policy and regulatory frameworks highlighted the delicate balance between innovation and legislation. As I worked with policymakers and industry leaders, I learned the importance of crafting regulations that foster innovation while ensuring public safety and accountability.
-
-### 18.6. Societal Impact: Echoes in Time
+Engaging with policy and regulatory frameworks highlighted the delicate balance between innovation and legislation. Working with policymakers and industry leaders, I learned the importance of crafting regulations that foster innovation while ensuring public safety and accountability.
 
 The societal implications of autonomous systems have been profound. From enhancing mobility for the disabled to influencing urban planning, the potential for positive impact is immense. I am more aware of the need to ensure these technologies are accessible and beneficial across societal divides.
 
-### 18.7. The Forward Path: A Research Ethos
-
 As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace the challenges that lie ahead.
 
-### 18.8. Insights from Interviews
+Insights from interviews provided valuable perspectives on specific technical aspects. For instance, choosing an RC car that can be extensively customized and programmed is crucial for a project focused on sim-to-real transfer. A model with a robust and accessible API, compatibility with various sensors, and the ability to handle different terrains would allow for more detailed control algorithms and a better understanding of how physical properties affect simulation results. Additionally, virtual environments like Unity 3D coupled with ROS offer extensive freedom for simulation, supporting a wide range of movement behaviors and interactions that can be programmed and tested in detail before real-world deployment.
 
-**1. Which RC car solution would be better suited for this context?**
+Employing a virtual twin can offer significant advantages over traditional camera systems, especially in terms of the depth of simulation and pre-testing. This approach can lead to better anticipation of how the car would behave in the real world under various conditions, thereby optimizing the algorithms more effectively before actual implementation. However, using a camera for real-time feedback and adjustments based on visual data is invaluable, so ideally, both approaches would be integrated for the best results.
 
-For a project focused on sim-to-real transfer, choosing an RC car that can be extensively customized and programmed is crucial. A model with a robust and accessible API, compatibility with various sensors, and the ability to handle different terrains would be ideal. This would allow for more detailed control algorithms and possibly a better understanding of how physical properties affect simulation results. Additionally, cars that can be equipped with advanced telemetry systems to provide real-time feedback would be particularly beneficial for refining control strategies based on the simulation.
+The project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning models, extending the testing environments to include varying conditions, and fostering community collaboration. These enhancements could not only improve the technology but also advance the field of autonomous vehicle research and development.
 
-**2. Which virtual environment would offer more freedom in the way the car moves within the simulation?**
+Reflecting on the path this research has taken, from concept to implementation, I've gathered key takeaways. Setting clear success criteria at the outset provided direction and motivation. Achieving control over the RC car was gratifying, demonstrating the effectiveness of the reinforcement learning techniques. However, consistency in real-world application remained challenging, highlighting the need for ongoing refinement and adaptation of the algorithms used.
 
-A virtual environment like Unity 3D coupled with ROS (Robot Operating System) would offer extensive freedom for simulation. Unity provides a rich and visually detailed environment that can be crucial for developing and testing perception algorithms. When used in conjunction with ROS, it allows for highly customizable simulation scenarios, which can mimic complex real-world dynamics. This combination would support a wide range of movement behaviors and interactions that can be programmed and tested in detail before real-world deployment.
+Feedback from seasoned experts was invaluable, helping refine the project by enhancing sensor capabilities and adjusting control algorithms. Ethical considerations were paramount, emphasizing the need for responsible innovation in areas like privacy, safety, and the impact of automation on employment.
 
-**3. Would employing a virtual twin provide more value in this context compared to using a camera?**
-
-Employing a virtual twin can offer significant advantages over traditional camera systems, especially in terms of the depth of simulation and pre-testing. A virtual twin allows for a 1:1 digital replica of the RC car and its environment, providing a platform to simulate physical and environmental interactions with high accuracy. This approach can lead to better anticipation of how the car would behave in the real world under various conditions, thereby optimizing the algorithms more effectively before actual implementation. However, using a camera for real-time feedback and adjustments based on visual data is invaluable, so ideally, both approaches would be integrated for best results.
-
-**4. In what ways can this project be further developed?**
-
-This project can be expanded in several exciting directions:
-
-- **Integration of more complex sensory systems:** Incorporating LIDAR, advanced gyroscopes, and other environmental sensors can enhance the car's ability to understand and navigate its surroundings.
-- **Machine learning enhancements:** Applying more sophisticated machine learning models like convolutional neural networks (CNNs) or recurrent neural networks (RNNs) could improve the car's decision-making processes and adaptability.
-- **Broader testing environments:** Extending the project to include different types of environments, such as varying weather conditions or obstacle complexities, can help generalize the car's capabilities.
-- **Community collaboration:** Open-sourcing the project or collaborating with educational institutions could not only improve the technology but also foster a community around autonomous vehicle research and development.
-
-## Chapter 19. Self-Reflection on the Research Project
-
-Reflecting on the path this research has taken, from concept to implementation, I’ve gathered key takeaways:
-
-### 19.1. Proposed Success Criteria: A North Star
-
-Setting clear success criteria at the outset provided direction and motivation. These goals not only guided my research but also fueled my passion and commitment through various challenges.
-
-### 19.2. Achieved Success Criteria: The Joy of Control
-
-Successfully controlling the RC car was a significant achievement. It was gratifying to see the reinforcement learning techniques effectively translate from simulation to real-world application.
-
-### 19.3. Unachieved Success Criteria: The Elusive Consistency
-
-Despite successes, consistency in real-world application remained challenging. These experiences highlighted the need for ongoing refinement and adaptation of the algorithms used.
-
-### 19.4. Smooth Sailing and Hidden Currents
-
-While some aspects of the project proceeded smoothly, others, like adapting virtual models to complex real-world conditions, required significant adjustments and problem-solving.
-
-### 19.5. Jury Feedback: Winds of Wisdom
-
-Feedback from seasoned experts was invaluable. Their insights helped refine the project, enhancing sensor capabilities and adjusting control algorithms, which were crucial for improving overall outcomes.
-
-### 19.6. The Ethical Compass: Navigating Humanity
-
-Ethical considerations were paramount. Reflecting on issues like privacy, safety, and the impact of automation on employment emphasized the need for responsible innovation.
-
-### 19.7. The Ripple Effect: Echoes in Time
-
-This project has implications far beyond the academic realm, influencing policy, industry practices, and public perceptions. It has sparked important discussions that will hopefully lead to more informed and ethical technology development.
-
-### 19.8. The Next Voyage: Beyond the Horizon
-
-As this project closes, new questions arise, setting the stage for further exploration of how to balance progress with ethical considerations. I am eager to continue this journey, guided by the insights gained and motivated by both the achievements and the challenges that remain.
+This project has implications far beyond the academic realm, influencing policy, industry practices, and public perceptions. It has sparked important discussions that will hopefully lead to more informed and ethical technology development. As this project closes, new questions arise, setting the stage for further exploration of how to balance progress with ethical considerations. I am eager to continue this journey, guided by the insights gained and motivated by both the achievements and the challenges that remain.
 
 \pagebreak
 
-## Chapter 20. Advice
+## Chapter 17. Advice
 
-### 20.1. Practical Utilization of Simulations
+### 17.1. Practical Utilization of Simulations
 
 Simulations are invaluable in research, offering a risk-free, controllable environment for developing and refining algorithms.
 
 - **Cost-Effectiveness:** Simulations allow for substantial cost savings by reducing the need for physical prototypes and extensive real-world trials in the early phases of research.
 
-### 20.2. Strategies for Effective Transition from Simulation to Reality
+### 17.2. Strategies for Effective Transition from Simulation to Reality
 
 Successfully transitioning from simulations to real-world applications is critical for validating the effectiveness of research outcomes.
 
 - **Incremental Testing:** Start with simulations to refine algorithms, then gradually introduce real-world testing to confirm results and adapt to environmental variables.
 - **Feedback Loops:** Use continuous feedback mechanisms to enhance simulation models with insights gained from real-world tests, improving their accuracy and applicability.
 
-### 20.3. Overcoming Common Challenges in Simulation-to-Reality Transitions
+### 17.3. Overcoming Common Challenges in Simulation-to-Reality Transitions
 
 Bridging the gap between simulations and actual conditions often requires specific adjustments, especially in terms of sensor data and mechanical operations.
 
 - **Sensor Discrepancy Adjustments:** Regular calibration of real-world sensors is essential to ensure they align with simulation inputs.
 - **Movement and Mechanics Alignment:** It's crucial to synchronize physical movements and mechanics with those anticipated by simulations to ensure smooth transitions.
 
-### 20.4. Insights from My Research
+### 17.4. Insights from My Research
 
 - **Simulation Platforms:** Choosing the right simulation platform, like OpenAI Gym, is critical and may necessitate additional tools for more complex scenarios.
 - **DDQN Superiority:** My findings show that Double Deep Q-Network (DDQN) surpasses other models, such as DQN and PPO, by reducing overestimations and enhancing learning stability.
 
-### 20.5. Methodological Advice
+### 17.5. Methodological Advice
 
 - **Comprehensive Evaluation:** Utilize a mix of qualitative and quantitative approaches to thoroughly evaluate the effectiveness of both simulations and real-world applications.
 - **Adaptive Techniques:** Stay flexible and responsive to the results and feedback, which are crucial for effectively tackling unexpected challenges.
 
-### 20.6. Practical Experiment Integration
+### 17.6. Practical Experiment Integration
 
 - **Prototyping and Iteration:** Use iterative design and prototyping to progressively refine systems, effectively linking theoretical research and practical implementation.
 - **Continuous Feedback:** Continuously seek and integrate feedback from stakeholders and peers to improve simulation models and real-world applications.
 
-### 20.7. Guidelines for Future Research
+### 17.7. Guidelines for Future Research
 
-#### 20.7.1. Introduction for Future Research
+#### 17.7.1. Introduction for Future Research
 
 This chapter outlines a detailed methodology and provides advice for researchers engaged in simulation-based studies, aimed at ensuring a successful transition from theoretical models to practical applications.
 
-#### 20.7.2. Step-by-Step Plan
+#### 17.7.2. Step-by-Step Plan
 
 ##### Step 1: Selection of Simulation Environments
 
@@ -1344,11 +1249,11 @@ This chapter outlines a detailed methodology and provides advice for researchers
 <!-- TODO: Add sources -->
 <!-- ## Comparative Analysis with Existing Sim-to-Real Studies
 
-### 20.8. Introduction to comparative analysis
+### 17.8. Introduction to comparative analysis
 
 This section offers a critical examination of the methodologies and outcomes of notable studies within the sim-to-real transfer domain, comparing them with the findings of the present thesis. By integrating a comprehensive 2023 review, the analysis not only highlights distinct methodologies and scalability but also their implications for sim-to-real transfer across various applications.
 
-### 20.9. Overview of Referenced Studies
+### 17.9. Overview of Referenced Studies
 
 1. **Rusu et al. (2016)**: This study utilizes Progressive Networks to facilitate learning transfer from simulation to real environments, specifically focusing on robotic learning from visual inputs. This method allows sequential transfer of learned behaviors across tasks, significantly reducing the real-world data requirement by leveraging previously learned features.
 
@@ -1356,7 +1261,7 @@ This section offers a critical examination of the methodologies and outcomes of 
 
 3. **Comprehensive Review (2023)**: A broad survey of sim-to-real techniques categorizing various approaches such as domain randomization, adaptation, and reality augmentation. It critically addresses the limitations in current methodologies, focusing on robustness, data variability, and computational demands.
 
-### 20.10. Methodological Comparisons
+### 17.10. Methodological Comparisons
 
 - **Progressive Networks vs. DDQN**: Progressive Networks address catastrophic forgetting and facilitate knowledge transfer across different domains, a feature not inherently focused on in the DDQN used in this thesis. DDQN, instead, targets the reduction of overestimation bias in Q-values within a single environment, improving action-value estimations for complex maze navigation tasks.
 
@@ -1364,25 +1269,45 @@ This section offers a critical examination of the methodologies and outcomes of 
 
 - **Broad Technique Review**: The comprehensive review adds depth by highlighting a spectrum of strategies and contextualizing them within the broader field, providing a benchmark against which the DDQN methodology can be evaluated. This perspective is valuable for assessing the scalability and adaptability of the DDQN approach used in this thesis.
 
-### 20.11. Outcome and Effectiveness Comparisons
+### 17.11. Outcome and Effectiveness Comparisons
 
 - **Generalization and Data Efficiency**: Both Rusu et al. and James et al. demonstrate significant advances in generalization across tasks and environments with minimal real-world data. These methodologies underscore potential enhancements for the DDQN approach, particularly in adapting to varied and unforeseen real-world scenarios.
 
 - **Review Insights on Robustness and Adaptability**: The review’s emphasis on robustness and adaptability challenges some of the limitations encountered in this thesis’s DDQN application, suggesting areas for further development such as incorporating adaptive layers or feedback mechanisms that could dynamically adjust to new environments.
 
-### 20.12. Implications for Current Research
+### 17.12. Implications for Current Research
 
 - **Integration of Progressive Learning and Sim2Sim Techniques**: Drawing on the strengths of Progressive Networks and RCANs, and the broader techniques outlined in the comprehensive review, there may be substantial benefits to integrating elements of these approaches into future iterations of sim-to-real frameworks in this thesis.
 
 - **Future Methodological Enhancements**: Exploring intermediary simulations that progressively approximate real-world conditions could mitigate the stark differences between training environments and testing conditions, enhancing the real-world applicability and effectiveness of the models developed.
 
-### 20.13. Conclusion for comparative analysis with existing studies
+### 17.13. Conclusion for comparative analysis with existing studies
 
 This comparative analysis enriches the understanding of sim-to-real transfer techniques by situating the current research within the context of broader methodological developments and challenges in the field. The integration of insights from progressive networks, RCANs, and a comprehensive review of sim-to-real strategies highlights potential avenues for refining the approach used in this thesis, aiming for greater robustness, adaptability, and real-world applicability. -->
 
+## Chapter 18. Sources of Inspiration and Conceptual Framework
+
+The inspiration for this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micro mouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.
+
+### 18.1. Micro mouse Competitions and Reinforcement Learning
+
+Micro mouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest path finding, as detailed in the insightful Medium article by M. A. Dharmasiri \hyperref[ref15]{[15]}, enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.
+
+### 18.2. Influential YouTube Demonstrations and GitHub Insights
+
+YouTube videos such as "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} provided vivid demonstrations of RL's applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, highlighted the practical steps and challenges in implementing RL in physical systems.
+
+### 18.3. Technical Exploration and Academic Foundation
+
+The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.\hyperref[ref12]{[12]} and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund \hyperref[ref17]{[17]}, which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.
+
+### 18.4. Synthesis and Research Direction
+
+These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
+
 \pagebreak
 
-## Chapter 21. General Conclusion
+## Chapter 19. General Conclusion
 
 This thesis has effectively demonstrated the potential of transferring a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, focusing specifically on navigating a maze using a remote-controlled (RC) car. The detailed experiments and analyses discussed in earlier chapters offer a comprehensive exploration of this transition.
 
@@ -1396,9 +1321,9 @@ In conclusion, while it is feasible to transition a trained RL agent from simula
 
 \pagebreak
 
-## Chapter 22. Guest Speakers
+## Chapter 20. Guest Speakers
 
-### 22.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
+### 20.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
 
 Jeroen Boeye's talk, delivered on behalf of Faktion, provided valuable insights into the close relationship between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not just focusing on AI technology but also on the software engineering principles that support the creation of robust, scalable, and maintainable AI systems. This approach ensures that AI solutions are both technically sound and viable for long-term application.
 
@@ -1412,7 +1337,7 @@ Key points from Jeroen's talk included the mastery of data preprocessing and tre
 
 In summary, Jeroen Boeye's lecture offered a thorough perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
 
-### 22.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
+### 20.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
 
 Toon Vanhoutte's engaging lecture, on behalf of Noest from the Cronos Group, shed light on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
 
@@ -1428,11 +1353,11 @@ In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s in
 
 \pagebreak
 
-## Chapter 23. Installation Steps
+## Chapter 21. Installation Steps
 
 This section outlines the required steps to install and set up the project environment. Adherence to these instructions will ensure the successful deployment of the autonomous navigation system.
 
-### 23.1. Prerequisites
+### 21.1. Prerequisites
 
 Before initiating the setup process, ensure the following prerequisites are met:
 
@@ -1440,7 +1365,7 @@ Before initiating the setup process, ensure the following prerequisites are met:
 - **Docker:** Utilized for containerizing the web application and ensuring a consistent runtime environment.
 - Optionally, **Python 3.11** and **pip** may be installed along with the dependencies listed in `requirements.txt` for running the project without Docker.
 
-### 23.2. Repository Setup
+### 21.2. Repository Setup
 
 To clone the repository and navigate to the project directory, execute the following commands:
 
@@ -1449,15 +1374,15 @@ git clone https://github.com/driessenslucas/researchproject.git
 cd researchproject
 ```
 
-### 23.3. Hardware Setup and Assembly
+### 21.3. Hardware Setup and Assembly
 
-#### 23.3.1. Introduction to Hardware Components
+#### 21.3.1. Introduction to Hardware Components
 
 This section provides an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. The integration of these components is essential for the successful implementation of the autonomous navigation system.
 
 ![Final RC car](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)")
 
-#### 23.3.2. Components List
+#### 21.3.2. Components List
 
 - **Core Components**:
   - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
@@ -1472,7 +1397,7 @@ This section provides an overview of the hardware components used in the project
   - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
   - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
 
-#### 23.3.3. Wiring Guide
+#### 21.3.3. Wiring Guide
 
 **esp32 pins**
 
@@ -1500,19 +1425,19 @@ int sensor2Echo = 35; //GPIO front sensor
 
 ![ESP32 Wiring](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)")
 
-#### 23.3.4. Software Configuration
+#### 21.3.4. Software Configuration
 
 1. **Arduino IDE Setup**: Install the Arduino IDE to program the ESP32 microcontroller. Ensure the ESP32 board is added to the Arduino IDE by following the instructions provided by Espressif Systems.
 2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library to support the OLED display functionality.
 3. **Code Upload:** Transfer the scripts located in the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration for connectivity.
 
-### 23.4. Web Application Setup
+### 21.4. Web Application Setup
 
-#### 23.4.1. Note
+#### 21.4.1. Note
 
 To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
 
-#### 23.4.2. Steps
+#### 21.4.2. Steps
 
 1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
 
@@ -1526,7 +1451,7 @@ To ensure a seamless setup of the virtual display, it is recommended to execute 
    docker-compose up -d
    ```
 
-### 23.5. Usage Instructions
+### 21.5. Usage Instructions
 
 1. Access the web application by navigating to <http://localhost:8500> or <http://localhost:5000> on your web browser.
 2. Enter the ESP32's IP address within the web app and select the desired model for deployment.
@@ -1535,7 +1460,7 @@ To ensure a seamless setup of the virtual display, it is recommended to execute 
 
 A demonstration of the project is available (see Web App Demo in the Video References section).
 
-### 23.6. Additional Information: Model Training
+### 21.6. Additional Information: Model Training
 
 - Opt between utilizing a pre-trained model or conducting new training sessions using the script available in [train](./training/train.py).
 - This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.
@@ -1543,7 +1468,7 @@ A demonstration of the project is available (see Web App Demo in the Video Refer
 
 \pagebreak
 
-## Chapter 24. Video References
+## Chapter 22. Video References
 
 1. **Video E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments.
    - Click here to go to the video: [Video E1](https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac)
