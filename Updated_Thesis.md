@@ -21,6 +21,9 @@ text3: Howest Kortrijk
 text4: 2024
 lof: true
 lof-own-page: True
+output:
+  rmarkdown::pdf_document:
+    fig_caption: yes
 abstract: |
   In my research, I explore the exciting world of artificial intelligence, specifically focusing on reinforcement learning (RL) and its practical applications. The central question driving my investigation is whether we can transfer a trained RL agent from a simulation to the real world. This inquiry takes center stage as we delve into the intricacies of maze navigation.
 
@@ -45,7 +48,6 @@ acknowledgements: |
 
 <!-- pandoc thesis_new.md --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template template.tex --lua-filter pagebreak.lua -->
 <!-- pandoc --from markdown --to html5 --standalone --toc --number-sections --citeproc --wrap=preserve --highlight-style=kate --mathml -->
-
 
 \pagebreak
 
@@ -267,13 +269,13 @@ The spotlight shines squarely on maze navigation. Imagine an RC car—a miniatur
 
 ### 1.4. The Expedition: Four Key Steps
 
-  1. **Simulator Design:** I embark on creating a realistic maze simulator—one that captures physical nuances like wheel slippage, sensor noise, and limited field of view. The virtual car will explore a maze while learning through trial and error.
+1. **Simulator Design:** I embark on creating a realistic maze simulator—one that captures physical nuances like wheel slippage, sensor noise, and limited field of view. The virtual car will explore a maze while learning through trial and error.
 
-  2. **Transfer Learning Strategies:** How do I bridge the gap? I'll delve into techniques such as domain adaptation, fine-tuning, and meta-learning. Can we distill the essence of maze-solving without overfitting to the simulation?
+2. **Transfer Learning Strategies:** How do I bridge the gap? I'll delve into techniques such as domain adaptation, fine-tuning, and meta-learning. Can we distill the essence of maze-solving without overfitting to the simulation?
 
-  3. **Sensor Calibration:** The RC car’s sensors—lidar, cameras, and encoders—differ from their virtual counterparts. Calibrating them effectively is crucial. I’ll explore sensor fusion and adaptation methods to ensure seamless transitions.
+3. **Sensor Calibration:** The RC car’s sensors—lidar, cameras, and encoders—differ from their virtual counterparts. Calibrating them effectively is crucial. I’ll explore sensor fusion and adaptation methods to ensure seamless transitions.
 
-  4. **Robust Policies:** The car won’t encounter neatly defined corridors; it’ll face real-world messiness. Robust policies—resilient to noisy data and unexpected scenarios—are essential.
+4. **Robust Policies:** The car won’t encounter neatly defined corridors; it’ll face real-world messiness. Robust policies—resilient to noisy data and unexpected scenarios—are essential.
 
 ### 1.5. Beyond Mazes: A Broader Canvas
 
@@ -305,7 +307,8 @@ This investigation centers around the question: "Can a trained RL agent effectiv
 5. **Model Adaptation to Real RC Car**: Discussing necessary adjustments for real-world application.
 
 My research combines qualitative and quantitative methodologies, including simulation experiments and real-world trials. By doing so, I aim not only to validate sim-to-real transfer but also to contribute to the ongoing discourse on practical challenges in Reinforcement Learning (RL).
-<!-- 
+
+<!--
 ### 3.1. Main Research Question
 
 **Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)**
@@ -385,30 +388,35 @@ To enhance training stability, I periodically synchronize the target network's w
 ## Chapter 5. Reward Function and completion components
 
 In the context of maze navigation, designing an effective reward function is crucial for guiding an agent's learning process. Below, I outline the key components of the reward function used in our framework:
-<!-- 
+
+<!--
 1. **Collision Penalty ($R_{\text{collision}}$):**
    - When the agent attempts to move into a wall or outside the designated maze boundaries, it triggers a collision state.
    - To discourage such actions, a significant penalty is applied: $R_{\text{collision}} = -20$.
    - This penalty ensures that the agent learns about the environment's boundaries and obstacles, promoting safe navigation. -->
 
 1. **Goal Achievement Bonus ($R_{\text{goal}}$):**
+
    - Reaching the goal is the primary objective of the maze navigation task.
    - Upon achieving this objective, the agent receives a substantial reward: $R_{\text{goal}} = +500$.
    - However, if the agent takes an excessively long route to reach the goal (more than 1000 steps), it gets a penalty: $R_{\text{goal}} = -200$.
    - This mechanism encourages efficient navigation while still rewarding successfully reaching the goal
 
 2. **Proximity Reward ($R_{\text{proximity}}$):**
+
    - Encourages the agent to minimize its distance to the goal over time.
    - The reward decreases as the distance to the goal increases: $R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}$.
    - Here, $d_{\text{goal}}$ represents the Euclidean distance to the goal.
 
 3. **Progress Reward ($R_{\text{progress}}$):**
+
    - Provides immediate feedback based on the agent's movement relative to the goal.
    - If the distance to the goal decreases, the agent receives a positive reward: $R_{\text{progress}} = +50$.
    - if the distance increases, it gets a penalty: $R_{\text{progress}} = -25$.
    - This encourages smarter navigation decisions.
 
 4. **Exploration Penalty ($R_{\text{revisit}}$):**
+
    - Discourages repetitive exploration of the same areas.
    - The agent receives a penalty for re-entering previously visited cells: $R_{\text{revisit}} = -10$.
    - This promotes exploration of new paths and prevents the agent from getting stuck.
@@ -431,7 +439,7 @@ To determine whether the environment has reached a "done" or "ended" state, seve
 The termination condition can be expressed as:
 
 $$
-\text{terminate}(steps, position) = \begin{cases} 
+\text{terminate}(steps, position) = \begin{cases}
 \text{true, "Exceeded max steps"} & \text{if } steps > 3000 \\
 \text{true, "Goal reached"} & \text{if } position = (10, 10) \\
 \text{true, "Out of bounds"} & \text{if } \neg \text{inBounds}(position) \\
@@ -525,7 +533,7 @@ Non-trainable params: 0 (0.00 Byte)
 ---
 ```
 
-![Model Architecture](./images/thesis/model_architecture.png){ width=100% }
+![Model Architecture](./images/thesis/model_architecture.png "Model Architecture (Image created by author)"){ width=100% }
 
 ### 9.1. Training Parameters
 
@@ -567,19 +575,19 @@ This project takes an innovative approach to sim-to-real transfer in reinforceme
 
 The following image provides a more detailed look at the real-world maze setup. This physical representation mirrors the virtual maze environment.
 
-![Final Maze Build](./images/final_test/final_maze_build.jpeg){ width=50% }
+![Real life Maze Build](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)"){ width=50% }
 
 - **Web Application Interface:**
 
 This web application serves as a control interface for the RC car, allowing me to easily monitor what the RC car sees (due to the sensor values being displayed) and emergency stop the car if needed.
 
-![Web App Interface](./images/thesis/web_app.png){ width=100% }
+![Web App Interface](./images/thesis/web_app.png "Web App (Image created by author)){ width=100% }
 
 - **Simulation Test Video:**
 
 Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a real sense of how the algorithm navigates through the maze.
 
-  - **DDQN Simulation test:** <https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e>
+- **DDQN Simulation test:** See DDQN Simulation in the Video reference section.
 
 ### 10.1. Evaluation Metrics Overview
 
@@ -687,7 +695,7 @@ Proximal Policy Optimization (PPO) is a policy gradient method for reinforcement
 
 **Optimization Technique**: PPO seeks to take the largest possible improvement step on a policy while avoiding
 
- too large updates that might lead to performance collapse. It achieves this through an objective function that includes a clipped term, penalizing changes to the policy that move it too far from the previous policy.
+too large updates that might lead to performance collapse. It achieves this through an objective function that includes a clipped term, penalizing changes to the policy that move it too far from the previous policy.
 
 **Advantages**: PPO is robust to a variety of hyperparameters and can be used in both continuous and discrete action spaces. It has shown great success in environments ranging from simulated robotics to complex game environments.
 
@@ -730,47 +738,165 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 
 **1. Visit Heatmaps**
 
-  ![DDQN Heatmap](./images/training_images/visit_heatmap_DDQN.png){ width=50%}
-  ![DQN Heatmap](./images/training_images/visit_heatmap_DQN.png){ width=50%}
-  ![PPO Heatmap](./images/training_images/visit_heatmap_PPO.png){ width=50%}
-  ![Q-agent Heatmap](./images/training_images/visit_heatmap_Q-agent.png){ width=50%}
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_DDQN.png}
+\captionof{figure}{DDQN Heatmap (Image created by author)}
+\end{minipage}%
+\hspace{.05\textwidth}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_DQN.png}
+\captionof{figure}{DQN Heatmap (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_PPO.png}
+\captionof{figure}{PPO Heatmap (Image created by author)}
+\end{minipage}%
+\hspace{.05\textwidth}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth * 1.2]{./images/training_images/visit_heatmap_Q-agent.png}
+\captionof{figure}{Q-agent Heatmap (Image created by author)}
+\end{minipage}
+\end{figure}
 
 **2. Maze Solution Efficiency**
 
 **PPO and AC are not included in this visualization due to their relatively higher step counts compared to DDQN and DQN.**
 
-  ![DDQN Maze Path](./images/training_images/maze_solution_DDQN.png){ width=50%}
-  ![DQN Maze Path](./images/training_images/maze_solution_DQN.png){ width=50%}
-  ![Q-agent Maze Path](./images/training_images/maze_solution_Q-agent.png){ width=50%}
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_DDQN.png}
+\captionof{figure}{DDQN Maze Path (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_DQN.png}
+\captionof{figure}{DQN Maze Path (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+\begin{figure}[ht]
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_Q-agent.png}
+\captionof{figure}{Q-agent Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
 
 **3. Reward History and Distribution**
 
-  ![DDQN Reward History](./images/training_images/reward_history_DDQN.png){ width=50%}
-  ![DQN Reward History](./images/training_images/reward_history_DQN.png){ width=50%}
-  ![AC Reward History](./images/training_images/reward_history_AC.png){ width=50%}
-  ![PPO Reward History](./images/training_images/reward_history_PPO.png){ width=50%}
-  ![Q-agent Reward History](./images/training_images/reward_history_Qlearning.png){ width=50%}
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_DDQN.png}
+\captionof{figure}{DDQN Reward History (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_DQN.png}
+\captionof{figure}{DQN Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_AC.png}
+\captionof{figure}{AC Reward History (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_PPO.png}
+\captionof{figure}{PPO Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_Qlearning.png}
+\captionof{figure}{Q-agent Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
 
 **4. Mean Squared Error (MSE) Over Time**
 
-  ![DDQN MSE](./images/training_images/mse_history_sampled_DDQN.png){ width=50%}
-  ![DQN MSE](./images/training_images/mse_history_sampled_DQN.png){ width=50%}
-  ![AC MSE](./images/training_images/mse_history_AC.png){ width=50%}
-  ![PPO loss](./images/training_images/mse_history_PPO.png){ width=50%}
-  
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_sampled_DDQN.png}
+\captionof{figure}{DDQN MSE (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_sampled_DQN.png}
+\captionof{figure}{DQN MSE (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_AC.png}
+\captionof{figure}{AC MSE (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_PPO.png}
+\captionof{figure}{PPO Loss (Image created by author)}
+\end{minipage}
+\end{figure}
+
 **5. Moving average of rewards**
 
-  ![DDQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DDQN.png){ width=50%}
-  ![DQN Moving Average](./images/training_images/steps_per_episode_with_moving_avg_DQN.png){ width=50%}
-  ![AC Moving Average](./images/training_images/reward_per_episode_with_moving_avg_AC.png){ width=50%}
-  ![PPO Moving Average](./images/training_images/reward_per_episode_with_moving_avg_PPO.png){ width=50%}
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/steps_per_episode_with_moving_avg_DDQN.png}
+\captionof{figure}{DDQN Moving Average (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/steps_per_episode_with_moving_avg_DQN.png}
+\captionof{figure}{DQN Moving Average (Image created by author)}
+\end{minipage}
+\end{figure}
 
-<!-- TODO: Make this easier to read -->
-### 12.2. Conclusion and Insights
-
-This comprehensive analysis demonstrates distinct performance characteristics and efficiencies of reinforcement learning algorithms in maze navigation. DDQN stands out for its balanced approach, achieving maze solutions efficiently with the fewest steps and displaying superior stability and error management. DQN, though slightly less efficient in navigation, showcases robust learning stability. Q-agent, despite its simple approach, competes closely with DDQN in terms of steps to solve the maze but struggles with early learning phases. AC and PPO display higher fluctuations in their performance metrics, necessitating further optimization for better consistency and efficiency.
-
-Ultimately, this analysis aids in selecting the most suitable reinforcement learning algorithm based on specific task requirements and environmental complexities, enhancing the understanding of their practical applications and optimizing learning outcomes. This provides invaluable insights for future research and application of these algorithms in complex navigation tasks.
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_per_episode_with_moving_avg_AC.png}
+\captionof{figure}{AC Moving Average (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_per_episode_with_moving_avg_PPO.png}
+\captionof{figure}{PPO Moving Average (Image created by author)}
+\end{minipage}
+\end{figure}
 
 ## Chapter 13. Implementation of Real-World Control Algorithms
 
@@ -798,7 +924,7 @@ Understanding the system's initial setup is crucial for ensuring robust and reli
 This subsection elaborates on how movement functions are implemented, translating simulated navigation algorithms into the real-world robotic system.
 
 - **Variables for Motor Control**
-  
+
   ```cpp
   int initialSpeed = 125; // Higher initial speed for robust movement
   int minSpeed = 40;      // Minimum speed to maintain control
@@ -847,6 +973,7 @@ void calibrateSensors()
 
 <!-- TODO : Vooral nog wat dieper ingaan op het feit dat jouw sensoren niet voldoende data opleveren om de exacte positie te bepalen binnen de real-world grid. Je doet dat dan wel binnen jouw conclusies, maar hier mag je er ook al wat dieper op ingaan -->
 <!-- rewrite this seciont, too many subtitles and too little information to make it a valuable additions -->
+
 ## Chapter 14. Real-World Application and Limitations
 
 ### 14.1. Introduction to Sensor and Movement Discrepancies
@@ -1019,7 +1146,6 @@ Moving beyond controlled environments, I conducted tests in both outdoor and ind
 - The outdoor test attempted to navigate the RC-car on uneven surfaces, where surface texture variations greatly affected its performance. This test underscored the importance of environmental factors in autonomous navigation. See \hyperref[ref30]{[30]} and \hyperref[ref31]{[31]}.
 - Indoor testing provided a more controlled environment, allowing us to closely monitor and adjust the RC-car's navigation strategies. Despite the controlled conditions, these tests highlighted the challenge of accurately translating simulation models to real-world applications, reflecting on the complexities of sim-to-real transfer. See \hyperref[ref32]{[32]}, \hyperref[ref33]{[33]}, \hyperref[ref34]{[34]}, and \hyperref[ref35]{[35]}. -->
 
-<!-- TODO: add a seperate section and reference the links to the videos instead of having them in the paragraf -->
 ## Chapter 17. Integration of Practical Experiments
 
 Throughout this research project, I employed a series of practical experiments to navigate and overcome encountered challenges. These experiments, documented through video demonstrations, provide tangible insights into my problem-solving process.
@@ -1030,22 +1156,22 @@ One of the key challenges I faced was ensuring precise orientation and alignment
 
 #### 17.1.1. Utilizing the MPU6050 Gyroscope for Precise Orientation
 
-- **Experiment E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments. <https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac>
-- **Experiment E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset. <https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13>
+- **Experiment E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments (see Video E1 in the Video References section).
+- **Experiment E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset (see Video E2 in the Video References section).
 
 ### 17.2. Enhancing Movement Precision with Encoders
 
 The pursuit of enhancing the RC-car's movement precision led us to experiment with rotary encoders. These devices, integrated to measure wheel rotations accurately, were essential in our efforts to improve straight-line movements and address the challenges of hardware reliability in real-world applications.
 
-- **Experiment E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities. <https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
-- **Experiment E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability. <https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
+- **Experiment E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities (see Video E6 in the Video References section).
+- **Experiment E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability (see Video E7 in the Video References section).
 
 ### 17.3. Real-World Application Tests
 
 Moving beyond controlled environments, I conducted tests in both outdoor and indoor settings to evaluate the RC-car's performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
 
-- **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation. <https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
-- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer. <https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
+- **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
+- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer (see Video E11 in the Video References section).
 
 \pagebreak
 
@@ -1149,8 +1275,6 @@ This project has implications far beyond the academic realm, influencing policy,
 ### 19.8. The Next Voyage: Beyond the Horizon
 
 As this project closes, new questions arise, setting the stage for further exploration of how to balance progress with ethical considerations. I am eager to continue this journey, guided by the insights gained and motivated by both the achievements and the challenges that remain.
-
-
 
 \pagebreak
 
@@ -1331,7 +1455,7 @@ cd researchproject
 
 This section provides an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. The integration of these components is essential for the successful implementation of the autonomous navigation system.
 
-![Final rc-car](./images/final_test/jp_final.jpeg)
+![Final RC car](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)")
 
 #### 23.3.2. Components List
 
@@ -1374,7 +1498,7 @@ int sensor2Echo = 35; //GPIO front sensor
 
 **ESP32 Wiring:**
 
-![ESP32 Wiring](./images/schematics/esp_updated.png)
+![ESP32 Wiring](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)")
 
 #### 23.3.4. Software Configuration
 
@@ -1409,7 +1533,7 @@ To ensure a seamless setup of the virtual display, it is recommended to execute 
 3. The system provides an option for a virtual demonstration, allowing for operation without engaging the physical vehicle.
 4. Initiate the maze navigation by clicking the `Start Maze` button.
 
-A demonstration of the project is available [here](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f).
+A demonstration of the project is available (see Web App Demo in the Video References section).
 
 ### 23.6. Additional Information: Model Training
 
@@ -1417,55 +1541,98 @@ A demonstration of the project is available [here](https://github.com/driessensl
 - This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.
 - Upon completion, you will be prompted to save the new model. If saved, it will be stored within the [models](./web_app/models) directory of the `web_app` folder.
 
-<!-- \pagebreak
+\pagebreak
 
- ## Supplementary Materials
+## Chapter 24. Video References
 
-### 23.7. Experiment Links
+1. **Video E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments.
+   - Click here to go to the video: [Video E1](https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac)
 
-Below are links to video demonstrations and detailed documentation of the experiments conducted during this research.
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_1.png}
+        \end{minipage}
+        \caption{QR code for video Video E1. (Video by author.)}
+    \end{figure}
 
-- **Experiment E1 - Utilizing the MPU6050 Gyroscope for Precise Orientation, Test 1**:  
-  \[27\]\label{ref27} <https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac>
+2. **Video E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset.
+   - [Video E2](https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13)
 
-- **Experiment E2 - Utilizing the MPU6050 Gyroscope for Precise Orientation, Test 2**:  
-  \[28\]\label{ref28} <https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_2.png}
+        \end{minipage}
+        \caption{QR code for video Video E2. (Video by author.)}
+    \end{figure}
 
-- **Experiment E3 - Addressing Persistent Alignment Issue, Test 1**:  
-  \[29\]\label{ref24} <https://github.com/driessenslucas/researchproject/assets/91117911/bb9aa643-9620-4979-a70c-ec2826c7dd33>
+3. **Video E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities.
+   - Click here to go to the video: [Video E6](https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f)
 
-- **Experiment E4 - Addressing Persistent Alignment Issue, Test 2**:  
-  \[30\]\label{ref25} <https://github.com/driessenslucas/researchproject/assets/91117911/689b590f-3a9a-4f63-ba9c-978ddd08ab53>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_3.png}
+        \end{minipage}
+        \caption{QR code for video Video E6. (Video by author.)}
+    \end{figure}
 
-- **Experiment E5 - Addressing Persistent Alignment Issue, Test 3**:  
-  \[31\]\label{ref26} <https://github.com/driessenslucas/researchproject/assets/91117911/99da37df-d147-43dc-828f-524f55dc6f70>
+4. **Video E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability.
+   - Click here to go to the video: [Video E7](https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442)
 
-- **Experiment E6 - Enhancing Movement Precision with Encoders, Test 1**:  
-  \[32\]\label{ref27} <https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_4.png}
+        \end{minipage}
+        \caption{QR code for video Video E7. (Video by author.)}
+    \end{figure}
 
-- **Experiment E7 - Enhancing Movement Precision with Encoders, Test 2**:  
-  \[33\]\label{ref28} <https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442>
+5. **Video E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation.
+   - Click here to go to the video: [Video E9](https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c)
 
-- **Experiment E8 - Malfunction During Encoder Testing**:  
-  \[34\]\label{ref29} <https://github.com/driessenslucas/researchproject/assets/91117911/ae5129fa-c25f-4f89-92bb-4ee81df9f7a5>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_5.png}
+        \end{minipage}
+        \caption{QR code for video Video E9. (Video by author.)}
+    \end{figure}
 
-- **Experiment E9 - Outdoor Maze Test, Uneven Surfaces Test 1**:  
-  \[30\]\label{ref30} <https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c>
+6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer.
+   - Click here to go to the video: [Video E11](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b)
 
-- **Experiment E10 - Outdoor Maze Test, Uneven Surfaces Test 2**:  
-  \[31\]\label{ref31} <https://github.com/driessenslucas/researchproject/assets/91117911/187561a7-c0cb-4921-af3e-9c2c99cb0137>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_6.png}
+        \end{minipage}
+        \caption{QR code for video Video E11. (Video by author.)}
+    \end{figure}
 
-- **Experiment E11 - Indoor Maze Test 1**:  
-  \[32\]\label{ref32} <https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b>
+7. **Web App Demo**: A demonstration of the web application's functionality, showcasing the user interface and the autonomous navigation system's control features.
+   - Click here to go to the video: [Web App Demo](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f)
 
-- **Experiment E12 - Indoor Maze Test 2**:  
-  \[33\]\label{ref33} <https://github.com/driessenslucas/researchproject/assets/91117911/ea4a9bff-e191-4ce2-b2cc-acc57c781fa3>
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_7.png}
+        \end{minipage}
+        \caption{QR code for video Web App Demo. (Video by author.)}
+    \end{figure}
 
-- **Experiment E13 - Indoor Maze Test 3**:  
-  \[34\]\label{ref34} <https://github.com/driessenslucas/researchproject/assets/91117911/4783729f-10cc-4c61-afa4-71cfc93d5d3e>
+8. **DDQN Simulation test**: A simulation test of the DDQN model navigating a maze environment, demonstrating the model's learning capabilities and decision-making processes.
+   - Click here to go to the video: [DDQN Simulation](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
 
-- **Experiment E14 - Indoor Maze Test 4**:  
-  \[35\]\label{ref35} <https://github.com/driessenslucas/researchproject/assets/91117911/77091cb5-dbc5-4447-abc2-dc820dc66188> -->
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_8.png}
+        \end{minipage}
+        \caption{QR code for video DDQN Simulation. (Video by author.)}
+    \end{figure}
+
 
 \pagebreak
 
@@ -1513,15 +1680,15 @@ Below are links to video demonstrations and detailed documentation of the experi
 
 \[21\]\label{ref21} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: <https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/>.
 
-\[22\]\label{ref22} H. van Hasselt, A. Guez, and D. Silver, "Deep reinforcement learning with double Q-learning," in *Proc. of AAAI Conf. on Artificial Intelligence*, 2016.
+\[22\]\label{ref22} H. van Hasselt, A. Guez, and D. Silver, "Deep reinforcement learning with double Q-learning," in _Proc. of AAAI Conf. on Artificial Intelligence_, 2016.
 
-\[23\]\label{ref23} V. Mnih et al., "Human-level control through deep reinforcement learning," *Nature*, vol. 518, no. 7540, pp. 529-533, 2015.
+\[23\]\label{ref23} V. Mnih et al., "Human-level control through deep reinforcement learning," _Nature_, vol. 518, no. 7540, pp. 529-533, 2015.
 
-\[24\]\label{ref24} C. J. C. H. Watkins and P. Dayan, "Q-learning," *Machine Learning*, vol. 8, no. 3-4, pp. 279-292, 1992.
+\[24\]\label{ref24} C. J. C. H. Watkins and P. Dayan, "Q-learning," _Machine Learning_, vol. 8, no. 3-4, pp. 279-292, 1992.
 
-\[25\]\label{ref25} J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal policy optimization algorithms," *arXiv preprint arXiv:1707.06347*, 2017.
+\[25\]\label{ref25} J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal policy optimization algorithms," _arXiv preprint arXiv:1707.06347_, 2017.
 
-\[26\]\label{ref26} V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in *Proc. of the 13th International Conf. on Neural Information Processing Systems*, pp. 1008-1014, 2000.
+\[26\]\label{ref26} V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in _Proc. of the 13th International Conf. on Neural Information Processing Systems_, pp. 1008-1014, 2000.
 
 \[27\]\label{ref27} T. Saanum, "Reinforcement Learning with Simple Sequence Priors," arXiv preprint arXiv:2305.17109, 2024.
 
