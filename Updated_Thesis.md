@@ -536,7 +536,7 @@ Non-trainable params: 0 (0.00 Byte)
 ---
 ```
 
-![Model Architecture](./images/thesis/model_architecture.png "Model Architecture (Image created by author)"){ width=100% }
+![Model Architecture (Image created by author)](./images/thesis/model_architecture.png "Model Architecture (Image created by author)"){ width=100% }
 
 ### 9.1. Training Parameters
 
@@ -578,13 +578,13 @@ This project takes an innovative approach to sim-to-real transfer in reinforceme
 
 The following image provides a more detailed look at the real-world maze setup. This physical representation mirrors the virtual maze environment.
 
-![Real life Maze Build](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)"){ width=50% }
+![Real life Maze Build (Image created by author)](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)"){ width=50% }
 
 - **Web Application Interface:**
 
 This web application serves as a control interface for the RC car, allowing me to easily monitor what the RC car sees (due to the sensor values being displayed) and emergency stop the car if needed.
 
-![Web App Interface](./images/thesis/web_app.png "Web App (Image created by author)){ width=100% }
+![Web App (Image created by author)](./images/thesis/web_app.png "Web App (Image created by author)"){ width=100% }
 
 - **Simulation Test Video:**
 
@@ -1380,7 +1380,7 @@ cd researchproject
 
 This section provides an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. The integration of these components is essential for the successful implementation of the autonomous navigation system.
 
-![Final RC car](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)")
+![Final RC Car (Image created by author)](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)")
 
 #### 21.3.2. Components List
 
@@ -1423,7 +1423,7 @@ int sensor2Echo = 35; //GPIO front sensor
 
 **ESP32 Wiring:**
 
-![ESP32 Wiring](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)")
+![ESP32 Wiring (Image created by author)](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)")
 
 #### 21.3.4. Software Configuration
 
