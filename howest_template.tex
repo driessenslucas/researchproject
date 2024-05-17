@@ -994,9 +994,24 @@ $abstract$
 $endif$
 
 
-$if(acknowledgements)$
+$if(preface)$
 \begin{center}
  {\LARGE \textbf{\textsf{Preface}}}
+\end{center}
+
+\begin{abstract}
+\begin{justify}
+$preface$
+\end{justify}
+\end{abstract}
+\pagebreak
+$endif$
+
+
+
+$if(acknowledgements)$
+\begin{center}
+ {\LARGE \textbf{\textsf{Acknowledgements}}}
 \end{center}
 
 \begin{abstract}

@@ -30,20 +30,21 @@ abstract: |
   \noindent \newline The research is structured around several sub-questions, all aimed at creating a comprehensive understanding of the process. First, I investigate various virtual environments suitable for training a virtual RC car, aiming to find the most effective platform. Next, I identify the best reinforcement learning techniques for this specific application, considering factors like efficiency, adaptability, and real-world applicability. Finally, I explore the challenges involved in bridging the gap between simulation and reality.
 
   \noindent \newline Through this study, I hope to contribute significantly to the field of AI and robotics. By offering insights and methodologies, we can potentially advance the implementation of RL in real-world scenarios. The outcomes of this research could have far-reaching implications, not only in robotics but also in other areas where simulation-based training is crucial.
-
-acknowledgements: |
+preface: |
   This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” marks the culmination of my academic journey in New Media & Communication Technology at Howest, University of Applied Sciences. The pivotal question at its core—“Is it possible to transfer a trained RL agent from a simulation to the real world?”—reflects my deep-seated curiosity about the intersection of virtual simulations and tangible applications. It also underscores a broader challenge in AI: creating adaptive, real-world systems from controlled simulations.
 
-  \noindent \newline My fascination with the concept of Sim2Real transfer originated during the ‘Researchproject’ module. Witnessing the potential of simulated environments to approximate complex real-world behaviors sparked my interest in exploring their practical applicability. In structuring this thesis, I not only probe the theoretical foundations of Sim2Real transfer but also experimentally test its viability through a series of innovative applications. These experiments aim to refine the methods of Sim2Real transfer, enhancing their effectiveness and reliability.
+  \noindent \newline My fascination with the concept of Sim2Real transfer originated during the ‘Research Project’ module. Witnessing the potential of simulated environments to approximate complex real-world behaviors sparked my interest in exploring their practical applicability. In structuring this thesis, I not only probe the theoretical foundations of Sim2Real transfer but also experimentally test its viability through a series of innovative applications. These experiments aim to refine the methods of Sim2Real transfer, enhancing their effectiveness and reliability.
 
   \noindent \newline The research methodology adopted for this thesis combines qualitative analyses with quantitative experiments. Theoretical studies provide a comprehensive background, setting the stage for empirical tests conducted in controlled environments. By systematically assessing the performance of RL agents in various scenarios, the research seeks to identify optimal strategies for effective Sim2Real transitions.
 
-  \noindent \newline I extend heartfelt thanks to my coach and supervisor, Gevaert Wouter, for his invaluable guidance and insights throughout this research. His expertise and mentorship have been fundamental to my scholarly and personal growth. Gratitude is also due to Amaury Van Naemen for his technical support with 3D printing components crucial for my experiments. His assistance was pivotal in navigating the practical challenges of my research.
+  \noindent \newline Lucas Driessens  
+  \noindent \newline 01-06-2024
+acknowledgements: |
+  I extend heartfelt thanks to my coach and supervisor, Gevaert Wouter, for his invaluable guidance and insights throughout this research. His expertise and mentorship have been fundamental to my scholarly and personal growth. Gratitude is also due to Amaury Van Naemen for his technical support with 3D printing components crucial for my experiments. His assistance was pivotal in navigating the practical challenges of my research.
+
+  \noindent \newline I would also like to thank Sam De Beuf for not only being my internship supervisor but also my external promotor for this thesis! And allowing me the freedom to conduct research within my internship. This opportunity helped me grow significantly as a person and gain valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
 
   \noindent \newline Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their unwavering support has been instrumental in my pursuit of technology and innovation.
-
-  \noindent \newline Lucas Driessens
-  \noindent \newline 01-06-2024
 ---
 
 <!-- pandoc thesis_new.md --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template template.tex --lua-filter pagebreak.lua -->
@@ -735,7 +736,9 @@ Actor-Critic algorithms are versatile and can be applied to both discrete and co
 
 ## Chapter 12. Comparative Analysis of Reinforcement Learning Algorithms in Maze Navigation
 
-In this analysis, we compare various reinforcement learning algorithms, namely Double Deep Q-Network (DDQN), Deep Q-Network (DQN), Q-agent, Actor-Critic (AC), and Proximal Policy Optimization (PPO). This comparison is based on their performance in navigating a complex maze, focusing on efficiency, learning rate, and adaptability.
+In this analysis, I compare various reinforcement learning algorithms, namely Double Deep Q-Network (DDQN), Deep Q-Network (DQN), Q-agent, Actor-Critic (AC), and Proximal Policy Optimization (PPO). This comparison is based on their performance in navigating a complex maze, focusing on efficiency, learning rate, and adaptability.
+
+<!--TODO: add comparative analysis per sub-section -->
 
 ### 12.1. Performance Metrics and Visualization
 
@@ -771,6 +774,8 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 \end{minipage}
 \end{figure}
 
+**Commentary**: The visit heatmaps for DDQN and DQN demonstrate more focused exploration patterns, indicating effective learning and decision-making processes. In contrast, the heatmaps for PPO and Q-agent show more dispersed visitation, suggesting less efficient exploration strategies.
+
 **2. Maze Solution Efficiency**
 
 **PPO and AC are not included in this visualization due to their relatively higher step counts compared to DDQN and DQN.**
@@ -794,9 +799,11 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 \begin{figure}[ht]
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=\linewidth]{./images/training_images/maze_solution_Q-agent.png}
-\captionof{figure}{Q-agent Reward History (Image created by author)}
+\captionof{figure}{Q-agent Maze Path (Image created by author)}
 \end{minipage}
 \end{figure}
+
+**Commentary**: DDQN shows the most efficient path with the least number of steps to solve the maze, followed by DQN. Q-agent, while effective, exhibits a more convoluted path compared to DDQN and DQN, indicating room for improvement in efficiency.
 
 **3. Reward History and Distribution**
 
@@ -837,6 +844,8 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 \end{minipage}
 \end{figure}
 
+**Commentary**: The reward history graphs illustrate that DDQN and DQN exhibit more consistent and stable reward acquisition over time. AC and PPO show higher variability, indicating less stable learning processes. Q-agent, while stable, accumulates rewards at a slower rate compared to DDQN and DQN.
+
 **4. Mean Squared Error (MSE) Over Time**
 
 \begin{figure}[ht]
@@ -869,7 +878,9 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 \end{minipage}
 \end{figure}
 
-**5. Moving average of rewards**
+**Commentary**: DDQN shows the lowest and most stable MSE over time, indicating effective learning and error reduction. DQN, while also stable, has a slightly higher MSE. AC and PPO exhibit higher and more fluctuating MSE values, suggesting less effective error management.
+
+**5. Moving Average of Rewards**
 
 \begin{figure}[ht]
 \centering
@@ -900,6 +911,16 @@ In this analysis, we compare various reinforcement learning algorithms, namely D
 \captionof{figure}{PPO Moving Average (Image created by author)}
 \end{minipage}
 \end{figure}
+
+**Commentary**: The moving average of rewards illustrates that DDQN and DQN consistently improve their performance over time, while AC and PPO show more variability and slower improvement rates. Q-agent's moving average indicates steady but slower progress compared to DDQN and DQN.
+
+### 12.2. Conclusion and Insights
+
+This comprehensive analysis demonstrates distinct performance characteristics and efficiencies of reinforcement learning algorithms in maze navigation. DDQN stands out for its balanced approach, achieving maze solutions efficiently with the fewest steps and displaying superior stability and error management. DQN, though slightly less efficient in navigation, showcases robust learning stability. Q-agent, despite its simple approach, competes closely with DDQN in terms of steps to solve the maze but struggles with early learning phases. AC and PPO display higher fluctuations in their performance metrics, necessitating further optimization for better consistency and efficiency.
+
+Ultimately, this analysis aids in selecting the most suitable reinforcement learning algorithm based on specific task requirements and environmental complexities, enhancing the understanding of their practical applications and optimizing learning outcomes
+
+
 
 ## Chapter 13. Implementation of Real-World Control Algorithms
 
@@ -1153,35 +1174,80 @@ Moving beyond controlled environments, I tested the RC-car in both outdoor and i
   Rewrite this yourself
 -- -->
 
+
 ## Chapter 16. Reflection
 
-Reflecting on this research project, I've gained essential insights that have profoundly influenced my approach and perspective.
+Reflecting on this research project, I’ve gained essential insights that have profoundly influenced my approach and perspective.
+
+### 16.1. Openness to New Ideas
 
 One of the key lessons learned is the value of openness. Embracing new ideas and venturing beyond familiar territory was crucial for fostering creativity and discovering innovative solutions. Moving forward, I am committed to maintaining this exploratory spirit, keen to harness the winds of novelty.
 
+### 16.2. Bridging Theory and Practice
+
 Bridging the gap between theory and practice proved challenging. While the virtual environments were controlled, the real world demanded adaptability to unforeseen complexities. This experience has sharpened my ability to navigate between the elegance of theory and the unpredictability of real-world applications.
+
+### 16.3. Anticipatory Thinking
 
 Overcoming barriers taught me the importance of anticipatory thinking. From navigating corporate hurdles to adapting to evolving safety standards, looking ahead has become an integral part of my approach, transforming potential obstacles into opportunities for innovation.
 
+### 16.4. Policy and Regulation
+
 Engaging with policy and regulatory frameworks highlighted the delicate balance between innovation and legislation. Working with policymakers and industry leaders, I learned the importance of crafting regulations that foster innovation while ensuring public safety and accountability.
+
+### 16.5. Societal Implications
 
 The societal implications of autonomous systems have been profound. From enhancing mobility for the disabled to influencing urban planning, the potential for positive impact is immense. I am more aware of the need to ensure these technologies are accessible and beneficial across societal divides.
 
-As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace the challenges that lie ahead.
+### 16.6. Feedback from the Jury
 
-Insights from interviews provided valuable perspectives on specific technical aspects. For instance, choosing an RC car that can be extensively customized and programmed is crucial for a project focused on sim-to-real transfer. A model with a robust and accessible API, compatibility with various sensors, and the ability to handle different terrains would allow for more detailed control algorithms and a better understanding of how physical properties affect simulation results. Additionally, virtual environments like Unity 3D coupled with ROS offer extensive freedom for simulation, supporting a wide range of movement behaviors and interactions that can be programmed and tested in detail before real-world deployment.
+The feedback from the jury was predominantly positive, expressing admiration for the depth of my research. They highlighted several areas where my work excelled and provided constructive suggestions for improvement.
 
-Employing a virtual twin can offer significant advantages over traditional camera systems, especially in terms of the depth of simulation and pre-testing. This approach can lead to better anticipation of how the car would behave in the real world under various conditions, thereby optimizing the algorithms more effectively before actual implementation. However, using a camera for real-time feedback and adjustments based on visual data is invaluable, so ideally, both approaches would be integrated for the best results.
+1. **Depth of Research**: The jury appreciated the comprehensive nature of my research, particularly the detailed exploration of reinforcement learning (RL) and its application in maze navigation. They noted that my work demonstrated a thorough understanding of the theoretical aspects and practical challenges involved in sim-to-real transfer.
+
+2. **Innovative Solutions**: The jury commended my innovative approach to overcoming the challenges of sim-to-real transfer. They were impressed with my use of the Double Deep Q-Network (DDQN) architecture and the development of a custom maze navigation environment. These innovations were seen as significant contributions to the field of AI and robotics.
+
+3. **Practical Implementation**: The jury valued the practical aspects of my project, particularly the real-world testing of the RC car. They recognized the challenges associated with transitioning from simulation to reality and praised my efforts to address these challenges through rigorous testing and calibration.
+
+4. **Suggestions for Improvement**: Hans Ameel brought up some potential solutions for the challenges I encountered, such as increasing the distance to the walls to reduce the impact of deviations. This suggestion was based on the observation that the car's proximity to the walls could lead to errors in navigation due to sensor inaccuracies or physical obstructions.
+
+5. **Use of Camera**: Another suggestion was using a camera to monitor the position of the RC car within the maze. By integrating a camera system, I could obtain real-time visual feedback on the car's location and movements. This would help in fine-tuning the navigation algorithms and ensuring more accurate and reliable performance in real-world scenarios.
+
+6. **Correction on Sensor Use**: Additionally, a correction was made to my presentation: while I had indicated using an accelerometer to measure the rotation of my RC car, I actually used the gyroscope that is part of the MPU6050, which also contains an accelerometer and magnetometer. This correction was essential for accurately conveying the technical aspects of my project and ensuring clarity in the presentation of my methodologies.
+
+### 16.7. Methodological Insights
+
+### 16.8. Virtual Environment and Sim-to-Real Transfer
+
+Developing the custom maze navigation environment (RCMazeEnv) and utilizing the DDQN architecture provided significant insights into the complexities of sim-to-real transfer. The virtual environment allowed for controlled experimentation and fine-tuning of the RL algorithms, while real-world testing highlighted the practical challenges of applying these algorithms outside the simulation.
+
+### 16.9. Real-World Testing and Calibration
+
+The transition from simulation to real-world application involved extensive calibration and testing. Ensuring the RC car's sensors were accurately aligned with their virtual counterparts was critical. The iterative process of testing, calibration, and adjustment helped to refine the system and improve its performance in navigating the physical maze.
+
+### 16.10. Reward Function and Agent Performance
+
+Designing an effective reward function was crucial for guiding the agent's learning process. The balance between immediate rewards and penalties for inefficient actions helped to optimize the agent's performance. The inclusion of components such as goal achievement bonuses, proximity rewards, progress rewards, exploration penalties, and efficiency penalties provided a comprehensive framework for evaluating and improving the agent's navigation strategies.
+
+### 16.11. Societal Implications of Autonomous Systems
+
+The potential applications of autonomous systems extend far beyond maze navigation. The insights gained from this research could contribute to the development of autonomous vehicles, drones, and other robotic systems that navigate complex environments. Ensuring these technologies are accessible and beneficial to society requires careful consideration of ethical, regulatory, and practical factors.
+
+### 16.12. Future Directions
 
 The project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning models, extending the testing environments to include varying conditions, and fostering community collaboration. These enhancements could not only improve the technology but also advance the field of autonomous vehicle research and development.
 
-Reflecting on the path this research has taken, from concept to implementation, I've gathered key takeaways. Setting clear success criteria at the outset provided direction and motivation. Achieving control over the RC car was gratifying, demonstrating the effectiveness of the reinforcement learning techniques. However, consistency in real-world application remained challenging, highlighting the need for ongoing refinement and adaptation of the algorithms used.
+### 16.13. Personal Growth and Future Aspirations
 
-Feedback from seasoned experts was invaluable, helping refine the project by enhancing sensor capabilities and adjusting control algorithms. Ethical considerations were paramount, emphasizing the need for responsible innovation in areas like privacy, safety, and the impact of automation on employment.
+This research project has been a transformative experience, shaping my understanding of AI and robotics and guiding my future aspirations. The lessons learned, from the technical challenges to the broader societal implications, have equipped me with the skills and knowledge to pursue further research and innovation in this field.
 
-This project has implications far beyond the academic realm, influencing policy, industry practices, and public perceptions. It has sparked important discussions that will hopefully lead to more informed and ethical technology development. As this project closes, new questions arise, setting the stage for further exploration of how to balance progress with ethical considerations. I am eager to continue this journey, guided by the insights gained and motivated by both the achievements and the challenges that remain.
+### 16.14. Commitment to Innovation and Societal Stewardship
 
-\pagebreak
+As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace the challenges that lie ahead.
+
+### 16.15. Conclusion
+
+In conclusion, this research project has been an invaluable learning experience, providing deep insights into the challenges and opportunities of sim-to-real transfer in reinforcement learning. The positive feedback from the jury, coupled with the constructive suggestions for improvement, has been instrumental in shaping the direction of my work. Moving forward, I am excited to continue exploring the potential of autonomous systems and their applications, driven by a commitment to innovation and societal impact.
 
 ## Chapter 17. Advice
 
