@@ -2,7 +2,6 @@
 - **Author:** Lucas Driessens
 - **Date:** June 1, 2024 (expected completion date)
 - **Institution:** Howest (Bachelor Multimedia & Communication Technology)
-- **Keywords:** Markdown, Example (likely includes more relevant to the specific project content)
 
 ---
 
