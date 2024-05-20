@@ -1,0 +1,215 @@
+% my-template.latex
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+
+\geometry{a4paper, margin=1in}
+
+% Additional packages
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{changepage}
+\usepackage{lipsum}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{float}
+
+% package for justifying text
+\usepackage{ragged2e}
+
+%  begin shaded for macos
+\usepackage{framed}
+%  end shaded for macos
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+\usepackage{capt-of}
+\usepackage{silence} % Add the silence package
+
+% Filter out specific warnings
+\WarningFilter{latex}{Float too large for page}
+\WarningFilter{latex}{float specifier changed to}
+
+\WarningFilter{latex}{`h' float specifier changed to `ht'}
+% LaTeX Warning: Label   multiply defined.
+\WarningFilter{latex}{Label}
+
+% package for tightlist
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Custom commands
+\newcommand{\mycustomcommand}[1]{\textbf{#1}}
+
+%
+% header and footer
+%
+
+
+% Undefine \chead to avoid conflict
+
+\begin{document}
+
+
+%%%%% title page %%%%%
+\begin{titlepage}
+    \newgeometry{margin=0cm}
+    \begin{center}
+        %%%%% Change the cover image here %%%%%
+        \includegraphics[width=18.5cm,height=18.5cm]{./cover_image.png}
+    \end{center}
+    \begin{adjustwidth}{1.5cm}{1.5cm}
+
+    \vspace{0.5em}
+
+    \MakeUppercase{\huge\textbf{Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning}}
+
+    \MakeUppercase{\Large\textit{Application in Maze Navigation}}
+
+    \vspace{1em}
+
+    \MakeUppercase{Internal promotor: Gevaert Wouter}
+
+    \MakeUppercase{External promotor: Sam Debeuf}
+
+    \vspace{1em}
+
+    \MakeUppercase{\small{Research conducted by}}
+
+    \MakeUppercase{\Large\textbf{{Lucas Driessens}}}
+
+    \MakeUppercase{\small{for obtaining a bachelor's degree in}}
+
+    \MakeUppercase{\Large{\textbf{{Multimedia \& Creative Technologies}}}}
+
+    \MakeUppercase{Howest | 2023-2024}
+    \end{adjustwidth}
+    \restoregeometry
+\end{titlepage}
+
+\title{$title$}
+\author{$author$}
+\date{$date$}
+
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(title)$
+$if(beamer)$
+\frame{\titlepage}
+% don't generate the default title
+% $else$
+% \maketitle
+\pagenumbering{Roman} % set the numbering style to lowercase letter
+
+$endif$
+$if(abstract)$
+\begin{center}
+ {\LARGE \textbf{\textsf{Abstract}}}
+\end{center}
+
+\begin{abstract}
+\begin{justify}
+$abstract$
+\end{justify}
+\end{abstract}
+\pagebreak
+$endif$
+
+
+$if(preface)$
+\begin{center}
+ {\LARGE \textbf{\textsf{Preface}}}
+\end{center}
+
+\begin{abstract}
+\begin{justify}
+$preface$
+\end{justify}
+\end{abstract}
+\pagebreak
+$endif$
+
+
+
+$if(acknowledgements)$
+\begin{center}
+ {\LARGE \textbf{\textsf{Acknowledgements}}}
+\end{center}
+
+\begin{abstract}
+\begin{justify}
+$acknowledgements$
+\end{justify}
+\end{abstract}
+\pagebreak
+$endif$
+
+$endif$
+\pagenumbering{arabic} % set the numbering style to lowercase letter
+\setcounter{page}{0} % Set the page counter to 3
+
+$if(first-chapter)$
+\setcounter{chapter}{$first-chapter$}
+\addtocounter{chapter}{-1}
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+$if(toc-title)$
+\renewcommand*\contentsname{$toc-title$}
+$endif$
+$if(beamer)$
+\begin{frame}[allowframebreaks]
+$if(toc-title)$
+  \frametitle{$toc-title$}
+$endif$
+  \tableofcontents[hideallsubsections]
+\end{frame}
+$if(toc-own-page)$
+\newpage
+$endif$
+$else$
+{
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+$if(toc-own-page)$
+\newpage
+$endif$
+}
+$endif$
+$endif$
+$if(lof)$
+\listoffigures
+$if(lof-own-page)$
+\newpage
+$endif$
+$endif$
+$if(lot)$
+\listoftables
+$endif$
+$if(linestretch)$
+\setstretch{$linestretch$}
+$endif$
+$if(has-frontmatter)$
+\mainmatter
+$endif$
+$body$
+
+
+$body$
+
+\end{document}

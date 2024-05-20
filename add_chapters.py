@@ -99,60 +99,61 @@ def create_qr_code(output_path):
     print("Markdown file has been updated with QR code images.")
 
 def process_markdown_file(input_path, output_path):
-    # Initialize variables to keep track of chapters and sections
-    chapter_number = 0
-    processed_content = []
+    # # Initialize variables to keep track of chapters and sections
+    # chapter_number = 0
+    # processed_content = []
 
-    # Open and read the file
-    with open(input_path, "r") as file:
-        lines = file.readlines()
-    lines_to_ignore = [
-        "## Glossary of Terms",
-        "## List of Abbreviations",
-        "## References",
-    ]
-    # Process each line
-    for line in lines:
-        # Check for chapter headings
-        if line.startswith("## ") and line.strip() not in lines_to_ignore:
-            chapter_number += 1
-            section_number = 0  # Reset section number for new chapter
-            chapter_title = line.strip("# ").strip()
-            processed_line = f"## Chapter {chapter_number}. {chapter_title}\n"
-        # Check for section headings
-        elif (
-            line.startswith("### ")
-            and chapter_number > 0
-            and line.strip() not in lines_to_ignore
-        ):  # Ensure we're within a chapter
-            section_number += 1
-            subsection_number = 0  # Reset subsection number for new section
-            section_title = line.strip("# ").strip()
-            processed_line = f"### {chapter_number}.{section_number}. {section_title}\n"
-        elif (
-            line.startswith("#### ")
-            and chapter_number > 0
-            and line.strip() not in lines_to_ignore
-        ):
-            subsection_number += 1
-            sub_subsection_number = 0  # Reset sub-subsection number for new subsection
-            sub_section_title = line.strip("# ").strip()
-            processed_line = f"#### {chapter_number}.{section_number}.{subsection_number}. {sub_section_title}\n"
-        # elif line.startswith("##### ") and chapter_number > 0 and line.strip() not in lines_to_ignore:
-        #     sub_sub_section_title = line.strip('# ').strip()
-        #     sub_subsection_number += 1
-        #     processed_line = f"##### {chapter_number}.{section_number}.{subsection_number}.{sub_subsection_number}. {sub_sub_section_title}\n"
-        else:
-            processed_line = line
+    # # Open and read the file
+    # with open(input_path, "r") as file:
+    #     lines = file.readlines()
+    # lines_to_ignore = [
+    #     "## Glossary of Terms",
+    #     "## List of Abbreviations",
+    #     "## References",
+    # ]
+    # # Process each line
+    # for line in lines:
+    #     # Check for chapter headings
+    #     if line.startswith("## ") and line.strip() not in lines_to_ignore:
+    #         chapter_number += 1
+    #         section_number = 0  # Reset section number for new chapter
+    #         chapter_title = line.strip("# ").strip()
+    #         processed_line = f"## Chapter {chapter_number}. {chapter_title}\n"
+    #     # Check for section headings
+    #     elif (
+    #         line.startswith("### ")
+    #         and chapter_number > 0
+    #         and line.strip() not in lines_to_ignore
+    #     ):  # Ensure we're within a chapter
+    #         section_number += 1
+    #         subsection_number = 0  # Reset subsection number for new section
+    #         section_title = line.strip("# ").strip()
+    #         processed_line = f"### {chapter_number}.{section_number}. {section_title}\n"
+    #     elif (
+    #         line.startswith("#### ")
+    #         and chapter_number > 0
+    #         and line.strip() not in lines_to_ignore
+    #     ):
+    #         subsection_number += 1
+    #         sub_subsection_number = 0  # Reset sub-subsection number for new subsection
+    #         sub_section_title = line.strip("# ").strip()
+    #         processed_line = f"#### {chapter_number}.{section_number}.{subsection_number}. {sub_section_title}\n"
+    #     # elif line.startswith("##### ") and chapter_number > 0 and line.strip() not in lines_to_ignore:
+    #     #     sub_sub_section_title = line.strip('# ').strip()
+    #     #     sub_subsection_number += 1
+    #     #     processed_line = f"##### {chapter_number}.{section_number}.{subsection_number}.{sub_subsection_number}. {sub_sub_section_title}\n"
+    #     else:
+    #         processed_line = line
 
-        # Append processed or original line to the content list
-        processed_content.append(processed_line)
+    #     # Append processed or original line to the content list
+    #     processed_content.append(processed_line)
 
     # Write the processed content back to a new file
-    with open(output_path, "w") as file:
-        file.writelines(processed_content)
+    # processed_content = 
+    # with open(output_path, "w") as file:
+    #     file.writelines(processed_content)
 
-    create_qr_code(output_path)
+    create_qr_code(input_path)
 
 # Usage example:
 process_markdown_file("Thesis.md", "Updated_Thesis.md")

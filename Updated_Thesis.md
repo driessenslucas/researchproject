@@ -25,20 +25,20 @@ output:
   rmarkdown::pdf_document:
     fig_caption: yes
 abstract: |
-  This research investigates the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective is to determine if an RL agent, specifically a Double Deep Q-Network (DDQN), can successfully navigate a physical maze after being trained in a virtual environment.
+  This research explores the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective is to determine if and how an RL agent, specifically a Double Deep Q-Network (DDQN), can successfully navigate a physical maze after being trained in a virtual environment.
 
-  \noindent \newline The study first identifies suitable virtual environments for training an RL agent and evaluates the most effective reinforcement learning techniques for this application. It then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
+  \noindent \newline First we will find explore suitable virtual environments for training an RL agent and evaluates the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
-  \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
+  \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and more importantly movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
 
   \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for sim-to-real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
 preface: |
-  This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” marks the culmination of my academic journey in New Media & Communication Technology at Howest, University of Applied Sciences. The pivotal question at its core—“Is it possible to transfer a trained RL agent from a simulation to the real world?”—reflects my deep-seated curiosity about the intersection of virtual simulations and tangible applications. It also underscores a broader challenge in AI: creating adaptive, real-world systems from controlled simulations.
+  This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” is the final project of my studies in Multimedia & Creative Technology at Howest, University of Applied Sciences. The main question it tackles is: “Can a trained RL agent be successfully transferred from a simulation to the real world?” This question highlights my curiosity about how virtual simulations can be used in real-life applications and addresses a significant challenge in AI: making systems that can work in real-world conditions.
 
-  \noindent \newline My fascination with the concept of Sim2Real transfer originated during the ‘Research Project’ module. Witnessing the potential of simulated environments to approximate complex real-world behaviors sparked my interest in exploring their practical applicability. In structuring this thesis, I not only probe the theoretical foundations of Sim2Real transfer but also experimentally test its viability through a series of innovative applications. These experiments aim to refine the methods of Sim2Real transfer, enhancing their effectiveness and reliability.
+  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis looks into the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
 
-  \noindent \newline The research methodology adopted for this thesis combines qualitative analyses with quantitative experiments. Theoretical studies provide a comprehensive background, setting the stage for empirical tests conducted in controlled environments. By systematically assessing the performance of RL agents in various scenarios, the research seeks to identify optimal strategies for effective Sim2Real transitions.
-
+  \noindent \newline The research combines theoretical studies with practical experiments. The theoretical part provides a solid background, while the experiments test how well RL agents perform in different controlled scenarios. By evaluating these agents, the research aims to find the best strategies for successfully transferring them from simulations to real-world applications.
+  
   \noindent \newline Lucas Driessens  
   \noindent \newline 01-06-2024
 acknowledgements: |
@@ -168,20 +168,17 @@ Reinforcement Learning (RL) employs a computational approach where agents learn 
 
 The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
 
-
-\pagebreak
+<!-- \pagebreak -->
 
 ## Chapter 3. Research Questions
 
-This investigation centers around the question: "Can a trained RL agent effectively transition from a simulation to a real-world environment for maze navigation?" To address this question, we'll explore various aspects of RL training and implementation:
+This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, we'll explore various aspects of RL training and implementation:
 
-1. **Selecting Virtual Environments**: determine which virtual environments are most effective for RL training.
-2. **Suitable RL Techniques**: Identifying RL techniques suitable for autonomous navigation.
-3. **Sim-to-Real Transfer Evaluation**: Assessing how well the agent adapts to real-world dynamics.
-4. **Simulation-Based Training Efficacy**: Evaluating training effectiveness and optimizing performance through simulation.
-5. **Model Adaptation to Real RC Car**: Discussing necessary adjustments for real-world application.
-
-My research combines qualitative and quantitative methodologies, including simulation experiments and real-world trials. By doing so, I aim not only to validate sim-to-real transfer but also to contribute to the ongoing discourse on practical challenges in Reinforcement Learning (RL).
+1. **Which virtual environments exist to train a virtual RC-car?**: determine which virtual environments are most effective for RL training.
+2. **Which reinforcement learning techniques can I best use in this application?**: Identifying RL techniques suitable for autonomous navigation.
+3. **Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.**: Assessing how well the agent adapts to real-world dynamics.
+4. **Does the simulation have any useful contributions? In terms of training time or performance.**: Evaluating training effectiveness and optimizing performance through simulation.
+5. **How can the trained model be transferred to the real RC car? How do we need to adjust the agent and the environment for it to translate to the real world?**: Discussing necessary adjustments for real-world application.
 
 <!--
 ### 3.1. Main Research Question
@@ -200,80 +197,20 @@ My research combines qualitative and quantitative methodologies, including simul
 
 5. How can the trained model be transferred to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world? -->
 
-\pagebreak
-
-<!-- ## Methodology
-
-This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, which utilizes a Double Deep Q-Network (DDQNAgent) architecture. We'll delve into the maze environment setup, the design of the DDQN agent, the comprehensive training algorithm, and the comparative analysis of various reinforcement learning algorithms to justify the choice of DDQN.
-
-### 3.3. Environment Setup (RCMazeEnv)
-
-The RCMazeEnv is a custom maze navigation environment built upon the OpenAI Gym framework. It is designed for a 12x12 cell grid maze navigation task. Within this grid:
-
-- Cells are either walls (represented by '1') or paths (represented by '0').
-- The goal is located at cell position (10, 10).
-- The agent, visualized as a car, starts at cell (1, 1) facing eastward.
-- The agent can take three possible actions: moving forward, turning left, and turning right.
-
-To aid with navigation, the agent has sensors providing readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, which is crucial for decision-making. The environment's state space ($\mathcal{S}$) includes the agent's current position $(x, y)$, orientation $\theta$ (north, east, south, or west), and sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The agent's goal is efficient maze navigation, reaching the goal while avoiding collisions with walls or getting stuck in corners, all while optimizing its path based on sensor inputs and past experiences.
-
-### 3.4. Agent Design (DDQNAgent)
-
-The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation .
-
-- **Policy Network**: Estimates the Q-value $Q(s, a; \theta)$ for taking action $a$ in state $s$, with weights $\theta$. This network selects actions based on the current policy.
-- **Target Network**: Independently parameterized by weights $\theta^-$, it estimates the target Q-value for updating the policy network. The target network mirrors the policy network's architecture but updates less frequently to provide stable target values.
-
-The DDQN update equation modifies the Q-function:
-
-$$
-Y_t^{DDQN} = R_{t+1} + \gamma Q\left(S_{t+1}, \underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta); \theta^-\right)
-$$
-
-Where:
-
-- $R_{t+1}$ is the reward received after taking action $a$ in state $s$.
-- $\gamma$ is the discount factor.
-- $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
-- $Q\left(S_{t+1}, a; \theta^-\right)$ evaluates the action using the target network.
-
-This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning .
-
-The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches .
-
-### 3.5. Training Process
-
-The training process involves utilizing experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Deep Q-Network (DQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
-
-$$
-L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(r + \gamma \max_{a'}Q(s', a'; \theta^-) - Q(s, a; \theta)\right)^2\right]
-$$
-
-Where:
-
-- $s$ represents the current state.
-- $a$ corresponds to the action taken.
-- $r$ denotes the received reward.
-- $s'$ signifies the subsequent state.
-- $\theta^-$ refers to the weights of a target network.
-- $\gamma$ represents the discount factor.
-
-To enhance training stability, I periodically synchronize the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 1), gradually reducing exploration as training progresses. This balance between exploration and exploitation contributes to the DQN's overall performance. -->
-
-
 ## Chapter 4. Methodology
 
-This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, which utilizes a Double Deep Q-Network (DDQNAgent) architecture. We'll delve into the maze environment setup, the design of the DDQN agent, and the comprehensive training algorithm, incorporating mathematical functions to describe the system's mechanics.
+This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, which utilizes a Double Deep Q-Network (DDQNAgent) architecture. We will delve into the maze environment setup, the design of the DDQN agent, and the comprehensive training algorithm, incorporating mathematical functions to describe the system's mechanics.
 
 ### 4.1. Environment Setup (RCMazeEnv)
 
-RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, features walls ('1') and paths ('0'). The agent starts at (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
+RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, features walls ('1') and paths ('0'). The agent starts at position (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
 
 To aid with navigation, the agent has sensors providing readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, crucial for decision-making. The environment's state space ($\mathcal{S}$) includes the agent's current position $(x, y)$, orientation $\theta$ (north, east, south, or west), and sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The agent's goal is efficient maze navigation, reaching the goal while avoiding collisions with walls or getting stuck in corners all while optimizing its path based on sensor inputs and past experiences.
 
 ![Real life Maze Build (Image created by author)](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)"){ width=50% }
 
 #### 4.1.1. Web Application Interface
+
 A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and control of the car's movements. The interface displays sensor readings and includes an emergency stop feature.
 
 ![Web App (Image created by author)](./images/thesis/web_app.png "Web App (Image created by author)"){ width=100% }
@@ -304,10 +241,10 @@ The action space $\mathcal{A}$ and other agent setup details remain consistent. 
 
 ### 4.3. Training Process
 
-The training process involves utilizing experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Deep Q-Network (DQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
+The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
 
 $$
-L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(r + \gamma \max_{a'}Q(s', a'; \theta^-) - Q(s, a; \theta)\right)^2\right]
+L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(r + \gamma Q(s', \underset{a'}{\mathrm{argmax}}\, Q(s', a'; \theta); \theta^-) - Q(s, a; \theta)\right)^2\right]
 $$
 
 Where:
@@ -316,20 +253,15 @@ Where:
 - $a$ corresponds to the action taken.
 - $r$ denotes the received reward.
 - $s'$ signifies the subsequent state.
-- $\theta^-$ refers to the weights of a target network.
+- $\theta^-$ refers to the weights of the target network.
 - $\gamma$ represents the discount factor.
 
-To enhance training stability, I periodically synchronize the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 1), gradually reducing exploration as training progresses. This balance between exploration and exploitation contributes to the DQN's overall performance.
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973 . This balance between exploration and exploitation contributes to the DDQN's overall performance.
 
 ## Chapter 5. Reward Function and completion components
 
 In the context of maze navigation, designing an effective reward function is crucial for guiding an agent's learning process. Below, I outline the key components of the reward function used in our framework:
 
-<!--
-1. **Collision Penalty ($R_{\text{collision}}$):**
-   - When the agent attempts to move into a wall or outside the designated maze boundaries, it triggers a collision state.
-   - To discourage such actions, a significant penalty is applied: $R_{\text{collision}} = -20$.
-   - This penalty ensures that the agent learns about the environment's boundaries and obstacles, promoting safe navigation. -->
 
 1. **Goal Achievement Bonus ($R_{\text{goal}}$):**
 
@@ -361,16 +293,9 @@ In the context of maze navigation, designing an effective reward function is cru
    - Every step the agent takes incurs a small penalty: $R_{\text{efficiency}} = -5$.
    - Balances the need for exploration with the goal of reaching the destination efficiently.
 
-<!-- 6. **Generic Reward Based on Relative Distance to Goal ($R(s, a)$):**
-   - Encourages reaching the goal while penalizing collisions and inefficient paths.
-   - Defined as follows:
-     - If the goal is reached: $R(s, a) = 500$.
-     - If a collision occurs: $R(s, a) = -20$.
-     - Otherwise: $R(s, a) = \frac{50}{d + 1}$, where $d$ is the Euclidean distance to the goal. -->
-
 ### 5.1. Termination conditions
 
-To determine whether the environment has reached a "done" or "ended" state, several conditions are established. These conditions include: surpassing 3000 steps, the car being out of bounds (hitting a wall), and the RC car reaching the goal position of $(10,10)$.
+To determine whether the environment has reached a "done" or "ended" state, 2 conditions have been established. These conditions include: surpassing 3000 steps and the RC car reaching the goal position of $(10,10)$.
 
 The termination condition can be expressed as:
 
@@ -378,7 +303,6 @@ $$
 \text{terminate}(steps, position) = \begin{cases}
 \text{true, "Exceeded max steps"} & \text{if } steps > 3000 \\
 \text{true, "Goal reached"} & \text{if } position = (10, 10) \\
-\text{true, "Out of bounds"} & \text{if } \neg \text{inBounds}(position) \\
 \text{false, "Continue"} & \text{otherwise}
 \end{cases}
 $$
@@ -411,36 +335,8 @@ To evaluate the agent's effectiveness in navigating the maze, I used several met
 
 - **Physical Maze and Digital Interface**: A real maze was built to mirror the virtual `RCMazeEnv`, which is one of the requirements of ensuring the RC robot's ability to navigate the real maze. In addition, a web application was made to not only control the RC car (starting and stopping movement) but also as a virtual twin. Allowing us to see the sensor readings and decision making in real time.
 
-<!-- ## Analysis and Results: Addressing Research Questions
-
-### 6.5. 1. Virtual Environments for RF-Car Training
-
-Selecting an appropriate virtual environment is a crucial initial step in RF-car training. Several platforms, including Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym, offer diverse features for driving simulation. However, for RF-car training, I've chosen OpenAI Gym due to its flexibility in creating custom environments and Python compatibility. This choice facilitates seamless integration with existing advanced AI coursework and supports effective SIM2REAL transfer practices \hyperref[ref1]{[1]}.
-
-While Unity 3D and AirSim provide realistic simulations, their complexity extends beyond Python, limiting accessibility for my project. CARLA, although comprehensive for autonomous driving simulations, caters more to traditional vehicle models than RF-cars. ISAAC Gym, focused on robotics, also doesn't align perfectly with my goals. OpenAI Gym's simplicity and reinforcement learning focus make it an ideal fit for my project.
-
-### 6.6. 2. Reinforcement Learning Techniques for Virtual RF-Car Training
-
-Comparing Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO) techniques, I find that DDQN best suits my needs. DDQN's architecture addresses the overestimation bias inherent in DQN, improving Q-value approximation accuracy—an essential factor in navigating complex, sensor-driven RF-car environments.
-
-While DQN excels in high-dimensional sensory input processing, it falls short in unpredictable dynamic environments. DDQN overcomes this limitation. PPO focuses on direct policy optimization but lacks the precision in value estimation required for RF-car training. Empirical trials confirm DDQN's superior performance in intricate maze-like virtual RF-car scenarios \hyperref[ref3]{[3]}.
-
-### 6.7. 3. Sim-to-Real Transfer Challenges and Solutions
-
-Transferring simulation models to real-world applications involves addressing sensor data interpretation discrepancies, action synchronization, and physical dynamics. I implemented solutions like sensor data normalization and action synchronization mechanisms to align simulation outcomes with real-world performance \hyperref[ref5]{[5]}.
-
-Introducing failsafe mechanisms and adjusting motor control timings was something that I overlooked at first, but then it proved to be essential in reducing collision risks and movement inaccuracies during sim-to-real transfer. Iterative testing and adaptation play a vital role in this process \hyperref[ref6]{[6]}.
-
-### 6.8. 4. Contributions of Simulation in RF-Car Training
-
-Simulation training offers efficiency, safety, and computational advantages. It allows uninterrupted, automated training sessions, eliminating real-world risks. Leveraging powerful computing resources accelerates the training process, making simulation indispensable in RF-car development \hyperref[ref7]{[7]}.
-
-Comparing simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models.
-
-### 6.9. 5. Practical Application of Simulated Training to Real-World RF-Cars
-
-Applying a trained model to a physical RC car requires some needed adjustments. Effective sim-to-real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation. This ensures successful application in real-world scenarios, facilitating robust and reliable autonomous driving systems \hyperref[ref10]{[10]}. -->
-
+<!--TODO: Rewrite this, is exludes lot of important info while being too difficult to read + it drifts too much from the actual research questions 8520
+  -->
 ## Chapter 7. Analysis and Results: Addressing Research Questions
 
 ### 7.1. Virtual Environments for RF-Car Training
@@ -562,9 +458,8 @@ Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a 
 
 - **DDQN Simulation test:** See DDQN Simulation in the Video reference section. -->
 
-
 ### 9.3. Evaluation Metrics Overview
-
+<!-- TODO: Replace with more natural sounding language -->
 #### 9.3.1. Simulation Metrics
 
 ##### Episodic Performance
@@ -586,6 +481,11 @@ Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a 
 $$
 MSE(y, \hat{y}) = \frac{1}{N} \sum_{i=0}^{N-1} (y_i - \hat{y}_i)^2
 $$
+
+where: \newline
+  \newline $y_i$ represents the actual value.
+  \newline $\hat{y}_i$ represents the predicted value.
+  \newline $N$ is the total number of observations.
 
 - **Objective and Goal:** This metric quantifies the accuracy of the agent's predictions by measuring the squared discrepancies between predicted values and actual outcomes, providing a clear gauge of learning precision.
 - **How it's Assessed:** Using the provided mathematical formula, I average the squared differences across all predictions for an episode or series of episodes.
@@ -696,13 +596,11 @@ Actor-Critic algorithms are versatile and can be applied to both discrete and co
 
 In this analysis, I compare various reinforcement learning algorithms, namely Double Deep Q-Network (DDQN), Deep Q-Network (DQN), Q-agent, Actor-Critic (AC), and Proximal Policy Optimization (PPO). This comparison is based on their performance in navigating a complex maze, focusing on efficiency, learning rate, and adaptability.
 
-<!--TODO: add comparative analysis per sub-section -->
-
 ### 11.1. Performance Metrics and Visualization
 
-**1. Visit Heatmaps**
+#### 11.1.1. 1. Visit Heatmaps
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -717,7 +615,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 \end{minipage}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -734,9 +632,9 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 
 **Commentary**: The visit heatmaps provide a visual representation of the exploration patterns for different algorithms. The heatmap for DDQN shows a concentrated path, indicating the agent's ability to efficiently learn and focus on the optimal routes through the maze. Similarly, DQN exhibits focused exploration but with slightly more dispersion compared to DDQN, suggesting a robust learning process. On the other hand, PPO and Q-agent demonstrate widespread exploration across the maze, which indicates less efficient learning and decision-making. These dispersed patterns reflect the algorithms' struggle to consistently identify and follow optimal paths, resulting in suboptimal navigation strategies.
 
-**2. Maze Solution Efficiency**
+#### 11.1.2. 2. Maze Solution Efficiency
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -752,7 +650,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 \hfill
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=\linewidth]{./images/training_images/maze_solution_Q-agent.png}
 \captionof{figure}{Q-agent Maze Path (Image created by author)}
@@ -763,9 +661,9 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 
 For the PPO and AC algorithms, their paths were more complex and less direct, indicating a need for further optimization and learning to enhance their maze navigation efficiency (not shown in the figures).
 
-**3. Reward History and Distribution**
+#### 11.1.3. 3. Reward History and Distribution
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -780,7 +678,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -795,7 +693,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=\linewidth]{./images/training_images/reward_history_Qlearning.png}
 \captionof{figure}{Q-agent Reward History (Image created by author)}
@@ -804,9 +702,9 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 
 **Commentary**: The reward history graphs offer insights into the learning stability and efficiency of each algorithm. DDQN and DQN display steady and consistent increases in reward accumulation, indicating stable and reliable learning processes. In contrast, AC and PPO exhibit significant fluctuations in reward history, reflecting instability and inconsistency in their learning curves. This variability suggests these algorithms encounter challenges in maintaining a steady learning trajectory. Q-agent, although stable, shows a slower rate of reward accumulation, indicating a more gradual and less efficient learning process compared to DDQN and DQN. Overall, DDQN and DQN stand out for their consistent and effective reward acquisition, while AC, PPO, and Q-agent highlight areas for potential improvement in learning stability and efficiency.
 
-**4. Mean Squared Error (MSE) Over Time**
+#### 11.1.4. 4. Mean Squared Error (MSE) Over Time
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -821,7 +719,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -838,9 +736,9 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 
 **Commentary**: The MSE graphs track the learning accuracy and error management of each algorithm over time. DDQN achieves the lowest and most stable MSE values, signifying its effective learning and strong capability in minimizing prediction errors. DQN also performs well with relatively stable MSE, though slightly higher than DDQN, indicating competent but less optimal error reduction. In contrast, AC and PPO show higher and more variable MSE values, pointing to less effective learning and greater difficulties in managing prediction errors. These fluctuations suggest these algorithms struggle to consistently reduce errors, impacting their overall performance. The comparison highlights DDQN's superior accuracy and error management, with DQN as a strong contender, while AC and PPO require further optimization to enhance their learning precision.
 
-**5. Moving Average of Rewards**
+#### 11.1.5. 5. Moving Average of Rewards
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -855,7 +753,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -879,7 +777,6 @@ This comprehensive analysis reveals distinct performance characteristics and eff
 AC and PPO exhibit higher fluctuations in their performance metrics, indicating the need for further optimization to achieve better consistency and efficiency. These algorithms show potential but require more refinement to handle the complexities of maze navigation effectively.
 
 Ultimately, this analysis aids in selecting the most suitable reinforcement learning algorithm based on specific task requirements and environmental complexities. It enhances our understanding of their practical applications and helps in optimizing learning outcomes for real-world scenarios.
-
 
 ## Chapter 12. Implementation of Real-World Control Algorithms
 
@@ -1100,7 +997,7 @@ Moving beyond controlled environments, I tested the RC-car in both outdoor and i
 - **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
 - **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer (see Video E11 in the Video References section).
 
-\pagebreak
+<!-- \pagebreak -->
 
 <!-- --
   # TODO: Interviews with Sam and Wouter for feedback (have not done these interviews yet)
@@ -1195,77 +1092,123 @@ Even though this was an incredible project to work on and I loved every second o
 
 I doubt I would've been able to get as far as fast as I did if I had taken this alternative route, but I do think it would have been a lot more interesting and maybe even more rewarding as I don't think this project is easily reproducible by others as it is now. But this also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do. In essence, I think this project was a great learning experience and I would love to do something like this again in the future, but I would like to take a different approach next time.-->
 
-## Chapter 16. Reflection
+<!-- ## Reflection
 
 Reflecting on this research project, I’ve gained valuable insights that have significantly influenced my approach and perspective.
 
-### 16.1. Openness to New Ideas
+### 15.17. Openness to New Ideas
 
 One of the most important lessons I learned is the value of being open to new ideas. Embracing unfamiliar concepts and stepping out of my comfort zone were crucial for fostering creativity and discovering innovative solutions. Moving forward, I am committed to maintaining this exploratory spirit and staying receptive to novel approaches.
 
-### 16.2. Bridging Theory and Practice
+### 15.18. Bridging Theory and Practice
 
 Transitioning from theory to practice proved more challenging than I expected. While controlled virtual environments were manageable, the real world presented unforeseen complexities. This experience sharpened my ability to balance theoretical knowledge with practical adaptability, preparing me to handle the unpredictability of real-world applications.
 
-### 16.3. Anticipatory Thinking
+### 15.19. Anticipatory Thinking
 
 Overcoming various obstacles highlighted the importance of anticipatory thinking. Navigating challenges and adapting to evolving conditions made me realize the need to think ahead. This proactive mindset has become integral to my approach, turning potential challenges into opportunities for innovation.
 
-### 16.4. Policy and Regulation
+### 15.20. Policy and Regulation
 
 Engaging with policy and regulatory frameworks was enlightening. It highlighted the delicate balance between fostering innovation and ensuring public safety. Collaborating with policymakers and industry leaders taught me the importance of creating regulations that encourage technological advancement while maintaining accountability.
 
-### 16.5. Feedback from the Jury
+### 15.21. Feedback from the Jury
 
-The feedback from the jury was predominantly positive, and their insights were incredibly valuable. They commended several aspects of my work and provided constructive suggestions for improvement.
+The feedback from the jury was predominantly positive, and their insights were incredibly valuable. They commended some aspects of my work and provided constructive suggestions for improvement.
 
-1. **Depth of Research**: The jury appreciated the comprehensive nature of my research, particularly my detailed exploration of reinforcement learning (RL) and its application in maze navigation. They noted that my work demonstrated a thorough understanding of both the theoretical aspects and practical challenges involved in sim-to-real transfer.
+1. **Practical Implementation**: The jury valued the practical aspects of my project, particularly the real-world testing of the RC car. They acknowledged the difficulties associated with transitioning from simulation to reality and commended my efforts to address these challenges through rigorous testing and calibration.
 
-2. **Innovative Solutions**: They praised my innovative approach to overcoming the challenges of sim-to-real transfer, specifically my use of the Double Deep Q-Network (DDQN) architecture and the development of a custom maze navigation environment. These innovations were recognized as significant contributions to the field of AI and robotics.
+2. **Suggestions for Improvement**: Hans Ameel suggested increasing the distance to the walls to reduce the impact of deviations. This was based on the observation that the car's proximity to the walls could lead to navigation errors due to sensor inaccuracies or physical obstructions.
 
-3. **Practical Implementation**: The jury valued the practical aspects of my project, particularly the real-world testing of the RC car. They acknowledged the difficulties associated with transitioning from simulation to reality and commended my efforts to address these challenges through rigorous testing and calibration.
+3. **Use of Camera**: Another recommendation was to use a camera to monitor the position of the RC car within the maze. Integrating a camera system would provide real-time visual feedback, helping to fine-tune the navigation algorithms and ensure more accurate performance in real-world scenarios.
 
-4. **Suggestions for Improvement**: Hans Ameel suggested increasing the distance to the walls to reduce the impact of deviations. This was based on the observation that the car's proximity to the walls could lead to navigation errors due to sensor inaccuracies or physical obstructions.
+4. **Correction on Sensor Use**: Additionally, a correction was made to my presentation: while I initially mentioned using an accelerometer to measure the car's rotation, I actually used the gyroscope part of the MPU6050, which also contains an accelerometer and magnetometer. This correction was important for accurately conveying the technical aspects of my project.
 
-5. **Use of Camera**: Another recommendation was to use a camera to monitor the position of the RC car within the maze. Integrating a camera system would provide real-time visual feedback, helping to fine-tune the navigation algorithms and ensure more accurate performance in real-world scenarios.
-
-6. **Correction on Sensor Use**: Additionally, a correction was made to my presentation: while I initially mentioned using an accelerometer to measure the car's rotation, I actually used the gyroscope part of the MPU6050, which also contains an accelerometer and magnetometer. This correction was important for accurately conveying the technical aspects of my project.
-
-### 16.6. Methodological Insights
+### 15.22. Methodological Insights
 
 Creating the custom maze navigation environment (RCMazeEnv) and using the DDQN architecture provided significant insights into the complexities of sim-to-real transfer. The virtual environment allowed for controlled experimentation and fine-tuning of the RL algorithms, while real-world testing highlighted the practical challenges of applying these algorithms outside the simulation.
 
-### 16.7. Real-World Testing and Calibration
+### 15.23. Real-World Testing and Calibration
 
 Moving from simulation to real-world application required extensive calibration and testing. Ensuring the RC car's sensors were aligned with their virtual counterparts was critical. This iterative process of testing, calibration, and adjustment refined the system and improved its performance in navigating the physical maze.
 
-### 16.8. Reward Function and Agent Performance
+### 15.24. Reward Function and Agent Performance
 
 Designing an effective reward function was key to guiding the agent's learning process. Balancing immediate rewards and penalties for inefficient actions helped optimize the agent's performance. Components like goal achievement bonuses, proximity rewards, progress rewards, exploration penalties, and efficiency penalties provided a comprehensive framework for evaluating and improving the agent's navigation strategies.
 
-### 16.9. Societal Implications of Autonomous Systems
+### 15.25. Societal Implications of Autonomous Systems
 
 The potential applications of autonomous systems extend far beyond maze navigation. Insights from this research could contribute to developing autonomous vehicles, drones, and other robotic systems navigating complex environments. Ensuring these technologies are accessible and beneficial to society requires careful consideration of ethical, regulatory, and practical factors.
 
-### 16.10. Future Directions
+### 15.26. Future Directions
 
 This project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning models, extending testing environments to include varying conditions, and fostering community collaboration. These enhancements could improve the technology and advance autonomous vehicle research and development.
 
-### 16.11. Personal Growth and Future Aspirations
+### 15.27. Personal Growth and Future Aspirations
 
 This research project has been transformative, shaping my understanding of AI and robotics and guiding my future aspirations. The lessons learned, from technical challenges to broader societal implications, have equipped me with the skills and knowledge to pursue further research and innovation in this field.
 
-### 16.12. Commitment to Innovation and Societal Stewardship
+### 15.28. Commitment to Innovation and Societal Stewardship
 
 As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace future challenges.
 
-### 16.13. Personal Note
+### 15.29. Personal Note
 
 Even though this was an incredible project to work on and I loved every second of it, I can't help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three-week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like giving the agents more controls than just moving forward, left, and right. For example, as Wouter suggested during one of our evaluations, the use of a camera to see where the car is in the maze. This, along with giving the agent the ability to move the left and right motors completely independent of each other, would have given the agent a lot more control over the car and maybe even eliminated the need for the many corrections I had to make while transferring the model to the real world.
 
 I doubt I would've been able to get as far as fast as I did if I had taken this alternative route, but I do think it would have been a lot more interesting and maybe even more rewarding as I don't think this project is easily reproducible by others as it is now. But this also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do. In essence, I think this project was a great learning experience and I would love to do something like this again in the future, but I would like to take a different approach next time.
 
-\pagebreak
+\pagebreak -->
+
+## Chapter 16. Reflection
+
+Reflecting on this research project, I have gained invaluable insights that have significantly influenced my approach and perspective.
+
+### 16.1. Openness to New Ideas
+
+One of the most important lessons I learned is the value of being open to new ideas. Embracing unfamiliar concepts and stepping out of my comfort zone were crucial for fostering creativity and discovering innovative solutions. For instance, the transition from simulation to real-world testing required novel problem-solving approaches to address discrepancies in sensor data and movement control. This openness not only enriched my technical skills but also enhanced my ability to adapt to new challenges and environments.
+
+### 16.2. Bridging Theory and Practice
+
+Transitioning from theory to practice proved more challenging than I expected. While controlled virtual environments were manageable, the real world presented unforeseen complexities. This experience sharpened my ability to balance theoretical knowledge with practical adaptability. For example, integrating sensor calibration and adjusting control algorithms were essential steps that highlighted the gap between simulated and real-world conditions. This hands-on experience has prepared me to handle the unpredictability of real-world applications more effectively. Additionally, it underscored the importance of iterative testing and continuous learning in the development process.
+
+### 16.3. Anticipatory Thinking
+
+Overcoming various obstacles highlighted the importance of anticipatory thinking. Navigating challenges and adapting to evolving conditions made me realize the need to think ahead. This proactive mindset has become integral to my approach, turning potential challenges into opportunities for innovation. For instance, anticipating sensor noise and environmental variability led to the development of robust policies and fine-tuning strategies that improved the system's performance in real-world scenarios. This foresight is crucial for anticipating and mitigating risks, ensuring the robustness and reliability of autonomous systems.
+
+### 16.4. Policy and Regulation
+
+Engaging with policy and regulatory frameworks was enlightening. It highlighted the delicate balance between fostering innovation and ensuring public safety. Collaborating with policymakers and industry leaders taught me the importance of creating regulations that encourage technological advancement while maintaining accountability. This experience underscored the need for ethical considerations and compliance in the deployment of autonomous systems. Understanding these regulatory landscapes will be essential as I continue to develop and implement AI and robotics solutions in the future.
+
+### 16.5. Feedback from the Jury
+
+The feedback from the jury was predominantly positive, and their insights were incredibly valuable. They commended the practical aspects of my project, particularly the real-world testing of the RC car. Specific suggestions, such as increasing the distance to the walls to reduce navigation errors and integrating a camera system for real-time visual feedback, were implemented to enhance the accuracy and reliability of the navigation algorithms. This feedback loop was instrumental in refining my approach and improving the overall quality of the project.
+
+### 16.6. Methodological Insights
+
+Creating the custom maze navigation environment (RCMazeEnv) and using the DDQN architecture provided significant insights into the complexities of sim-to-real transfer. The iterative process of testing, calibration, and adjustment refined the system and improved its performance in navigating the physical maze. Designing an effective reward function was key to guiding the agent’s learning process, balancing immediate rewards and penalties for inefficient actions to optimize performance. This methodological rigor will serve as a foundation for future projects, ensuring a structured and systematic approach to research and development.
+
+### 16.7. Societal Implications of Autonomous Systems
+
+The potential applications of autonomous systems extend far beyond maze navigation. Insights from this research could contribute to developing autonomous vehicles, drones, and other robotic systems navigating complex environments. Ensuring these technologies are accessible and beneficial to society requires careful consideration of ethical, regulatory, and practical factors. For instance, autonomous systems must be designed to prioritize safety and reliability, minimizing risks to human users and the environment. Moreover, the deployment of such technologies should be accompanied by public education and engagement to build trust and understanding among stakeholders.
+
+### 16.8. Future Directions
+
+This project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning models, extending testing environments to include varying conditions, and fostering community collaboration. These enhancements could improve the technology and advance autonomous vehicle research and development. Future research could explore the use of multi-modal sensory inputs, such as combining visual, auditory, and tactile data to enhance the agent's perception and decision-making capabilities. Additionally, collaborations with other researchers and industry partners could provide valuable insights and resources for further advancements.
+
+### 16.9. Personal Growth and Future Aspirations
+
+This research project has been transformative, shaping my understanding of AI and robotics and guiding my future aspirations. The lessons learned, from technical challenges to broader societal implications, have equipped me with the skills and knowledge to pursue further research and innovation in this field. I am particularly interested in exploring the ethical dimensions of AI and robotics, ensuring that these technologies are developed and deployed in ways that are fair, transparent, and accountable. My future aspirations include contributing to the development of autonomous systems that can positively impact various sectors, from healthcare to transportation, enhancing efficiency and safety.
+
+### 16.10. Commitment to Innovation and Societal Stewardship
+
+As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace future challenges. I am committed to fostering a culture of innovation and continuous improvement, where creative problem-solving and interdisciplinary collaboration are encouraged. Furthermore, I will strive to ensure that my work contributes to the greater good, addressing societal challenges and promoting sustainability.
+
+### 16.11. Personal Note
+
+Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three-week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like giving the agents more controls than just moving forward, left, and right. For example, as Wouter suggested during one of our evaluations, the use of a camera to see where the car is in the maze. This, along with giving the agent the ability to move the left and right motors completely independent of each other, would have given the agent a lot more control over the car and maybe even eliminated the need for the many corrections I had to make while transferring the model to the real world.
+
+I doubt I would have been able to get as far as fast as I did if I had taken this alternative route, but I do think it would have been a lot more interesting and maybe even more rewarding as I don’t think this project is completely finished yet, and I look forward to continuing this journey.
 
 ## Chapter 17. Advice
 
@@ -1352,28 +1295,50 @@ This chapter provides a comprehensive methodology and advice for researchers inv
 
 Following these guidelines will help researchers navigate the complexities of simulation-based studies and ensure a successful transition from theoretical models to practical applications. By being methodical, adaptable, and collaborative, you can overcome the challenges of sim2real transfer and contribute valuable insights to the field of autonomous systems and beyond.
 
-\pagebreak
+<!-- \pagebreak -->
 
-
-## Chapter 18. Sources of Inspiration and Conceptual Framework
+<!-- TODO: replace with more natural sounding language -->
+<!-- ## Sources of Inspiration and Conceptual Framework
 
 The inspiration for this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micro mouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.
 
-### 18.1. Micro mouse Competitions and Reinforcement Learning
+### 17.8. Micro mouse Competitions and Reinforcement Learning
 
 Micro mouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest path finding, as detailed in the insightful Medium article by M. A. Dharmasiri \hyperref[ref15]{[15]}, enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.
 
-### 18.2. Influential YouTube Demonstrations and GitHub Insights
+### 17.9. Influential YouTube Demonstrations and GitHub Insights
 
 YouTube videos such as "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} provided vivid demonstrations of RL's applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, highlighted the practical steps and challenges in implementing RL in physical systems.
 
-### 18.3. Technical Exploration and Academic Foundation
+### 17.10. Technical Exploration and Academic Foundation
 
 The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.\hyperref[ref12]{[12]} and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund \hyperref[ref17]{[17]}, which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.
 
-### 18.4. Synthesis and Research Direction
+### 17.11. Synthesis and Research Direction
 
 These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
+
+\pagebreak -->
+
+## Chapter 18. Sources of Inspiration and Conceptual Framework
+
+The inspiration for this research comes from a mix of technical documentation, digital platforms, and academic literature. Key influences include the challenges of micro mouse competitions and the potential of reinforcement learning (RL) to navigate complex mazes. My interest was further sparked by dynamic RL applications in autonomous vehicle control showcased on YouTube and GitHub, alongside influential academic research.
+
+### 18.1. Micro Mouse Competitions and Reinforcement Learning
+
+Micro mouse competitions, where small robotic mice navigate mazes, served as a major inspiration. The use of RL in these competitions showed the potential for solving real-world problems and controlling autonomous systems. Insights from a Medium article by M. A. Dharmasiri on maze traversal algorithms and shortest path strategies provided practical algorithmic approaches relevant to this study \hyperref[ref15]{[15]}.
+
+### 18.2. Influential YouTube Demonstrations and GitHub Insights
+
+YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} vividly demonstrated RL's real-world applicability and the feasibility of sim-to-real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, detailed the practical steps and challenges of implementing RL in physical systems.
+
+### 18.3. Technical Exploration and Academic Foundation
+
+Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control \hyperref[ref12]{[12]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on sim-to-real transfer in deep RL for robotics \hyperref[ref17]{[17]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
+
+### 18.4. Synthesis and Research Direction
+
+These diverse sources collectively informed the direction of this research, focusing on the feasibility and complexities of sim-to-real transfer in autonomous navigation. The goal is to combine insights from both digital and academic realms to address the challenges of applying advanced RL models in real-world scenarios.
 
 \pagebreak
 
@@ -1390,10 +1355,10 @@ This study confirms the feasibility of sim-to-real transfers and offers a detail
 In conclusion, while transitioning a trained RL agent from simulation to a real environment is feasible, the process requires careful planning, adaptability, and continual refinement. The challenges highlighted throughout this research underscore the need for ongoing efforts to enhance the robustness and reliability of sim-to-real applications, ensuring they can meet the demands of real-world conditions.
 
 \pagebreak
+<!-- TODO: Replace with more natural sounding languague -->
+<!-- ## Guest Speakers
 
-## Chapter 20. Guest Speakers
-
-### 20.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
+### 19.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
 
 Jeroen Boeye's talk, delivered on behalf of Faktion, provided valuable insights into the close relationship between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not just focusing on AI technology but also on the software engineering principles that support the creation of robust, scalable, and maintainable AI systems. This approach ensures that AI solutions are both technically sound and viable for long-term application.
 
@@ -1407,7 +1372,7 @@ Key points from Jeroen's talk included the mastery of data preprocessing and tre
 
 In summary, Jeroen Boeye's lecture offered a thorough perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
 
-### 20.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
+### 19.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
 
 Toon Vanhoutte's engaging lecture, on behalf of Noest from the Cronos Group, shed light on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
 
@@ -1421,120 +1386,39 @@ A key takeaway from Toon’s lecture was the importance of setting realistic cli
 
 In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
 
+\pagebreak -->
+
+## Chapter 20. Guest Speakers
+
+### 20.1. Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
+
+Jeroen Boeye, representing Faktion, shared valuable insights into the synergy between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not only focusing on AI technology but also integrating solid software engineering principles to create robust, scalable, and maintainable AI systems. This holistic approach ensures that AI solutions are both technically sound and viable for long-term application.
+
+During his lecture, Jeroen highlighted various aspects of AI application, particularly Chatlayer's contributions to conversational AI. He explained how Chatlayer enhances chatbot interactions through sophisticated conversational flows, improving the accuracy and relevance of exchanges with users. Another key point was Metamaze, which he praised for its innovative methods in automating document processing, creating concise summaries from extensive documents and emails, and demonstrating the capabilities of supervised machine learning in administrative tasks.
+
+Jeroen outlined a clear roadmap for successful AI project implementation, stressing the need to validate business cases and adopt a problem-first strategy. He discussed the crucial role of high-quality data as the foundation for any AI endeavor and offered strategies for creatively overcoming data limitations. The talk also covered the importance of viewing failures as opportunities for innovation and maintaining open communication with stakeholders about challenges and setbacks.
+
+The lecture further presented various practical AI applications across different industries, such as solar panel detection, unauthorized pool identification, air freight container inspection, and early warning systems for wind turbine gearboxes. Jeroen demonstrated how AI could tackle complex challenges through innovative data sourcing, synthetic data generation, and anomaly detection techniques. He also explored case studies on energy analysis in brick ovens and egg incubation processes, emphasizing the importance of data preprocessing and machine learning models in improving efficiency and outcomes.
+
+Key points from Jeroen's talk included mastering data preprocessing and treating data as a dynamic asset to better tailor AI models to specific needs. He shared practical tips on enhancing operational efficiency, such as using host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.
+
+In summary, Jeroen Boeye's lecture offered a comprehensive perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
+
+### 20.2. Pioneering AI Solutions at Noest by Toon Vanhoutte
+
+Toon Vanhoutte, speaking on behalf of Noest from the Cronos Group, delivered an engaging lecture on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
+
+Toon presented a case study on a packaging company that aimed to revolutionize image search capabilities based on product labels. The project faced various challenges, such as inconsistent PDF formats and large file sizes, which were adeptly managed using Azure Blob Storage for data handling and event-driven processing strategies for efficient, cost-effective solutions, showcasing Noest’s skill in utilizing cloud technologies to address complex issues.
+
+Another significant challenge was enhancing image searchability, which involved recognizing text and objects within images. This was tackled using Azure AI Search, supplemented by Large Language Models (LLMs) and vector search techniques. This approach allowed for nuanced search functionalities beyond simple text queries, demonstrating the advanced capabilities of AI in interpreting complex data.
+
+Toon also explored advancements in semantic search, discussing how different search methods—keyword, vector, and hybrid—along with semantic ranking, could significantly improve the accuracy and contextuality of search results. Practical demonstrations, including comparisons between OCR and GPT-4 vision, illustrated the potential of AI to offer deeper insights based on semantic understanding.
+
+A key takeaway from Toon’s lecture was the importance of setting realistic client expectations regarding AI's capabilities and potential inaccuracies, highlighting the experimental nature of these technologies. The discussion on AI’s evolving landscape emphasized the need for prompt engineering, the challenges of navigating a developing field, and the importance of client education in managing expectations about AI technologies like GPT.
+
+In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
+
 \pagebreak
-
-<!-- ## Installation Steps
-
-This section outlines the required steps to install and set up the project environment. Adherence to these instructions will ensure the successful deployment of the autonomous navigation system.
-
-### 20.3. Prerequisites
-
-Before initiating the setup process, ensure the following prerequisites are met:
-
-- **Git:** Necessary for cloning the project repository.
-- **Docker:** Utilized for containerizing the web application and ensuring a consistent runtime environment.
-- Optionally, **Python 3.11** and **pip** may be installed along with the dependencies listed in `requirements.txt` for running the project without Docker.
-
-### 20.4. Repository Setup
-
-To clone the repository and navigate to the project directory, execute the following commands:
-
-```bash
-git clone https://github.com/driessenslucas/researchproject.git
-cd researchproject
-```
-
-### 20.5. Hardware Setup and Assembly
-
-#### 20.5.1. Introduction to Hardware Components
-
-This section provides an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. The integration of these components is essential for the successful implementation of the autonomous navigation system.
-
-![Final RC Car (Image created by author)](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)")
-
-#### 20.5.2. Components List
-
-- **Core Components**:
-  - ESP32-WROOM-32 module (Refer to the datasheet at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
-  - 3D printed parts from Thingiverse ([hc-sr04](https://www.thingiverse.com/thing:3436448/files), [top plate + alternative for the robot kit](https://www.thingiverse.com/thing:2544002))
-  - Motor Driver - available at [DFRobot](https://www.dfrobot.com/product-66.html)
-  - 2WD robot kit - available at [DFRobot](https://www.dfrobot.com/product-367.html)
-  - Mini OlED screen - available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF)
-  - Sensors - available at [Amazon](https://www.amazon.com.be/dp/B07XF4815H)
-  - Battery For ESP 32 - available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW)
-- **Supplementary Materials**: List of additional materials like screws, wires, and tools required for assembly.
-  - 4mm thick screws 5mm long to hold the wood together - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208)
-  - m3 bolt & nuts - available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637)
-  - wood for the maze - available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)
-
-#### 20.5.3. Wiring Guide
-
-**esp32 pins**
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-
-int sensor0Trig = 27; //GPIO right sensor
-int sensor0Echo = 26; //GPIO right sensor
-
-int sensor1Trig = 33; //GPIO left sensor
-int sensor1Echo = 32; //GPIO left sensor
-
-int sensor2Trig = 25; //GPIO front sensor
-int sensor2Echo = 35; //GPIO front sensor
-
-// OLED display and MPU6050 pins
-#define SDA_PIN 21 // this is the default sda pin on the esp32
-#define SCL_PIN 22 // this is the default scl pin on the esp32
-```
-
-**ESP32 Wiring:**
-
-![ESP32 Wiring (Image created by author)](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)")
-
-#### 20.5.4. Software Configuration
-
-1. **Arduino IDE Setup**: Install the Arduino IDE to program the ESP32 microcontroller. Ensure the ESP32 board is added to the Arduino IDE by following the instructions provided by Espressif Systems.
-2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library to support the OLED display functionality.
-3. **Code Upload:** Transfer the scripts located in the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration for connectivity.
-
-### 20.6. Web Application Setup
-
-#### 20.6.1. Note
-
-To ensure a seamless setup of the virtual display, it is recommended to execute `docker-compose down` following each session.
-
-#### 20.6.2. Steps
-
-1. The web application's source code is stored within the [web app](./web_app/) directory. Access this directory:
-
-   ```bash
-   cd ./web_app/
-   ```
-
-2. To launch the Docker containers, use the following commands:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-### 20.7. Usage Instructions
-
-1. Access the web application by navigating to <http://localhost:8500> or <http://localhost:5000> on your web browser.
-2. Enter the ESP32's IP address within the web app and select the desired model for deployment.
-3. The system provides an option for a virtual demonstration, allowing for operation without engaging the physical vehicle.
-4. Initiate the maze navigation by clicking the `Start Maze` button.
-
-A demonstration of the project is available (see Web App Demo in the Video References section).
-
-### 20.8. Additional Information: Model Training
-
-- Opt between utilizing a pre-trained model or conducting new training sessions using the script available in [train](./training/train.py).
-- This training script is optimized for resource efficiency and can be executed directly on the Raspberry Pi.
-- Upon completion, you will be prompted to save the new model. If saved, it will be stored within the [models](./web_app/models) directory of the `web_app` folder. -->
 
 ## Chapter 21. Installation Steps
 
@@ -1585,20 +1469,20 @@ Here’s an overview of the hardware components used in the project, including t
 #### 21.4.1. Core Components
 
 - **ESP32-WROOM-32 module**
-  - Datasheet available from Espressif.com
+  - Available at Amazon.com
 - **3D printed parts**
   - Available at Thingiverse.com
-    - HC-SR04
-    - Top plate + alternative for the robot kit
-- **Motor Driver**
+    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
+    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
+- **Motor Controller (L298N)**
   - Available at DFRobot.com
-- **2WD robot kit**
+- **2WD miniQ Robot Chassist**
   - Available at DFRobot.com
 - **Mini OLED screen**
   - Available at Amazon.com
-- **Sensors**
+- **Sensors (HC-SR04 and MPU6050)**
   - Available at Amazon.com
-- **Battery for ESP32**
+- **18650 Battery Shield for ESP32**
   - Available at Amazon.com
 
 #### 21.4.2. Supplementary Materials
@@ -1697,8 +1581,44 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \caption{QR code for video Video E1. (Video by author.)}
     \end{figure}
 
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_1.png}
+        \end{minipage}
+        \caption{QR code for video Video E1. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_1.png}
+        \end{minipage}
+        \caption{QR code for video Video E1. (Video by author.)}
+    \end{figure}
+
 2. **Video E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset.
    - [Video E2](https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13)
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_2.png}
+        \end{minipage}
+        \caption{QR code for video Video E2. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_2.png}
+        \end{minipage}
+        \caption{QR code for video Video E2. (Video by author.)}
+    \end{figure}
+
 
     \begin{figure}[h]
         \centering
@@ -1719,8 +1639,44 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \caption{QR code for video Video E6. (Video by author.)}
     \end{figure}
 
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_3.png}
+        \end{minipage}
+        \caption{QR code for video Video E6. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_3.png}
+        \end{minipage}
+        \caption{QR code for video Video E6. (Video by author.)}
+    \end{figure}
+
 4. **Video E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability.
    - Click here to go to the video: [Video E7](https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442)
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_4.png}
+        \end{minipage}
+        \caption{QR code for video Video E7. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_4.png}
+        \end{minipage}
+        \caption{QR code for video Video E7. (Video by author.)}
+    \end{figure}
+
 
     \begin{figure}[h]
         \centering
@@ -1741,8 +1697,44 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \caption{QR code for video Video E9. (Video by author.)}
     \end{figure}
 
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_5.png}
+        \end{minipage}
+        \caption{QR code for video Video E9. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_5.png}
+        \end{minipage}
+        \caption{QR code for video Video E9. (Video by author.)}
+    \end{figure}
+
 6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer.
    - Click here to go to the video: [Video E11](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b)
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_6.png}
+        \end{minipage}
+        \caption{QR code for video Video E11. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_6.png}
+        \end{minipage}
+        \caption{QR code for video Video E11. (Video by author.)}
+    \end{figure}
+
 
     \begin{figure}[h]
         \centering
@@ -1763,8 +1755,44 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \caption{QR code for video Web App Demo. (Video by author.)}
     \end{figure}
 
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_7.png}
+        \end{minipage}
+        \caption{QR code for video Web App Demo. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_7.png}
+        \end{minipage}
+        \caption{QR code for video Web App Demo. (Video by author.)}
+    \end{figure}
+
 8. **DDQN Simulation test**: A simulation test of the DDQN model navigating a maze environment, demonstrating the model's learning capabilities and decision-making processes.
    - Click here to go to the video: [DDQN Simulation](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_8.png}
+        \end{minipage}
+        \caption{QR code for video DDQN Simulation. (Video by author.)}
+    \end{figure}
+
+
+    \begin{figure}[h]
+        \centering
+        \begin{minipage}{0.2\textwidth}
+            \includegraphics[width=1in]{qr_codes/qr_code_8.png}
+        \end{minipage}
+        \caption{QR code for video DDQN Simulation. (Video by author.)}
+    \end{figure}
+
 
     \begin{figure}[h]
         \centering
