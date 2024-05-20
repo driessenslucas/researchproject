@@ -1,4 +1,4 @@
-% my-template.latex
+
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
@@ -8,8 +8,7 @@
 
 % Additional packages
 \usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{fancyhdr}
+% \usepackage{hyperref}
 \usepackage{titlesec}
 \usepackage{changepage}
 \usepackage{lipsum}
@@ -22,26 +21,25 @@
 \usepackage{caption}
 \usepackage{placeins}
 \usepackage{float}
-
-% package for justifying text
+\usepackage{scrlayer-scrpage}
 \usepackage{ragged2e}
-
-%  begin shaded for macos
 \usepackage{framed}
-%  end shaded for macos
+\usepackage{url}
+\usepackage{xurl}
+\usepackage{silence} % Add the silence package
+\usepackage[hidelinks]{hyperref}
+
 $if(highlighting-macros)$
 $highlighting-macros$
-$endif$
+% disable higlighting in links
+\renewcommand{\href}[2]{#2}
 
-\usepackage{capt-of}
-\usepackage{silence} % Add the silence package
+$endif$
 
 % Filter out specific warnings
 \WarningFilter{latex}{Float too large for page}
 \WarningFilter{latex}{float specifier changed to}
-
 \WarningFilter{latex}{`h' float specifier changed to `ht'}
-% LaTeX Warning: Label   multiply defined.
 \WarningFilter{latex}{Label}
 
 % package for tightlist
@@ -51,15 +49,26 @@ $endif$
 % Custom commands
 \newcommand{\mycustomcommand}[1]{\textbf{#1}}
 
-%
-% header and footer
-%
+% Custom header and footer definitions
+\newpairofpagestyles{custom-header-footer}{
+  \clearpairofpagestyles
+  \ihead*{
+    \includegraphics[height=0.5cm]{./header_image.png} % Replace with your logo
+    \hspace{0.5em}% Add some space between the icon and text
+    Bachelor Thesis Howest
+  }
+  \chead*{} % Center header if needed
+  \ohead*{\today} % Replace with desired content
+  \ifoot*{Driessens Lucas} % Replace with your author name
+  \cfoot*{} % Center footer if needed
+  \ofoot*{\thepage}
+  \addtokomafont{pageheadfoot}{\upshape}
+}
 
-
-% Undefine \chead to avoid conflict
+% Apply the custom style
+\pagestyle{custom-header-footer}
 
 \begin{document}
-
 
 %%%%% title page %%%%%
 \begin{titlepage}
@@ -70,23 +79,25 @@ $endif$
     \end{center}
     \begin{adjustwidth}{1.5cm}{1.5cm}
 
-    \vspace{0.5em}
+    \vspace{1em}
 
     \MakeUppercase{\huge\textbf{Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning}}
 
     \MakeUppercase{\Large\textit{Application in Maze Navigation}}
 
-    \vspace{1em}
+    \vspace{2em}
 
     \MakeUppercase{Internal promotor: Gevaert Wouter}
 
     \MakeUppercase{External promotor: Sam Debeuf}
 
-    \vspace{1em}
+    \vspace{2em}
 
     \MakeUppercase{\small{Research conducted by}}
 
     \MakeUppercase{\Large\textbf{{Lucas Driessens}}}
+
+    \vspace{1em}
 
     \MakeUppercase{\small{for obtaining a bachelor's degree in}}
 
@@ -126,32 +137,29 @@ $abstract$
 \pagebreak
 $endif$
 
-
 $if(preface)$
 \begin{center}
  {\LARGE \textbf{\textsf{Preface}}}
 \end{center}
 
-\begin{abstract}
+% \begin{abstract}
 \begin{justify}
 $preface$
 \end{justify}
-\end{abstract}
+% \end{abstract}
 \pagebreak
 $endif$
-
-
 
 $if(acknowledgements)$
 \begin{center}
  {\LARGE \textbf{\textsf{Acknowledgements}}}
 \end{center}
 
-\begin{abstract}
+% \begin{abstract}
 \begin{justify}
 $acknowledgements$
 \end{justify}
-\end{abstract}
+% \end{abstract}
 \pagebreak
 $endif$
 
@@ -207,8 +215,6 @@ $endif$
 $if(has-frontmatter)$
 \mainmatter
 $endif$
-$body$
-
 
 $body$
 
