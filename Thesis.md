@@ -1415,9 +1415,9 @@ These diverse sources collectively informed the direction of this research, focu
 
 This thesis has demonstrated the potential of transferring a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, focusing on navigating a maze using a remote-controlled (RC) car. The detailed experiments and analyses provide a thorough exploration of this transition.
 
-The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 7: Analysis and Results: Addressing the Research Questions** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
+The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 14: Challenges and Solutions in RL Implementation** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
 
-The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 4: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
+The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 6: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
 
 This study confirms the feasibility of sim-to-real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
 
@@ -1665,7 +1665,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_1.png}
         \end{minipage}
-        \caption{QR code for video Video E1. (Video by author.)}
+        \caption{QR code for video E1. (Video by author.)}
     \end{figure}
 
 2. **Video E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset.
@@ -1676,7 +1676,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_2.png}
         \end{minipage}
-        \caption{QR code for video Video E2. (Video by author.)}
+        \caption{QR code for video E2. (Video by author.)}
     \end{figure}
 
 3. **Video E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities.
@@ -1687,7 +1687,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_3.png}
         \end{minipage}
-        \caption{QR code for video Video E6. (Video by author.)}
+        \caption{QR code for video E6. (Video by author.)}
     \end{figure}
 
 4. **Video E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability.
@@ -1698,7 +1698,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_4.png}
         \end{minipage}
-        \caption{QR code for video Video E7. (Video by author.)}
+        \caption{QR code for video E7. (Video by author.)}
     \end{figure}
 
 5. **Video E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation.
@@ -1709,7 +1709,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_5.png}
         \end{minipage}
-        \caption{QR code for video Video E9. (Video by author.)}
+        \caption{QR code for video E9. (Video by author.)}
     \end{figure}
 
 6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer.
@@ -1720,7 +1720,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_6.png}
         \end{minipage}
-        \caption{QR code for video Video E11. (Video by author.)}
+        \caption{QR code for video E11. (Video by author.)}
     \end{figure}
 
 7. **Web App Demo**: A demonstration of the web application's functionality, showcasing the user interface and the autonomous navigation system's control features.
@@ -1731,7 +1731,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_7.png}
         \end{minipage}
-        \caption{QR code for video Web App Demo. (Video by author.)}
+        \caption{QR code for Web App Demo. (Video by author.)}
     \end{figure}
 
 8. **DDQN Simulation test**: A simulation test of the DDQN model navigating a maze environment, demonstrating the model's learning capabilities and decision-making processes.
@@ -1742,7 +1742,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_8.png}
         \end{minipage}
-        \caption{QR code for video DDQN Simulation. (Video by author.)}
+        \caption{QR code for DDQN Simulation. (Video by author.)}
     \end{figure}
 
 \pagebreak
