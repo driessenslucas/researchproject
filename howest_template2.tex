@@ -1,4 +1,3 @@
-
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
@@ -28,10 +27,11 @@
 \usepackage{xurl}
 \usepackage{silence} % Add the silence package
 \usepackage[hidelinks]{hyperref}
+\usepackage{helvet} % Load the Helvetica font package
 
 $if(highlighting-macros)$
 $highlighting-macros$
-% disable higlighting in links
+% disable highlighting in links
 \renewcommand{\href}[2]{#2}
 
 $endif$
@@ -70,54 +70,52 @@ $endif$
 
 \begin{document}
 
-%%%%% title page %%%%%
+% only set font different for title page
+\newgeometry{margin=1in}
+% set font for title page
 \begin{titlepage}
     \newgeometry{margin=0cm}
+    % Change font to Helvetica for the title page
+    \fontfamily{phv}\selectfont
+    
     \begin{center}
         %%%%% Change the cover image here %%%%%
         \includegraphics[width=18.5cm,height=18.5cm]{./cover_image.png}
     \end{center}
     \begin{adjustwidth}{1.5cm}{1.5cm}
 
-    \vspace{1em}
+    \vspace{0.5em}
 
-    \MakeUppercase{\huge\textbf{Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning}}
-    
-    \vspace{0.3em}
-    
+    \MakeUppercase{\huge\textbf{Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning}} \\
     \MakeUppercase{\Large\textit{Application in Maze Navigation}}
 
     \vspace{2em}
 
-    \MakeUppercase{Internal promotor: Gevaert Wouter}
-
-    \vspace{0.3em}
-
-    \MakeUppercase{External promotor: Sam Debeuf}
+    \noindent\MakeUppercase{\large{Internal promotor: Gevaert Wouter}} \\
+    \MakeUppercase{\large{External promotor: Sam Debeuf}}
 
     \vspace{2em}
 
-    \MakeUppercase{\small{Research conducted by}}
+    \noindent\MakeUppercase{\large{Research conducted by}} \\
+    \MakeUppercase{\Large\textbf{Lucas Driessens}}
 
-    \MakeUppercase{\Large\textbf{{Lucas Driessens}}}
+    \vspace{2em}
+
+    \noindent\MakeUppercase{\large{for obtaining a bachelor's degree in}} \\
+    \MakeUppercase{\Large\textbf{Multimedia \& Creative Technologies}}
 
     \vspace{1em}
 
-    \MakeUppercase{\small{for obtaining a bachelor's degree in}}
-
-    \MakeUppercase{\Large{\textbf{{Multimedia \& Creative Technologies}}}}
-
-    \vspace{0.5em}
-
-    \MakeUppercase{Howest | 2023-2024}
-
+    \noindent\MakeUppercase{\large{Howest | 2023-2024}}
     \end{adjustwidth}
     \restoregeometry
+    % Restore original font for the rest of the document
+    \normalfont
 \end{titlepage}
 
-\title{$title$}
-\author{$author$}
-\date{$date$}
+\newgeometry{margin=1in}
+% reset font
+\fontfamily{phv}\selectfont
 
 $if(has-frontmatter)$
 \frontmatter
@@ -125,6 +123,12 @@ $endif$
 $if(title)$
 $if(beamer)$
 \frame{\titlepage}
+
+% \title{$title$}
+% \author{$author$}
+% \date{$date$}
+
+
 % don't generate the default title
 % $else$
 % \maketitle
@@ -136,11 +140,9 @@ $if(abstract)$
  {\LARGE \textbf{\textsf{Abstract}}}
 \end{center}
 
-\begin{abstract}
 \begin{justify}
 $abstract$
 \end{justify}
-\end{abstract}
 \pagebreak
 $endif$
 
