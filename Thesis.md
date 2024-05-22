@@ -29,13 +29,13 @@ abstract: |
 
   \noindent \newline First, we explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
-  \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and more importantly movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performanceResults show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
+  \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
 
-  \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for sim-to-real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.This study contributes to AI and robotics by providing insights and methodologies for sim-to-real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
+  \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for sim-to-real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
 preface: |
   This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” is the final project of my studies in Multimedia & Creative Technology at Howest, University of Applied Sciences. The main question it tackles is: “Can a trained RL agent be successfully transferred from a simulation to the real world?” This question highlights my curiosity about how virtual simulations can be used in real-life applications and addresses a significant challenge in AI: making systems that can work in real-world conditions.
 
-  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis delves into the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
+  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis digs into the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
 
   \noindent \newline The research combines theoretical studies with practical experiments. The theoretical part provides a solid background, while the experiments test how well RL agents perform in different controlled scenarios. By evaluating these agents, the research aims to find the best strategies for successfully transferring them from simulations to real-world applications.
   
@@ -208,12 +208,13 @@ RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, features walls ('1') an
 To aid with navigation, the agent has sensors providing readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, crucial for decision-making. The environment's state space ($\mathcal{S}$) includes the agent's current position $(x, y)$, orientation $\theta$ (north, east, south, or west), and sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The agent's goal is efficient maze navigation, reaching the goal while avoiding collisions with walls or getting stuck in corners all while optimizing its path based on sensor inputs and past experiences.
 
 <!-- ![Real life Maze Build (Image created by author)](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)") -->
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
     \end{minipage}
     \caption{Real life Maze Build (Image created by author)}
+    \label{fig:real_maze_build}
 \end{figure}
 
 ### Web Application Interface
@@ -221,12 +222,13 @@ To aid with navigation, the agent has sensors providing readings in three direct
 A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and control of the car's movements. The interface displays sensor readings and includes an emergency stop feature.
 
 <!-- ![Web App (Image created by author)](./images/thesis/web_app.png "Web App (Image created by author)") -->
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/thesis/web_app.png}
     \end{minipage}
     \caption{Web App (Image created by author)}
+    \label{fig:web_app}
 \end{figure}
 
 ## Agent Design (DDQNAgent)
@@ -466,7 +468,7 @@ Non-trainable params: 0 (0.00 Byte)
 ```
 
 <!-- ![Model Architecture (Image created by author)](./images/thesis/model_architecture.png "Model Architecture (Image created by author)") -->
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/thesis/model_architecture.png}
@@ -489,7 +491,7 @@ The training of the Double DQN agent was governed by the following parameters:
   - Minimum value for exploration rate.
 - **Epsilon Decay Rate (`DECAY`)**: 0.99973
   - Rate at which exploration probability decreases.
-- **Number of Episodes (`EPISODE_AMOUNT`)**: 170
+- **Number of Episodes (`EPISODE_AMOUNT`)**: 175
   - Total episodes for training the agent.
 - **Replay Memory Capacity (`REPLAY_MEMORY_CAPACITY`)**: 2,000,000
   - Maximum size of the replay buffer.
@@ -669,7 +671,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 
 ### 1. Visit Heatmaps
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -684,7 +686,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -703,7 +705,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 
 ### 2. Maze Solution Efficiency
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -719,7 +721,7 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 \hfill
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=\linewidth]{./images/training_images/maze_solution_Q-agent.png}
 \captionof{figure}{Q-agent Maze Path (Image created by author)}
@@ -732,7 +734,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 
 ### 3. Reward History and Distribution
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -747,7 +749,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -762,7 +764,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=\linewidth]{./images/training_images/reward_history_Qlearning.png}
 \captionof{figure}{Q-agent Reward History (Image created by author)}
@@ -773,7 +775,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 
 ### 4. Mean Squared Error (MSE) Over Time
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -788,7 +790,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -807,7 +809,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 
 ### 5. Moving Average of Rewards
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -822,7 +824,7 @@ For the PPO and AC algorithms, their paths were more complex and less direct, in
 \end{minipage}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{minipage}{.45\textwidth}
 \centering
@@ -1075,7 +1077,7 @@ Moving beyond controlled environments, I tested the RC-car in both outdoor and i
   • Welke alternatieven/suggesties geven bedrijven en/of community?   
   • Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?    
   • Wat is de meerwaarde voor het bedrijf?   
-  • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig?  
+  • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig? 
 
   Rewrite this yourself
 -- -->
@@ -1517,7 +1519,7 @@ cd researchproject
 Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
 
 <!-- ![Final RC Car (Image created by author)](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)") -->
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
@@ -1600,7 +1602,7 @@ int sensor2Echo = 35; //GPIO front sensor
 **ESP32 Wiring:**
 
 <!-- ![ESP32 Wiring (Image created by author)](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)") -->
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/schematics/esp_updated.png}
@@ -1660,7 +1662,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 1. **Video E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope's ability to correct the car's orientation for accurate navigation, aiming to refine control over the vehicle's movement through maze environments.
    - Click here to go to the video: [Video E1](https://github.com/driessenslucas/researchproject/assets/91117911/32d9e29f-6d5a-4676-b609-2c08923ca1ac)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_1.png}
@@ -1671,7 +1673,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 2. **Video E2 - Navigational Corrections**: Addressing alignment issues when attempting precise 90-degree turns and realigning the car's forward movement to rectify a persistent ~3-degree offset.
    - [Video E2](https://github.com/driessenslucas/researchproject/assets/91117911/624b40f2-bee8-49f6-961d-1f72ab18fe13)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_2.png}
@@ -1682,7 +1684,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 3. **Video E6 - Encoder Implementation**: Introducing rotary encoders to the setup, hoping to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities.
    - Click here to go to the video: [Video E6](https://github.com/driessenslucas/researchproject/assets/91117911/9728e29a-d2fa-48fa-b6e0-e2e1da92228f)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_3.png}
@@ -1693,7 +1695,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 4. **Video E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability.
    - Click here to go to the video: [Video E7](https://github.com/driessenslucas/researchproject/assets/91117911/b9ce2cc3-85fd-4136-8670-516c123ba442)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_4.png}
@@ -1704,7 +1706,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 5. **Video E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation.
    - Click here to go to the video: [Video E9](https://github.com/driessenslucas/researchproject/assets/91117911/02df8a25-b7f0-4061-89b7-414e6d25d31c)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_5.png}
@@ -1715,7 +1717,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer.
    - Click here to go to the video: [Video E11](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_6.png}
@@ -1726,7 +1728,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 7. **Web App Demo**: A demonstration of the web application's functionality, showcasing the user interface and the autonomous navigation system's control features.
    - Click here to go to the video: [Web App Demo](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_7.png}
@@ -1737,7 +1739,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 8. **DDQN Simulation test**: A simulation test of the DDQN model navigating a maze environment, demonstrating the model's learning capabilities and decision-making processes.
    - Click here to go to the video: [DDQN Simulation](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
             \includegraphics[width=1in]{qr_codes/qr_code_8.png}

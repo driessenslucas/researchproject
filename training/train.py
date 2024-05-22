@@ -478,8 +478,8 @@ BATCH_SIZE = 128  # How many steps (samples) to use for training
 UPDATE_TARGET_INTERVAL = 2
 EPSILON = 0.99  # Exploration percentage
 MIN_EPSILON = 0.01
-DECAY = 0.99993
-EPISODE_AMOUNT = 170
+DECAY = 0.99973
+EPISODE_AMOUNT = 175
 
 
 # Fill the replay memory with the first batch of samples
@@ -655,7 +655,7 @@ if run_test == "y":
 
         env.init_pygame()
 
-        REPLAY_MEMORY_CAPACITY = 20000
+        REPLAY_MEMORY_CAPACITY = 2000000
         POSSIBLE_ACTIONS = env.possible_actions
 
         # create DQN agent
@@ -690,7 +690,7 @@ if run_test == "y":
         env = RCMazeEnv()
         state = env.reset()
 
-        REPLAY_MEMORY_CAPACITY = 20000
+        REPLAY_MEMORY_CAPACITY = 2000000
         POSSIBLE_ACTIONS = env.possible_actions
 
         # create DQN agent
