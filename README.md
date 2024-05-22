@@ -5,6 +5,8 @@
 
 ---
 
+> Want to read more? : go look at the [thesis.pdf](https://github.com/driessenslucas/researchproject/blob/main/thesis.pdf)
+
 # Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning
 
 This repository contains the research and implementation files for the bachelor thesis by Lucas Driessens, presented at Howest, focused on sim-to-real transfer in reinforcement learning, particularly navigating a maze using a remote-controlled (RC) car.
