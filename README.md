@@ -14,7 +14,7 @@ This repository contains the research and implementation files for the bachelor 
 
 https://github.com/driessenslucas/researchproject/assets/91117911/972541d6-5010-4f73-a56f-5b60bb8b4f3e
 
-![rc-car](images/assembly_images/IMG_3477.jpeg)
+![rc-car](images/final_test/jp_final.jpeg)
 
 
 ## Project Overview
