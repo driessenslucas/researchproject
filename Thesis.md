@@ -211,7 +211,7 @@ To aid with navigation, the agent has sensors providing readings in three direct
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
+        \includegraphics[width=5in]{./images/final_test/final_maze_build.jpeg}
     \end{minipage}
     \caption{Real life Maze Build (Image created by author)}
     \label{fig:real_maze_build}
@@ -471,7 +471,7 @@ Non-trainable params: 0 (0.00 Byte)
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=4in]{./images/thesis/model_architecture.png}
+        \includegraphics[width=6in]{./images/thesis/model_architecture.png}
     \end{minipage}
     \caption{Model Architecture (Image created by author)}
 \end{figure}
@@ -1665,7 +1665,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_1.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_1.png}
         \end{minipage}
         \caption{QR code for video E1. (Video by author.)}
     \end{figure}
@@ -1676,7 +1676,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_2.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_2.png}
         \end{minipage}
         \caption{QR code for video E2. (Video by author.)}
     \end{figure}
@@ -1687,7 +1687,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_3.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_3.png}
         \end{minipage}
         \caption{QR code for video E6. (Video by author.)}
     \end{figure}
@@ -1698,7 +1698,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_4.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_4.png}
         \end{minipage}
         \caption{QR code for video E7. (Video by author.)}
     \end{figure}
@@ -1709,7 +1709,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_5.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_5.png}
         \end{minipage}
         \caption{QR code for video E9. (Video by author.)}
     \end{figure}
@@ -1720,7 +1720,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_6.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_6.png}
         \end{minipage}
         \caption{QR code for video E11. (Video by author.)}
     \end{figure}
@@ -1731,7 +1731,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_7.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_7.png}
         \end{minipage}
         \caption{QR code for Web App Demo. (Video by author.)}
     \end{figure}
@@ -1742,7 +1742,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
     \begin{figure}[H]
         \centering
         \begin{minipage}{0.2\textwidth}
-            \includegraphics[width=1in]{qr_codes/qr_code_8.png}
+            \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_8.png}
         \end{minipage}
         \caption{QR code for DDQN Simulation. (Video by author.)}
     \end{figure}
