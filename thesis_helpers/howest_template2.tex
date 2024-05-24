@@ -1,9 +1,5 @@
-\documentclass{article}
+\documentclass{article} % Change the document's base font size
 
-\usepackage[utf8]{inputenc}
-\usepackage{geometry}
-
-\geometry{a4paper, margin=1in}
 
 % Additional packages
 \usepackage{graphicx}
@@ -27,7 +23,22 @@
 \usepackage{xurl}
 \usepackage{silence} % Add the silence package
 \usepackage[hidelinks]{hyperref}
-\usepackage{helvet} % Load the Helvetica font package
+\usepackage{geometry}
+
+\usepackage{lmodern}
+
+% Euler for math and numbers
+\usepackage[euler-digits,small]{eulervm}
+\AtBeginDocument{\renewcommand{\hbar}{\hslash}}
+
+\geometry{a4paper, margin=1.25in}
+%  set default font size
+\renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
+
+% Customize section titles
+\titleformat{\section}
+  {\normalfont\Large\bfseries} % Blue, large, bold section titles
+  {}{0pt}{\thesection\quad}
 
 $if(highlighting-macros)$
 $highlighting-macros$
@@ -113,9 +124,7 @@ $endif$
     \normalfont
 \end{titlepage}
 
-\newgeometry{margin=1in}
-% reset font
-\fontfamily{phv}\selectfont
+\newgeometry{margin=1.25in}
 
 $if(has-frontmatter)$
 \frontmatter
