@@ -27,83 +27,100 @@ output:
 abstract: |
   This research explores the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective is to determine if and how an RL agent, specifically a Double Deep Q-Network (DDQN), can successfully navigate a physical maze after being trained in a virtual environment.
 
-  \noindent \newline First, we explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
+  First, we explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
-  \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
+  Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
 
-  \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for Sim2Real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
+  This study contributes to AI and robotics by providing insights and methodologies for Sim2Real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
 preface: |
   This thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” is the final project of my studies in Multimedia & Creative Technology at Howest, University of Applied Sciences. The main question it tackles is: “Can a trained RL agent be successfully transferred from a simulation to the real world?” This question highlights my curiosity about how virtual simulations can be used in real-life applications and addresses a significant challenge in AI: making systems that can work in real-world conditions.
 
-  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis explores the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
+  My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis explores the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
 
-  \noindent \newline The research combines theoretical studies with practical experiments. The theoretical part provides a solid background, while the experiments test how well RL agents perform in different controlled scenarios. By evaluating these agents, the research aims to find the best strategies for successfully transferring them from simulations to real-world applications.
+  The research combines theoretical studies with practical experiments. The theoretical part provides a solid background, while the experiments test how well RL agents perform in different controlled scenarios. By evaluating these agents, the research aims to find the best strategies for successfully transferring them from simulations to real-world applications.
   
   \noindent \newline Lucas Driessens  
   \noindent \newline 01-06-2024
 acknowledgements: |
   I extend heartfelt thanks to my supervisor, Gevaert Wouter, for his invaluable guidance and insights. His mentorship has been fundamental to my growth. I also thank Amaury Van Naemen for his technical support with 3D printing, which was crucial for my experiments.
 
-  \noindent \newline I would also like to thank Sam De Beuf for not only being my internship supervisor but also my external promotor for this thesis, and for allowing me the freedom to conduct research within my internship. This opportunity helped me grow significantly as a person and gain valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
+  I would also like to thank Sam De Beuf for not only being my internship supervisor but also my external promotor for this thesis, and for allowing me the freedom to conduct research within my internship. This opportunity helped me grow significantly as a person and gain valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
 
-  \noindent \newline Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their dedication to excellence and support for student initiatives have been instrumental in shaping my academic journey.
+  Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their dedication to excellence and support for student initiatives have been instrumental in shaping my academic journey.
 ---
 
 \pagebreak
 
-# Glossary of Terms
+### Glossary of Terms
 
 1. **Artificial Intelligence (AI)**: The simulation of human intelligence processes by machines, especially computer systems, enabling them to perform tasks that typically require human intelligence.
+2. **autonomous vehicle (AV)**: A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+3. **Bellman Equation**: A fundamental recursive equation in dynamic programming and reinforcement learning that provides a way to calculate the value of a policy.
+4. **Domain Adaptation**: A set of methods used to adapt a model trained in one domain (e.g., simulation) to perform well in a different but related domain (e.g., real-world).
+5. **Domain Randomization**: A technique used in reinforcement learning to bridge the gap between simulation and reality by varying the parameters of the simulated environment to improve the robustness of the learned models when applied to real-world tasks.
+6. **Double Deep Q-Network (DDQN)**: An enhancement of the Deep Q-Network (DQN) algorithm that addresses the overestimation of action values, thus improving learning stability and performance.
+7. **Epsilon Decay**: A technique in reinforcement learning that gradually decreases the rate of exploration over time, allowing the agent to transition from exploring the environment to exploiting known actions for better outcomes.
+8. **Experience Replay**: A technique in reinforcement learning where past experiences (state, action, reward, next state) are stored and randomly sampled to break the correlation between consecutive samples, improving the stability and performance of the learning algorithm.
+9. **Fixed Q-Targets**: In the context of DQN, this refers to using a separate network to generate target values for training, which are held fixed for a number of steps to improve training stability.
+10. **Markov Decision Process (MDP)**: A mathematical framework for modeling decision-making situations where outcomes are partly random and partly under the control of a decision-maker. It is characterized by states, actions, transition probabilities, and rewards.
+11. **Mean Squared Error (MSE)**: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.
+12. **Motion Processing Unit (MPU6050)**: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.
+13. **Over the air updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
+14. **Policy Gradient Method**: A class of reinforcement learning algorithms that optimize the policy directly by computing gradients of the expected reward with respect to the policy parameters.
+15. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent's decisions based on the current policy.
+16. **Proximal Policy Optimization (PPO)**: A policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach.
+17. **Q-agent**: Based on the Q-learning algorithm, it is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment.
+18. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
+19. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
+20. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
+21. **Sensor Fusion**: The process of combining sensory data from multiple sources to produce a more accurate and reliable understanding of the environment.
+22. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
+23. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
+24. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation.
+25. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
+26. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
 
-2. **Double Deep Q-Network (DDQN)**: An enhancement of the Deep Q-Network (DQN) algorithm that addresses the overestimation of action values, thus improving learning stability and performance.
+\pagebreak
 
-3. **Epsilon Decay**: A technique in reinforcement learning that gradually decreases the rate of exploration over time, allowing the agent to transition from exploring the environment to exploiting known actions for better outcomes.
+### List of Abbreviations
 
-4. **Mean Squared Error (MSE)**: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.
-
-5. **Motion Processing Unit (MPU6050)**: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.
-
-6. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent's decisions based on the current policy.
-
-7. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
-
-8. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
-
-9. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
-
-10. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
-
-11. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
-
-12. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
-
-13. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
-
-14. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation
-
-15. **Over the air updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
-
-16. **autonomous vehicle (AV):** A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+1. **AC** - Actor-Critic
+2. **AI** - Artificial Intelligence
+3. **AV** - autonomous vehicle
+4. **DDQN** - Double Deep Q-Network
+5. **DQN** - Deep Q-Network
+6. **ESP32** - Espressif Systems 32-bit Microcontroller
+7. **HC-SR04** - Ultrasonic Distance Sensor
+8. **MDP** - Markov Decision Process
+9. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
+10. **MSE** - Mean Squared Error
+11. **OTA** - Over the air updates
+12. **PPO** - Proximal Policy Optimization
+13. **RC** - Remote Controlled
+14. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
+15. **RL** - Reinforcement Learning
+16. **SAC** - Soft Actor-Critic
+17. **Sim2Real** - Simulation to Reality Transfer
+18. **TRPO** - Trust Region Policy Optimization
 
 \pagebreak
 
 # List of Abbreviations
 
 1. **AI** - Artificial Intelligence
-2. **DDQN** - Double Deep Q-Network
-3. **DQN** - Deep Q-Network
-4. **ESP32** - Espressif Systems 32-bit Microcontroller
-5. **HC-SR04** - Ultrasonic Distance Sensor
-6. **MSE** - Mean Squared Error
+2. **AV** - autonomous vehicle
+3. **DDQN** - Double Deep Q-Network
+4. **DQN** - Deep Q-Network
+5. **ESP32** - Espressif Systems 32-bit Microcontroller
+6. **HC-SR04** - Ultrasonic Distance Sensor
 7. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
-8. **PPO** - Proximal Policy Optimization
-9. **RC** - Remote Controlled
-10. **RPI** - Raspberry Pi
-11. **RL** - Reinforcement Learning
+8. **MSE** - Mean Squared Error
+9. **OTA** - Over the air updates
+10. **PPO** - Proximal Policy Optimization
+11. **RC** - Remote Controlled
 12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
-13. **Sim2Real** - Simulation to Reality Transfer
-14. **OTA** Over the air updates
-15. **AV** - autonomous vehicle
+13. **RL** - Reinforcement Learning
+14. **Sim2Real** - Simulation to Reality Transfer
 
 \pagebreak
 
@@ -111,7 +128,7 @@ acknowledgements: |
 
 ## Navigating the Maze: Sim‑to‑Real Transfer in Reinforcement Learning
 
-This thesis explores the intersection of reinforcement learning (RL) and Sim2Real transfer, specifically focusing on the challenges and feasibility of transferring a DDQN-trained agent from a simulated environment to a physical maze. The primary research question is: Can a DDQN agent trained in simulation effectively navigate a real-world maze?
+This thesis explores the intersection of reinforcement learning (RL) and Sim2Real transfer, specifically focusing on the challenges and feasibility of transferring a DDQN-trained agent from a simulated environment to a physical maze. The primary research question is: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)"
 
 ## Sim‑to‑Real Transfer: Bridging the Gap
 
@@ -135,25 +152,7 @@ This study focuses on maze navigation using a remote-controlled (RC) car equippe
 
 While this research focuses on maze navigation, its implications extend far beyond. The principles ofSim2Real transfer can be applied to autonomous drones in urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim2Real transfer is the key to making these scenarios feasible.
 
-So buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. The RC car awaits, ready to unravel the mysteries of both simulation and reality.
-
-# Background on Reinforcement Learning
-<!-- TODO: fix citation styling to match everything else. -->
-
-The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref3]{[3]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
-
-Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref5]{[5]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref6]{[6]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref17]{[17]}.
-
-This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref3]{[3]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
-
-Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
-
-    States ($S$): A definitive set of environmental conditions.
-    Actions ($A$): A comprehensive set of possible actions for the agent.
-    Transition Probabilities ($P(s_{t+1} | s_t, a_t)$): The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
-    Rewards ($R(s_t, a_t)$): The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
-
-The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
+So buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. In the following chapters, we will delve into how and why we arrived at our results. We will start with a literature review and the methodology, followed by the results and challenges encountered. Finally, we will discuss reflections and provide advice for future researchers embarking on a similar journey. Last but not least, you will find installation instructions to replicate the setup.
 
 # Research Questions
 
@@ -165,11 +164,110 @@ This investigation centers around the question: "Is it possible to transfer a tr
 4. **Does the simulation have any useful contributions? In terms of training time or performance.**: Evaluating training effectiveness and optimizing performance through simulation.
 5. **How can the trained model be transferred to the real RC car? How do we need to adjust the agent and the environment for it to translate to the real world?**: Discussing necessary adjustments for real-world application.
 
-# Methodology
+# Literature Review and Methodology.
+
+## Background on Reinforcement Learning and Reinforcement Learning Algorithms
+<!-- TODO: fix citation styling to match everything else. -->
+
+### Background on Reinforcement Learning
+
+The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref3]{[3]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
+
+Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref5]{[5]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref6]{[6]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref17]{[17]}.
+
+This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref3]{[3]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
+
+Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
+
+- **States ($S$)**: A definitive set of environmental conditions.
+- **Actions ($A$)**: A comprehensive set of possible actions for the agent.
+- **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
+- **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
+
+The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
+
+### Background on Double Deep Q-Network (DDQN)
+
+The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), a pivotal algorithm in the field of deep reinforcement learning that integrates deep neural networks with Q-learning. DQN itself was a significant advancement as it demonstrated the capability to approximate the Q-value function, which represents the expected reward for taking an action in a given state, using high-capacity neural networks.
+
+#### Evolution from DQN to DDQN
+
+**DQN Challenges**: While DQN substantially improved the stability and performance of Q-learning, it was susceptible to significant overestimations of Q-values due to the noise inherent in the approximation of complex functions by deep neural networks. This overestimation could lead to suboptimal policies and slower convergence during training.
+
+**DDQN Solution**: Introduced by Hado van Hasselt et al., DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
+
+- The **current network** determines the action with the highest Q-value for the current state.
+- A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state [22].
+
+#### The Decoupling Effect
+
+This separation ensures that the selection of the best action is less likely to overestimate Q-values, as the estimation is made using a different set of weights, thus reducing bias in the learning process. The target network's parameters are updated less frequently (often after a set number of steps), which further enhances the algorithm's stability.
+
+#### Impact and Applications
+
+DDQN has been shown to achieve better performance and faster convergence in complex environments compared to DQN. It is particularly effective in scenarios where precise action evaluation is crucial, such as in video games and robotic navigation tasks. The improved reliability and accuracy of DDQN make it a valuable model for studying reinforcement learning in controlled environments where stability and efficiency are critical.
+
+### Background on Deep Q-Network (DQN)
+
+The Deep Q-Network (DQN) algorithm represents a significant breakthrough in reinforcement learning by combining traditional Q-learning with deep neural networks. This approach was popularized by researchers at DeepMind with their notable success in training agents that could perform at human levels across various Atari games [23].
+
+**Core Mechanism**: DQN uses a deep neural network to approximate the Q-value function, which is the expected reward obtainable after taking an action in a given state and following a certain policy thereafter. The neural network inputs the state of the environment and outputs Q-values for each possible action, guiding the agent's decisions.
+
+**Innovations Introduced**:
+
+- **Experience Replay**: DQN utilizes a technique called experience replay, where experiences collected during training are stored in a replay buffer. This allows the network to learn from past experiences, reducing the correlations between sequential observations and smoothing over changes in the data distribution.
+- **Fixed Q-Targets**: To further stabilize training, DQN employs a separate target network, whose weights are fixed for a number of steps and only periodically updated with the weights from the training network [23].
+
+#### DQN Advantages and Applications
+
+DQN's ability to handle high-dimensional sensory inputs directly with minimal domain knowledge makes it highly versatile and effective in complex environments such as video games, where it can learn directly from pixels.
+
+### Background on Q-agent (Q-learning)
+
+Q-agent, based on the Q-learning algorithm, is one of the most fundamental types of reinforcement learning methods. It is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment [24].
+
+**Simplicity and Versatility**: Q-learning works by updating an action-value lookup table called the Q-table, which stores Q-values for each state-action pair. These values are updated using the Bellman equation during each step of training based on the reward received and the maximum predicted reward for the next state.
+
+**Challenges**: While simple and effective for smaller state spaces, Q-learning's reliance on a Q-table becomes impractical in environments with large or continuous state spaces, where the table size would become infeasibly large.
+
+#### Q-learning Applications
+
+Q-learning has been foundational in teaching agents in environments with discrete, limited state spaces, such as simple mazes or decision-making scenarios with clear, defined states and actions.
+
+### Background on Proximal Policy Optimization (PPO)
+
+Proximal Policy Optimization (PPO) is a policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach. PPO has become popular due to its effectiveness and ease of use [25].
+
+**Optimization Technique**: PPO seeks to take the largest possible improvement step on a policy while avoiding
+
+too large updates that might lead to performance collapse. It achieves this through an objective function that includes a clipped term, penalizing changes to the policy that move it too far from the previous policy.
+
+**Advantages**: PPO is robust to a variety of hyperparameters and can be used in both continuous and discrete action spaces. It has shown great success in environments ranging from simulated robotics to complex game environments.
+
+#### PPO Applications
+
+PPO is favored in many modern RL applications due to its balance between efficiency, ease of implementation, and strong empirical performance.
+
+### Background on Actor-Critic (AC)
+
+Actor-Critic methods form a broad class of algorithms in reinforcement learning that combine both policy-based (actor) and value-based (critic) approaches [26].
+
+**Dual Components**:
+
+- **Actor**: Responsible for selecting actions based on a policy.
+- **Critic**: Estimates the value function (or Q-value), which is used to evaluate how good the action taken by the actor is.
+
+**Advantages**: By separating the action selection and evaluation, actor-critic methods can be more efficient than conventional policy-gradient methods. They reduce the variance of the updates and typically converge faster.
+
+#### Actor-Critic Applications
+
+Actor-Critic algorithms are versatile and can be applied to both discrete and continuous action spaces. They have been effectively used in applications that require balancing exploration of the environment with the exploitation of known rewards, such as in robotics and complex game environments.
+
+## Methodology
 
 This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method using a Double Deep Q-Network (DDQNAgent). It covers the maze environment setup, DDQN agent design, and training algorithm, including relevant mathematical functions.
 
-## Environment Setup (RCMazeEnv)
+### Environment Setup (RCMazeEnv)
 
 RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, has walls ('1') and paths ('0'). The agent starts at position (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
 
@@ -184,7 +282,7 @@ The agent’s sensors provide readings in three directions: front, left, and rig
     \label{fig:real_maze_build}
 \end{figure}
 
-### Web Application Interface
+#### Web Application Interface
 
 A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and control of the car's movements. The interface displays sensor readings and includes an emergency stop feature.
 
@@ -197,7 +295,7 @@ A web application was developed to serve as a control interface for the RC car, 
     \label{fig:web_app}
 \end{figure}
 
-## Agent Design (DDQNAgent)
+### Agent Design (DDQNAgent)
 
 The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref19]{[19]}.
 
@@ -221,7 +319,7 @@ This approach reduces overestimation by separating the max operation in the targ
 
 The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches \hyperref[ref21]{[21]}.
 
-## Training Process
+### Training Process
 
 The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
 
@@ -294,7 +392,7 @@ In this study, I conducted experiments indoors to closely replicate theoretical 
 
 However, the exploration wasn't limited to indoor setups alone. I also aimed to assess the adaptability and resilience of my proposed solutions in outdoor environments. Taking the experiments outdoors posed significant challenges due to the differences in ground conditions. Outdoor landscapes are diverse and unpredictable, which exposed limitations in my current method's ability to handle such variations. This highlighted the need for further research and improvements in the methods used, such as the hardware limitations.
 
-# Experimental Outcomes and Implementation Details
+<!-- # Experimental Outcomes and Implementation Details
 
 ## Simulation Design and Agent Framework
 
@@ -314,7 +412,7 @@ To evaluate the agent's effectiveness in navigating the maze, I used several met
 
 ## Distinctive Elements
 
-- **Physical Maze and Digital Interface**: A real maze was built to mirror the virtual `RCMazeEnv`, which is one of the requirements of ensuring the RC robot's ability to navigate the real maze. In addition, a web application was made to not only control the RC car (starting and stopping movement) but also as a virtual twin. Allowing us to see the sensor readings and decision making in real time.
+- **Physical Maze and Digital Interface**: A real maze was built to mirror the virtual `RCMazeEnv`, which is one of the requirements of ensuring the RC robot's ability to navigate the real maze. In addition, a web application was made to not only control the RC car (starting and stopping movement) but also as a virtual twin. Allowing us to see the sensor readings and decision making in real time. -->
 
 # Addressing Research Questions
 
@@ -332,13 +430,29 @@ ISAAC Gym, developed by NVIDIA, focuses on high-fidelity physics simulations and
 
 OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit for this application. Additionally, OpenAI Gym's wide acceptance in the academic community and extensive documentation provide a robust foundation for developing custom environments tailored to specific research needs \hyperref[ref1]{[1]}.
 
-## 2. Which Reinforcement Learning Techniques Can I Best Use in This Application?
+<!-- ## 2. Which Reinforcement Learning Techniques Can I Best Use in This Application?
 
-For autonomous navigation of a virtual RC car in a maze, we considered several RL techniques, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO). DDQN was selected for its ability to address the overestimation bias in DQN, improving Q-value approximation accuracy, essential for navigating complex, sensor-driven RC car environments \hyperref[ref3]{[3]}.
+For autonomous navigation of a virtual RC car in a maze, I considered several RL techniques,  including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), Q-learning, Actor-Critic (AC), and Proximal Policy Optimization (PPO). DDQN was selected for its ability to address the overestimation bias in DQN, improving Q-value approximation accuracy, essential for navigating complex, sensor-driven RC car environments \hyperref[ref3]{[3]}.
 
 DDQN processes high-dimensional sensory inputs effectively but struggles in unpredictable dynamic environments \hyperref[ref3]{[3]}. Proximal Policy Optimization (PPO) is another powerful technique that has gained popularity for its robustness and efficiency in continuous action spaces \hyperref[ref4]{[4]}. PPO uses a trust region to ensure stable updates, which makes it more reliable for training in complex environments. However, its policy optimization approach can sometimes lead to less precise value estimation compared to DDQN, which focuses on accurate Q-value approximations \hyperref[ref4]{[4]}.
 
-Empirical trials confirmed that DDQN outperforms these methods in intricate maze-like virtual RC car scenarios, providing a balanced approach between exploration and exploitation \hyperref[ref3]{[3]}. Nevertheless, PPO's ability to handle continuous actions efficiently makes it a valuable alternative for tasks requiring more nuanced control strategies \hyperref[ref25]{[25]}.
+Empirical trials confirmed that DDQN outperforms these methods in intricate maze-like virtual RC car scenarios, providing a balanced approach between exploration and exploitation \hyperref[ref3]{[3]}. Nevertheless, PPO's ability to handle continuous actions efficiently makes it a valuable alternative for tasks requiring more nuanced control strategies \hyperref[ref25]{[25]}. -->
+
+## 2. Which Reinforcement Learning Techniques Can I Best Use in This Application?
+
+For the autonomous navigation of a virtual RC car in a maze, various reinforcement learning (RL) techniques were considered, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), Q-Learning, Proximal Policy Optimization (PPO), and Actor-Critic (AC). After careful consideration and testing, DDQN was selected as the most suitable technique for this project.
+
+Deep Q-Network (DQN) was initially considered due to its significant breakthrough in RL, effectively handling high-dimensional sensory inputs and achieving impressive performance in many tasks. However, DQN tends to overestimate Q-values, leading to instability and slower learning. Due to these overestimation issues, DQN was not as stable or reliable as DDQN for this project \hyperref[ref3]{[3]}.
+
+Q-Learning, known for its simplicity and effectiveness in discrete and small state spaces, was also evaluated. While it is straightforward to implement and model-free, Q-Learning struggles with large or continuous state spaces, requiring a Q-table that grows exponentially, making it impractical for complex tasks. Given the complexity of maze navigation and high-dimensional sensory inputs, Q-Learning was not feasible for this application \hyperref[ref3]{[3]}.
+
+Proximal Policy Optimization (PPO) offers robustness, efficiency, and the ability to handle both continuous and discrete action spaces, maintaining stable updates with its clipped objective function. However, PPO’s policy optimization approach sometimes leads to less precise value estimations compared to DDQN, which focuses on accurate Q-value approximations. Although PPO is a powerful technique, the need for precise Q-value approximations in maze navigation made DDQN a better fit \hyperref[ref4]{[4]}.
+
+Actor-Critic (AC) methods combine the strengths of policy-based and value-based methods, reducing variance in updates and generally converging faster. Despite these advantages, AC methods can be complex to implement and may not achieve the same level of stability and performance as DDQN in tasks requiring precise action evaluation. The complexity and less consistent performance of AC methods compared to DDQN led to the decision to not use AC for this project \hyperref[ref25]{[25]}.
+
+Double Deep Q-Network (DDQN) addresses the overestimation bias in DQN by decoupling action selection from value estimation, resulting in more accurate Q-value approximations and improved learning stability. It handles high-dimensional sensory inputs effectively and balances exploration and exploitation well. After testing, DDQN proved to outperform other methods in maze-like virtual RC car scenarios, making it the optimal choice for this application \hyperref[ref3]{[3]}.
+
+By selecting DDQN, the project leverages its strengths in stability, accuracy, and performance, ensuring effective navigation and learning in complex, sensor-driven environments.
 
 ## 3. Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World.
 
@@ -492,7 +606,7 @@ Transitioning to real-world application involved assessing how well the strategi
 - **Maze Navigation**: Observing the RC car as it maneuvered through a real-world maze served as direct proof of how effectively the training translated from simulation to reality. This hands-on test demonstrated the practical utility of the trained agent in navigating complex paths.
 - **Sensor Data Analysis**: By examining the real-time sensor data during navigation trials, I gained a deeper insight into how the agent interacts with its physical environment. This analysis was crucial for evaluating the agent’s ability to avoid obstacles and optimize its pathfinding strategies efficiently.
 
-# Background on Reinforcement Learning Algorithms
+<!-- # Background on Reinforcement Learning Algorithms
 
 ## Background on Double Deep Q-Network (DDQN)
 
@@ -569,9 +683,199 @@ Actor-Critic methods form a broad class of algorithms in reinforcement learning 
 
 ### Actor-Critic Applications
 
-Actor-Critic algorithms are versatile and can be applied to both discrete and continuous action spaces. They have been effectively used in applications that require balancing exploration of the environment with the exploitation of known rewards, such as in robotics and complex game environments.
+Actor-Critic algorithms are versatile and can be applied to both discrete and continuous action spaces. They have been effectively used in applications that require balancing exploration of the environment with the exploitation of known rewards, such as in robotics and complex game environments. -->
 
-# Comparative Analysis of Reinforcement Learning Algorithms in Maze Navigation
+# Experimental Outcomes and Comparative Analysis
+
+## Performance Evaluation Metrics
+
+Several metrics were used to assess the agent's effectiveness, including reward, loss, and epsilon history per episode during training. These metrics provided insights into the learning progress and performance, allowing for quick adjustments to reward functions or hyperparameters.
+
+## Comparative Analysis of Reinforcement Learning Algorithms
+
+In this analysis, I compare various reinforcement learning algorithms, namely Double Deep Q-Network (DDQN), Deep Q-Network (DQN), Q-agent, Actor-Critic (AC), and Proximal Policy Optimization (PPO). This comparison is based on their performance in navigating a complex maze, focusing on efficiency, learning rate, and adaptability.
+
+### 1. Visit Heatmaps
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_DDQN.png}
+\captionof{figure}{DDQN Heatmap (Image created by author)}
+\end{minipage}%
+\hspace{.05\textwidth}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_DQN.png}
+\captionof{figure}{DQN Heatmap (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_PPO.png}
+\captionof{figure}{PPO Heatmap (Image created by author)}
+\end{minipage}%
+\hspace{.05\textwidth}
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/visit_heatmap_Q-agent.png}
+\captionof{figure}{Q-agent Heatmap (Image created by author)}
+\end{minipage}
+\end{figure}
+
+**Commentary**: The visit heatmaps provide a visual representation of the exploration patterns for different algorithms. The heatmap for DDQN shows a concentrated path, indicating the agent's ability to efficiently learn and focus on the optimal routes through the maze. Similarly, DQN exhibits focused exploration but with slightly more dispersion compared to DDQN, suggesting a robust learning process. On the other hand, PPO and Q-agent demonstrate widespread exploration across the maze, which indicates less efficient learning and decision-making. These dispersed patterns reflect the algorithms' struggle to consistently identify and follow optimal paths, resulting in suboptimal navigation strategies.
+
+### 2. Maze Solution Efficiency
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_DDQN.png}
+\captionof{figure}{DDQN Maze Path (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_DQN.png}
+\captionof{figure}{DQN Maze Path (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+\begin{figure}[H]
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=\linewidth]{./images/training_images/maze_solution_Q-agent.png}
+\captionof{figure}{Q-agent Maze Path (Image created by author)}
+\end{minipage}
+\end{figure}
+
+**Commentary**: The maze solution paths highlight the efficiency of each algorithm in navigating the maze. DDQN demonstrates the shortest and most direct path, indicating superior learning and optimization in its decision-making process. DQN also performs well, albeit with a slightly longer path, reflecting its effective yet slightly less optimal strategy. The Q-agent, while successful in completing the maze, takes a more winding route, suggesting a less efficient approach and a greater number of steps to reach the goal. This comparison underscores the superior efficiency of DDQN in solving the maze with minimal steps, followed closely by DQN, and identifies areas where Q-agent can improve its path optimization.
+
+For the PPO and AC algorithms, their paths were more complex and less direct, indicating a need for further optimization and learning to enhance their maze navigation efficiency (not shown in the figures).
+
+### 3. Reward History and Distribution
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_DDQN.png}
+\captionof{figure}{DDQN Reward History (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_DQN.png}
+\captionof{figure}{DQN Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_AC.png}
+\captionof{figure}{AC Reward History (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_PPO.png}
+\captionof{figure}{PPO Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=\linewidth]{./images/training_images/reward_history_Qlearning.png}
+\captionof{figure}{Q-agent Reward History (Image created by author)}
+\end{minipage}
+\end{figure}
+
+**Commentary**: The reward history graphs offer insights into the learning stability and efficiency of each algorithm. DDQN and DQN display steady and consistent increases in reward accumulation, indicating stable and reliable learning processes. In contrast, AC and PPO exhibit significant fluctuations in reward history, reflecting instability and inconsistency in their learning curves. This variability suggests these algorithms encounter challenges in maintaining a steady learning trajectory. Q-agent, although stable, shows a slower rate of reward accumulation, indicating a more gradual and less efficient learning process compared to DDQN and DQN. Overall, DDQN and DQN stand out for their consistent and effective reward acquisition, while AC, PPO, and Q-agent highlight areas for potential improvement in learning stability and efficiency.
+
+### 4. Mean Squared Error (MSE) Over Time
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_sampled_DDQN.png}
+\captionof{figure}{DDQN MSE (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_sampled_DQN.png}
+\captionof{figure}{DQN MSE (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_AC.png}
+\captionof{figure}{AC MSE (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/mse_history_PPO.png}
+\captionof{figure}{PPO Loss (Image created by author)}
+\end{minipage}
+\end{figure}
+
+**Commentary**: The MSE graphs track the learning accuracy and error management of each algorithm over time. DDQN achieves the lowest and most stable MSE values, signifying its effective learning and strong capability in minimizing prediction errors. DQN also performs well with relatively stable MSE, though slightly higher than DDQN, indicating competent but less optimal error reduction. In contrast, AC and PPO show higher and more variable MSE values, pointing to less effective learning and greater difficulties in managing prediction errors. These fluctuations suggest these algorithms struggle to consistently reduce errors, impacting their overall performance. The comparison highlights DDQN's superior accuracy and error management, with DQN as a strong contender, while AC and PPO require further optimization to enhance their learning precision.
+
+### 5. Moving Average of Rewards
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/steps_per_episode_with_moving_avg_DDQN.png}
+\captionof{figure}{DDQN Moving Average (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/steps_per_episode_with_moving_avg_DQN.png}
+\captionof{figure}{DQN Moving Average (Image created by author)}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_per_episode_with_moving_avg_AC.png}
+\captionof{figure}{AC Moving Average (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/training_images/reward_per_episode_with_moving_avg_PPO.png}
+\captionof{figure}{PPO Moving Average (Image created by author)}
+\end{minipage}
+\end{figure}
+
+**Commentary**: The moving average of rewards provides a clear view of the long-term performance trends of each algorithm. DDQN and DQN show consistent and progressive improvement in reward accumulation, reflecting their effective learning and adaptation over time. This steady upward trend indicates robust performance enhancement. In contrast, AC and PPO display significant variability in their moving averages, suggesting inconsistent learning and slower performance improvements. The Q-agent, while showing a stable improvement trend, progresses at a slower pace compared to DDQN and DQN, highlighting a need for more efficient learning strategies. Overall, the moving averages affirm DDQN and DQN's effectiveness in continuously enhancing performance, while AC, PPO, and Q-agent demonstrate areas where more consistent and rapid improvements are needed.
+
+## Conclusion and Insights
+
+This comprehensive analysis reveals distinct performance characteristics and efficiencies of various reinforcement learning algorithms in maze navigation. DDQN stands out for its balanced approach, efficiently solving the maze with the fewest steps while demonstrating superior stability and effective error management. DQN, though slightly less efficient in navigation, showcases robust learning stability, making it a reliable choice. Q-agent, despite its simpler approach, competes closely with DDQN in terms of steps required to solve the maze but struggles during the initial learning phases.
+
+AC and PPO exhibit higher fluctuations in their performance metrics, indicating the need for further optimization to achieve better consistency and efficiency. These algorithms show potential but require more refinement to handle the complexities of maze navigation effectively.
+
+This analysis helps select the most suitable reinforcement learning algorithm based on task requirements and environmental complexities, enhancing our understanding and optimizing performance.
+
+<!-- # Comparative Analysis of Reinforcement Learning Algorithms in Maze Navigation
 
 In this analysis, I compare various reinforcement learning algorithms, namely Double Deep Q-Network (DDQN), Deep Q-Network (DQN), Q-agent, Actor-Critic (AC), and Proximal Policy Optimization (PPO). This comparison is based on their performance in navigating a complex maze, focusing on efficiency, learning rate, and adaptability.
 
@@ -755,7 +1059,7 @@ This comprehensive analysis reveals distinct performance characteristics and eff
 
 AC and PPO exhibit higher fluctuations in their performance metrics, indicating the need for further optimization to achieve better consistency and efficiency. These algorithms show potential but require more refinement to handle the complexities of maze navigation effectively.
 
-This analysis helps select the most suitable reinforcement learning algorithm based on task requirements and environmental complexities, enhancing our understanding and optimizing performance
+This analysis helps select the most suitable reinforcement learning algorithm based on task requirements and environmental complexities, enhancing our understanding and optimizing performance -->
 
 # Implementation of Real-World Control Algorithms
 
@@ -834,8 +1138,6 @@ void calibrateSensors()
 }
 ```
 
-<!-- TODO : Vooral nog wat dieper ingaan op het feit dat jouw sensoren niet voldoende data opleveren om de exacte positie te bepalen binnen de real-world grid. Je doet dat dan wel binnen jouw conclusies, maar hier mag je er ook al wat dieper op ingaan -->
-<!-- rewrite this seciont, too many subtitles and too little information to make it a valuable additions -->
 ## Real-World Application and Limitations
 
 Transitioning from simulated environments to real-world applications introduces unique challenges, particularly in interpreting sensor data and replicating vehicle movements. This section addresses these critical aspects, highlighting both the potential benefits and limitations of applying insights from simulations to actual autonomous vehicle (AV) operations.
@@ -980,7 +1282,7 @@ Moving beyond controlled environments, I tested the RC-car in both outdoor and i
 - **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
 - **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer (see Video E11 in the Video References section).
 
-# Reflection
+# Discussion and Reflection
 
 Reflecting on my research journey, I've realized the depth of learning and personal growth that this project has facilitated. This section details the key insights and lessons learned throughout the development and testing phases of my RC-car project, particularly in the context of the Sim2Real transfer in reinforcement learning.
 
@@ -1040,7 +1342,7 @@ Reflecting on the entire project, I recognize areas where I could have approache
 
 Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reflective of the project's complexity.
 
-# Advice for Simulation-to-Reality Transition
+# Advice for Students and Researchers
 
 ## Practical Utilization of Simulations
 
@@ -1197,9 +1499,9 @@ These diverse sources collectively informed the direction of this research, focu
 
 This thesis has demonstrated the potential of transferring a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, focusing on navigating a maze using a remote-controlled (RC) car. The detailed experiments and analyses provide a thorough exploration of this transition.
 
-The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 14: Challenges and Solutions in RL Implementation** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
+The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 10: Challenges and Solutions in RL Implementation** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
 
-The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 6: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
+The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 4.2: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
 
 This study confirms the feasibility of Sim2Real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
 
@@ -1240,6 +1542,377 @@ In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s in
 \pagebreak
 
 # Installation Steps
+
+This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
+
+## Prerequisites
+
+Before starting the setup process, make sure you have the following:
+
+- **Git:** For cloning the project repository.
+- **Docker:** To containerize the web application and ensure a consistent runtime environment.
+- **Python 3.11 and pip:** If you prefer running the project without Docker, use Python along with the dependencies listed in `/web_app/web/requirements.txt` to get the project running.
+
+## Repository Setup
+
+To clone the repository and navigate to the project directory, use these commands:
+
+```bash
+git clone https://github.com/driessenslucas/researchproject.git
+cd researchproject
+```
+
+## Hardware Setup and Assembly
+
+### Introduction to Hardware Components
+
+Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.8\textwidth}
+        \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
+    \end{minipage}
+    \caption{Final RC Car (Image created by author)}
+\end{figure}
+
+## Components List
+
+### Core Components
+
+- **ESP32-WROOM-32 module**
+  - Available at Amazon.com
+- **3D printed parts**
+  - Available at Thingiverse.com
+    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
+    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
+- **Motor Controller (L298N)**
+  - Available at DFRobot.com
+- **2WD miniQ Robot Chassis**
+  - Available at DFRobot.com
+- **Mini OLED screen**
+  - Available at Amazon.com
+- **Sensors (HC-SR04 and MPU6050)**
+  - Available at Amazon.com
+- **18650 Battery Shield for ESP32**
+  - Available at Amazon.com
+
+### Supplementary Materials
+
+- **Screws, wires, and tools required for assembly**
+  - 4mm thick screws, 5mm long to hold the wood together
+    - Available at most hardware stores
+  - M3 bolts & nuts
+    - Available at most hardware stores
+  - Wood for the maze
+    - Available at most hardware stores
+
+### Tools Required
+
+- Screwdriver
+- Wire cutter/stripper
+- Drill (for mounting the top plate)
+
+### Assembly Instructions
+
+#### Step 1: Base Assembly
+
+To assemble the base, you can follow this YouTube video from the makers themselves:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/yt_vid.png}
+    \caption{MiniQ 2WD Robot Chassis Quick Assembly Guide}
+\end{figure}
+
+<!-- qr code -->
+
+  \begin{figure}[H]
+      \centering
+      \begin{minipage}{0.2\textwidth}
+          \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_yt_vid.png}
+      \end{minipage}
+      \caption{QR code for MiniQ 2WD Robot Chassis Assembly Guide}
+  \end{figure}
+
+#### Step 2: Attach Motor Driver
+
+Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/base.jpeg}
+    \caption{Motor Driver Attached to the Base (Image created by author)}
+\end{figure}
+
+#### Step 3: Attach ESP32-WROOM-32 Module to the Motor Driver
+
+Connect the wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below:
+
+```c
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+```
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/schematics/esp_updated.png}
+    \caption{ESP32 Wiring Schematic (Image created by author)}
+\end{figure}
+
+#### Step 4: Cut the Support Beams
+
+Cut the support beams so that we can securely attach the top plate to the base. I cut them to approximately 7cm.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/supports.jpeg}
+    \caption{Cut Support Beams (Image created by author)}
+\end{figure}
+
+#### Step 5: Screw in the Supports on the Bottom of the Bottom Plate
+
+Secure the supports on the bottom of the bottom plate with screws.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/washers_underneath.jpeg}
+    \caption{Supports Screwed on the Bottom Plate (Image created by author)}
+\end{figure}
+
+#### Step 6: Mount All the Supports on the Bottom Plate
+
+Mount all the supports on the bottom plate as shown.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/supports_mounted.jpeg}
+    \caption{All Supports Mounted (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/all4_supports.jpeg}
+    \caption{Complete View of Mounted Supports (Image created by author)}
+\end{figure}
+
+#### Step 7: Attach the Top Plate
+
+Drill holes in the top plate to fit the supports and attach it securely.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/top_plate_assembly.jpeg}
+    \caption{Top Plate Assembly (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/jp_bottom.jpeg}
+    \caption{Bottom View with Supports and Top Plate (Image created by author)}
+\end{figure}
+
+#### Step 8: Attach the Ultrasonic Sensor to the Top Plate
+
+Mount the ultrasonic sensor to the top plate.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/hc-sr04.jpeg}
+    \caption{Ultrasonic Sensor Attached to the Top Plate (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/jp_sensors.jpeg}
+    \caption{Ultrasonic Sensors Attached (Image created by author)}
+\end{figure}
+
+#### Step 9: Place the ESP32 on the Top Plate
+
+Place the ESP32 on the top plate together with a mini breadboard for the sensor wires. Secure the battery for the ESP32 to the top plate with zip ties.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/jp_final2.jpeg}
+    \caption{ESP32 Placement on Top Plate (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
+    \caption{Final RC Car Assembly (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/jp_final3.jpeg}
+    \caption{Final Assembly with Sensors and Breadboard (Image created by author)}
+\end{figure}
+
+## Wiring Guide
+
+### ESP32 Wiring
+
+The wiring connections for the ESP32 microcontroller are shown in the diagram below. The pins are connected to the motor driver, sensors, OLED display, and MPU6050 gyroscope.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/schematics/esp_updated.png}
+    \caption{Wiring Diagram for ESP32 (Image created by author)}
+\end{figure}
+
+#### ESP32 Pins
+
+Since the schematic might not be very clear, here is a list of the pins used on the ESP32:
+
+```c
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+
+int sensor0Trig = 27; //GPIO right sensor
+int sensor0Echo = 26; //GPIO right sensor
+
+int sensor1Trig = 33; //GPIO left sensor
+int sensor1Echo = 32; //GPIO left sensor
+
+int sensor2Trig = 25; //GPIO front sensor
+int sensor2Echo = 35; //GPIO front sensor
+
+// OLED display pins
+#define SDA_PIN 21 // this is the default sda pin on the esp32
+#define SCL_PIN 22 // this is the default scl pin on the esp32
+```
+
+## Software Configuration
+
+1. **Arduino IDE Setup:** Install the Arduino IDE to program the ESP32 microcontroller. Follow Espressif Systems' instructions to add the ESP32 board to the Arduino IDE.
+2. **Library Installation:** Install the [ESP32_SSD1306](https://
+
+github.com/lexus2k/ssd1306/tree/master) library for the OLED display functionality.
+3. **Code Upload:** Transfer the scripts from the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration.
+
+## Web Application Setup
+
+### Note
+
+To ensure a smooth setup of the virtual display, it’s recommended to run `docker-compose down` after each session.
+
+### Steps
+
+1. Navigate to the web application's source code directory:
+
+   ```bash
+   cd ./web_app/
+   ```
+
+2. Launch the Docker containers with:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+## Usage Instructions
+
+1. Open your web browser and go to <http://localhost:8500> or <http://localhost:5000>.
+2. Enter the ESP32's IP address in the web app and select the desired model for deployment.
+3. You can also run a virtual demonstration without engaging the physical vehicle.
+4. Start the maze navigation by clicking the `Start Maze` button.
+
+A demonstration of the project is available (see Web App Demo in the Video References section).
+
+## Additional Information: Model Training
+
+- You can use a pre-trained model or train a new model using the script in [train](./training/train.py).
+- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
+- After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
+
+By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+
+## Building the Maze
+
+### Final Result
+
+The following images show the final build of the maze used in the project.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/maze_build.jpeg}
+    \caption{Maze Build (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
+    \caption{Final Maze Build (Image created by author)}
+\end{figure}
+
+### Prerequisites
+
+The materials and tools required for building the maze are listed below:
+
+- Screws used:
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=4in]{./images/assembly_images/screws_used.jpeg}
+      \caption{Screws (Image created by author)}
+  \end{figure}
+- Nuts used:
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=4in]{./images/assembly_images/m3_nuts.jpeg}
+      \caption{Nuts (Image created by author)}
+  \end{figure}
+- Supports used:
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=4in]{./images/assembly_images/m3_supports.jpeg}
+      \caption{Supports (Image created by author)}
+  \end{figure}
+- Wood used:
+  - Planks cut to 10cm width by 120cm length
+  \begin{figure}[H]
+      \centering
+      \includegraphics[width=4in]{./images/assembly_images/wooden_planks.jpeg}
+      \caption{Wood Planks (Image created by author)}
+  \end{figure}
+
+### Step 1: Calculations
+
+Where 1 cell is 25cm x 25cm.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/size_calculations.jpeg}
+    \caption{Size Calculations for Maze (Image created by author)}
+\end{figure}
+
+### Step 2: Cut the Wood
+
+I let the store cut the wooden planks for me to the correct size, as you could see in the prerequisites.
+
+### Step 3: Screw the Wood Together
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/drilling_wood_frames.jpeg}
+    \caption{Drilling Wood Frames for Maze (Image created by author)}
+\end{figure}
+
+It should turn out like this, repeat this for all the blocks in the maze:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4in]{./images/assembly_images/wooden_frames.jpeg}
+    \caption{Wooden Frames for Maze (Image created by author)}
+\end{figure}
+
+
+<!-- # Installation Steps
 
 This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
 
@@ -1333,7 +2006,6 @@ int sensor2Echo = 35; //GPIO front sensor
 
 **ESP32 Wiring:**
 
-<!-- ![ESP32 Wiring (Image created by author)](./images/schematics/esp_updated.png "ESP32 Wiring (Image created by author)") -->
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
@@ -1385,7 +2057,7 @@ A demonstration of the project is available (see Web App Demo in the Video Refer
 - This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
 - After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
 
-By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios. -->
 
 \pagebreak
 
