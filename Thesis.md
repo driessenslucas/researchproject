@@ -31,26 +31,23 @@ abstract: |
 
   \noindent \newline Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
 
-  \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for sim-to-real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
+  \noindent \newline This study contributes to AI and robotics by providing insights and methodologies for Sim2Real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is essential.
 preface: |
-  This bachelor thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” is the final project of my studies in Multimedia & Creative Technology at Howest, University of Applied Sciences. The main question it tackles is: “Can a trained RL agent be successfully transferred from a simulation to the real world?” This question highlights my curiosity about how virtual simulations can be used in real-life applications and addresses a significant challenge in AI: making systems that can work in real-world conditions.
+  This thesis, titled “Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning,” is the final project of my studies in Multimedia & Creative Technology at Howest, University of Applied Sciences. The main question it tackles is: “Can a trained RL agent be successfully transferred from a simulation to the real world?” This question highlights my curiosity about how virtual simulations can be used in real-life applications and addresses a significant challenge in AI: making systems that can work in real-world conditions.
 
-  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis digs into the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
+  \noindent \newline My interest in Sim2Real transfer started during the 'Advanced AI' classes and the 'Research Project' module. Learning about reinforcement learning and seeing how simulated environments can mimic complex real-world behaviors got me excited to explore their practical uses. This thesis explores the theory behind Sim2Real transfer and tests its feasibility through various experiments aimed at improving the process and making it more reliable.
 
   \noindent \newline The research combines theoretical studies with practical experiments. The theoretical part provides a solid background, while the experiments test how well RL agents perform in different controlled scenarios. By evaluating these agents, the research aims to find the best strategies for successfully transferring them from simulations to real-world applications.
   
   \noindent \newline Lucas Driessens  
   \noindent \newline 01-06-2024
 acknowledgements: |
-  I extend heartfelt thanks to my coach and supervisor, Gevaert Wouter, for his invaluable guidance and insights throughout this research. His expertise and mentorship have been fundamental to my scholarly and personal growth. Gratitude is also due to Amaury Van Naemen for his technical support with 3D printing components crucial for my experiments. His assistance was pivotal in navigating the practical challenges of my research.
+  I extend heartfelt thanks to my supervisor, Gevaert Wouter, for his invaluable guidance and insights. His mentorship has been fundamental to my growth. I also thank Amaury Van Naemen for his technical support with 3D printing, which was crucial for my experiments.
 
   \noindent \newline I would also like to thank Sam De Beuf for not only being my internship supervisor but also my external promotor for this thesis, and for allowing me the freedom to conduct research within my internship. This opportunity helped me grow significantly as a person and gain valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
 
   \noindent \newline Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their dedication to excellence and support for student initiatives have been instrumental in shaping my academic journey.
 ---
-
-<!-- pandoc thesis_new.md --o thesis_new.pdf -H deeplist.tex -f markdown-implicit_figures  --template template.tex --lua-filter pagebreak.lua -->
-<!-- pandoc --from markdown --to html5 --standalone --toc --number-sections --citeproc --wrap=preserve --highlight-style=kate --mathml -->
 
 \pagebreak
 
@@ -80,11 +77,11 @@ acknowledgements: |
 
 12. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
 
-13. **Wheel Slippage**: A phenomenon where the wheels of a vehicle lose traction, causing them to spin without propelling the vehicle forward, often encountered in real-world scenarios with uneven terrain.
+13. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
 
-14. **Ultrasonic Distance Sensor (HC-SR04)**: A sensor that uses ultrasonic waves to measure distance, commonly employed in robotics for obstacle detection and navigation.
+14. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation
 
-15. **Over the air updates (OTA)**: A method of remotely updating software or firmware on devices, allowing for seamless upgrades and maintenance without physical access to the device.
+15. **Over the air updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
 
 16. **autonomous vehicle (AV):** A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
 
@@ -114,11 +111,11 @@ acknowledgements: |
 
 ## Navigating the Maze: Sim‑to‑Real Transfer in Reinforcement Learning
 
-In our increasingly interconnected world, the boundaries between virtual simulations and tangible reality are blurring. Consider the task of training a robot in a computer simulation to navigate a physical maze. This challenge raises critical questions about the transferability of learned behaviors from the digital realm to the real world. This thesis explores the captivating intersection of Reinforcement Learning (RL) and sim-to-real transfer.
+This thesis explores the intersection of reinforcement learning (RL) and Sim2Real transfer, specifically focusing on the challenges and feasibility of transferring a DDQN-trained agent from a simulated environment to a physical maze. The primary research question is: Can a DDQN agent trained in simulation effectively navigate a real-world maze?
 
 ## Sim‑to‑Real Transfer: Bridging the Gap
 
-Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. While simulations provide a safe and controlled space for training, they often differ significantly from reality due to factors like sensor noise, friction, lighting conditions, and unexpected obstacles. This research aims to address these discrepancies.
+Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. Rusu et al. demonstrated the effectiveness of progressive networks in bridging this gap, particularly in robot learning from pixels, highlighting the importance of adaptable architectures in overcoming environmental discrepancies \hyperref[ref8]{[8]}.
 
 ## The Maze Navigation Challenge: RC Cars and Algorithms
 
@@ -136,78 +133,48 @@ This study focuses on maze navigation using a remote-controlled (RC) car equippe
 
 ## Beyond Mazes: A Broader Canvas
 
-While this research focuses on maze navigation, its implications extend far beyond. The principles of sim-to-real transfer can be applied to autonomous drones in urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim-to-real transfer is the key to making these scenarios feasible.
+While this research focuses on maze navigation, its implications extend far beyond. The principles ofSim2Real transfer can be applied to autonomous drones in urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim2Real transfer is the key to making these scenarios feasible.
 
 So buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. The RC car awaits, ready to unravel the mysteries of both simulation and reality.
 
-<!-- ## Background on Reinforcement Learning
-
-Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
-
-- **States ($S$)**: A definitive set of environmental conditions.
-- **Actions ($A$)**: A comprehensive set of possible actions for the agent.
-- **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
-- **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
-
-The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}. -->
-
 # Background on Reinforcement Learning
+<!-- TODO: fix citation styling to match everything else. -->
 
-The challenge of sim-to-real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles (Sutton & Barto, 2018; van Hasselt et al., 2016). Recent advancements in RL, such as the introduction of Proximal Policy Optimization (Schulman et al., 2017) and Soft Actor-Critic algorithms (Haarnoja et al., 2018), have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' (Koos et al., 2013), poses a major hurdle.
+The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref3]{[3]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
 
-Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness (Tobin et al., 2017). Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions (Ganin et al., 2016). Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments (Zhao et al., 2020).
+Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref5]{[5]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref6]{[6]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref17]{[17]}.
 
-This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias (van Hasselt et al., 2016), this study aims to enhance the reliability of sim-to-real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
+This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref3]{[3]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
 
 Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
 
-- **States ($S$)**: A definitive set of environmental conditions.
-- **Actions ($A$)**: A comprehensive set of possible actions for the agent.
-- **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
-- **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
+    States ($S$): A definitive set of environmental conditions.
+    Actions ($A$): A comprehensive set of possible actions for the agent.
+    Transition Probabilities ($P(s_{t+1} | s_t, a_t)$): The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
+    Rewards ($R(s_t, a_t)$): The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
 
 The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
-
-<!-- \pagebreak -->
 
 # Research Questions
 
 This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, we'll explore various aspects of RL training and implementation:
 
 1. **Which virtual environments exist to train a virtual RC-car?**: determine which virtual environments are most effective for RL training.
-2. **Which reinforcement learning techniques can I best use in this application?**: Identifying RL techniques suitable for autonomous navigation.
+2. **Which reinforcement learning techniques are best suited for this application?**: Identifying RL techniques suitable for autonomous navigation.
 3. **Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.**: Assessing how well the agent adapts to real-world dynamics.
 4. **Does the simulation have any useful contributions? In terms of training time or performance.**: Evaluating training effectiveness and optimizing performance through simulation.
 5. **How can the trained model be transferred to the real RC car? How do we need to adjust the agent and the environment for it to translate to the real world?**: Discussing necessary adjustments for real-world application.
 
-<!--
-## Main Research Question
-
-**Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)**
-
-## Sub Research Questions
-
-1. Which virtual environments exist to train a virtual RC-car?
-
-2. Which reinforcement learning techniques can I best use in this application?
-
-3. Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.
-
-4. Does the simulation have any useful contributions? In terms of training time or performance?
-
-5. How can the trained model be transferred to the real RC car? (sim2real) How do you need to adjust the agent and the environment for it to translate to the real world? -->
-
 # Methodology
 
-This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method, which utilizes a Double Deep Q-Network (DDQNAgent) architecture. We will delve into the maze environment setup, the design of the DDQN agent, and the comprehensive training algorithm, incorporating mathematical functions to describe the system's mechanics.
+This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method using a Double Deep Q-Network (DDQNAgent). It covers the maze environment setup, DDQN agent design, and training algorithm, including relevant mathematical functions.
 
 ## Environment Setup (RCMazeEnv)
 
-RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, features walls ('1') and paths ('0'). The agent starts at position (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
+RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, has walls ('1') and paths ('0'). The agent starts at position (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
 
-To aid with navigation, the agent has sensors providing readings in three directions: front, left, and right. These sensors measure the distance to the nearest wall in their respective directions, crucial for decision-making. The environment's state space ($\mathcal{S}$) includes the agent's current position $(x, y)$, orientation $\theta$ (north, east, south, or west), and sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The agent's goal is efficient maze navigation, reaching the goal while avoiding collisions with walls or getting stuck in corners all while optimizing its path based on sensor inputs and past experiences.
+The agent’s sensors provide readings in three directions: front, left, and right, measuring the distance to the nearest wall. The state space ($\mathcal{S}$) includes the agent's current position $(x, y)$, orientation $\theta$ (north, east, south, or west), and sensor readings $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$. The goal is efficient maze navigation, reaching the end while avoiding collisions and optimizing the path based on sensor inputs and past experiences.
 
-<!-- ![Real life Maze Build (Image created by author)](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)") -->
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
@@ -221,7 +188,6 @@ To aid with navigation, the agent has sensors providing readings in three direct
 
 A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and control of the car's movements. The interface displays sensor readings and includes an emergency stop feature.
 
-<!-- ![Web App (Image created by author)](./images/thesis/web_app.png "Web App (Image created by author)") -->
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
@@ -350,98 +316,62 @@ To evaluate the agent's effectiveness in navigating the maze, I used several met
 
 - **Physical Maze and Digital Interface**: A real maze was built to mirror the virtual `RCMazeEnv`, which is one of the requirements of ensuring the RC robot's ability to navigate the real maze. In addition, a web application was made to not only control the RC car (starting and stopping movement) but also as a virtual twin. Allowing us to see the sensor readings and decision making in real time.
 
-<!--TODO: Rewrite this, is exludes lot of important info while being too difficult to read + it drifts too much from the actual research questions 8520
-  -->
-<!-- # Analysis and Results: Addressing Research Questions
-
-## Virtual Environments for RF-Car Training
-
-Choosing the right virtual environment is crucial for RF-car training. Among the various platforms—Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym—I selected OpenAI Gym for its flexibility in creating custom environments and compatibility with Python. This choice supports seamless integration with advanced AI coursework and facilitates effective sim-to-real transfer practices \hyperref[ref1]{[1]}.
-
-While Unity 3D and AirSim offer realistic simulations, their complexity extends beyond Python, limiting their accessibility for my project. CARLA, designed for traditional vehicle models, is less suited for RF-cars, and ISAAC Gym, focused on robotics, doesn't align perfectly with my goals. OpenAI Gym's simplicity and reinforcement learning focus make it an ideal fit.
-
-## Reinforcement Learning Techniques for Virtual RF-Car Training
-
-Among the reinforcement learning techniques—Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO)—DDQN best meets the requirements for this project. DDQN's architecture addresses the overestimation bias in DQN, enhancing Q-value approximation accuracy, which is crucial for navigating complex, sensor-driven RF-car environments.
-
-While DQN excels in processing high-dimensional sensory inputs, it struggles in unpredictable dynamic environments. DDQN overcomes this limitation. Although PPO focuses on direct policy optimization, it lacks the precision in value estimation needed for RF-car training. Empirical trials confirm DDQN's superior performance in intricate maze-like virtual RF-car scenarios \hyperref[ref3]{[3]}.
-
-## Sim-to-Real Transfer Challenges and Solutions
-
-Transferring simulation models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Solutions such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance \hyperref[ref5]{[5]}.
-
-Initially, I overlooked the importance of introducing failsafe mechanisms and adjusting motor control timings, but these proved essential in reducing collision risks and movement inaccuracies during sim-to-real transfer. Iterative testing and adaptation play a vital role in this process \hyperref[ref6]{[6]}.
-
-## Contributions of Simulation in RF-Car Training
-
-Simulation training offers significant efficiency, safety, and computational advantages. It allows for uninterrupted, automated training sessions, eliminating real-world risks. Leveraging powerful computing resources accelerates the training process, making simulation indispensable for RF-car development \hyperref[ref7]{[7]}.
-
-Comparing simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models.
-
-## Practical Application of Simulated Training to Real-World RF-Cars
-
-Applying a trained model to a physical RC car requires several adjustments. Effective sim-to-real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation. These steps ensure successful application in real-world scenarios, facilitating robust and reliable autonomous driving systems \hyperref[ref10]{[10]}.
-
-### Simulation Test Video
-
-Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a real sense of how the algorithm navigates through the maze. The video can be found in `chapter 23: Video References`.
-
-### DDQN Simulation Test
-
-See the DDQN simulation in the Video Reference section for a detailed demonstration of the agent's performance. -->
-
 # Addressing Research Questions
 
 ## 1. Which Virtual Environments Exist to Train a Virtual RC-Car?
 
-Selecting the right virtual environment is crucial for effective RL training of a virtual RC car. Several platforms are available, including Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym. For this project, I chose OpenAI Gym due to its flexibility in creating custom environments and compatibility with Python. This choice supports seamless integration with advanced AI coursework and facilitates effective sim-to-real transfer practices \hyperref[ref6]{[6]}.
+Selecting the right virtual environment is crucial for effective RL training of a virtual RC car. Several platforms are available, including Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym. For this project, I chose OpenAI Gym due to its flexibility in creating custom environments and compatibility with Python. This choice supports seamless integration with advanced AI coursework and facilitates effective Sim2Real transfer practices \hyperref[ref1]{[1]}.
 
-Unity 3D and AirSim offer highly realistic simulations but their complexity and limited Python support pose accessibility issues. CARLA, while excellent for traditional vehicle models, is less suited for RF-cars. ISAAC Gym, primarily focused on robotics, does not align perfectly with the goals of this project. OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit for this application \hyperref[ref6]{[6]}.
+Unity 3D, through its ML-Agents toolkit, offers highly realistic simulations and a user-friendly interface, making it a popular choice for training RL agents in various scenarios, including autonomous vehicle navigation \hyperref[ref30]{[30]}. However, its complexity and the need for substantial computing resources can pose challenges for beginners.
+
+AirSim, developed by Microsoft, provides highly realistic environments for both drones and cars, leveraging the Unreal Engine for superior visual fidelity and physics accuracy. It supports hardware-in-the-loop simulations and offers APIs for integrating with various AI and robotics frameworks \hyperref[ref29]{[29]}. Despite its strengths, the complexity of setup and resource requirements can be a drawback for some users.
+
+CARLA is specifically designed for autonomous driving research and offers a wide range of features for simulating urban driving scenarios. It provides realistic traffic scenarios and supports various sensors, making it a strong choice for traditional vehicle simulations \hyperref[ref2]{[2]}. However, it is less tailored for RC cars, which might limit its applicability in this context.
+
+ISAAC Gym, developed by NVIDIA, focuses on high-fidelity physics simulations and is optimized for GPU acceleration, making it ideal for robotics simulations. It offers extensive support for reinforcement learning algorithms, though its primary focus on robotics may not align perfectly with the goals of this project \hyperref[ref29]{[29]}.
+
+OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit for this application. Additionally, OpenAI Gym's wide acceptance in the academic community and extensive documentation provide a robust foundation for developing custom environments tailored to specific research needs \hyperref[ref1]{[1]}.
 
 ## 2. Which Reinforcement Learning Techniques Can I Best Use in This Application?
 
-For autonomous navigation of a virtual RC car in a maze, several reinforcement learning techniques were considered, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO). DDQN was chosen as the most suitable technique for this project. DDQN's architecture addresses the overestimation bias present in DQN, enhancing the accuracy of Q-value approximations, which is crucial for navigating complex, sensor-driven RF-car environments \hyperref[ref6]{[6]}.
+For autonomous navigation of a virtual RC car in a maze, we considered several RL techniques, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), and Proximal Policy Optimization (PPO). DDQN was selected for its ability to address the overestimation bias in DQN, improving Q-value approximation accuracy, essential for navigating complex, sensor-driven RC car environments \hyperref[ref3]{[3]}.
 
-DQN, although effective in processing high-dimensional sensory inputs, struggles in unpredictable dynamic environments. PPO, which focuses on direct policy optimization, lacks the precision in value estimation needed for RF-car training. Empirical trials confirmed that DDQN outperforms these methods in intricate maze-like virtual RF-car scenarios \hyperref[ref6]{[6]}.
+DDQN processes high-dimensional sensory inputs effectively but struggles in unpredictable dynamic environments \hyperref[ref3]{[3]}. Proximal Policy Optimization (PPO) is another powerful technique that has gained popularity for its robustness and efficiency in continuous action spaces \hyperref[ref4]{[4]}. PPO uses a trust region to ensure stable updates, which makes it more reliable for training in complex environments. However, its policy optimization approach can sometimes lead to less precise value estimation compared to DDQN, which focuses on accurate Q-value approximations \hyperref[ref4]{[4]}.
+
+Empirical trials confirmed that DDQN outperforms these methods in intricate maze-like virtual RC car scenarios, providing a balanced approach between exploration and exploitation \hyperref[ref3]{[3]}. Nevertheless, PPO's ability to handle continuous actions efficiently makes it a valuable alternative for tasks requiring more nuanced control strategies \hyperref[ref25]{[25]}.
 
 ## 3. Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World.
 
-Transferring simulation-trained models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. These differences can affect how well the agent adapts to real-world dynamics. For instance, real-world sensors may introduce noise and inaccuracies not present in the simulation, and the physical dynamics of the car, such as friction and wheel slippage, can differ significantly \hyperref[ref6]{[6]}.
+Transferring simulation-trained models to real-world applications requires addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics. Real-world sensors may introduce noise and inaccuracies not present in the simulation, and the car's physical dynamics, like friction and wheel slippage, can differ significantly \hyperref[ref6]{[6]}.
 
-To mitigate these issues, techniques such as sensor data normalization and action synchronization mechanisms were implemented to align simulation outcomes with real-world performance. Introducing failsafe mechanisms and adjusting motor control timings proved essential in reducing collision risks and movement inaccuracies during sim-to-real transfer. Iterative testing and adaptation played a vital role in this process \hyperref[ref6]{[6]}.
+To mitigate these issues, I implemented sensor data normalization and action synchronization mechanisms to align simulation outcomes with real-world performance. Introducing failsafe mechanisms and adjusting motor control timings were essential in reducing collision risks and movement inaccuracies. Iterative testing and adaptation were crucial in this process \hyperref[ref6]{[6]}.
+
+One effective approach to handle these discrepancies is domain randomization, which involves training the model on a wide range of simulated environments with varied parameters. This technique helps the model generalize better to real-world scenarios by exposing it to diverse conditions during training \hyperref[ref5]{[5]}. Another strategy is domain adaptation, where the model is fine-tuned using a small amount of real-world data to better match the target domain \hyperref[ref9]{[9]}.
 
 ## 4. Does the Simulation Have Any Useful Contributions? In Terms of Training Time or Performance.
 
-Simulation training offers significant advantages, including efficiency, safety, and computational power. It allows for uninterrupted, automated training sessions, eliminating the risks associated with real-world testing. Leveraging powerful computing resources accelerates the training process, making simulation indispensable for RF-car development \hyperref[ref6]{[6]}.
+Simulation training offers significant advantages, including efficiency, safety, and computational power. It allows for uninterrupted, automated training sessions, eliminating the risks associated with real-world testing. Leveraging powerful computing resources accelerates the training process, making simulation indispensable for RC car development \hyperref[ref6]{[6]}.
 
-Comparing simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models. The ability to conduct extensive training in a controlled environment significantly enhances the model's performance and robustness before real-world deployment \hyperref[ref6]{[6]}.
+Comparing simulation and real-world training outcomes highlights the practicality and effectiveness of simulation in developing autonomous driving models. The ability to conduct extensive training in a controlled environment significantly enhances the model's performance and robustness before real-world deployment \hyperref[ref6]{[6]}. Studies have shown that training in simulation can drastically reduce the required real-world training time, allowing for rapid iteration and improvement of the models \hyperref[ref10]{[10]}.
 
 ## 5. How Can the Trained Model be Transferred to the Real RC Car? How Do We Need to Adjust the Agent and the Environment for It to Translate to the Real World?
 
-Applying a trained model to a physical RC car requires several adjustments. Effective sim-to-real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation \hyperref[ref6]{[6]}. These steps include:
+Applying a trained model to a physical RC car requires several adjustments. Effective Sim2Real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation \hyperref[ref6]{[6]}. These steps include:
 
 - **Sensor Calibration**: Ensuring the sensors used in the real RC car provide data in a format compatible with the trained model.
 - **Motor Control Adjustments**: Adjusting motor control timings to match the physical dynamics of the real car.
 - **Failsafe Mechanisms**: Introducing mechanisms to handle unexpected scenarios and reduce collision risks.
 - **Incremental Testing**: Conducting iterative tests in real environments to validate and refine the agent's performance.
 
-These adjustments are essential to ensure the successful application of the model in real-world scenarios, facilitating robust and reliable autonomous driving systems.
-
-<!-- # Model Architecture and Training Insights
-
-To understand how our Double DQN model learns and makes decisions, let's dive into its architecture. The model consists of four dense layers, which output three actions tailored to the RC car's movement, enabling it to navigate the maze with ease.
-
-Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning \hyperref[ref27]{[27]}. This is because they can lead to better performance, faster learning, and improved generalization. However, finding the right balance of model complexity is crucial \hyperref[ref27]{[27]}. Simplicity is not just about the number of layers or parameters, but also about capturing temporal regularities, such as repetitions, in sequential strategies \hyperref[ref27]{[27]}.
-
-With these insights in mind, we designed the Double DQN model to strike a balance between simplicity and effectiveness, ensuring optimal performance in maze navigation tasks. -->
+These adjustments are essential to ensure the successful application of the model in real-world scenarios, facilitating robust and reliable autonomous driving systems \hyperref[ref8]{[8]}. Additionally, implementing sensor fusion techniques can improve the robustness of the real-world model by combining data from multiple sensors to provide more accurate and reliable inputs \hyperref[ref12]{[12]}. This approach helps in mitigating the effects of sensor noise and inaccuracies, further aligning the simulation-trained model with real-world conditions.
 
 # Model Architecture and Training Insights
 
-To understand how our Double DQN model learns and makes decisions, let's dive into its architecture. The model consists of four dense layers, which output three actions tailored to the RC car's movement, enabling it to navigate the maze with ease.
+To understand how our Double DQN model learns and makes decisions, we examine its architecture. The model has four dense layers that output three actions tailored to the RC car's movement, enabling it to navigate the maze efficiently.
 
-The Double DQN architecture addresses the issue of overestimation in action-value functions, a common problem in reinforcement learning. By decoupling the action selection and action evaluation processes during the target value calculation, the Double DQN mitigates the propagation of overestimation errors. This leads to more accurate value estimates and improved policy performance \hyperref[ref19]{[19]} \hyperref[ref20]{[20]}.
+The Double DQN architecture addresses overestimation in action-value functions, a common problem in RL. By decoupling action selection from action evaluation during target value calculation, Double DQN reduces overestimation errors, leading to more accurate value estimates and improved policy performance. \hyperref[ref19]{[19]} \hyperref[ref20]{[20]}.
 
-In terms of model design, Double DQN utilizes two networks: the primary network and the target network. The primary network is used to select the best action, while the target network evaluates the value of that action. This method effectively reduces the bias introduced by the max operator used in standard DQN updates \hyperref[ref19]{[19]} \hyperref[ref21]{[21]}. Empirical studies have shown that Double DQN not only improves stability and performance but also requires minimal changes to the original DQN architecture, making it a practical and efficient enhancement \hyperref[ref20]{[20]}.
+Double DQN uses two networks: the primary network selects the best action, and the target network evaluates its value. This method reduces the bias introduced by the max operator in standard DQN updates. \hyperref[ref19]{[19]} \hyperref[ref21]{[21]} Empirical studies have shown that Double DQN not only improves stability and performance but also requires minimal changes to the original DQN architecture, making it a practical and efficient enhancement \hyperref[ref20]{[20]}.
 
 Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies \hyperref[ref27]{[27]} \hyperref[ref19]{[19]}.
 
@@ -467,13 +397,12 @@ Non-trainable params: 0 (0.00 Byte)
 ---
 ```
 
-<!-- ![Model Architecture (Image created by author)](./images/thesis/model_architecture.png "Model Architecture (Image created by author)") -->
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=6in]{./images/thesis/model_architecture.png}
     \end{minipage}
-    \caption{Model Architecture (Image created by author)}
+    \caption{Model Architecture of the Double Deep Q-Network (DDQN) used in the study. (Image created by author)}
 \end{figure}
 
 ## Training Parameters
@@ -508,29 +437,8 @@ The training of the Double DQN agent was governed by the following parameters:
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
 
-<!-- ## Visual Insights and Further Exploration
-
-This project takes an innovative approach to sim-to-real transfer in reinforcement learning, which I've showcased through a series of visual elements and demonstrations. These visuals range from the meticulous setup of our physical maze to the user-friendly design of our web application.
-
-- **Maze Visualization:**
-
-The following image provides a more detailed look at the real-world maze setup. This physical representation mirrors the virtual maze environment.
-
-![Real life Maze Build (Image created by author)](./images/final_test/final_maze_build.jpeg "Real life Maze Build (Image created by author)"){ width=50% }
-
-- **Web Application Interface:**
-
-This web application serves as a control interface for the RC car, allowing me to easily monitor what the RC car sees (due to the sensor values being displayed) and emergency stop the car if needed.
-
-![Web App (Image created by author)](./images/thesis/web_app.png "Web App (Image created by author)"){ width=100% }
-
-- **Simulation Test Video:**
-Watch the Double Deep Q-Network (DDQN) in action in this test video. It gives a real sense of how the algorithm navigates through the maze. Found in `chapter 23: Video References`.
-
-- **DDQN Simulation test:** See DDQN Simulation in the Video reference section. -->
-
 ## Evaluation Metrics Overview
-<!-- TODO: Replace with more natural sounding language -->
+
 ### Simulation Metrics
 
 #### Episodic Performance
@@ -847,13 +755,13 @@ This comprehensive analysis reveals distinct performance characteristics and eff
 
 AC and PPO exhibit higher fluctuations in their performance metrics, indicating the need for further optimization to achieve better consistency and efficiency. These algorithms show potential but require more refinement to handle the complexities of maze navigation effectively.
 
-Ultimately, this analysis aids in selecting the most suitable reinforcement learning algorithm based on specific task requirements and environmental complexities. It enhances our understanding of their practical applications and helps in optimizing learning outcomes for real-world scenarios.
+This analysis helps select the most suitable reinforcement learning algorithm based on task requirements and environmental complexities, enhancing our understanding and optimizing performance
 
 # Implementation of Real-World Control Algorithms
 
 ## Introduction to Real-World Implementation
 
-In this section, I delve into the practical application of control algorithms developed through simulations, now being adapted to control a physical robot. This transition is pivotal for evaluating how simulated behaviors translate into real-world scenarios, thereby assessing the effectiveness and limitations of sim-to-real transfer.
+In this section, I delve into the practical application of control algorithms developed through simulations, now being adapted to control a physical robot. This transition is pivotal for evaluating how simulated behaviors translate into real-world scenarios, thereby assessing the effectiveness and limitations of Sim2Real transfer.
 
 ## System Overview
 
@@ -913,11 +821,15 @@ void calibrateSensors()
     for (int i = 0; i < 100; i++)
     {
         int16_t ax, ay, az, gx, gy, gz;
+        # Read sensor data
         mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+        # Accumulate gyro Z-axis readings 
         gyroZAccum += gz;
+        # Delay for sensor stability
         delay(20);
     }
-    mpu.setZGyroOffset(-gyroZAccum / 13100); // Calibration based on 100 readings
+    // Calibration based on ±100 readings
+    mpu.setZGyroOffset(-gyroZAccum / 13100);
     Serial.println("Calibration Complete");
 }
 ```
@@ -1039,7 +951,7 @@ However like discussed before , transitioning from simulations to real-world app
 
 A significant advancement was achieved by simplifying the robot's design to use only the ESP32 module, making it lighter and more precise. This change marked a considerable step in overcoming the previous challenges.
 
-Although I made a lot of progress in addressing these challenges, there is still room for improvement in achieving seamless sim-to-real transfer and ensuring consistent performance across different environments.
+Although I made a lot of progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments.
 
 # Integration of Practical Experiments
 
@@ -1066,234 +978,67 @@ To enhance the RC-car's movement precision, I experimented with rotary encoders.
 Moving beyond controlled environments, I tested the RC-car in both outdoor and indoor settings to evaluate its performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
 
 - **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
-- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer (see Video E11 in the Video References section).
-
-<!-- \pagebreak -->
-
-<!-- --
-  # TODO: Interviews with Sam and Wouter for feedback (have not done these interviews yet)
-  • Wat zijn volgens hen de sterke en zwakke punten van het resultaat uit jouw researchproject?   
-  • Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld?  
-  • Welke alternatieven/suggesties geven bedrijven en/of community?   
-  • Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?    
-  • Wat is de meerwaarde voor het bedrijf?   
-  • Is er een maatschappelijke/economische/socio-economische meerwaarde aanwezig? 
-
-  Rewrite this yourself
--->
-<!-- # Reflection
-
-Reflecting on this research project, I have gained invaluable insights that have significantly influenced my approach and perspective.
-
-## Openness to New Ideas
-
-One of the most important lessons I learned is the value of being open to new ideas. Embracing unfamiliar concepts and stepping out of my comfort zone were crucial for fostering creativity and discovering innovative solutions. For instance, the transition from simulation to real-world testing required novel problem-solving approaches to address discrepancies in sensor data and movement control. This openness not only enriched my technical skills but also enhanced my ability to adapt to new challenges and environments.
-
-## Bridging Theory and Practice
-
-Transitioning from theory to practice proved more challenging than I expected. While controlled virtual environments were manageable, the real world presented unforeseen complexities. This experience sharpened my ability to balance theoretical knowledge with practical adaptability. For example, integrating sensor calibration and adjusting control algorithms were essential steps that highlighted the gap between simulated and real-world conditions. This hands-on experience has prepared me to handle the unpredictability of real-world applications more effectively. Additionally, it underscored the importance of iterative testing and continuous learning in the development process.
-
-## Anticipatory Thinking
-
-Overcoming various obstacles highlighted the importance of anticipatory thinking. Navigating challenges and adapting to evolving conditions made me realize the need to think ahead. This proactive mindset has become integral to my approach, turning potential challenges into opportunities for innovation. For instance, anticipating sensor noise and environmental variability led to the development of robust policies and fine-tuning strategies that improved the system's performance in real-world scenarios. This foresight is crucial for anticipating and mitigating risks, ensuring the robustness and reliability of autonomous systems.
-
-## Policy and Regulation
-
-Engaging with policy and regulatory frameworks was enlightening. It highlighted the delicate balance between fostering innovation and ensuring public safety. Collaborating with policymakers and industry leaders taught me the importance of creating regulations that encourage technological advancement while maintaining accountability. This experience underscored the need for ethical considerations and compliance in the deployment of autonomous systems. Understanding these regulatory landscapes will be essential as I continue to develop and implement AI and robotics solutions in the future.
-
-## Feedback from the Jury
-
-The feedback from the jury was predominantly positive, and their insights were incredibly valuable. They commended the practical aspects of my project, particularly the real-world testing of the RC car. Specific suggestions, such as increasing the distance to the walls to reduce navigation errors and integrating a camera system for real-time visual feedback, were implemented to enhance the accuracy and reliability of the navigation algorithms. This feedback loop was instrumental in refining my approach and improving the overall quality of the project.
-
-## Methodological Insights
-
-Creating the custom maze navigation environment (RCMazeEnv) and using the DDQN architecture provided significant insights into the complexities of sim-to-real transfer. The iterative process of testing, calibration, and adjustment refined the system and improved its performance in navigating the physical maze. Designing an effective reward function was key to guiding the agent’s learning process, balancing immediate rewards and penalties for inefficient actions to optimize performance. This methodological rigor will serve as a foundation for future projects, ensuring a structured and systematic approach to research and development.
-
-## Societal Implications of Autonomous Systems
-
-The potential applications of autonomous systems extend far beyond maze navigation. Insights from this research could contribute to developing autonomous vehicles, drones, and other robotic systems navigating complex environments. Ensuring these technologies are accessible and beneficial to society requires careful consideration of ethical, regulatory, and practical factors. For instance, autonomous systems must be designed to prioritize safety and reliability, minimizing risks to human users and the environment. Moreover, the deployment of such technologies should be accompanied by public education and engagement to build trust and understanding among stakeholders.
-
-## Future Directions
-
-This project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning models, extending testing environments to include varying conditions, and fostering community collaboration. These enhancements could improve the technology and advance autonomous vehicle research and development. Future research could explore the use of multi-modal sensory inputs, such as combining visual, auditory, and tactile data to enhance the agent's perception and decision-making capabilities. Additionally, collaborations with other researchers and industry partners could provide valuable insights and resources for further advancements.
-
-## Personal Growth and Future Aspirations
-
-This research project has been transformative, shaping my understanding of AI and robotics and guiding my future aspirations. The lessons learned, from technical challenges to broader societal implications, have equipped me with the skills and knowledge to pursue further research and innovation in this field. I am particularly interested in exploring the ethical dimensions of AI and robotics, ensuring that these technologies are developed and deployed in ways that are fair, transparent, and accountable. My future aspirations include contributing to the development of autonomous systems that can positively impact various sectors, from healthcare to transportation, enhancing efficiency and safety.
-
-## Commitment to Innovation and Societal Stewardship
-
-As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace future challenges. I am committed to fostering a culture of innovation and continuous improvement, where creative problem-solving and interdisciplinary collaboration are encouraged. Furthermore, I will strive to ensure that my work contributes to the greater good, addressing societal challenges and promoting sustainability.
-
-## Personal Note
-
-Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three-week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like giving the agents more controls than just moving forward, left, and right. For example, as Wouter suggested during one of our evaluations, the use of a camera to see where the car is in the maze. This, along with giving the agent the ability to move the left and right motors completely independent of each other, would have given the agent a lot more control over the car and maybe even eliminated the need for the many corrections I had to make while transferring the model to the real world.
-
-I doubt I would have been able to get as far as fast as I did if I had taken this alternative route, but I do think it would have been a lot more interesting and maybe even more rewarding as I don’t think this project is completely finished yet, and I look forward to continuing this journey. -->
+- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer (see Video E11 in the Video References section).
 
 # Reflection
 
-Reflecting on this research project, I realize how much I've learned and how these insights have shaped my approach and perspective.
+Reflecting on my research journey, I've realized the depth of learning and personal growth that this project has facilitated. This section details the key insights and lessons learned throughout the development and testing phases of my RC-car project, particularly in the context of the Sim2Real transfer in reinforcement learning.
 
-## Openness to New Ideas
+## Embracing Innovation and Adaptability
 
-One of the biggest lessons I learned was the importance of being open to new ideas. Embracing unfamiliar concepts and stepping out of my comfort zone fostered creativity and led to innovative solutions. For example, transitioning from simulation to real-world testing required novel problem-solving to address discrepancies in sensor data and movement control. This openness not only improved my technical skills but also made me more adaptable to new challenges and environments. My coach, Gevaert Wouter, emphasized the value of staying receptive to technological advancements, which could further enhance system performance and reliability. He suggested exploring different RC car configurations and sensor setups but also warned that a 4WD setup might introduce more problems due to slippage.
+One of the biggest takeaways from this project was the importance of staying open to new ideas and being flexible. Moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges pushed me to think creatively and be open to exploring new paths. My mentor, Gevaert Wouter, stressed the need to stay updated with new tech and be adaptable to changes, even though this sometimes led to more complications, like potential slippage in a 4WD setup.
+
+Wouter pointed out that while a 4WD setup could provide better traction, it generally would not be better due to over time slippage. Additionally, switching from ultrasonic sensors to cameras might not improve performance because accurately determining the car’s position in the maze could still be a challenge.
 
 ## Bridging Theory and Practice
 
-Moving from theory to practice turned out to be more challenging than expected. Controlled virtual environments were manageable, but the real world presented unforeseen complexities. This experience sharpened my ability to balance theoretical knowledge with practical adaptability. For instance, integrating sensor calibration and adjusting control algorithms highlighted the gap between simulated and real-world conditions. This hands-on experience prepared me to handle real-world applications more effectively. Additionally, it underscored the importance of iterative testing and continuous learning. Wouter pointed out that starting with a more flexible virtual environment could have allowed for easier adjustments later on. He also suggested that while direct control over the motors might seem beneficial, it could lead to increased training time and potential damage to the motors. An anonymous contributor from Reddit emphasized the need for iterative design and testing to refine new sensory inputs, ensuring robustness in diverse environments.
+The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including Wouter's advice on starting with a flexible virtual environment, proved invaluable in navigating these complexities.
 
-## Anticipatory Thinking
+Reddit feedback suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's learning and adaptability but would have required a longer training period and increased the risk of motor damage. Wouter advised against giving the agent direct motor control due to these potential new issues.
 
-Overcoming various obstacles taught me the importance of anticipatory thinking. Navigating challenges and adapting to evolving conditions made me realize the need to think ahead. This proactive mindset has become integral to my approach, turning potential challenges into opportunities for innovation. For instance, anticipating sensor noise and environmental variability led to the development of robust policies and fine-tuning strategies, which improved system performance in real-world scenarios. This foresight is crucial for anticipating and mitigating risks, ensuring the robustness and reliability of autonomous systems. Wouter emphasized the importance of anticipating future technological trends and regulatory changes to stay ahead in the field.
+## Anticipatory Thinking and Proactive Problem-Solving
 
-## Policy and Regulation
+Throughout the project, the ability to anticipate challenges and think ahead became crucial. From dealing with sensor noise to managing environmental variability, proactive strategies were essential for developing robust solutions. This anticipatory approach not only improved system performance but also prepared me for future technological trends and regulatory changes. Insights from Wouter and other contributors highlighted the importance of staying ahead of the curve in a rapidly evolving field.
 
-Engaging with policy and regulatory frameworks was eye-opening. It highlighted the delicate balance between fostering innovation and ensuring public safety. Collaborating with policymakers and industry leaders taught me the importance of creating regulations that encourage technological advancement while maintaining accountability. This experience underscored the need for ethical considerations and compliance when deploying autonomous systems. Understanding these regulatory landscapes will be essential as I continue to develop AI and robotics solutions. Wouter and other industry leaders emphasized the growing importance of ethical AI, urging the integration of ethical guidelines early in project development.
+Wouter recommended a waterfall technique, where part of the simulation is created, then tested with the car, and then refined based on the results. This iterative approach could have prevented late-stage realizations about the limitations of the initial virtual environment.
 
-## Feedback from the Jury
+## Navigating Policy and Ethical Considerations
 
-The feedback from the jury was predominantly positive, and their insights were incredibly valuable. They commended the practical aspects of my project, particularly the real-world testing of the RC car. Specific suggestions, like increasing the distance to the walls to reduce navigation errors and integrating a camera system for real-time visual feedback, were implemented to enhance accuracy and reliability. This feedback loop was instrumental in refining my approach and improving the overall quality of the project. Wouter suggested that a camera might not solve all positioning issues but could complement other sensory data to improve overall system accuracy. He also pointed out that a virtual twin might have limited usefulness in some scenarios compared to a top-down view camera.
+Engaging with policy and regulatory frameworks was a novel experience that highlighted the balance between fostering innovation and ensuring public safety. This understanding is crucial as I move forward in the field of AI and robotics, ensuring that my work promotes both technological advancement and societal well-being.
 
-## Methodological Insights
+## Feedback and Continuous Improvement
 
-Creating the custom maze navigation environment (RCMazeEnv) and using the DDQN architecture provided significant insights into the complexities of sim-to-real transfer. The iterative process of testing, calibration, and adjustment refined the system and improved its performance in navigating the physical maze. Designing an effective reward function was key to guiding the agent’s learning process, balancing immediate rewards and penalties for inefficient actions to optimize performance. This methodological rigor will serve as a foundation for future projects, ensuring a structured and systematic approach to research and development. Feedback from recent interviews, including Wouter's, suggested that while it was crucial to have a structured environment, there were limits to how much could be controlled virtually.
+The feedback loop was instrumental in refining my project. Constructive criticism from the jury, such as suggestions to increase the distance to walls and integrate a camera system for real-time feedback, significantly enhanced the accuracy and reliability of the RC car. This process of receiving and implementing feedback highlighted the importance of continuous improvement and adaptability in research.
 
-## Societal Implications of Autonomous Systems
+Reddit feedback reinforced the idea that a top-down view camera could have been more beneficial for real-time positioning and as an additional input to the agent/environment compared to a virtual twin.
 
-The potential applications of autonomous systems extend far beyond maze navigation. Insights from this research could contribute to developing autonomous vehicles, drones, and other robotic systems navigating complex environments. Ensuring these technologies are accessible and beneficial to society requires careful consideration of ethical, regulatory, and practical factors. For instance, autonomous systems must be designed to prioritize safety and reliability, minimizing risks to human users and the environment. Moreover, deploying such technologies should be accompanied by public education and engagement to build trust and understanding among stakeholders. Wouter and other contributors highlighted the importance of public engagement and education in fostering societal acceptance and trust in autonomous systems.
+## Methodological Rigor and Insights
 
-## Future Directions
+Developing the custom maze navigation environment (RCMazeEnv) and employing the DDQN architecture provided deep methodological insights. The iterative process of testing and calibration improved the system's performance and offered a structured approach to future projects. Feedback from interviews suggested that while maintaining a structured environment is crucial, understanding the limits of virtual control is equally important.
 
-This project can be further developed by integrating more complex sensory systems, applying more sophisticated machine learning
+Wouter noted that a virtual twin had limited utility because the simulation couldn't deviate to show the real robot's exact position in the maze. A top-down view camera might have been more beneficial for real-time feedback.
 
- models, extending testing environments to include varying conditions, and fostering community collaboration. These enhancements could improve the technology and advance autonomous vehicle research and development. Future research could explore using multi-modal sensory inputs, such as combining visual, auditory, and tactile data to enhance the agent's perception and decision-making capabilities. Additionally, collaborations with other researchers and industry partners could provide valuable insights and resources for further advancements. Recent feedback, including from Wouter, emphasized the potential of cross-disciplinary collaboration to accelerate innovation and solve complex challenges.
+## Societal Implications and Future Directions
 
-## Personal Growth and Future Aspirations
+The implications of this research extend beyond maze navigation, potentially contributing to the development of autonomous vehicles and robotic systems. Ensuring these technologies are safe, reliable, and beneficial to society requires ongoing public education and engagement. Future research could explore more complex sensory systems and multi-modal sensory inputs to enhance autonomous systems' perception and decision-making capabilities. Cross-disciplinary collaborations will be essential in driving innovation and addressing complex challenges.
 
-This research project has been transformative, shaping my understanding of AI and robotics and guiding my future aspirations. The lessons learned, from technical challenges to broader societal implications, have equipped me with the skills and knowledge to pursue further research and innovation in this field. I am particularly interested in exploring the ethical dimensions of AI and robotics, ensuring these technologies are developed and deployed in ways that are fair, transparent, and accountable. My future aspirations include contributing to the development of autonomous systems that can positively impact various sectors, from healthcare to transportation, enhancing efficiency and safety. Feedback from Wouter and other mentors highlighted the importance of balancing technical expertise and ethical considerations in future projects.
+Wouter emphasized the broad applicability of Sim2Real transfer beyond maze navigation, such as in customer service, washing machines, and navigation systems.
+
+## Personal Growth and Aspirations
+
+This project has been transformative, shaping my understanding of AI and robotics. The challenges faced and lessons learned have equipped me with the skills and knowledge to pursue further research and innovation. I am particularly interested in the ethical dimensions of AI and robotics, ensuring that these technologies are developed responsibly. My future aspirations include contributing to autonomous systems that positively impact various sectors, enhancing efficiency and safety.
+
+Reddit feedback highlighted the potential impact of my research in industries like transportation, logistics, and automated customer service systems, emphasizing the broader applications of autonomous navigation technologies.
 
 ## Commitment to Innovation and Societal Stewardship
 
-As I move forward, my ethos will be defined by adaptability, responsiveness, and a commitment to societal stewardship. The lessons learned have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace future challenges. I am committed to fostering a culture of innovation and continuous improvement, where creative problem-solving and interdisciplinary collaboration are encouraged. Furthermore, I will strive to ensure that my work contributes to the greater good, addressing societal challenges and promoting sustainability.
+Moving forward, I am committed to fostering a culture of innovation and continuous improvement. This involves creative problem-solving, interdisciplinary collaboration, and a commitment to societal stewardship. The lessons learned from this project have prepared me for the next stage of my journey, where I will continue to engage with data, refine methodologies, and embrace future challenges. Ensuring that my work contributes to the greater good and addresses societal challenges will remain a core focus of my efforts.
 
 ## Personal Note
 
-Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three-week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like giving the agents more controls than just moving forward, left, and right. For example, as Wouter suggested during one of our evaluations, the use of a top-down view camera to see where the car is in the maze. This would solve the problem of the car not knowing where it is in the maze, and potentially serve as another input for the agent to use, thus giving it more information to work with than just the distance sensors.
+Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
 
-Feedback from another reddit user suggested that direct control over the motors could improve the transfer of the simulation and deal with the problem of fixed movements like it has now, although it might increase the training time and risk of damaging the motors. This insight highlights the importance of balancing control flexibility with practical constraints.
-
-I doubt I would have been able to get as far as fast as I did if I had taken an alternative route, but I do think it would have been a lot more interesting and maybe even more rewarding as I don’t think this project is completely finished yet, and I look forward to continuing this journey.
-
-<!-- # Advice
-
-## Practical Utilization of Simulations
-
-Simulations are invaluable in research, offering a risk-free, controllable environment for developing and refining algorithms.
-
-- **Cost-Effectiveness:** Simulations allow for substantial cost savings by reducing the need for physical prototypes and extensive real-world trials in the early phases of research.
-
-## Strategies for Effective Transition from Simulation to Reality
-
-Successfully transitioning from simulations to real-world applications is critical for validating the effectiveness of research outcomes.
-
-- **Incremental Testing:** Start with simulations to refine algorithms, then gradually introduce real-world testing to confirm results and adapt to environmental variables.
-- **Feedback Loops:** Use continuous feedback mechanisms to enhance simulation models with insights gained from real-world tests, improving their accuracy and applicability.
-
-## Overcoming Common Challenges in Simulation-to-Reality Transitions
-
-Bridging the gap between simulations and actual conditions often requires specific adjustments, especially in terms of sensor data and mechanical operations.
-
-- **Sensor Discrepancy Adjustments:** Regular calibration of real-world sensors is essential to ensure they align with simulation inputs.
-- **Movement and Mechanics Alignment:** It's crucial to synchronize physical movements and mechanics with those anticipated by simulations to ensure smooth transitions.
-
-## Insights from My Research
-
-- **Simulation Platforms:** Choosing the right simulation platform, like OpenAI Gym, is critical and may necessitate additional tools for more complex scenarios.
-- **DDQN Superiority:** My findings show that Double Deep Q-Network (DDQN) surpasses other models, such as DQN and PPO, by reducing overestimations and enhancing learning stability.
-
-## Methodological Advice
-
-- **Comprehensive Evaluation:** Utilize a mix of qualitative and quantitative approaches to thoroughly evaluate the effectiveness of both simulations and real-world applications.
-- **Adaptive Techniques:** Stay flexible and responsive to the results and feedback, which are crucial for effectively tackling unexpected challenges.
-
-## Practical Experiment Integration
-
-- **Prototyping and Iteration:** Use iterative design and prototyping to progressively refine systems, effectively linking theoretical research and practical implementation.
-- **Continuous Feedback:** Continuously seek and integrate feedback from stakeholders and peers to improve simulation models and real-world applications.
-
-## Guidelines for Future Research
-
-### Introduction for Future Research
-
-This chapter provides a comprehensive methodology and advice for researchers involved in simulation-based studies, focusing on ensuring a smooth transition from theoretical models to practical applications.
-
-### Step-by-Step Plan
-
-#### Step 1: Selection of Simulation Environments
-
-- **Research and Evaluation:** Investigate and evaluate available simulation tools that fit your study, such as OpenAI Gym, Unity 3D, and CARLA.
-- **Criteria Development:** Establish criteria based on fidelity, scalability, ease of use, and integration capabilities with your existing systems.
-- **Preliminary Testing:** Perform initial tests to evaluate these environments against your criteria, focusing on how well they replicate real-world conditions and support your research objectives.
-
-#### Step 2: Managing Expectations and Adaptability
-
-- **Expectation Setting:** Set realistic expectations for what simulations can achieve. Understand that simulations can provide valuable insights but may not capture all real-world nuances.
-- **Adaptation Strategies:** Be ready to adjust your research approach based on the outcomes of simulations. Address any data discrepancies and be flexible in modifying your methodologies as needed.
-
-#### Step 3: Methodology Flexibility
-
-- **Continuous Evaluation:** Regularly assess the effectiveness of your chosen methodologies. Stay open to feedback and willing to make iterative improvements.
-- **Integration of New Technologies:** Keep an eye on emerging technologies and be prepared to incorporate them into your research to enhance your methods and results.
-
-#### Step 4: Addressing Real-World Constraints
-
-- **Practical Implementation:** Consider the practical constraints you'll face when applying your simulation results to the real world. These might include hardware limitations, environmental variability, and regulatory requirements.
-- **Pilot Testing:** Conduct small-scale real-world tests to validate your simulation findings. Use these tests to identify and address any gaps between the simulated and real-world performance.
-
-#### Step 5: Enhancing Data Accuracy
-
-- **Sensor Calibration:** Ensure your sensors are properly calibrated both in simulations and real-world tests. Accurate sensor data is crucial for reliable results.
-- **Data Normalization:** Implement robust data normalization techniques to align simulated sensor data with real-world conditions. This helps in maintaining the consistency and reliability of your data.
-
-#### Step 6: Fostering Collaboration
-
-- **Interdisciplinary Teams:** Collaborate with experts from different fields to enrich your research. For example, working with specialists in robotics, computer vision, and AI can provide new insights and approaches.
-- **Community Engagement:** Engage with the research community through conferences, workshops, and publications to share your findings and gain valuable feedback.
-
-#### Step 7: Future-Proofing Your Research
-
-- **Scalability:** Design your research to be scalable, so it can be adapted to larger and more complex problems in the future.
-- **Long-Term Vision:** Keep a long-term vision for your research, anticipating future challenges and opportunities in the field of simulation-to-reality transfer.
-
-### Conclusion for Future Research
-
-Following these guidelines will help researchers navigate the complexities of simulation-based studies and ensure a successful transition from theoretical models to practical applications. By being methodical, adaptable, and collaborative, you can overcome the challenges of sim2real transfer and contribute valuable insights to the field of autonomous systems and beyond.
-
-<!-- \pagebreak -->
-
-<!-- TODO: replace with more natural sounding language -->
-<!-- ## Sources of Inspiration and Conceptual Framework
-
-The inspiration for this research draws from a diverse collection of sources, uniquely combining insights from technical documentation, digital platforms, and academic literature. Central to the inspiration were the challenges of micro mouse competitions and the potential of reinforcement learning (RL) in navigating these complex mazes. These initial sparks of interest were further fueled by dynamic demonstrations of RL applications in autonomous vehicle control, particularly through the lens of YouTube and GitHub repositories, alongside influential academic research.
-
-## Micro mouse Competitions and Reinforcement Learning
-
-Micro mouse competitions, which task small robotic mice with the navigation of mazes, served as a foundational inspiration for this study. The direct application of RL in these competitions and related technological showcases provided a compelling narrative on the potential of RL in real-world problem-solving and autonomous control. The exploration of maze traversal algorithms and the strategies for shortest path finding, as detailed in the insightful Medium article by M. A. Dharmasiri \hyperref[ref15]{[15]}, enriched the conceptual foundation by illustrating practical algorithmic approaches in similar contexts.
-
-## Influential YouTube Demonstrations and GitHub Insights
-
-YouTube videos such as "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} provided vivid demonstrations of RL's applicability in real-world settings, emphasizing the feasibility of sim-to-real transfer. These resources, along with GitHub repositories detailing ventures like the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, highlighted the practical steps and challenges in implementing RL in physical systems.
-
-## Technical Exploration and Academic Foundation
-
-The academic exploration was significantly shaped by articles on autonomous driving decision control by Q. Song et al.\hyperref[ref12]{[12]} and a survey on sim-to-real transfer in deep reinforcement learning for robotics by W. Zhao, J. P. Queralta, and T. Westerlund \hyperref[ref17]{[17]}, which detailed the application of advanced RL algorithms in controlling autonomous vehicles. These articles provided a deep dive into the methodologies and challenges of applying RL in autonomous systems, offering a broad academic perspective on the field.
-
-## Synthesis and Research Direction
-
-These varied sources collectively informed the development of this research, steering the focus towards the feasibility and intricacies of sim2real transfer in the realm of autonomous navigation. The exploration aims to synthesize insights from both digital and academic realms, tackling the nuanced challenges of applying sophisticated RL models in practical, tangible scenarios.
-
-\pagebreak --> 
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reflective of the project's complexity.
 
 # Advice for Simulation-to-Reality Transition
 
@@ -1436,15 +1181,15 @@ Micro mouse competitions, where small robotic mice navigate mazes, served as a m
 
 ## Influential YouTube Demonstrations and GitHub Insights
 
-YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} vividly demonstrated RL's real-world applicability and the feasibility of sim-to-real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, detailed the practical steps and challenges of implementing RL in physical systems.
+YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref11]{[11]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref16]{[16]} vividly demonstrated RL's real-world applicability and the feasibility of Sim2Real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project \hyperref[ref13]{[13]}, detailed the practical steps and challenges of implementing RL in physical systems.
 
 ## Technical Exploration and Academic Foundation
 
-Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control \hyperref[ref12]{[12]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on sim-to-real transfer in deep RL for robotics \hyperref[ref17]{[17]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
+Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control \hyperref[ref12]{[12]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on Sim2Real transfer in deep RL for robotics \hyperref[ref17]{[17]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
 
 ## Synthesis and Research Direction
 
-These diverse sources collectively informed the direction of this research, focusing on the feasibility and complexities of sim-to-real transfer in autonomous navigation. The goal is to combine insights from both digital and academic realms to address the challenges of applying advanced RL models in real-world scenarios.
+These diverse sources collectively informed the direction of this research, focusing on the feasibility and complexities of Sim2Real transfer in autonomous navigation. The goal is to combine insights from both digital and academic realms to address the challenges of applying advanced RL models in real-world scenarios.
 
 \pagebreak
 
@@ -1456,43 +1201,11 @@ The research shows that such a transfer is not only possible but also comes with
 
 The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 6: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
 
-This study confirms the feasibility of sim-to-real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
+This study confirms the feasibility of Sim2Real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
 
-In conclusion, while transitioning a trained RL agent from simulation to a real environment is feasible, the process requires careful planning, adaptability, and continual refinement. The challenges highlighted throughout this research underscore the need for ongoing efforts to enhance the robustness and reliability of sim-to-real applications, ensuring they can meet the demands of real-world conditions.
+In conclusion, while transitioning a trained RL agent from simulation to a real environment is feasible, the process requires careful planning, adaptability, and continual refinement. The challenges highlighted throughout this research underscore the need for ongoing efforts to enhance the robustness and reliability of Sim2Real applications, ensuring they can meet the demands of real-world conditions.
 
 \pagebreak
-<!-- TODO: Replace with more natural sounding languague -->
-<!-- ## Guest Speakers
-
-## Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
-
-Jeroen Boeye's talk, delivered on behalf of Faktion, provided valuable insights into the close relationship between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not just focusing on AI technology but also on the software engineering principles that support the creation of robust, scalable, and maintainable AI systems. This approach ensures that AI solutions are both technically sound and viable for long-term application.
-
-During his lecture, Jeroen highlighted several aspects of AI application, notably Chatlayer's impact on conversational AI. He explained how Chatlayer improves chatbot interactions through sophisticated conversational flows, enhancing the accuracy and relevance of exchanges with users. Another point of discussion was Metamaze, which he commended for its innovative methods in automating document processing, creating succinct summaries from extensive documents and emails, showcasing the capabilities of supervised machine learning in administrative tasks.
-
-Jeroen outlined a clear roadmap for successful AI project implementation, stressing the need to validate business cases and adopt a problem-first strategy. He discussed the critical role of high-quality data as the foundation for any AI endeavor and offered strategies for creatively overcoming data limitations. The talk also covered the importance of embracing failures as opportunities for innovation and maintaining open communication with stakeholders about challenges and setbacks.
-
-The lecture further presented various practical AI applications across different industries, such as solar panel detection, unauthorized pool identification, air freight container inspection, and early warning systems for wind turbine gearboxes. Jeroen demonstrated how AI could tackle complex challenges through innovative data sourcing, synthetic data generation, and anomaly detection techniques. He also explored case studies on energy analysis in brick ovens and egg incubation processes, emphasizing the importance of data preprocessing and machine learning models in improving efficiency and outcomes.
-
-Key points from Jeroen's talk included the mastery of data preprocessing and treating data as a dynamic asset to better tailor AI models to specific needs. He shared practical tips on enhancing operational efficiency, such as using host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.
-
-In summary, Jeroen Boeye's lecture offered a thorough perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
-
-## Pioneering AI Solutions at Noest by Toon Vanhoutte
-
-Toon Vanhoutte's engaging lecture, on behalf of Noest from the Cronos Group, shed light on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
-
-Toon presented a case study on a packaging company that aimed to revolutionize image search capabilities based on product labels. The project faced various challenges, such as inconsistent PDF formats and large file sizes, which were adeptly managed using Azure Blob Storage for data handling and event-driven processing strategies for efficient, cost-effective solutions, showcasing Noest’s skill in utilizing cloud technologies to address complex issues.
-
-Another significant challenge was enhancing image searchability, which involved recognizing text and objects within images. This was tackled using Azure AI Search, supplemented by Large Language Models (LLMs) and vector search techniques. This approach allowed for nuanced search functionalities beyond simple text queries, showing the advanced capabilities of AI in interpreting complex data.
-
-Toon also explored advancements in semantic search, discussing how different search methods—keyword, vector, and hybrid—along with semantic ranking, could significantly improve the accuracy and contextuality of search results. Practical demonstrations, including comparisons between OCR and GPT-4 vision, illustrated the potential of AI to offer deeper insights based on semantic understanding.
-
-A key takeaway from Toon’s lecture was the importance of setting realistic client expectations regarding AI's capabilities and potential inaccuracies, highlighting the experimental nature of these technologies. The discussion on AI’s evolving landscape emphasized the need for prompt engineering, the challenges of navigating a developing field, and the importance of client education in managing expectations about AI technologies like GPT.
-
-In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
-
-\pagebreak -->
 
 # Guest Speakers
 
@@ -1553,7 +1266,6 @@ cd researchproject
 
 Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
 
-<!-- ![Final RC Car (Image created by author)](./images/final_test/jp_final.jpeg "Final RC Car (Image created by author)") -->
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
@@ -1561,21 +1273,6 @@ Here’s an overview of the hardware components used in the project, including t
     \end{minipage}
     \caption{Final RC Car (Image created by author)}
 \end{figure}
-
-<!-- #### Components List
-
-- **Core Components**:
-  - ESP32-WROOM-32 module (Datasheet available at [Espressif](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf))
-  - 3D printed parts from Thingiverse ([hc-sr04](https://www.thingiverse.com/thing:3436448/files), [top plate + alternative for the robot kit](https://www.thingiverse.com/thing:2544002))
-  - Motor Driver (Available at [DFRobot](https://www.dfrobot.com/product-66.html))
-  - 2WD robot kit (Available at [DFRobot](https://www.dfrobot.com/product-367.html))
-  - Mini OLED screen (Available at [Amazon](https://www.amazon.com.be/dp/B0BB1T23LF))
-  - Sensors (Available at [Amazon](https://www.amazon.com.be/dp/B07XF4815H))
-  - Battery for ESP32 (Available at [Amazon](https://www.amazon.com.be/dp/B09Q4ZMNLW))
-- **Supplementary Materials**: Screws, wires, and tools required for assembly.
-  - 4mm thick screws 5mm long to hold the wood together (Available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/schroeven/universele-schroeven/sencys-universele-schroeven-torx-staal-gegalvaniseerd-20-x-4-mm-30-stuks/5368208))
-  - M3 bolts & nuts (Available at [brico](https://www.brico.be/nl/gereedschap-installatie/ijzerwaren/bouten/sencys-cilinderkop-bout-gegalvaniseerd-staal-m3-x-12-mm-30-stuks/5367637))
-  - Wood for the maze (Available at [brico](https://www.brico.be/nl/bouwmaterialen/hout/multiplex-panelen/sencys-vochtwerend-multiplex-paneel-topplex-250x122x1-8cm/5356349)) -->
 
 ## Components List
 
@@ -1749,7 +1446,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
         \caption{QR code for video E9. (Video by author.)}
     \end{figure}
 
-6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of sim-to-real transfer.
+6. **Video E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer.
    - Click here to go to the video: [Video E11](https://github.com/driessenslucas/researchproject/assets/91117911/ce0f47e9-26cd-459e-8b26-ff345d1ee96b)
 
     \begin{figure}[H]
@@ -1785,8 +1482,8 @@ By following these steps, you can successfully set up and deploy the autonomous 
 \pagebreak
 
 # References
-
-\[1\]\label{ref1} G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016.
+<!-- 7,14, 28 are unused -->
+\[1\]\label{ref1} G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016. [Online]. Available: arXiv. [Accessed: Jan. 29, 2024].
 
 \[2\]\label{ref2} A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," in Proceedings of the 1st Annual Conference on Robot Learning, 2017.
 
@@ -1834,8 +1531,14 @@ By following these steps, you can successfully set up and deploy the autonomous 
 
 \[24\]\label{ref24} C. J. C. H. Watkins and P. Dayan, "Q-learning," _Machine Learning_, vol. 8, no. 3-4, pp. 279-292, 1992.
 
-\[25\]\label{ref25} J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal policy optimization algorithms," _arXiv preprint arXiv:1707.06347_, 2017.
+\[25\]\label{ref25} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: [arXiv](https://arxiv.org/abs/1707.06347). [Accessed: Jan. 29, 2024].
 
 \[26\]\label{ref26} V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in _Proc. of the 13th International Conf. on Neural Information Processing Systems_, pp. 1008-1014, 2000.
 
 \[27\]\label{ref27} T. Saanum, "Reinforcement Learning with Simple Sequence Priors," arXiv preprint arXiv:2305.17109, 2024.
+
+\[28\]\label{ref28} W. Zhao et al., "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in IEEE SSCI, 2020.
+
+\[29\]\label{ref29} Unity Technologies, "AirSim on Unity: Experiment with autonomous vehicle simulation," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/engineering/airsim-on-unity-experiment-with-autonomous-vehicle-simulation). [Accessed: Jan. 29, 2024].
+
+\[30\]\label{ref30} Unity Technologies, "Introducing Unity Machine Learning Agents Toolkit," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/machine-learning/introducing-unity-machine-learning-agents-toolkit). [Accessed: Jan. 29, 2024].
