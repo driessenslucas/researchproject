@@ -49,12 +49,103 @@ acknowledgements: |
   Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their dedication to excellence and support for student initiatives have been instrumental in shaping my academic journey.
 ---
 
-\pagebreak
+<!-- \pagebreak
 
 ### Glossary of Terms
 
+1. **3 Demensional (3D)**: Refers to objects or environments that have three dimensions (length, width, and height), commonly used in computer graphics and simulations.
+2. **2-Wheel Drive (2WD)**: A vehicle configuration where power is delivered to two wheels, typically the front or rear wheels, providing propulsion and steering control.
+3. **4-Wheel Drive (4WD)**: A vehicle configuration where power is delivered to all four wheels, enhancing traction and stability, particularly in off-road or challenging terrains.
+4. **Artificial Intelligence (AI)**: The simulation of human intelligence processes by machines, especially computer systems, enabling them to perform tasks that typically require human intelligence.
+5. **autonomous vehicle (AV)**: A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+6. **Bellman Equation**: A fundamental recursive equation in dynamic programming and reinforcement learning that provides a way to calculate the value of a policy.
+7. **Domain Adaptation**: A set of methods used to adapt a model trained in one domain (e.g., simulation) to perform well in a different but related domain (e.g., real-world).
+8. **Domain Randomization**: A technique used in reinforcement learning to bridge the gap between simulation and reality by varying the parameters of the simulated environment to improve the robustness of the learned models when applied to real-world tasks.
+9. **Double Deep Q-Network (DDQN)**: An enhancement of the Deep Q-Network (DQN) algorithm that addresses the overestimation of action values, thus improving learning stability and performance.
+10. **Epsilon Decay**: A technique in reinforcement learning that gradually decreases the rate of exploration over time, allowing the agent to transition from exploring the environment to exploiting known actions for better outcomes.
+11. **Experience Replay**: A technique in reinforcement learning where past experiences (state, action, reward, next state) are stored and randomly sampled to break the correlation between consecutive samples, improving the stability and performance of the learning algorithm.
+12. **Fixed Q-Targets**: In the context of DQN, this refers to using a separate network to generate target values for training, which are held fixed for a number of steps to improve training stability.
+13. **Markov Decision Process (MDP)**: A mathematical framework for modeling decision-making situations where outcomes are partly random and partly under the control of a decision-maker. It is characterized by states, actions, transition probabilities, and rewards.
+14. **Mean Squared Error (MSE)**: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.
+15. **Motion Processing Unit (MPU6050)**: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.
+16. **Over the air updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
+17. **Policy Gradient Method**: A class of reinforcement learning algorithms that optimize the policy directly by computing gradients of the expected reward with respect to the policy parameters.
+18. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent's decisions based on the current policy.
+19. **Proximal Policy Optimization (PPO)**: A policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach.
+20. **Pulse-Width Modulation (PWM)**: A method used to control the amount of power delivered to a device by varying the duty cycle of the signal, commonly used in robotics to control motor speed and direction.
+21. **Q-agent**: Based on the Q-learning algorithm, it is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment.
+22. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
+23. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
+24. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
+25. **Sensor Fusion**: The process of combining sensory data from multiple sources to produce a more accurate and reliable understanding of the environment.
+26. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
+27. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
+28. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation.
+29. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
+30. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
+
+\pagebreak
+
+### List of Abbreviations
+
+1. **3D** - Three-Dimensional
+2. **2WD** - 2-Wheel Drive
+3. **4WD** - 4-Wheel Drive
+4. **AC** - Actor-Critic
+5. **AI** - Artificial Intelligence
+6. **AV** - autonomous vehicle
+7. **DDQN** - Double Deep Q-Network
+8. **DQN** - Deep Q-Network
+9. **ESP32** - Espressif Systems 32-bit Microcontroller
+10. **HC-SR04** - Ultrasonic Distance Sensor
+11. **MDP** - Markov Decision Process
+12. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
+13. **MSE** - Mean Squared Error
+14. **OTA** - Over the air updates
+15. **PPO** - Proximal Policy Optimization
+16. **PWM** - pulse-width modulation
+17. **RC** - Remote Controlled
+18. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
+19. **RL** - Reinforcement Learning
+20. **SAC** - Soft Actor-Critic
+21. **Sim2Real** - Simulation to Reality Transfer
+22. **TRPO** - Trust Region Policy Optimization
+
+\pagebreak
+ -->
+
+\pagebreak
+
+# List of Abbreviations
+
+1. **AC** - Actor-Critic
+2. **AI** - Artificial Intelligence
+3. **AV** - Autonomous Vehicle
+4. **DDQN** - Double Deep Q-Network
+5. **DQN** - Deep Q-Network
+6. **ESP32** - Espressif Systems 32-bit Microcontroller
+7. **HC-SR04** - Ultrasonic Distance Sensor
+8. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
+9. **MSE** - Mean Squared Error
+10. **OTA** - Over the Air Updates
+11. **PPO** - Proximal Policy Optimization
+12. **PWM** - Pulse-Width Modulation
+13. **RC** - Remote Controlled
+14. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
+15. **RL** - Reinforcement Learning
+16. **SAC** - Soft Actor-Critic
+17. **Sim2Real** - Simulation to Reality Transfer
+18. **TRPO** - Trust Region Policy Optimization
+19. **3D** - Three-Dimensional
+20. **2WD** - 2-Wheel Drive
+21. **4WD** - 4-Wheel Drive
+
+\pagebreak
+
+# Glossary of Terms
+
 1. **Artificial Intelligence (AI)**: The simulation of human intelligence processes by machines, especially computer systems, enabling them to perform tasks that typically require human intelligence.
-2. **autonomous vehicle (AV)**: A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
+2. **Autonomous Vehicle (AV)**: A self-driving vehicle capable of navigating and operating without human intervention, relying on sensors, algorithms, and AI to perceive and interact with the environment.
 3. **Bellman Equation**: A fundamental recursive equation in dynamic programming and reinforcement learning that provides a way to calculate the value of a policy.
 4. **Domain Adaptation**: A set of methods used to adapt a model trained in one domain (e.g., simulation) to perform well in a different but related domain (e.g., real-world).
 5. **Domain Randomization**: A technique used in reinforcement learning to bridge the gap between simulation and reality by varying the parameters of the simulated environment to improve the robustness of the learned models when applied to real-world tasks.
@@ -65,62 +156,24 @@ acknowledgements: |
 10. **Markov Decision Process (MDP)**: A mathematical framework for modeling decision-making situations where outcomes are partly random and partly under the control of a decision-maker. It is characterized by states, actions, transition probabilities, and rewards.
 11. **Mean Squared Error (MSE)**: A loss function used in regression models to measure the average squared difference between the estimated values and the actual value, useful for training models by minimizing error.
 12. **Motion Processing Unit (MPU6050)**: A sensor device combining a MEMS (Micro-Electro-Mechanical Systems) gyroscope and a MEMS accelerometer, providing comprehensive motion processing capabilities.
-13. **Over the air updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
+13. **Over the Air Updates (OTA)**: Remotely updates software or firmware, enabling seamless upgrades without physical access.
 14. **Policy Gradient Method**: A class of reinforcement learning algorithms that optimize the policy directly by computing gradients of the expected reward with respect to the policy parameters.
-15. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent's decisions based on the current policy.
+15. **Policy Network**: In reinforcement learning, a neural network model that directly maps observed environment states to actions, guiding the agent’s decisions based on the current policy.
 16. **Proximal Policy Optimization (PPO)**: A policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach.
-17. **Q-agent**: Based on the Q-learning algorithm, it is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment.
-18. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
-19. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
-20. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
-21. **Sensor Fusion**: The process of combining sensory data from multiple sources to produce a more accurate and reliable understanding of the environment.
-22. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
-23. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
-24. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation.
-25. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
-26. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
-
-\pagebreak
-
-### List of Abbreviations
-
-1. **AC** - Actor-Critic
-2. **AI** - Artificial Intelligence
-3. **AV** - autonomous vehicle
-4. **DDQN** - Double Deep Q-Network
-5. **DQN** - Deep Q-Network
-6. **ESP32** - Espressif Systems 32-bit Microcontroller
-7. **HC-SR04** - Ultrasonic Distance Sensor
-8. **MDP** - Markov Decision Process
-9. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
-10. **MSE** - Mean Squared Error
-11. **OTA** - Over the air updates
-12. **PPO** - Proximal Policy Optimization
-13. **RC** - Remote Controlled
-14. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
-15. **RL** - Reinforcement Learning
-16. **SAC** - Soft Actor-Critic
-17. **Sim2Real** - Simulation to Reality Transfer
-18. **TRPO** - Trust Region Policy Optimization
-
-\pagebreak
-
-# List of Abbreviations
-
-1. **AI** - Artificial Intelligence
-2. **AV** - autonomous vehicle
-3. **DDQN** - Double Deep Q-Network
-4. **DQN** - Deep Q-Network
-5. **ESP32** - Espressif Systems 32-bit Microcontroller
-6. **HC-SR04** - Ultrasonic Distance Sensor
-7. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
-8. **MSE** - Mean Squared Error
-9. **OTA** - Over the air updates
-10. **PPO** - Proximal Policy Optimization
-11. **RC** - Remote Controlled
-12. **RCMazeEnv** - RC Maze Environment (Custom Virtual Environment for RL Training)
-13. **RL** - Reinforcement Learning
-14. **Sim2Real** - Simulation to Reality Transfer
+17. **Pulse-Width Modulation (PWM)**: A method used to control the amount of power delivered to a device by varying the duty cycle of the signal, commonly used in robotics to control motor speed and direction.
+18. **Q-agent**: Based on the Q-learning algorithm, it is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment.
+19. **RC Car**: A remote-controlled car used as a practical application platform in reinforcement learning experiments, demonstrating how algorithms can control real-world vehicles.
+20. **Raspberry Pi (RPI)**: A small, affordable computer used for various programming projects, including robotics and educational applications.
+21. **Reinforcement Learning (RL)**: A subset of machine learning where an agent learns to make decisions by taking actions within an environment to achieve specified goals, guided by a system of rewards and penalties.
+22. **Sensor Fusion**: The process of combining sensory data from multiple sources to produce a more accurate and reliable understanding of the environment.
+23. **Sim2Real Transfer**: The practice of applying models and strategies developed within a simulated environment to real-world situations, crucial for bridging the gap between theoretical research and practical application.
+24. **Target Network**: Utilized in the DDQN framework, a neural network that helps stabilize training by providing consistent targets for the duration of the update interval.
+25. **Ultrasonic Distance Sensor (HC-SR04)**: Measures distance using ultrasonic waves, used in robotics for obstacle detection and navigation.
+26. **Virtual Environment**: A simulated setting designed for training reinforcement learning agents, offering a controlled, risk-free platform for experimentation and learning.
+27. **Wheel Slippage**: Loss of traction causing wheels to spin without moving the vehicle forward, common on uneven terrain.
+28. **3D (Three-Dimensional)**: Refers to objects or environments that have three dimensions (length, width, and height), commonly used in computer graphics and simulations.
+29. **2WD (2-Wheel Drive)**: A vehicle configuration where power is delivered to two wheels, typically the front or rear wheels, providing propulsion and steering control.
+30. **4WD (4-Wheel Drive)**: A vehicle configuration where power is delivered to all four wheels, enhancing traction and stability, particularly in off-road or challenging terrains.
 
 \pagebreak
 
@@ -512,7 +565,6 @@ Non-trainable params: 0 (0.00 Byte)
 ```
 
 \begin{figure}[H]
-    \centering
     \begin{minipage}{0.8\textwidth}
         \includegraphics[width=6in]{./images/thesis/model_architecture.png}
     \end{minipage}
@@ -1069,7 +1121,14 @@ In this section, I delve into the practical application of control algorithms de
 
 ## System Overview
 
-The experimental setup uses an ESP32 microcontroller combined with MPU6050 gyroscopic sensors and ultrasonic sensors for distance measurement, connected to a motor control system. These components enable the robot to perform maneuvers like moving forward, turning left, and turning right. The system's architecture is designed to replicate the simulated environment's dynamics.
+<!-- The experimental setup uses an ESP32 microcontroller combined with MPU6050 gyroscopic sensors and ultrasonic sensors for distance measurement, connected to a motor control system. These components enable the robot to perform maneuvers like moving forward, turning left, and turning right. The system's architecture is designed to replicate the simulated environment's dynamics. -->
+At the core of the system is the ESP32-WROOM-32 module, a small and powerful microcontroller with integrated Wi-Fi and Bluetooth capabilitie.
+
+The structure of the RC car is built on a 2WD miniQ robot chassis with a custom 3D printed top plate, which provides a sturdy base for mounting all components. To control the motors, an L298N dual H-Bridge motor controller was employed, allowing us to drive the motors in both directions and adjust their speed using pulse-width modulation (PWM) signals from the ESP32 microcontroller.
+
+For sensor integration, the system utilizes HC-SR04 ultrasonic sensors for distance measurement and an MPU6050 gyroscope for orientation and stabilization. These sensors are mounted using custom 3D printed parts, specifically designed to hold the HC-SR04 sensors securely in place. Additionally, a mini OLED screen is incorporated into the setup to provide real-time feedback on the robot’s status, such as its IP address and operational states, enhancing user interaction and debugging capabilities.
+
+Powering the entire system is an 18650 battery, Providing a lightweight and portable energy source. The battary is connected to the ESP32 microcontroller using a battery shield.
 
 ## Code Architecture and Integration
 
@@ -1144,6 +1203,142 @@ Transitioning from simulated environments to real-world applications introduces 
 
 ### Enhanced Sensor-Based Navigation
 
+Simulated environments provide an ideal platform for refining sensor-based navigation technologies. By leveraging simulations, developers can test and optimize sensor configurations and algorithms in a risk-free setting. This is particularly beneficial in applications demanding high precision, such as urban navigation or automated delivery systems. However, real-world conditions introduce complexities like sensor noise and environmental variability that are not fully captured in simulations. Thus, while simulations can significantly enhance sensor-based navigation, the transition to real-world applications requires careful calibration and validation.
+
+### Informing Autonomous Vehicle Movement
+
+Simulations offer controlled settings to study vehicle dynamics and movement responses. Insights gained from these controlled environments can inform the development of advanced algorithms for real-world applications. For example, vehicle dynamics in simulations can help refine control algorithms to better manage real-world unpredictability. However, real-world environments present additional challenges such as varying road surfaces, weather conditions, and mechanical issues. Algorithms that perform well in simulations may need substantial adjustments to handle these real-world factors effectively.
+
+## Challenges and Solutions in RL Implementation
+
+### Challenge 1: Choosing the Right Virtual Environment
+
+**Description**: Picking the best virtual environment for training the RC car.
+**Solution**: I chose OpenAI Gym because it’s simple, familiar from previous coursework, and focuses on reinforcement learning.
+
+### Challenge 2: Selecting the Optimal Reinforcement Learning Technique
+
+**Description**: Finding the most effective RL technique for training the virtual RC car.
+**Solution**: After testing various methods, the Double Deep Q-Network (DDQN) proved to be the best, consistently solving the maze with fewer steps and episodes than other techniques.
+
+### Challenge 3: Addressing Movement Discrepancies in Sim2Real Transfer
+
+**Description**: Bridging the gap between how the RC car moves in simulations and in the real world.
+**Solution Attempt**: I fine-tuned the action command frequency using an async method, waited for the motor to finish moving, and considered a queued action system. Getting precise movement in the real world turned out to be more critical than in simulations.
+
+### Challenge 4: Alignment Issues and Motor Encoder Implementation
+
+**Description**: Ensuring the RC car moves in a straight line, as there was a persistent ~3-degree offset.
+**Solution Attempts**:
+
+- **Attempt 1**: Used motor encoders to improve accuracy but faced precision limits.
+- **Attempt 2**: Switched to a more powerful motor, but the added weight brought back the alignment issue.
+- **Attempt 3**: Added an MPU6050 gyroscope to measure and adjust orientation, which initially helped with 90-degree turns but didn't fix the offset.
+- **Attempt 4**: Removed the Raspberry Pi and used only the ESP32 for all controls, resulting in a lighter, more precise robot, though it still struggled with consistent 90-degree turns.
+
+### Challenge 5: Ensuring Consistent and Effective Training
+
+**Description**: Maximizing training efficiency and performance while keeping things consistent between simulations and real-world scenarios.
+**Solution**: Training in a simulation was much more efficient due to the difficulties of resetting the RC car, dealing with manual interferences, and limited battery life.
+
+### Challenge 6: Accurate Sensor Data Normalization for Sim2Real Transfer
+
+**Description**: Aligning sensor data between simulated and real-world environments for accurate model performance.
+**Solution**: Implemented functions to ensure real-world sensor data matched the training data.
+
+- **Real-World Sensor Data Normalization**:
+  $$
+  \text{map\_distance}(d) = \begin{cases}
+  d & \text{if } d < 25 \\
+  25 + (d - 25) \times 0.5 & \text{otherwise}
+  \end{cases}
+  $$
+- **Simulation Sensor Data Normalization**:
+  $$
+  \text{normalize\_distance}(d) = \text{max}\left(0, \text{min}\left(\frac{d}{\text{sensor\_max\_range}}, 1\right)\right) \times 1000
+  $$
+
+### Challenge 7: Integration of Failsafe Mechanisms
+
+**Description**: Preventing collisions and ensuring safe navigation in the real world.
+**Solution**: Developed a failsafe system to prevent unwanted forward movement and retrained the model with this feature, which solved the issue of the robot driving into walls and getting stuck.
+
+### Challenge 8: Training Environment and Technique Efficacy
+
+**Description**: Finding the most effective environment and RL technique for training.
+**Solution**: The DDQN technique was more efficient than DQN, Q-agent, PPO, and ActorCritic approaches, highlighting the importance of selecting the right technique.
+
+## Integration of Practical Experiments
+
+Throughout my research, I used various practical experiments to solve the challenges I encountered. These experiments, documented through video demonstrations, provide clear insights into my problem-solving process.
+
+### Addressing Alignment and Orientation Challenges
+
+One of the main challenges was ensuring the RC-car's precise orientation and alignment during movement. To address this, I used the MPU6050 gyroscope to correct alignment issues and achieve accurate 90-degree turns. My efforts focused on using the gyroscope to maintain and correct the car's orientation, crucial for navigating complex mazes with high precision.
+
+**Experiment E1 - Gyroscope Calibration**: Testing the MPU6050 gyroscope to correct the car's orientation for accurate navigation, aiming to improve control over the vehicle's movement through maze environments (see Video E1 in the Video References section).
+
+**Experiment E2 - Navigational Corrections**: Addressing alignment issues for precise 90-degree turns and realigning the car's forward movement to fix a persistent ~3-degree offset (see Video E2 in the Video References section).
+
+### Improving Movement Precision with Encoders
+
+To enhance the RC-car's movement precision, I experimented with rotary encoders. These devices, which accurately measure wheel rotations, were essential for improving straight-line movements and addressing hardware reliability challenges in real-world applications.
+
+**Experiment E6 - Encoder Implementation**: Adding rotary encoders to the setup to gain more precise control over the car's movements by accurately measuring wheel rotations, thus refining the vehicle's navigation capabilities (see Video E6 in the Video References section).
+
+**Experiment E7 - Troubleshooting Encoder Malfunction**: Addressing a malfunction with one of the encoders that halted further tests, highlighting the practical challenges of maintaining hardware reliability (see Video E7 in the Video References section).
+
+### Real-World Application Tests
+
+Moving beyond controlled environments, I tested the RC-car in both outdoor and indoor settings to evaluate its performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
+
+**Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
+
+**Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer (see Video E11 in the Video References section).
+
+## Practical Implementation Considerations
+
+Successful application of simulation insights to real-world autonomous vehicles requires addressing several practical aspects:
+
+- **Sensor Calibration**: Regular calibration to account for environmental influences and sensor degradation.
+- **Algorithm Adjustment**: Modifications to account for hardware limitations and real-world dynamics.
+- **Handling Unpredictability**: Developing algorithms that can adapt to real-world unpredictability and handle unexpected scenarios.
+
+By focusing on these considerations, the transition from simulation to real-world applications can be more seamless, enhancing the safety, efficiency, and reliability of autonomous vehicle technologies.
+
+## Conclusion for Real-World Application
+
+The transition from simulation-based research to real-world applications in autonomous vehicle navigation presents significant challenges. While simulations offer valuable insights and a controlled environment for testing, real-world conditions introduce variability and unpredictability that require careful handling.
+
+**Major Limitations Identified**:
+
+- **Imprecise Sensor Data**: Real-world sensors often provide noisy and incomplete data, which can affect positioning accuracy and decision-making.
+- **Environmental Variability**: Surface variations, weather conditions, and dynamic obstacles necessitate continuous algorithmic adjustments and recalibration.
+
+To bridge the gap between simulation precision and real-world variability, it is crucial to focus on:
+
+- **Robust Sensor Calibration**: Ensuring sensors are regularly calibrated to maintain accuracy.
+- **Algorithmic Adaptation**: Continuously refining algorithms to handle real-world complexities.
+- **Iterative Testing and Validation**: Conducting extensive real-world testing to validate and improve system performance.
+
+Overcoming these challenges is key to successfully integrating Sim2Real technologies into autonomous transportation systems. Doing so will enhance the safety, efficiency, and reliability of these systems, paving the way for broader adoption and practical applications in various real-world scenarios.
+
+## Conclusion for Challenges and Solutions
+
+This section outlines the practical challenges encountered while applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with selecting OpenAI Gym as the virtual environment due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
+
+However, like discussed before, transitioning from simulations to real-world applications revealed significant discrepancies, particularly in movement control and sensor data alignment. I explored various solutions like motor encoders, power adjustments, and gyroscope integration, which partially addressed these issues. Efforts to normalize sensor data and implement failsafe mechanisms also contributed to better alignment with real-world conditions.
+
+A significant advancement was achieved by simplifying the robot's design to use only the ESP32 module, making it lighter and more precise. This change marked a considerable step in overcoming the previous challenges.
+
+Although I made a lot of progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments.
+
+<!-- ## Real-World Application and Limitations
+
+Transitioning from simulated environments to real-world applications introduces unique challenges, particularly in interpreting sensor data and replicating vehicle movements. This section addresses these critical aspects, highlighting both the potential benefits and limitations of applying insights from simulations to actual autonomous vehicle (AV) operations.
+
+### Enhanced Sensor-Based Navigation
+
 Refining sensor-based navigation technologies through simulations can significantly enhance the functionality of autonomous vehicles. These technologies are crucial in real-world applications that demand high precision and adaptability. For instance, in busy urban areas or automated delivery systems, dynamic and accurate navigation is essential for boosting both safety and efficiency. By integrating insights from simulations, sensor-based navigation systems can be better tuned to handle the complex and ever-changing conditions of the real world.
 
 ### Informing Autonomous Vehicle Movement
@@ -1178,7 +1373,7 @@ To successfully apply simulation insights to the real world, several practical a
 
 By addressing these considerations, we can bridge the gap between simulation-based research and real-world applications, enhancing the safety, efficiency, and reliability of autonomous vehicle technologies.
 
-## Conclusion for Real-World Application
+### Conclusion for Real-World Application
 
 Transitioning from simulation-based research to real-world applications in autonomous vehicle navigation presents both challenges and opportunities. While using simulation insights for sensor utilization and vehicle movement can revolutionize autonomous vehicle technologies, there is a significant gap between simulation precision and real-world variability that needs to be bridged.
 
@@ -1188,7 +1383,7 @@ Additionally, real-world factors such as surface variations, environmental condi
 
 Ultimately, overcoming these challenges is key to successfully integrating sim2real technologies. Doing so will improve the safety, efficiency, and reliability of autonomous transportation systems, paving the way for broader adoption and use in various real-world scenarios.
 
-# Challenges and Solutions in RL Implementation
+<!-- # Challenges and Solutions in RL Implementation
 
 ## Challenge 1: Choosing the Right Virtual Environment
 
@@ -1253,9 +1448,9 @@ However like discussed before , transitioning from simulations to real-world app
 
 A significant advancement was achieved by simplifying the robot's design to use only the ESP32 module, making it lighter and more precise. This change marked a considerable step in overcoming the previous challenges.
 
-Although I made a lot of progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments.
+Although I made a lot of progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments. -->
 
-# Integration of Practical Experiments
+<!-- # Integration of Practical Experiments
 
 Throughout my research, I used various practical experiments to solve the challenges I encountered. These experiments, documented through video demonstrations, provide clear insights into my problem-solving process.
 
@@ -1280,9 +1475,9 @@ To enhance the RC-car's movement precision, I experimented with rotary encoders.
 Moving beyond controlled environments, I tested the RC-car in both outdoor and indoor settings to evaluate its performance in real-world conditions. These tests were crucial for assessing the practical application of my research findings and understanding the challenge of accurately translating simulation models to real-world applications.
 
 - **Experiment E9 - Outdoor Navigation Test**: Navigating the RC-car on uneven outdoor surfaces, where variations greatly affected performance, underscoring the importance of environmental factors in autonomous navigation (see Video E9 in the Video References section).
-- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer (see Video E11 in the Video References section).
+- **Experiment E11 - Indoor Controlled Test**: Conducting controlled indoor tests to closely monitor and adjust the RC-car's navigation strategies, reflecting on the complexities of Sim2Real transfer (see Video E11 in the Video References section). -->
 
-# Discussion and Reflection
+<!-- # Discussion and Reflection
 
 Reflecting on my research journey, I've realized the depth of learning and personal growth that this project has facilitated. This section details the key insights and lessons learned throughout the development and testing phases of my RC-car project, particularly in the context of the Sim2Real transfer in reinforcement learning.
 
@@ -1324,11 +1519,11 @@ Wouter noted that a virtual twin had limited utility because the simulation coul
 
 The implications of this research extend beyond maze navigation, potentially contributing to the development of autonomous vehicles and robotic systems. Ensuring these technologies are safe, reliable, and beneficial to society requires ongoing public education and engagement. Future research could explore more complex sensory systems and multi-modal sensory inputs to enhance autonomous systems' perception and decision-making capabilities. Cross-disciplinary collaborations will be essential in driving innovation and addressing complex challenges.
 
-Wouter emphasized the broad applicability of Sim2Real transfer beyond maze navigation, such as in customer service, washing machines, and navigation systems.
+Wouter emphasized the broad applicability of Sim2Real transfer beyond maze navigation or RC cars but still using the same Sim2Real transfer principles.
 
 ## Personal Growth and Aspirations
 
-This project has been transformative, shaping my understanding of AI and robotics. The challenges faced and lessons learned have equipped me with the skills and knowledge to pursue further research and innovation. I am particularly interested in the ethical dimensions of AI and robotics, ensuring that these technologies are developed responsibly. My future aspirations include contributing to autonomous systems that positively impact various sectors, enhancing efficiency and safety.
+This project has made me realize that I have a deep passion for research. The process of exploring new ideas, overcoming obstacles, and seeing tangible progress has been incredibly rewarding. I am excited about the endless possibilities in AI and robotics, and I am determined to continue learning and exploring this dynamic field. My future aspirations include contributing to cutting-edge advancements that enhance efficiency, safety, and innovation across various sectors.
 
 Reddit feedback highlighted the potential impact of my research in industries like transportation, logistics, and automated customer service systems, emphasizing the broader applications of autonomous navigation technologies.
 
@@ -1340,9 +1535,116 @@ Moving forward, I am committed to fostering a culture of innovation and continuo
 
 Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
 
-Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reflective of the project's complexity.
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reflective of the project's complexity. -->
 
-# Advice for Students and Researchers
+<!-- # Discussion and Reflection
+
+Looking back on my research journey, I've learned a ton and grown a lot personally. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
+
+## Embracing Innovation and Adaptability
+
+One big lesson was the importance of being open to new ideas and staying flexible. Transitioning from simulation to real-world testing was tough, with issues like sensor data discrepancies and movement control problems. These challenges pushed me to think creatively and try new things. After developing the initial setup, my mentor, Gevaert Wouter, helped thinking of alternative RC car setups. He pointed out that while a 4WD setup might offer better traction initially, it could lead to slippage over time. So ultimately, the 2wd setup I used should be more reliable or at least more flexible.
+
+## Bridging Theory and Practice
+
+Moving from theory to practice was harder than I thought. Virtual environments were pretty controlled, but the real world brought unexpected variables. This made me realize the gap between simulation and reality, and the need for constant tweaking and testing. Hands-on tasks like calibrating sensors and adjusting control algorithms taught me to balance theory with practical needs. Feedback from Wouter and others, including suggestions from Reddit to expand the action space, was super helpful in dealing with these challenges.
+
+### Getting Down to Specifics:
+
+- **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different environments were like apples to oranges. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings.
+- **Motor Encoder Issues:** When I threw motor encoders into the mix to get precise movement, things got really techy. These gadgets were supposed to track every little move, but they ended up giving us a hard time with glitches and misreads, which meant going back to the drawing board more than once.
+
+## Anticipatory Thinking and Proactive Problem-Solving
+
+Throughout the project, anticipating challenges and planning ahead were crucial. I had to be proactive in dealing with sensor noise and changing environments, which improved the system’s performance and prepped me for future tech trends. Wouter suggested in the future a more waterfall like technique: creating, testing, and refining the simulation with the car—to avoid last-minute surprises about the virtual setup's limitations would have been a better approach.
+
+## Feedback and Continuous Improvement
+
+Constructive feedback played a significant role in refining my project. After presenting the initial results, suggestions from the jury to increase the distance to walls and integrate a camera system for real-time feedback made the RC car more accurate and reliable. This process of receiving and acting on feedback underscored the importance of continuous improvement and adaptability in research.
+
+## Methodological Rigor and Insights
+
+Developing the custom maze navigation environment (RCMazeEnv) and using the DDQN architecture gave me deep insights into the methodology. The iterative testing and calibration process improved the system’s performance and provided a structured approach for future projects. Feedback from interviews emphasized the need for a structured environment and understanding the limits of virtual control. Currently my virtual twin added next to no benifits compared to a top-down view camera which might have been better for real-time feedback and could have been used as an additional input to the agent/environment.
+
+## Personal Growth and Aspirations
+
+This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and seeing progress was incredibly rewarding. I'm excited about the endless possibilities in AI and robotics, and I'm determined to keep learning and exploring in this dynamic field.
+
+## Commitment to Innovation and Continuous Learning
+
+Moving forward, I'm committed to fostering a culture of innovation and continuous improvement. This means creative problem-solving, interdisciplinary collaboration, and staying focused on the bigger picture. The lessons I've learned from this project have prepared me for the next stage of my journey, where I'll keep refining my methods and embracing new challenges.
+
+## Personal Note
+
+Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
+
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project. -->
+
+# Discussion and Reflection
+
+Looking back on my research journey, I've learned a ton and grown a lot personally. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
+
+## Embracing Innovation and Adaptability
+
+One of the biggest takeaways from this project was the importance of staying open to new ideas and being flexible. Moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges pushed me to think creatively and be open to exploring new paths.
+
+Wouter pointed out that while a 4WD setup could provide better traction, it generally would not be better due to over time slippage. Additionally, switching from ultrasonic sensors to cameras might not improve performance because accurately determining the car’s position in the maze could still be a challenge.
+
+## Bridging Theory and Practice
+
+The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including the possibility of using a more complex environment than just a 2 demensional array as a the representation of the maze, made me realize that I was too quick to believe that the environment I had was good enough.
+
+Reddit feedback suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's learning and adaptability but would have required a longer training period and increased the risk of more or other types of problems. But it could have solved the need for precise and consistent movement.
+While this approach seems promising, I do think with my current setup it would still not have worked perfectly, I would have to change a lot of things to make it work.
+
+- **Getting Down to Specifics:**
+
+  - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different environments were like apples to oranges. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings.
+  - **Motor Encoder Issues:** When I threw motor encoders into the mix to get precise movement, things got really techy. These gadgets were supposed to track every little move, but they ended up giving us a hard time with glitches and misreads, which meant going back to the drawing board more than once.
+
+## Anticipatory Thinking and Proactive Problem-Solving
+
+Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience, this is also something I learned during my internship, I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how a different approach could have saved me a lot of time and effort.
+
+## Feedback and Continuous Improvement
+
+During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques. However, they also noted specific suggestions, such as the consistency of maze navigation in real-world applications. Their suggestions, including increasing wall distances and using a camera, offered possible solutions to these problems.
+
+## Methodological Rigor and Insights
+
+Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI` we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment. This was a by far one of the more valuable parts of this project.
+
+One thing that surprised me that how my virtual twin setup didn't really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when the real car was stuck for example (or rather why it got stuck), Additionally, it could have been used as an additional input to the agent/environment.
+
+## Educational Value
+
+The educational value of this project is huge. By documenting the whole process and the challenges faced, this project becomes a fantastic learning tool for anyone interested in AI and robotics. It shows how to apply reinforcement learning in the real world, effectively bridging the gap between theory and practice.
+
+This project is all about hands-on learning. Students and researchers can set up their own experiments to see how reinforcement learning, sensor calibration, and robotic control work in real life. This kind of hands-on experience is invaluable for really understanding these complex concepts.
+
+For teachers, this project is a goldmine. The detailed steps and problem-solving approach make it a great resource for AI and robotics courses. It’s perfect for showing students how theoretical concepts apply in the real world. Plus, the documented challenges and solutions make for great case studies in class, helping students develop their critical thinking and problem-solving skills.
+
+The project’s mix of successes and setbacks can also inspire others to dive into their own AI and robotics projects. It shows that hitting roadblocks is just part of the journey and can lead to major breakthroughs. This can motivate students to keep pushing forward, even when things get tough.
+
+By making the project’s code and documentation open-source, it becomes an even more powerful educational tool. Other students and researchers can build on this work, make improvements, and adapt the methods for their own projects. This creates a collaborative learning environment where knowledge and resources are shared, promoting continuous learning and innovation in AI and robotics.
+
+## Personal Growth and Aspirations
+
+This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and actually having to start from scratch and build something tailored to my needs was incredibly rewarding. I'm excited about the endless possibilities in AI and robotics, and I'm determined to keep learning and exploring in this dynamic field. This project was really an awakening for me and it made me just that much more excited to continue my journey in AI and robotics.
+
+## Commitment to Innovation and Continuous Learning
+
+Moving forward, I'm committed to fostering a culture of innovation and continuous improvement. This means creative problem-solving, interdisciplinary collaboration, and staying focused on the bigger picture. The lessons I've learned from this project have prepared me for the next stage of my journey, where I'll keep refining my methods and embracing new challenges.
+
+Moving forward, I'm commited to life long learning, something that our school really values and is continuously brought up. I'm excited to see where this journey will take me and I'm looking forward to the even bigger and more complex challenges that I will have the opportunity to solve.
+
+## Personal Note
+
+Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
+
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project.
+
+<!-- # Advice for Students and Researchers
 
 ## Practical Utilization of Simulations
 
@@ -1471,7 +1773,103 @@ This chapter outlines a comprehensive methodology for researchers involved in si
 
 By following these detailed steps, researchers can systematically enhance their simulation-to-reality transition projects, ensuring more accurate and reliable outcomes. This methodical approach leverages continuous feedback, interdisciplinary collaboration, and iterative testing to bridge the gap between simulations and real-world applications effectively.
 
-Reflecting on my research journey, I recognize that I could have approached the project differently. Initially focusing on creating a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. This realization highlights the importance of iterative testing and continuous adaptation in research.
+Reflecting on my research journey, I recognize that I could have approached the project differently. Initially focusing on creating a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. This realization highlights the importance of iterative testing and continuous adaptation in research. -->
+
+# Advice for Students and Researchers
+
+## Practical Utilization of Simulations
+
+Simulations are super handy in research because they let you develop and test algorithms in a safe, controlled environment without needing physical prototypes right away. They save a lot of money by cutting down on the need for physical models and endless real-world trials during the early stages.
+
+Simulations also let you quickly try out new ideas and see how they work without having to build and rebuild physical models. This speed and flexibility are invaluable when you’re developing complex systems like autonomous RC cars.
+
+## Strategies for Effective Transition from Simulation to Reality
+
+Moving from simulations to real-world applications isn't always easy, but with the right plan, it's totally doable. Start by refining your algorithms in simulations and then gradually introduce real-world testing. Make sure to have continuous feedback loops to tweak your simulation models based on what you learn from the real world, making them more accurate and useful.
+
+Incremental testing is key. Start small with controlled, simple scenarios that closely match your simulations. As your models prove themselves, gradually introduce more complexity and variability. This helps you catch issues early and adapt your models step by step.
+
+Another great strategy is to use hybrid testing environments where simulations and real-world tests are combined. This approach lets you validate your models in a controlled setting before fully transitioning to the real world.
+
+## Overcoming Common Challenges in Simulation-to-Reality Transitions
+
+Making sure your simulations match real-world conditions can be tricky, especially with sensor data and mechanical operations. Regularly calibrating your sensors and ensuring that the physical movements match what the simulations expect is key to smooth transitions.
+
+For example, sensor noise can be a big issue. In simulations, you can control for noise, but real-world sensors will always have some level of unpredictability. Implementing noise models in your simulations can help your algorithms learn to handle real-world data more effectively.
+
+Mechanical discrepancies are another challenge. Simulated environments often assume perfect conditions, but real-world robots deal with friction, slippage, and wear and tear. Continuously comparing your simulation data with real-world results and adjusting accordingly can help mitigate these issues.
+
+## Insights from My Research
+
+During my research, I found that picking the right simulation platform is super important. Tools like OpenAI Gym are great, but for more complex scenarios, you might need additional tools. I also discovered that Double Deep Q-Network (DDQN) outperforms other models like DQN and PPO by reducing overestimations and making learning more stable.
+
+A big takeaway was the value of starting with simple simulations. Initially, I jumped into complex simulations without considering the practical constraints of my RC car. Starting simpler would have saved a lot of headaches. I also learned the importance of iterative testing and adapting based on what you learn from each step.
+
+## Methodological Advice
+
+Use both qualitative and quantitative methods to thoroughly evaluate how well your simulations and real-world applications are working. Stay flexible and open to feedback to address any unexpected challenges effectively.
+
+Documentation is your friend. Keep detailed logs of what works and what doesn’t, including all the tweaks and adjustments you make along the way. This not only helps you track progress but also provides a valuable resource for troubleshooting and future projects.
+
+Engage with the community. Platforms like Reddit or GitHub can provide valuable feedback and suggestions from other researchers and enthusiasts who have faced similar challenges. Their insights can be incredibly helpful in refining your approach.
+
+## Practical Experiment Integration
+
+Iterative design and prototyping are the way to go. This approach helps you progressively refine your systems, linking theoretical research with practical implementation. Regularly seek and incorporate feedback from stakeholders and peers to improve both your simulation models and real-world applications.
+
+Prototyping doesn’t just apply to your final product. Prototype your methods, too. Try different simulation setups, test various algorithms, and iterate on your approach. This experimentation phase is crucial for finding the most effective methods and tools.
+
+## Importance of Fail-Safe Mechanisms and Duplicate Components
+
+Having fail-safe mechanisms and duplicates of all components is crucial. In my project, I learned the hard way that mounting components can sometimes lead to accidental damage. I ended up destroying several parts, which meant I had to wait for replacements and lost a lot of time. To avoid this, always have spares on hand. This ensures that if something breaks, you can quickly replace it and keep your project moving forward.
+
+Fail-safe mechanisms are also vital. These systems can help prevent damage to your components by automatically shutting down the system if something goes wrong. This not only protects your hardware but also saves time and money in the long run.
+
+## Guidelines for Future Research
+
+### Introduction for Future Research
+
+This chapter outlines a comprehensive methodology for researchers involved in simulation-based studies, focusing on smoothly transitioning from theoretical models to practical applications.
+
+### Step-by-Step Plan
+
+**Step 1: Selection of Simulation Environments**
+
+Research and evaluate different simulation tools like OpenAI Gym, Unity 3D, AirSim, CARLA, and ISAAC Gym. Set up criteria focusing on fidelity, ease of use, integration capabilities, and specific needs like sensor simulation. Do some initial tests to see how well each platform replicates real-world conditions using simple test cases.
+
+Survey the community and read reviews. Other researchers’ experiences can provide insights into the strengths and weaknesses of each platform. Consider joining forums or groups focused on the tools you’re interested in to gather more detailed user feedback.
+
+**Step 2: Designing the Simulation Environment**
+
+Create a custom maze environment like RCMazeEnv in OpenAI Gym. Make sure it includes realistic physical properties like friction and wheel slippage. Integrate virtual sensors that match your real-world sensors and add elements like sensor noise, dynamic obstacles, and varied lighting conditions to mimic real-world challenges.
+
+Don’t forget to iterate on your environment design. Start with a basic setup and gradually add complexity. This step-by-step increase in difficulty helps ensure that your algorithms can handle real-world unpredictability.
+
+**Step 3: Incremental Testing and Feedback Integration**
+
+Start with initial simulation testing to see how well the agent learns and performs. Gradually introduce real-world testing with controlled, simple scenarios that match your initial simulation setup. Use continuous feedback from these tests to refine the simulation environment, adjusting parameters based on what you observe.
+
+Document each test and its results meticulously. This data will be invaluable for identifying patterns and making informed adjustments. Also, consider using automated tools to gather and analyze test data to streamline the process.
+
+**Step 4: Addressing Sensor Discrepancies and Movement Alignment**
+
+Regularly calibrate your sensors to ensure accurate data collection in both simulations and real-world tests. Make sure the movement mechanics of the simulated and real RC cars are consistent, including motor speeds, wheel slippage, and turning radii.
+
+Develop a routine for sensor calibration and stick to it. Consistency is key to ensuring that your data remains reliable over time. Also, consider using calibration tools or software that can automate parts of this process.
+
+**Step 5: Enhancing Data Accuracy and Normalization**
+
+Use robust techniques to normalize sensor data between simulation and real-world environments. Regularly perform consistency checks to ensure the normalized data stays accurate across different scenarios.
+
+Experiment with different normalization techniques to find what works best for your specific setup. Keep track of any anomalies and adjust your methods accordingly. Consistency checks should be part of your regular testing routine to catch issues early.
+
+## Conclusion for Future Research
+
+By following these steps, researchers can systematically improve their simulation-to-reality projects, ensuring more accurate and reliable outcomes. This methodical approach leverages continuous feedback, interdisciplinary collaboration, and iterative testing to bridge the gap between simulations and real-world applications effectively.
+
+Reflecting on my research journey, I realize I could have approached things differently. Starting with a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. This taught me the importance of iterative testing and continuous adaptation in research.
+
+I also learned that the virtual twin setup I initially implemented didn’t add much value compared to a simple top-down view camera for real-time feedback. This experience showed me the importance of choosing the right tools and being open to simpler, more practical solutions when they offer better results. Moving forward, I’ll consider a more step-by-step approach: planning, building, testing, and refining in stages to avoid last-minute surprises and make sure each step is grounded in reality.
 
 # Sources of Inspiration and Conceptual Framework
 
@@ -1509,557 +1907,6 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 \pagebreak
 
-# Guest Speakers
-
-## Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
-
-Jeroen Boeye, representing Faktion, shared valuable insights into the synergy between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not only focusing on AI technology but also integrating solid software engineering principles to create robust, scalable, and maintainable AI systems. This holistic approach ensures that AI solutions are both technically sound and viable for long-term application.
-
-During his lecture, Jeroen highlighted various aspects of AI application, particularly Chatlayer's contributions to conversational AI. He explained how Chatlayer enhances chatbot interactions through sophisticated conversational flows, improving the accuracy and relevance of exchanges with users. Another key point was Metamaze, which he praised for its innovative methods in automating document processing, creating concise summaries from extensive documents and emails, and demonstrating the capabilities of supervised machine learning in administrative tasks.
-
-Jeroen outlined a clear roadmap for successful AI project implementation, stressing the need to validate business cases and adopt a problem-first strategy. He discussed the crucial role of high-quality data as the foundation for any AI endeavor and offered strategies for creatively overcoming data limitations. The talk also covered the importance of viewing failures as opportunities for innovation and maintaining open communication with stakeholders about challenges and setbacks.
-
-The lecture further presented various practical AI applications across different industries, such as solar panel detection, unauthorized pool identification, air freight container inspection, and early warning systems for wind turbine gearboxes. Jeroen demonstrated how AI could tackle complex challenges through innovative data sourcing, synthetic data generation, and anomaly detection techniques. He also explored case studies on energy analysis in brick ovens and egg incubation processes, emphasizing the importance of data preprocessing and machine learning models in improving efficiency and outcomes.
-
-Key points from Jeroen's talk included mastering data preprocessing and treating data as a dynamic asset to better tailor AI models to specific needs. He shared practical tips on enhancing operational efficiency, such as using host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.
-
-In summary, Jeroen Boeye's lecture offered a comprehensive perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
-
-## Pioneering AI Solutions at Noest by Toon Vanhoutte
-
-Toon Vanhoutte, speaking on behalf of Noest from the Cronos Group, delivered an engaging lecture on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
-
-Toon presented a case study on a packaging company that aimed to revolutionize image search capabilities based on product labels. The project faced various challenges, such as inconsistent PDF formats and large file sizes, which were adeptly managed using Azure Blob Storage for data handling and event-driven processing strategies for efficient, cost-effective solutions, showcasing Noest’s skill in utilizing cloud technologies to address complex issues.
-
-Another significant challenge was enhancing image searchability, which involved recognizing text and objects within images. This was tackled using Azure AI Search, supplemented by Large Language Models (LLMs) and vector search techniques. This approach allowed for nuanced search functionalities beyond simple text queries, demonstrating the advanced capabilities of AI in interpreting complex data.
-
-Toon also explored advancements in semantic search, discussing how different search methods—keyword, vector, and hybrid—along with semantic ranking, could significantly improve the accuracy and contextuality of search results. Practical demonstrations, including comparisons between OCR and GPT-4 vision, illustrated the potential of AI to offer deeper insights based on semantic understanding.
-
-A key takeaway from Toon’s lecture was the importance of setting realistic client expectations regarding AI's capabilities and potential inaccuracies, highlighting the experimental nature of these technologies. The discussion on AI’s evolving landscape emphasized the need for prompt engineering, the challenges of navigating a developing field, and the importance of client education in managing expectations about AI technologies like GPT.
-
-In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
-
-\pagebreak
-
-# Installation Steps
-
-This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
-
-## Prerequisites
-
-Before starting the setup process, make sure you have the following:
-
-- **Git:** For cloning the project repository.
-- **Docker:** To containerize the web application and ensure a consistent runtime environment.
-- **Python 3.11 and pip:** If you prefer running the project without Docker, use Python along with the dependencies listed in `/web_app/web/requirements.txt` to get the project running.
-
-## Repository Setup
-
-To clone the repository and navigate to the project directory, use these commands:
-
-```bash
-git clone https://github.com/driessenslucas/researchproject.git
-cd researchproject
-```
-
-## Hardware Setup and Assembly
-
-### Introduction to Hardware Components
-
-Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
-    \end{minipage}
-    \caption{Final RC Car (Image created by author)}
-\end{figure}
-
-## Components List
-
-### Core Components
-
-- **ESP32-WROOM-32 module**
-  - Available at Amazon.com
-- **3D printed parts**
-  - Available at Thingiverse.com
-    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
-    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
-- **Motor Controller (L298N)**
-  - Available at DFRobot.com
-- **2WD miniQ Robot Chassis**
-  - Available at DFRobot.com
-- **Mini OLED screen**
-  - Available at Amazon.com
-- **Sensors (HC-SR04 and MPU6050)**
-  - Available at Amazon.com
-- **18650 Battery Shield for ESP32**
-  - Available at Amazon.com
-
-### Supplementary Materials
-
-- **Screws, wires, and tools required for assembly**
-  - 4mm thick screws, 5mm long to hold the wood together
-    - Available at most hardware stores
-  - M3 bolts & nuts
-    - Available at most hardware stores
-  - Wood for the maze
-    - Available at most hardware stores
-
-### Tools Required
-
-- Screwdriver
-- Wire cutter/stripper
-- Drill (for mounting the top plate)
-
-### Assembly Instructions
-
-#### Step 1: Base Assembly
-
-To assemble the base, you can follow this YouTube video from the makers themselves:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/yt_vid.png}
-    \caption{MiniQ 2WD Robot Chassis Quick Assembly Guide}
-\end{figure}
-
-<!-- qr code -->
-
-  \begin{figure}[H]
-      \centering
-      \begin{minipage}{0.2\textwidth}
-          \includegraphics[width=1in]{./thesis_helpers/qr_codes/qr_code_yt_vid.png}
-      \end{minipage}
-      \caption{QR code for MiniQ 2WD Robot Chassis Assembly Guide}
-  \end{figure}
-
-#### Step 2: Attach Motor Driver
-
-Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/base.jpeg}
-    \caption{Motor Driver Attached to the Base (Image created by author)}
-\end{figure}
-
-#### Step 3: Attach ESP32-WROOM-32 Module to the Motor Driver
-
-Connect the wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below:
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-```
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/schematics/esp_updated.png}
-    \caption{ESP32 Wiring Schematic (Image created by author)}
-\end{figure}
-
-#### Step 4: Cut the Support Beams
-
-Cut the support beams so that we can securely attach the top plate to the base. I cut them to approximately 7cm.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/supports.jpeg}
-    \caption{Cut Support Beams (Image created by author)}
-\end{figure}
-
-#### Step 5: Screw in the Supports on the Bottom of the Bottom Plate
-
-Secure the supports on the bottom of the bottom plate with screws.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/washers_underneath.jpeg}
-    \caption{Supports Screwed on the Bottom Plate (Image created by author)}
-\end{figure}
-
-#### Step 6: Mount All the Supports on the Bottom Plate
-
-Mount all the supports on the bottom plate as shown.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/supports_mounted.jpeg}
-    \caption{All Supports Mounted (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/all4_supports.jpeg}
-    \caption{Complete View of Mounted Supports (Image created by author)}
-\end{figure}
-
-#### Step 7: Attach the Top Plate
-
-Drill holes in the top plate to fit the supports and attach it securely.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/top_plate_assembly.jpeg}
-    \caption{Top Plate Assembly (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/jp_bottom.jpeg}
-    \caption{Bottom View with Supports and Top Plate (Image created by author)}
-\end{figure}
-
-#### Step 8: Attach the Ultrasonic Sensor to the Top Plate
-
-Mount the ultrasonic sensor to the top plate.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/hc-sr04.jpeg}
-    \caption{Ultrasonic Sensor Attached to the Top Plate (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/jp_sensors.jpeg}
-    \caption{Ultrasonic Sensors Attached (Image created by author)}
-\end{figure}
-
-#### Step 9: Place the ESP32 on the Top Plate
-
-Place the ESP32 on the top plate together with a mini breadboard for the sensor wires. Secure the battery for the ESP32 to the top plate with zip ties.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/jp_final2.jpeg}
-    \caption{ESP32 Placement on Top Plate (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
-    \caption{Final RC Car Assembly (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/jp_final3.jpeg}
-    \caption{Final Assembly with Sensors and Breadboard (Image created by author)}
-\end{figure}
-
-## Wiring Guide
-
-### ESP32 Wiring
-
-The wiring connections for the ESP32 microcontroller are shown in the diagram below. The pins are connected to the motor driver, sensors, OLED display, and MPU6050 gyroscope.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/schematics/esp_updated.png}
-    \caption{Wiring Diagram for ESP32 (Image created by author)}
-\end{figure}
-
-#### ESP32 Pins
-
-Since the schematic might not be very clear, here is a list of the pins used on the ESP32:
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-
-int sensor0Trig = 27; //GPIO right sensor
-int sensor0Echo = 26; //GPIO right sensor
-
-int sensor1Trig = 33; //GPIO left sensor
-int sensor1Echo = 32; //GPIO left sensor
-
-int sensor2Trig = 25; //GPIO front sensor
-int sensor2Echo = 35; //GPIO front sensor
-
-// OLED display pins
-#define SDA_PIN 21 // this is the default sda pin on the esp32
-#define SCL_PIN 22 // this is the default scl pin on the esp32
-```
-
-## Software Configuration
-
-1. **Arduino IDE Setup:** Install the Arduino IDE to program the ESP32 microcontroller. Follow Espressif Systems' instructions to add the ESP32 board to the Arduino IDE.
-2. **Library Installation:** Install the [ESP32_SSD1306](https://
-
-github.com/lexus2k/ssd1306/tree/master) library for the OLED display functionality.
-3. **Code Upload:** Transfer the scripts from the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration.
-
-## Web Application Setup
-
-### Note
-
-To ensure a smooth setup of the virtual display, it’s recommended to run `docker-compose down` after each session.
-
-### Steps
-
-1. Navigate to the web application's source code directory:
-
-   ```bash
-   cd ./web_app/
-   ```
-
-2. Launch the Docker containers with:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-## Usage Instructions
-
-1. Open your web browser and go to <http://localhost:8500> or <http://localhost:5000>.
-2. Enter the ESP32's IP address in the web app and select the desired model for deployment.
-3. You can also run a virtual demonstration without engaging the physical vehicle.
-4. Start the maze navigation by clicking the `Start Maze` button.
-
-A demonstration of the project is available (see Web App Demo in the Video References section).
-
-## Additional Information: Model Training
-
-- You can use a pre-trained model or train a new model using the script in [train](./training/train.py).
-- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
-- After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
-
-By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
-
-## Building the Maze
-
-### Final Result
-
-The following images show the final build of the maze used in the project.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/maze_build.jpeg}
-    \caption{Maze Build (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
-    \caption{Final Maze Build (Image created by author)}
-\end{figure}
-
-### Prerequisites
-
-The materials and tools required for building the maze are listed below:
-
-- Screws used:
-  \begin{figure}[H]
-      \centering
-      \includegraphics[width=4in]{./images/assembly_images/screws_used.jpeg}
-      \caption{Screws (Image created by author)}
-  \end{figure}
-- Nuts used:
-  \begin{figure}[H]
-      \centering
-      \includegraphics[width=4in]{./images/assembly_images/m3_nuts.jpeg}
-      \caption{Nuts (Image created by author)}
-  \end{figure}
-- Supports used:
-  \begin{figure}[H]
-      \centering
-      \includegraphics[width=4in]{./images/assembly_images/m3_supports.jpeg}
-      \caption{Supports (Image created by author)}
-  \end{figure}
-- Wood used:
-  - Planks cut to 10cm width by 120cm length
-  \begin{figure}[H]
-      \centering
-      \includegraphics[width=4in]{./images/assembly_images/wooden_planks.jpeg}
-      \caption{Wood Planks (Image created by author)}
-  \end{figure}
-
-### Step 1: Calculations
-
-Where 1 cell is 25cm x 25cm.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/size_calculations.jpeg}
-    \caption{Size Calculations for Maze (Image created by author)}
-\end{figure}
-
-### Step 2: Cut the Wood
-
-I let the store cut the wooden planks for me to the correct size, as you could see in the prerequisites.
-
-### Step 3: Screw the Wood Together
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/drilling_wood_frames.jpeg}
-    \caption{Drilling Wood Frames for Maze (Image created by author)}
-\end{figure}
-
-It should turn out like this, repeat this for all the blocks in the maze:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=4in]{./images/assembly_images/wooden_frames.jpeg}
-    \caption{Wooden Frames for Maze (Image created by author)}
-\end{figure}
-
-
-<!-- # Installation Steps
-
-This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
-
-## Prerequisites
-
-Before starting the setup process, make sure you have the following:
-
-- **Git:** For cloning the project repository.
-- **Docker:** To containerize the web application and ensure a consistent runtime environment.
-- **Python 3.11 and pip:** If you prefer running the project without Docker, Use python along with the dependencies listed in `/web_app/web/requirements.txt` to get the project running.
-
-## Repository Setup
-
-To clone the repository and navigate to the project directory, use these commands:
-
-```bash
-git clone https://github.com/driessenslucas/researchproject.git
-cd researchproject
-```
-
-## Hardware Setup and Assembly
-
-### Introduction to Hardware Components
-
-Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=4in]{./images/final_test/jp_final.jpeg}
-    \end{minipage}
-    \caption{Final RC Car (Image created by author)}
-\end{figure}
-
-## Components List
-
-### Core Components
-
-- **ESP32-WROOM-32 module**
-  - Available at Amazon.com
-- **3D printed parts**
-  - Available at Thingiverse.com
-    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
-    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
-- **Motor Controller (L298N)**
-  - Available at DFRobot.com
-- **2WD miniQ Robot Chassist**
-  - Available at DFRobot.com
-- **Mini OLED screen**
-  - Available at Amazon.com
-- **Sensors (HC-SR04 and MPU6050)**
-  - Available at Amazon.com
-- **18650 Battery Shield for ESP32**
-  - Available at Amazon.com
-
-### Supplementary Materials
-
-- **Screws, wires, and tools required for assembly**
-  - 4mm thick screws, 5mm long to hold the wood together
-    - Available at most hardware stores
-  - M3 bolts & nuts
-    - Available at most hardware stores
-  - Wood for the maze
-    - Available at most hardware stores
-
-### Wiring Guide
-
-In this section, you find how the components are connected to the ESP32 microcontroller. Proper wiring is essential for the system to function correctly.
-
-The pin connections for the ESP32 microcontroller are as follows:
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-
-int sensor0Trig = 27; //GPIO right sensor
-int sensor0Echo = 26; //GPIO right sensor
-
-int sensor1Trig = 33; //GPIO left sensor
-int sensor1Echo = 32; //GPIO left sensor
-
-int sensor2Trig = 25; //GPIO front sensor
-int sensor2Echo = 35; //GPIO front sensor
-
-// OLED display and MPU6050 pins
-#define SDA_PIN 21 // this is the default sda pin on the esp32
-#define SCL_PIN 22 // this is the default scl pin on the esp32
-```
-
-**ESP32 Wiring:**
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=4in]{./images/schematics/esp_updated.png}
-    \end{minipage}
-    \caption{ESP32 Wiring (Image created by author)}
-\end{figure}
-
-In the image above, you can see the wiring connections for the ESP32 microcontroller. The pins are connected to the motor driver, sensors, OLED display, and MPU6050 gyroscope.
-
-### Software Configuration
-
-1. **Arduino IDE Setup**: Install the Arduino IDE to program the ESP32 microcontroller. Follow Espressif Systems' instructions to add the ESP32 board to the Arduino IDE.
-2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library for the OLED display functionality.
-3. **Code Upload:** Transfer the scripts from the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration.
-
-## Web Application Setup
-
-### Note
-
-To ensure a smooth setup of the virtual display, it’s recommended to run `docker-compose down` after each session.
-
-### Steps
-
-1. Navigate to the web application's source code directory:
-
-   ```bash
-   cd ./web_app/
-   ```
-
-2. Launch the Docker containers with:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-## Usage Instructions
-
-1. Open your web browser and go to <http://localhost:8500> or <http://localhost:5000>.
-2. Enter the ESP32's IP address in the web app and select the desired model for deployment.
-3. You can also run a virtual demonstration without engaging the physical vehicle.
-4. Start the maze navigation by clicking the `Start Maze` button.
-
-A demonstration of the project is available (see Web App Demo in the Video References section).
-
-## Additional Information: Model Training
-
-- You can use a pre-trained model or train a new model using the script in [train](./training/train.py).
-- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
-- After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
-
-By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios. -->
-
-\pagebreak
 
 # Video References
 
@@ -2214,3 +2061,432 @@ By following these steps, you can successfully set up and deploy the autonomous 
 \[29\]\label{ref29} Unity Technologies, "AirSim on Unity: Experiment with autonomous vehicle simulation," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/engineering/airsim-on-unity-experiment-with-autonomous-vehicle-simulation). [Accessed: Jan. 29, 2024].
 
 \[30\]\label{ref30} Unity Technologies, "Introducing Unity Machine Learning Agents Toolkit," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/machine-learning/introducing-unity-machine-learning-agents-toolkit). [Accessed: Jan. 29, 2024].
+
+\pagebreak
+
+# Appendices
+
+## Guest Speakers
+
+### Innovations and Best Practices in AI Projects by Jeroen Boeye at Faktion
+
+Jeroen Boeye, representing Faktion, shared valuable insights into the synergy between software engineering and artificial intelligence in developing AI solutions. He emphasized the importance of not only focusing on AI technology but also integrating solid software engineering principles to create robust, scalable, and maintainable AI systems. This holistic approach ensures that AI solutions are both technically sound and viable for long-term application.
+
+During his lecture, Jeroen highlighted various aspects of AI application, particularly Chatlayer's contributions to conversational AI. He explained how Chatlayer enhances chatbot interactions through sophisticated conversational flows, improving the accuracy and relevance of exchanges with users. Another key point was Metamaze, which he praised for its innovative methods in automating document processing, creating concise summaries from extensive documents and emails, and demonstrating the capabilities of supervised machine learning in administrative tasks.
+
+Jeroen outlined a clear roadmap for successful AI project implementation, stressing the need to validate business cases and adopt a problem-first strategy. He discussed the crucial role of high-quality data as the foundation for any AI endeavor and offered strategies for creatively overcoming data limitations. The talk also covered the importance of viewing failures as opportunities for innovation and maintaining open communication with stakeholders about challenges and setbacks.
+
+The lecture further presented various practical AI applications across different industries, such as solar panel detection, unauthorized pool identification, air freight container inspection, and early warning systems for wind turbine gearboxes. Jeroen demonstrated how AI could tackle complex challenges through innovative data sourcing, synthetic data generation, and anomaly detection techniques. He also explored case studies on energy analysis in brick ovens and egg incubation processes, emphasizing the importance of data preprocessing and machine learning models in improving efficiency and outcomes.
+
+Key points from Jeroen's talk included mastering data preprocessing and treating data as a dynamic asset to better tailor AI models to specific needs. He shared practical tips on enhancing operational efficiency, such as using host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.
+
+In summary, Jeroen Boeye's lecture offered a comprehensive perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
+
+### Pioneering AI Solutions at Noest by Toon Vanhoutte
+
+Toon Vanhoutte, speaking on behalf of Noest from the Cronos Group, delivered an engaging lecture on the effective integration of artificial intelligence and software engineering in developing cutting-edge business solutions. With a dedicated team of 56 local experts, Noest has built a reputation for its pragmatic approach to projects, targeting global impact while valuing craftsmanship, partnership, and enjoyment as core principles. This philosophy extends to their diverse services, which include application development, cloud computing, data analytics, AI innovations, low-code platforms, ERP solutions, and comprehensive system integrations, all supported by a strong partnership with Microsoft.
+
+Toon presented a case study on a packaging company that aimed to revolutionize image search capabilities based on product labels. The project faced various challenges, such as inconsistent PDF formats and large file sizes, which were adeptly managed using Azure Blob Storage for data handling and event-driven processing strategies for efficient, cost-effective solutions, showcasing Noest’s skill in utilizing cloud technologies to address complex issues.
+
+Another significant challenge was enhancing image searchability, which involved recognizing text and objects within images. This was tackled using Azure AI Search, supplemented by Large Language Models (LLMs) and vector search techniques. This approach allowed for nuanced search functionalities beyond simple text queries, demonstrating the advanced capabilities of AI in interpreting complex data.
+
+Toon also explored advancements in semantic search, discussing how different search methods—keyword, vector, and hybrid—along with semantic ranking, could significantly improve the accuracy and contextuality of search results. Practical demonstrations, including comparisons between OCR and GPT-4 vision, illustrated the potential of AI to offer deeper insights based on semantic understanding.
+
+A key takeaway from Toon’s lecture was the importance of setting realistic client expectations regarding AI's capabilities and potential inaccuracies, highlighting the experimental nature of these technologies. The discussion on AI’s evolving landscape emphasized the need for prompt engineering, the challenges of navigating a developing field, and the importance of client education in managing expectations about AI technologies like GPT.
+
+In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
+
+\pagebreak
+
+## Installation Guide
+
+This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
+
+### Prerequisites
+
+Before starting the setup process, make sure you have the following:
+
+- **Git:** For cloning the project repository.
+- **Docker:** To containerize the web application and ensure a consistent runtime environment.
+- **Python 3.11 and pip:** If you prefer running the project without Docker, use Python along with the dependencies listed in `/web_app/web/requirements.txt` to get the project running.
+
+### Repository Setup
+
+To clone the repository and navigate to the project directory, use these commands:
+
+```bash
+git clone https://github.com/driessenslucas/researchproject.git
+cd researchproject
+```
+
+### Hardware Setup and Assembly
+
+#### Introduction to Hardware Components
+
+Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/final_test/jp_final.jpeg}
+\caption{Final RC Car (Image created by author)}
+\end{figure}
+
+### Components List
+
+#### Core Components
+
+- **ESP32-WROOM-32 module**
+  - Available at Amazon.com
+- **3D printed parts**
+  - Available at Thingiverse.com
+    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
+    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
+- **Motor Controller (L298N)**
+  - Available at DFRobot.com
+- **2WD miniQ Robot Chassis**
+  - Available at DFRobot.com
+- **Mini OLED screen**
+  - Available at Amazon.com
+- **Sensors (HC-SR04 and MPU6050)**
+  - Available at Amazon.com
+- **18650 Battery Shield for ESP32**
+  - Available at Amazon.com
+
+#### Supplementary Materials
+
+- **Screws, wires, and tools required for assembly**
+  - 4mm thick screws, 5mm long to hold the wood together
+    - Available at most hardware stores
+  - M3 bolts & nuts
+    - Available at most hardware stores
+  - Wood for the maze (planks cut to 10cm width by 120cm length)
+    - Available at most hardware stores
+
+#### Tools Required
+
+- Screwdriver
+- Wire cutter/stripper
+- Drill (for mounting the top plate)
+
+#### Assembly Instructions
+
+##### Step 1: Base Assembly
+
+To assemble the base, you can follow this YouTube video from the makers themselves:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/yt_vid.png}
+\captionof{figure}{MiniQ 2WD Robot Chassis Quick Assembly Guide}
+\end{minipage}%
+\hfill
+\begin{minipage}{.2\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./thesis_helpers/qr_codes/qr_code_yt_vid.png}
+\captionof{figure}{QR code for MiniQ 2WD Robot Chassis Assembly Guide}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 2: Attach Motor Driver
+
+Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/base.jpeg}
+\caption{Motor Driver Attached to the Base (Image created by author)}
+\end{figure}
+
+##### Step 3: Attach ESP32-WROOM-32 Module to the Motor Driver
+
+Connect the wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below:
+
+```c
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+```
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=4in]{./images/schematics/esp_updated.png}
+\caption{ESP32 Wiring Schematic (Image created by author)}
+\end{figure}
+
+##### Step 4: Cut the Support Beams
+
+Cut the support beams so that we can securely attach the top plate to the base. I cut them to approximately 7cm.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/supports.jpeg}
+\caption{Cut Support Beams (Image created by author)}
+\end{figure}
+
+##### Step 5: Screw in the Supports on the Bottom of the Bottom Plate
+
+Secure the supports on the bottom of the bottom plate with screws.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/washers_underneath.jpeg}
+\caption{Supports Screwed on the Bottom Plate (Image created by author)}
+\end{figure}
+
+##### Step 6: Mount All the Supports on the Bottom Plate
+
+Mount all the supports on the bottom plate as shown.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/supports_mounted.jpeg}
+\captionof{figure}{All Supports Mounted (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/all4_supports.jpeg}
+\captionof{figure}{Complete View of Mounted Supports (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 7: Attach the Top Plate
+
+Drill holes in the top plate to fit the supports and attach it securely.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/top_plate_assembly.jpeg}
+\captionof{figure}{Top Plate Assembly (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/jp_bottom.jpeg}
+\captionof{figure}{Bottom View with Supports and Top Plate (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 8: Attach the Ultrasonic Sensor to the Top Plate
+
+Mount the ultrasonic sensor to the top plate.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/hc-sr04.jpeg}
+\captionof{figure}{Ultrasonic Sensor Attached to the Top Plate (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/jp_sensors.jpeg}
+\captionof{figure}{Ultrasonic Sensors Attached (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 9: Place the ESP32 on the Top Plate
+
+Place the ESP32 on the top plate together with a mini breadboard for the sensor wires. Secure the battery for the ESP32 to the top plate with zip ties.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/final_test/jp_final2.jpeg}
+\caption{ESP32 Placement on Top Plate (Image created by author)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/jp_final.jpeg}
+\captionof{figure}{Final RC Car Assembly (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/jp_final3.jpeg}
+\captionof{figure}{Final Assembly with Sensors and Breadboard (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+### Wiring Guide
+
+#### ESP32 Wiring
+
+The wiring connections for the ESP32 microcontroller are shown in the diagram below. The pins are connected to the motor driver, sensors, OLED display, and MPU6050 gyroscope.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/schematics/esp_updated.png}
+\caption{Wiring Diagram for ESP32 (Image created by author)}
+\end{figure}
+
+##### ESP32 Pins
+
+Since the schematic might not be very clear, here is a list of the pins used on the ESP32:
+
+```c
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+
+
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+
+int sensor0Trig = 27; //GPIO right sensor
+int sensor0Echo = 26; //GPIO right sensor
+
+int sensor1Trig = 33; //GPIO left sensor
+int sensor1Echo = 32; //GPIO left sensor
+
+int sensor2Trig = 25; //GPIO front sensor
+int sensor2Echo = 35; //GPIO front sensor
+
+// OLED display pins
+#define SDA_PIN 21 // this is the default sda pin on the esp32
+#define SCL_PIN 22 // this is the default scl pin on the esp32
+```
+
+### Software Configuration
+
+1. **Arduino IDE Setup:** Install the Arduino IDE to program the ESP32 microcontroller. Follow Espressif Systems' instructions to add the ESP32 board to the Arduino IDE.
+2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library for the OLED display functionality.
+3. **Code Upload:** Transfer the scripts from the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration.
+
+### Web Application Setup
+
+#### Note
+
+To ensure a smooth setup of the virtual display, it’s recommended to run `docker-compose down` after each session.
+
+#### Steps
+
+1. Navigate to the web application's source code directory:
+
+   ```bash
+   cd ./web_app/
+   ```
+
+2. Launch the Docker containers with:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+### Usage Instructions
+
+1. Open your web browser and go to <http://localhost:8500> or <http://localhost:5000>.
+2. Enter the ESP32's IP address in the web app and select the desired model for deployment.
+3. You can also run a virtual demonstration without engaging the physical vehicle.
+4. Start the maze navigation by clicking the `Start Maze` button.
+
+A demonstration of the project is available (see Web App Demo in the Video References section).
+
+### Additional Information: Model Training
+
+- You can use a pre-trained model or train a new model using the script in [train](./training/train.py).
+- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
+- After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
+
+By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+
+### Building the Maze
+
+#### Final Result
+
+The following images show the final build of the maze used in the project.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/maze_build.jpeg}
+\captionof{figure}{Maze Build (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/final_maze_build.jpeg}
+\captionof{figure}{Final Maze Build (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+#### Prerequisites
+
+The materials and tools required for building the maze are listed below:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/screws_used.jpeg}
+\captionof{figure}{Screws (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/m3_nuts.jpeg}
+\captionof{figure}{Nuts (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/m3_supports.jpeg}
+\captionof{figure}{Supports (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+- Wood used:
+  - Planks cut to 10cm width by 120cm length
+  
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/wooden_planks.jpeg}
+\caption{Wood Planks (Image created by author)}
+\end{figure}
+
+#### Step 1: Calculations
+
+Where 1 cell is 25cm x 25cm.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/size_calculations.jpeg}
+\caption{Size Calculations for Maze (Image created by author)}
+\end{figure}
+
+#### Step 2: Cut the Wood
+
+I let the store cut the wooden planks for me to the correct size (10cm x 120cm).
+
+#### Step 3: Screw the Wood Together
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/drilling_wood_frames.jpeg}
+\caption{Drilling Wood Frames for Maze (Image created by author)}
+\end{figure}
+
+It should turn out like this, repeat this for all the blocks in the maze:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/wooden_frames.jpeg}
+\caption{Wooden Frames for Maze (Image created by author)}
+\end{figure}

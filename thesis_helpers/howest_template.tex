@@ -866,30 +866,49 @@ $endif$
 }
 $endif$
 
-%
-% header and footer
-%
-$if(beamer)$
-$else$
-$if(disable-header-and-footer)$
-$else$
-\usepackage[headsepline,footsepline]{scrlayer-scrpage}
+% %
+% % header and footer
+% %
+% $if(beamer)$
+% $else$
+% $if(disable-header-and-footer)$
+% $else$
+% \usepackage[headsepline,footsepline]{scrlayer-scrpage}
 
-\newpairofpagestyles{eisvogel-header-footer}{
+% \newpairofpagestyles{eisvogel-header-footer}{
+%   \clearpairofpagestyles
+%   \ihead*{%
+%     \includegraphics[height=0.5cm]{\headerlogo}%
+%     \hspace{0.5em}% Add some space between the icon and text
+%     \headertitle%
+%   }
+%   \chead*{$if(header-center)$$header-center$$else$$endif$}
+%   \ohead*{$if(header-right)$$header-right$$else$$date$$endif$}
+%   \ifoot*{$if(footer-left)$$footer-left$$else$$for(author)$$author$$sep$, $endfor$$endif$}
+%   \cfoot*{$if(footer-center)$$footer-center$$else$$endif$}
+%   \ofoot*{$if(footer-right)$$footer-right$$else$\thepage$endif$}
+%   \addtokomafont{pageheadfoot}{\upshape}
+% }
+% \pagestyle{eisvogel-header-footer}
+\usepackage{scrlayer-scrpage}
+% Custom header and footer definitions
+\newpairofpagestyles{custom-header-footer}{
   \clearpairofpagestyles
-  \ihead*{%
-    \includegraphics[height=0.5cm]{\headerlogo}%
+  \ihead*{
+    \includegraphics[height=0.5cm]{./thesis_helpers/header_image.png} % Replace with your logo
     \hspace{0.5em}% Add some space between the icon and text
-    \headertitle%
+    Bachelor Thesis Howest
   }
-  \chead*{$if(header-center)$$header-center$$else$$endif$}
-  \ohead*{$if(header-right)$$header-right$$else$$date$$endif$}
-  \ifoot*{$if(footer-left)$$footer-left$$else$$for(author)$$author$$sep$, $endfor$$endif$}
-  \cfoot*{$if(footer-center)$$footer-center$$else$$endif$}
-  \ofoot*{$if(footer-right)$$footer-right$$else$\thepage$endif$}
+  \chead*{} % Center header if needed
+  \ohead*{\today} % Replace with desired content
+  \ifoot*{Driessens Lucas} % Replace with your author name
+  \cfoot*{} % Center footer if needed
+  \ofoot*{\thepage}
   \addtokomafont{pageheadfoot}{\upshape}
 }
-\pagestyle{eisvogel-header-footer}
+
+% Apply the custom style
+\pagestyle{custom-header-footer}
 
 $if(book)$
 \deftripstyle{ChapterStyle}{}{}{}{}{\pagemark}{}
