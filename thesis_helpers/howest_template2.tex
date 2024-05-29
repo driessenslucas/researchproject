@@ -24,19 +24,27 @@
 \usepackage{silence} % Add the silence package
 \usepackage[hidelinks]{hyperref}
 \usepackage{geometry}
+% long table
+\usepackage{longtable}
 
-% \usepackage{lmodern}
+\usepackage{lmodern}
+% set font family to lmodern
+\renewcommand{\familydefault}{\sfdefault}
+
 %  import helvetica font
-\usepackage[scaled]{helvet}
-\renewcommand\familydefault{\sfdefault}
+% \usepackage[scaled]{helvet}
+% \renewcommand\familydefault{\sfdefault}
 
 % Euler for math and numbers
-\usepackage[euler-digits,small]{eulervm}
-\AtBeginDocument{\renewcommand{\hbar}{\hslash}}
+% \usepackage[euler-digits,small]{eulervm}
+% \AtBeginDocument{\renewcommand{\hbar}{\hslash}}
+
+% reset font to default
+% \renewcommand{\familydefault}{\rmdefault}
 
 \geometry{a4paper, margin=1.25in}
 %  set default font size
-\renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
+% \renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
 
 % Customize section titles
 \titleformat{\section}
@@ -126,6 +134,9 @@ $endif$
     % Restore original font for the rest of the document
     \normalfont
 \end{titlepage}
+
+% set font family to default
+\fontfamily{phv}\selectfont
 
 \newgeometry{margin=1.25in}
 

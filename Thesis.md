@@ -320,7 +320,7 @@ Actor-Critic algorithms are versatile and can be applied to both discrete and co
 
 This section explores the Reinforcement Learning Maze Navigation (RCMazeEnv) method using a Double Deep Q-Network (DDQNAgent). It covers the maze environment setup, DDQN agent design, and training algorithm, including relevant mathematical functions.
 
-### Environment Setup (RCMazeEnv)
+<!-- ### Environment Setup (RCMazeEnv)
 
 RCMazeEnv, a custom 12x12 cell maze built on OpenAI Gym, has walls ('1') and paths ('0'). The agent starts at position (1,1) aiming to reach (10,10), equipped with forward, left, and right sensors.
 
@@ -333,7 +333,132 @@ The agent’s sensors provide readings in three directions: front, left, and rig
     \end{minipage}
     \caption{Real life Maze Build (Image created by author)}
     \label{fig:real_maze_build}
-\end{figure}
+\end{figure} -->
+
+### Environment Setup (RCMazeEnv)
+
+RCMazeEnv is a custom 12x12 cell maze environment built on OpenAI Gym, designed to test and train agents in navigating complex mazes. The environment is represented by a grid, with '1' indicating walls and '0' indicating paths. The agent starts at position (1,1) and aims to reach the goal at position (10,10), utilizing sensor inputs for navigation.
+
+#### Maze Structure
+
+The maze structure is predefined with specific wall and path placements to create various challenges for the agent. This setup allows for controlled testing of the agent's navigation algorithms. The walls ('1') act as obstacles that the agent must avoid, while the paths ('0') are the traversable spaces the agent can move through.
+
+**Maze Layout (12x12 Grid):**
+
+```markdown
+| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 1 | 1 |
+| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 0 | 0 | 1 | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
+| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 1 | 1 | 1 |
+| 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 | 0 | 1 | 1 | 1 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+```
+
+#### Agent and Sensors
+
+The agent in RCMazeEnv is equipped with three ultrasonic sensors that provide readings in the front, left, and right directions. These sensors are critical for the agent's navigation, offering real-time data about its proximity to the nearest walls. The sensor readings are used to update the agent's understanding of its immediate environment, enabling it to make informed decisions to avoid collisions and find the optimal path to the goal.
+
+- **Front Sensor**: Measures the distance to the nearest wall directly ahead of the agent.
+- **Left Sensor**: Measures the distance to the nearest wall to the agent's left.
+- **Right Sensor**: Measures the distance to the nearest wall to the agent's right.
+
+#### State Space Representation
+
+The state space ($\mathcal{S}$) of the environment is a comprehensive representation that includes:
+
+- **Position**: The current coordinates of the agent within the maze, denoted as $(x, y)$.
+- **Orientation**: The direction the agent is facing, which can be one of four possible orientations: north, east, south, or west.
+- **Sensor Readings**: The distances to the nearest walls as detected by the front, left, and right sensors, represented as $\{s_{\text{front}}, s_{\text{left}}, s_{\text{right}}\}$.
+
+This detailed state representation enables the agent to make contextually appropriate decisions at each step of its journey through the maze.
+
+#### Reward Function and Termination Conditions
+
+In the context of maze navigation, designing an effective reward function is crucial for guiding an agent's learning process. Below, I outline the key components of the reward function used in our framework:
+
+##### Reward Function Components
+
+1. **Collision or Out of Bounds Penalty $(R_{\text{collision}})$**:
+   - If the sensor detects a collision or out-of-bounds condition (front, left, or right), a penalty is applied:
+     $$
+     R_{\text{collision}} = -20 \quad \text{if any sensor reading in } \{\text{front, left, right}\} \text{ is } 0
+     $$
+
+2. **Goal Achievement Bonus $(R_{\text{goal}})$**:
+   - Reward for reaching the goal:
+     $$
+     R_{\text{goal}} = 
+     \begin{cases} 
+     +500 & \text{if goal is reached within 1000 steps} \\
+     +300 & \text{if goal is reached but exceeds 1000 steps}
+     \end{cases}
+     $$
+
+3. **Proximity Reward $(R_{\text{proximity}})$**:
+   - Reward based on proximity to the goal, where $d_{\text{goal}}$ is the Euclidean distance to the goal:
+     $$
+     R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}
+     $$
+
+4. **Progress Reward $(R_{\text{progress}})$**:
+   - Reward or penalty based on movement towards or away from the goal:
+     $$
+     R_{\text{progress}} = 
+     \begin{cases}
+     +50 & \text{if moving closer to the goal} \\
+     -25 & \text{if moving farther from the goal}
+     \end{cases}
+     $$
+
+5. **Revisit Penalty $(R_{\text{revisit}})$**:
+   - Penalty for revisiting the same position:
+     $$
+     R_{\text{revisit}} = -10 \quad \text{if revisiting a previously visited position}
+     $$
+
+6. **Efficiency Penalty $(R_{\text{efficiency}})$**:
+   - Penalty for each step taken to encourage efficient navigation:
+     $$
+     R_{\text{efficiency}} = -5 \quad \text{per step}
+     $$
+
+##### Combined Reward Function
+
+The overall reward function combines these components to compute the total reward for a given state and action:
+
+$$
+R_{\text{total}} = R_{\text{collision}} + R_{\text{goal}} + R_{\text{proximity}} + R_{\text{progress}} + R_{\text{revisit}} + R_{\text{efficiency}}
+$$
+
+##### Termination Conditions
+
+The termination conditions determine when the environment has reached a "done" or "ended" state. These conditions are:
+
+$$
+\text{terminate}(steps, position) = 
+\begin{cases}
+\text{true, "Exceeded max steps"} & \text{if } steps > 3000 \\
+\text{true, "Goal reached"} & \text{if } position = (10, 10) \\
+\end{cases}
+$$
+
+By combining these elements, the reward function effectively guides the agent towards efficient and goal-directed behavior while penalizing inefficient or repetitive actions. This design ensures that the agent is motivated to reach the goal in the shortest possible path while avoiding obstacles and exploring the maze efficiently.
+
+#### Sensor Integration and Real-World Application
+
+RCMazeEnv supports both virtual and real-world sensor data:
+
+- **Virtual Sensors**: In the simulated environment, virtual sensors provide synthetic distance measurements to the nearest walls, allowing for rapid testing and iteration of navigation algorithms.
+- **Real Sensors**: In the physical setup, the agent uses actual ultrasonic sensors to obtain distance measurements. These real-world readings are mapped to the virtual environment to maintain consistency in the agent's behavior and decision-making process.
+
+The environment's design ensures a seamless transition between simulation and real-world applications, enabling robust development and testing of navigation strategies.
 
 #### Web Application Interface
 
@@ -349,6 +474,88 @@ A web application was developed to serve as a control interface for the RC car, 
 \end{figure}
 
 ### Agent Design (DDQNAgent)
+
+The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref19]{[19]}.
+
+- **Policy Network**: Estimates the Q-value $Q(s, a; \theta)$ for taking action $a$ in state $s$, with weights $\theta$. This network selects actions based on the current policy.
+- **Target Network**: Independently parameterized by weights $\theta^-$, it estimates the target Q-value for updating the policy network. The target network mirrors the policy network's architecture but updates less frequently to provide stable target values.
+
+The DDQN update equation modifies the Q-function:
+$$
+Y_t^{DDQN} = R_{t+1} + \gamma Q\left(S_{t+1}, \underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta); \theta^-\right)
+$$
+
+Where:
+
+- $R_{t+1}$ is the reward received after taking action $a$ in state $s$.
+- $\gamma$ is the discount factor.
+- $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
+- $Q\left(S_{t+1}, a; \theta^-\right)$ evaluates the action using the target network.
+
+This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning \hyperref[ref20]{[20]}.
+
+The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches \hyperref[ref21]{[21]}.
+
+### Training Process
+
+The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
+$$
+L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(Y_t^{DDQN} - Q(s, a; \theta)\right)^2\right]
+$$
+
+Where:
+
+- $Y_t^{DDQN}$ is the target Q-value computed as:
+  $$
+  Y_t^{DDQN} = 
+  \begin{cases} 
+  r & \text{if done} \\
+  r + \gamma Q(s', \underset{a'}{\mathrm{argmax}}\, Q(s', a'; \theta); \theta^-) & \text{if not done}
+  \end{cases}
+  $$
+- $s$ represents the current state.
+- $a$ corresponds to the action taken.
+- $r$ denotes the received reward.
+- $s'$ signifies the subsequent state.
+- $\theta^-$ refers to the weights of the target network.
+- $\gamma$ represents the discount factor.
+
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973. This balance between exploration and exploitation contributes to the DDQN's overall performance.
+
+### Detailed Steps in Code
+
+1. **Replay Memory Sampling**: Sample a minibatch of transitions $(s, a, r, s')$ from the replay buffer $D$.
+2. **Predict Q-values for Current States**:
+   $$
+   Q(s, a; \theta) \quad \text{for all } a
+   $$
+3. **Predict Q-values for Next States Using Policy Network**:
+   $$
+   Q(s', a; \theta) \quad \text{for all } a
+   $$
+4. **Select Best Action for Next State**:
+   $$
+   a^* = \underset{a}{\mathrm{argmax}}\, Q(s', a; \theta)
+   $$
+5. **Predict Q-values for Next States Using Target Network**:
+   $$
+   Q(s', a; \theta^-)
+   $$
+6. **Compute Target Values**:
+   $$
+   Y_t^{DDQN} = 
+   \begin{cases} 
+   r & \text{if done} \\
+   r + \gamma Q(s', a^*; \theta^-) & \text{if not done}
+   \end{cases}
+   $$
+7. **Update Policy Network by Minimizing Loss**:
+   $$
+   L(\theta) = \frac{1}{N} \sum_{i=1}^N \left(Y_i - Q(s_i, a_i; \theta)\right)^2
+   $$
+8. **Periodically Update Target Network**: Set $\theta^- = \theta$.
+
+<!-- ### Agent Design (DDQNAgent)
 
 The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref19]{[19]}.
 
@@ -389,40 +596,47 @@ Where:
 - $\theta^-$ refers to the weights of the target network.
 - $\gamma$ represents the discount factor.
 
-To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973 . This balance between exploration and exploitation contributes to the DDQN's overall performance.
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973 . This balance between exploration and exploitation contributes to the DDQN's overall performance. -->
 
-# Reward Function and completion components
+<!-- # Reward Function and completion components
 
 In the context of maze navigation, designing an effective reward function is crucial for guiding an agent's learning process. Below, I outline the key components of the reward function used in our framework:
 
 1. **Goal Achievement Bonus ($R_{\text{goal}}$):**
 
    - Reaching the goal is the primary objective of the maze navigation task.
-   - Upon achieving this objective, the agent receives a substantial reward: $R_{\text{goal}} = +500$.
-   - However, if the agent takes an excessively long route to reach the goal (more than 1000 steps), it gets a penalty: $R_{\text{goal}} = -200$.
+   - Upon achieving this objective, the agent receives a substantial reward:
+      $R_{\text{goal}} = +500$.
+   - However, if the agent takes an excessively long route to reach the goal (more than 1000 steps), it gets a penalty:
+      $R_{\text{goal}} = -200$.
    - This mechanism encourages efficient navigation while still rewarding successfully reaching the goal
 
-2. **Proximity Reward ($R_{\text{proximity}}$):**
+1. **Proximity Reward ($R_{\text{proximity}}$):**
 
    - Encourages the agent to minimize its distance to the goal over time.
-   - The reward decreases as the distance to the goal increases: $R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}$.
+   - The reward decreases as the distance to the goal increases:
+      $R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}$.
    - Here, $d_{\text{goal}}$ represents the Euclidean distance to the goal.
 
-3. **Progress Reward ($R_{\text{progress}}$):**
+2. **Progress Reward ($R_{\text{progress}}$):**
 
    - Provides immediate feedback based on the agent's movement relative to the goal.
-   - If the distance to the goal decreases, the agent receives a positive reward: $R_{\text{progress}} = +50$.
-   - if the distance increases, it gets a penalty: $R_{\text{progress}} = -25$.
+   - If the distance to the goal decreases, the agent receives a positive reward: 
+      $R_{\text{progress}} = +50$.
+   - if the distance increases, it gets a penalty: 
+      $R_{\text{progress}} = -25$.
    - This encourages smarter navigation decisions.
 
-4. **Exploration Penalty ($R_{\text{revisit}}$):**
+3. **Exploration Penalty ($R_{\text{revisit}}$):**
 
    - Discourages repetitive exploration of the same areas.
-   - The agent receives a penalty for re-entering previously visited cells: $R_{\text{revisit}} = -10$.
+   - The agent receives a penalty for re-entering previously visited cells:
+      $R_{\text{revisit}} = -10$.
    - This promotes exploration of new paths and prevents the agent from getting stuck.
 
-5. **Efficiency Penalty ($R_{\text{efficiency}}$):**
-   - Every step the agent takes incurs a small penalty: $R_{\text{efficiency}} = -5$.
+4. **Efficiency Penalty ($R_{\text{efficiency}}$):**
+   - Every step the agent takes incurs a small penalty: 
+      $R_{\text{efficiency}} = -5$.
    - Balances the need for exploration with the goal of reaching the destination efficiently.
 
 ## Termination conditions
@@ -437,7 +651,79 @@ $$
 \text{true, "Goal reached"} & \text{if } position = (10, 10) \\
 \text{false, "Continue"} & \text{otherwise}
 \end{cases}
+$$ -->
+
+<!-- ## Reward Function and Termination Conditions
+
+In the context of maze navigation, designing an effective reward function is crucial for guiding an agent's learning process. Below, I outline the key components of the reward function used in our framework:
+
+### Reward Function Components
+
+1. **Collision or Out of Bounds Penalty $(R_{\text{collision}})$**:
+   - If the sensor detects a collision or out-of-bounds condition (front, left, or right), a penalty is applied:
+     $$
+     R_{\text{collision}} = -20 \quad \text{if any sensor reading in } \{\text{front, left, right}\} \text{ is } 0
+     $$
+
+2. **Goal Achievement Bonus $(R_{\text{goal}})$**:
+   - Reward for reaching the goal:
+     $$
+     R_{\text{goal}} = 
+     \begin{cases} 
+     +500 & \text{if goal is reached within 1000 steps} \\
+     +300 & \text{if goal is reached but exceeds 1000 steps}
+     \end{cases}
+     $$
+
+3. **Proximity Reward $(R_{\text{proximity}})$**:
+   - Reward based on proximity to the goal, where $d_{\text{goal}}$ is the Euclidean distance to the goal:
+     $$
+     R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}
+     $$
+
+4. **Progress Reward $(R_{\text{progress}})$**:
+   - Reward or penalty based on movement towards or away from the goal:
+     $$
+     R_{\text{progress}} = 
+     \begin{cases}
+     +50 & \text{if moving closer to the goal} \\
+     -25 & \text{if moving farther from the goal}
+     \end{cases}
+     $$
+
+5. **Revisit Penalty $(R_{\text{revisit}})$**:
+   - Penalty for revisiting the same position:
+     $$
+     R_{\text{revisit}} = -10 \quad \text{if revisiting a previously visited position}
+     $$
+
+6. **Efficiency Penalty $(R_{\text{efficiency}})$**:
+   - Penalty for each step taken to encourage efficient navigation:
+     $$
+     R_{\text{efficiency}} = -5 \quad \text{per step}
+     $$
+
+#### Combined Reward Function
+
+The overall reward function combines these components to compute the total reward for a given state and action:
+
 $$
+R_{\text{total}} = R_{\text{collision}} + R_{\text{goal}} + R_{\text{proximity}} + R_{\text{progress}} + R_{\text{revisit}} + R_{\text{efficiency}}
+$$
+
+### Termination Conditions
+
+The termination conditions determine when the environment has reached a "done" or "ended" state. These conditions are:
+
+$$
+\text{terminate}(steps, position) = 
+\begin{cases}
+\text{true, "Exceeded max steps"} & \text{if } steps > 3000 \\
+\text{true, "Goal reached"} & \text{if } position = (10, 10) \\
+\end{cases}
+$$
+
+By combining these elements, the reward function effectively guides the agent towards efficient and goal-directed behavior while penalizing inefficient or repetitive actions. This design ensures that the agent is motivated to reach the goal in the shortest possible path while avoiding obstacles and exploring the maze efficiently. -->
 
 ## Expanding Real-World Testing
 
@@ -1304,7 +1590,7 @@ Successful application of simulation insights to real-world autonomous vehicles 
 - **Algorithm Adjustment**: Modifications to account for hardware limitations and real-world dynamics.
 - **Handling Unpredictability**: Developing algorithms that can adapt to real-world unpredictability and handle unexpected scenarios.
 
-By focusing on these considerations, the transition from simulation to real-world applications can be more seamless, enhancing the safety, efficiency, and reliability of autonomous vehicle technologies.
+By focusing on these considerations, we can ever so slightly bridge the gap between simulations and real-world applications, ensuring more robust and reliable autonomous vehicle systems.
 
 ## Conclusion for Real-World Application
 
@@ -1321,7 +1607,7 @@ To bridge the gap between simulation precision and real-world variability, it is
 - **Algorithmic Adaptation**: Continuously refining algorithms to handle real-world complexities.
 - **Iterative Testing and Validation**: Conducting extensive real-world testing to validate and improve system performance.
 
-Overcoming these challenges is key to successfully integrating Sim2Real technologies into autonomous transportation systems. Doing so will enhance the safety, efficiency, and reliability of these systems, paving the way for broader adoption and practical applications in various real-world scenarios.
+These challenges are a good reminder of the complexities involved in transitioning from simulations to real-world applications, highlighting the need for robust testing, calibration, and adaptation to ensure the successful deployment of autonomous vehicle technologies.
 
 ## Conclusion for Challenges and Solutions
 
@@ -1581,30 +1867,29 @@ Reflecting on the entire project, I recognize areas where I could have approache
 Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project. -->
 
 # Discussion and Reflection
-
-Looking back on my research journey, I've learned a ton and grown a lot personally. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
+<!-- TODO: proof read -->
+Looking back on my research journey, I've learned a ton and grown a lot as a person. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
 
 ## Embracing Innovation and Adaptability
 
 One of the biggest takeaways from this project was the importance of staying open to new ideas and being flexible. Moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges pushed me to think creatively and be open to exploring new paths.
 
-Wouter pointed out that while a 4WD setup could provide better traction, it generally would not be better due to over time slippage. Additionally, switching from ultrasonic sensors to cameras might not improve performance because accurately determining the car’s position in the maze could still be a challenge.
+Wouter pointed out that while a 4WD setup could potentionally provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera on top of the car instead of the HC-SR04's might not improve performance because accurately determining the car’s position in the maze would still be a challenge.
 
 ## Bridging Theory and Practice
 
 The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including the possibility of using a more complex environment than just a 2 demensional array as a the representation of the maze, made me realize that I was too quick to believe that the environment I had was good enough.
 
-Reddit feedback suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's learning and adaptability but would have required a longer training period and increased the risk of more or other types of problems. But it could have solved the need for precise and consistent movement.
-While this approach seems promising, I do think with my current setup it would still not have worked perfectly, I would have to change a lot of things to make it work.
+A Reddit user suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's ability to adapt to the environment better and eliminated the need for perfect movement replication since the agent would have full control over the movements. However, this would have required a longer training period and increased the risk of encountering different types of problems, like the HC-SR04's being practically useless in such an environment as it would need to have a more reliable way of determining the car's position to be able to adjust the movements accordingly.
 
-- **Getting Down to Specifics:**
+- **Highlighting specific problems**
 
-  - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different environments were like apples to oranges. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings.
-  - **Motor Encoder Issues:** When I threw motor encoders into the mix to get precise movement, things got really techy. These gadgets were supposed to track every little move, but they ended up giving us a hard time with glitches and misreads, which meant going back to the drawing board more than once.
+  - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different the real world and my simulation was bigger than expected. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings. This could also be avoided if my simulation would have been more advanced in terms of distance between the RC Car and walls being more than just a 2D array, never the less this was a pretty easy problem to solve.
+  - **Motor Encoder Issues:** When I realised I couldn't move my RC Car as precicely as I wanted, I decided to get motor encoders to try and fix this issue. Now note: yes, I should have bought these from the beginning, I made a huge mistake when figuring out which hardware to use. Although the car did drive better than without encoders, one of my encoders sadly broke just as things started working and new ones would arrive too late. That's when I decided to use an MPU6050 to try and fix the motor control issues, which also sadly didn't work as intended.
 
 ## Anticipatory Thinking and Proactive Problem-Solving
 
-Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience, this is also something I learned during my internship, I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how a different approach could have saved me a lot of time and effort.
+Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience, this is also something I learned during my internship, I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how planning and discussing my plans with others before starting could have saved me a lot of time and effort.
 
 ## Feedback and Continuous Improvement
 
@@ -1612,9 +1897,9 @@ During the evaluation of the practical part of this research the jury provided p
 
 ## Methodological Rigor and Insights
 
-Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI` we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment. This was a by far one of the more valuable parts of this project.
+Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI` we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment.
 
-One thing that surprised me that how my virtual twin setup didn't really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when the real car was stuck for example (or rather why it got stuck), Additionally, it could have been used as an additional input to the agent/environment.
+One thing that surprised me that how my virtual twin setup did not really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when the real car was stuck for example (or rather why it got stuck), Additionally, it could have been used as an additional input to the agent/environment.
 
 ## Educational Value
 
@@ -1638,11 +1923,11 @@ Moving forward, I'm committed to fostering a culture of innovation and continuou
 
 Moving forward, I'm commited to life long learning, something that our school really values and is continuously brought up. I'm excited to see where this journey will take me and I'm looking forward to the even bigger and more complex challenges that I will have the opportunity to solve.
 
-## Personal Note
+## A final reflection on this journey
 
 Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
 
-Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit r/reinforcementlearning, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project.
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project.
 
 <!-- # Advice for Students and Researchers
 
@@ -2100,6 +2385,358 @@ In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s in
 
 ## Installation Guide
 
+This guide provides a comprehensive step-by-step approach to installing and setting up the project environment, ensuring a successful deployment of the autonomous navigation system.
+
+### Prerequisites
+
+Before starting the setup, make sure you have the following tools and dependencies installed:
+
+- **Git:** Necessary for cloning the project repository.
+- **Docker:** Essential for containerizing the web application to maintain a consistent runtime environment.
+- **Python 3.11 and pip:** Required if you prefer to run the project without Docker. Install Python and the necessary dependencies listed in `/web_app/web/requirements.txt`.
+
+### Repository Setup
+
+First, you need to clone the project repository and navigate to the project directory. Open your terminal and run the following commands:
+
+```bash
+git clone https://github.com/driessenslucas/researchproject.git
+cd researchproject
+```
+
+### Hardware Setup and Assembly
+
+#### Introduction to Hardware Components
+
+The hardware setup involves several components, including an RC car, sensors, and microcontrollers. Proper integration of these components is critical for the autonomous navigation system to function correctly.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/final_test/jp_final.jpeg}
+\caption{Final RC Car (Image created by author)}
+\end{figure}
+
+### Components List
+
+#### Core Components
+
+- **ESP32-WROOM-32 module**: Available at Amazon.com
+- **3D printed parts**: Available at Thingiverse.com
+  - HC-SR04 holders: \url{https://www.thingiverse.com/thing:3436448/files}
+  - Top plate + alternative for the robot kit: \url{https://www.thingiverse.com/thing:2544002}
+- **Motor Controller (L298N)**: Available at DFRobot.com
+- **2WD miniQ Robot Chassis**: Available at DFRobot.com
+- **Mini OLED screen**: Available at Amazon.com
+- **Sensors (HC-SR04 and MPU6050)**: Available at Amazon.com
+- **18650 Battery Shield for ESP32**: Available at Amazon.com
+
+#### Supplementary Materials
+
+- **Screws, wires, and tools required for assembly**:
+  - 4mm thick screws, 5mm long for securing the wood
+  - M3 bolts & nuts
+  - Wood for the maze (planks cut to 10cm width by 120cm length)
+  - Available at most hardware stores
+
+#### Tools Required
+
+- Screwdriver
+- Wire cutter/stripper
+- Drill (for mounting the top plate)
+
+### Assembly Instructions
+
+##### Step 1: Base Assembly
+
+Begin the assembly process by setting up the base of the robot chassis. The base provides the foundation upon which all other components will be mounted. Follow this YouTube video, created by the manufacturers, which provides a detailed visual guide on how to assemble the base correctly:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/yt_vid.png}
+\captionof{figure}{MiniQ 2WD Robot Chassis Quick Assembly Guide}
+\end{minipage}%
+\hfill
+\begin{minipage}{.2\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./thesis_helpers/qr_codes/qr_code_yt_vid.png}
+\captionof{figure}{QR code for MiniQ 2WD Robot Chassis Assembly Guide}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 2: Attach Motor Driver
+
+Next, secure the motor driver to the base using the two screws provided in the kit. The motor driver is a crucial component as it controls the motors that drive the wheels of the RC car. Make sure the motor driver is positioned correctly on the base so that it does not obstruct any other components. Proper placement will ensure that all connections and future steps can be carried out smoothly.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/base.jpeg}
+\caption{Motor Driver Attached to the Base (Image created by author)}
+\end{figure}
+
+##### Step 3: Connect ESP32-WROOM-32 Module to the Motor Driver
+
+Now, connect the ESP32-WROOM-32 module to the motor driver. This involves wiring the motor driver to the appropriate pins on the ESP32 module. Follow the electrical schematic below carefully to ensure correct connections. The wires should be connected as follows:
+
+- **E1 to GPIO 2 (PWM motor 1)**
+- **M1 to GPIO 17 (motor 1 control)**
+- **E2 to GPIO 19 (PWM motor 2)**
+- **M2 to GPIO 4 (motor 2 control)**
+
+These connections allow the ESP32 to control the motor driver and, subsequently, the motors.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=4in]{./images/schematics/esp_updated.png}
+\caption{ESP32 Wiring Schematic (Image created by author)}
+\end{figure}
+
+##### Step 4: Cut the Support Beams
+
+To provide structural integrity and ensure that the top plate can be securely attached, cut the support beams to approximately 7cm in length. These beams will act as spacers between the bottom plate and the top plate, providing enough room for the components mounted on the bottom plate.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/supports.jpeg}
+\caption{Cut Support Beams (Image created by author)}
+\end{figure}
+
+##### Step 5: Attach Supports to the Bottom Plate
+
+Secure the support beams to the bottom plate using screws. This step is crucial as it lays the groundwork for attaching the top plate. Make sure the supports are firmly attached and evenly spaced to maintain stability.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/washers_underneath.jpeg}
+\caption{Supports Screwed on the Bottom Plate (Image created by author)}
+\end{figure}
+
+##### Step 6: Mount All Supports
+
+Once the supports are securely attached to the bottom plate, proceed to mount all of them as shown in the figures. Ensure that all supports are firmly in place to provide a stable structure for the top plate.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/supports_mounted.jpeg}
+\captionof{figure}{All Supports Mounted (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/all4_supports.jpeg}
+\captionof{figure}{Complete View of Mounted Supports (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 7: Attach the Top Plate
+
+Drill holes in the top plate to align with the support beams. Once the holes are drilled, attach the top plate securely to the support beams. This step finalizes the structural assembly and provides a stable platform for the remaining components.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/top_plate_assembly.jpeg}
+\captionof{figure}{Top Plate Assembly (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/jp_bottom.jpeg}
+\captionof{figure}{Bottom View with Supports and Top Plate (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 8: Attach the Ultrasonic Sensor
+
+Mount the ultrasonic sensor to the top plate. This sensor is essential for the RC car's autonomous navigation as it provides distance measurements to detect obstacles. Secure it firmly to ensure it remains stable during operation.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/hc-sr04.jpeg}
+\captionof{figure}{Ultrasonic Sensor Attached to the Top Plate (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/jp_sensors.jpeg}
+\captionof{figure}{Ultrasonic Sensors Attached (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+##### Step 9: Place the ESP32 on the Top Plate
+
+Finally, place the ESP32 module on the top plate along with a mini breadboard for the sensor wires. Secure the ESP32 battery with zip ties to ensure it stays in place during operation. This completes the hardware assembly of the RC car.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/final_test/jp_final2.jpeg}
+\caption{ESP32 Placement on Top Plate (Image created by author)}
+\end{figure}
+
+### Wiring Guide
+
+#### ESP32 Wiring
+
+The ESP32 wiring connections are
+
+ shown in the diagram below. The pins connect to the motor driver, sensors, OLED display, and MPU6050 gyroscope. Follow the schematic carefully to ensure all connections are correct.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=5in]{./images/schematics/esp_updated.png}
+\caption{Wiring Diagram for ESP32 (Image created by author)}
+\end{figure}
+
+### Software Configuration
+
+1. **Arduino IDE Setup**: Install the Arduino IDE to program the ESP32 microcontroller. Follow the instructions from Espressif Systems to add the ESP32 board to the Arduino IDE. This will allow you to write and upload the necessary code to the ESP32.
+2. **Library Installation**: Install the \texttt{ESP32\_SSD1306} library for OLED display functionality. This library provides the functions needed to interface with the OLED screen and display information.
+3. **Code Upload**: Transfer the scripts from the \texttt{esp32} folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration. This will enable the ESP32 to connect to your network and communicate with other components.
+
+### Web Application Setup
+
+#### Note
+
+To ensure a smooth setup of the virtual display, it is recommended to run \texttt{docker-compose down} after each session. This will stop and remove any existing containers, ensuring a clean start for the next session.
+
+#### Steps
+
+1. Navigate to the web application’s source code directory:
+
+   ```bash
+   cd ./web_app/
+   ```
+
+   This command changes the directory to the location of the web application's source code.
+
+2. Launch the Docker containers with:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   This command starts the Docker containers in detached mode, allowing the web application to run in the background. Docker ensures that all dependencies are correctly set up and that the application runs in a consistent environment.
+
+### Usage Instructions
+
+1. Open your web browser and go to \url{http://localhost:8500} or \url{http://localhost:5000}. This URL opens the web application interface where you can control and monitor the RC car.
+2. Enter the ESP32's IP address in the web app and select the desired model for deployment. This step allows the web app to communicate with the ESP32 and send commands.
+3. You can also run a virtual demonstration without engaging the physical vehicle. This feature is useful for testing the software and ensuring that everything is working correctly before using the actual RC car.
+4. Start the maze navigation by clicking the `Start Maze` button. This command initiates the autonomous navigation system, allowing the RC car to navigate the maze.
+
+A demonstration of the project is available (see Web App Demo in the Video References section).
+
+### Additional Information: Model Training
+
+- You can use a pre-trained model or train a new model using the script in `train/train.py`.
+- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
+- After training, you will be prompted to save the new model. If saved, it will be stored in the `web_app/models` directory of the `web_app` folder.
+
+By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+
+### Building the Maze
+
+#### Final Result
+
+The following images show the final build of the maze used in the project.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/maze_build.jpeg}
+\captionof{figure}{Maze Build (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/final_test/final_maze_build.jpeg}
+\captionof{figure}{Final Maze Build (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+#### Prerequisites
+
+The materials and tools required for building the maze are listed below:
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/screws_used.jpeg}
+\captionof{figure}{Screws (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/m3_nuts.jpeg}
+\captionof{figure}{Nuts (Image created by author)}
+\end{minipage}%
+\hfill
+\begin{minipage}{.3\textwidth}
+\centering
+\includegraphics[width=\linewidth]{./images/assembly_images/m3_supports.jpeg}
+\captionof{figure}{Supports (Image created by author)}
+\end{minipage}%
+\hfill
+\end{figure}
+
+- Wood used:
+  - Planks cut to 10cm width by 120cm length
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/wooden_planks.jpeg}
+\caption{Wood Planks (Image created by author)}
+\end{figure}
+
+#### Step 1: Calculations
+
+Each cell in the maze is 25cm x 25cm. Calculate the number of planks and their lengths needed to build the maze.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/size_calculations.jpeg}
+\caption{Size Calculations for Maze (Image created by author)}
+\end{figure}
+
+#### Step 2: Cut the Wood
+
+Cut the wooden planks to the correct size (10cm x 120cm) to form the walls of the maze. You can have the store cut the wood for you or do it yourself using a saw.
+
+#### Step 3: Screw the Wood Together
+
+Drill holes and screw the wood pieces together to form the maze structure. Ensure the joints are secure to prevent any movement during the RC car's navigation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/drilling_wood_frames.jpeg}
+\caption{Drilling Wood Frames for Maze (Image created by author)}
+\end{figure}
+
+It should turn out like this; repeat this for all the blocks in the maze:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2in]{./images/assembly_images/wooden_frames.jpeg}
+\caption{Wooden Frames for Maze (Image created by author)}
+\end{figure}
+
+By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+
+<!-- ## Installation Guide
+
 This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
 
 ### Prerequisites
@@ -2489,4 +3126,4 @@ It should turn out like this, repeat this for all the blocks in the maze:
 \centering
 \includegraphics[width=2in]{./images/assembly_images/wooden_frames.jpeg}
 \caption{Wooden Frames for Maze (Image created by author)}
-\end{figure}
+\end{figure} -->
