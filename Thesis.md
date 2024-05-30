@@ -153,11 +153,11 @@ This investigation centers around the question: "Is it possible to transfer a tr
 
 ### Background on Reinforcement Learning
 
-The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref3]{[3]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
+The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref19]{[19]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
 
 Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref5]{[5]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref6]{[6]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref17]{[17]}.
 
-This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref3]{[3]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
+This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref19]{[19]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
 
 Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
 
@@ -180,7 +180,7 @@ The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), 
 **DDQN Solution**: Introduced by Hado van Hasselt et al., DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
 
 - The **current network** determines the action with the highest Q-value for the current state.
-- A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state [22].
+- A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state \hyperref[ref19]{[19]}.
 
 #### The Decoupling Effect
 
@@ -437,36 +437,58 @@ To enhance training stability, we periodically update the target network's weigh
 
 ### Detailed Steps in Code
 
-1. **Replay Memory Sampling**: Sample a minibatch of transitions $(s, a, r, s')$ from the replay buffer $D$.
+These steps explain how I implemented and applied the training process for the DDQN agent in the RCMazeEnv environment:
+
+1. **Replay Memory Sampling**: 
+    - I sampled a minibatch of transitions $(s, a, r, s')$ from the replay buffer $D$.
+
 2. **Predict Q-values for Current States**:
-   $$
-   Q(s, a; \theta) \quad \text{for all } a
-   $$
+    - I computed the Q-values for the current states for all actions using the policy network: 
+      $$
+      Q(s, a; \theta)
+      $$
+
 3. **Predict Q-values for Next States Using Policy Network**:
-   $$
-   Q(s', a; \theta) \quad \text{for all } a
-   $$
+    - I calculated the Q-values for the next states for all actions using the policy network:
+      $$
+      Q(s', a; \theta)
+      $$
+
 4. **Select Best Action for Next State**:
-   $$
-   a^* = \underset{a}{\mathrm{argmax}}\, Q(s', a; \theta)
-   $$
+    - I determined the best action for the next state by selecting the action with the highest Q-value:
+      $$
+      a^* = \underset{a}{\mathrm{argmax}}\, Q(s', a; \theta)
+      $$
+
 5. **Predict Q-values for Next States Using Target Network**:
-   $$
-   Q(s', a; \theta^-)
-   $$
+    - I predicted the Q-values for the next states using the target network:
+      $$
+      Q(s', a; \theta^-)
+      $$
+
 6. **Compute Target Values**:
-   $$
-   Y_t^{DDQN} = 
-   \begin{cases} 
-   r & \text{if done} \\
-   r + \gamma Q(s', a^*; \theta^-) & \text{if not done}
-   \end{cases}
-   $$
+    - I computed the target Q-values using the target network and the selected best action:
+      $$
+      Y_t^{DDQN} = 
+      \begin{cases} 
+      r & \text{if done} \\
+      r + \gamma Q(s', a^*; \theta^-) & \text{if not done}
+      \end{cases}
+      $$
+
 7. **Update Policy Network by Minimizing Loss**:
-   $$
-   L(\theta) = \frac{1}{N} \sum_{i=1}^N \left(Y_i - Q(s_i, a_i; \theta)\right)^2
-   $$
-8. **Periodically Update Target Network**: Set $\theta^- = \theta$.
+    - I updated the policy network by minimizing the loss function, which is the mean squared error between the target Q-values and the predicted Q-values:
+      $$
+      L(\theta) = \frac{1}{N} \sum_{i=1}^N \left(Y_i - Q(s_i, a_i; \theta)\right)^2
+      $$
+
+8. **Periodically Update Target Network**:
+    - I periodically updated the weights of the target network to match those of the policy network:
+      $$
+      \theta^- = \theta
+      $$
+
+By following these steps in my code, I successfully trained the DDQN agent in the RCMazeEnv environment, ensuring effective learning and improved performance over time.
 
 ## Expanding on Real-World Testing
 
@@ -505,15 +527,15 @@ OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit
 
 For the autonomous navigation of a virtual RC car in a maze, various reinforcement learning (RL) techniques were considered, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), Q-Learning, Proximal Policy Optimization (PPO), and Actor-Critic (AC). After careful consideration and testing, DDQN was selected as the most suitable technique for this project.
 
-Deep Q-Network (DQN) was initially considered due to its significant breakthrough in RL, effectively handling high-dimensional sensory inputs and achieving impressive performance in many tasks. However, DQN tends to overestimate Q-values, leading to instability and slower learning. Due to these overestimation issues, DQN was not as stable or reliable as DDQN for this project \hyperref[ref3]{[3]}.
+Deep Q-Network (DQN) was initially considered due to its significant breakthrough in RL, effectively handling high-dimensional sensory inputs and achieving impressive performance in many tasks. However, DQN tends to overestimate Q-values, leading to instability and slower learning. Due to these overestimation issues, DQN was not as stable or reliable as DDQN for this project \hyperref[ref19]{[19]}.
 
-Q-Learning, known for its simplicity and effectiveness in discrete and small state spaces, was also evaluated. While it is straightforward to implement and model-free, Q-Learning struggles with large or continuous state spaces, requiring a Q-table that grows exponentially, making it impractical for complex tasks. Given the complexity of maze navigation and high-dimensional sensory inputs, Q-Learning was not feasible for this application \hyperref[ref3]{[3]}.
+Q-Learning, known for its simplicity and effectiveness in discrete and small state spaces, was also evaluated. While it is straightforward to implement and model-free, Q-Learning struggles with large or continuous state spaces, requiring a Q-table that grows exponentially, making it impractical for complex tasks. Given the complexity of maze navigation and high-dimensional sensory inputs, Q-Learning was not feasible for this application \hyperref[ref19]{[19]}.
 
 Proximal Policy Optimization (PPO) offers robustness, efficiency, and the ability to handle both continuous and discrete action spaces, maintaining stable updates with its clipped objective function. However, PPO’s policy optimization approach sometimes leads to less precise value estimations compared to DDQN, which focuses on accurate Q-value approximations. Although PPO is a powerful technique, the need for precise Q-value approximations in maze navigation made DDQN a better fit \hyperref[ref4]{[4]}.
 
 Actor-Critic (AC) methods combine the strengths of policy-based and value-based methods, reducing variance in updates and generally converging faster. Despite these advantages, AC methods can be complex to implement and may not achieve the same level of stability and performance as DDQN in tasks requiring precise action evaluation. The complexity and less consistent performance of AC methods compared to DDQN led to the decision to not use AC for this project \hyperref[ref25]{[25]}.
 
-Double Deep Q-Network (DDQN) addresses the overestimation bias in DQN by decoupling action selection from value estimation, resulting in more accurate Q-value approximations and improved learning stability. It handles high-dimensional sensory inputs effectively and balances exploration and exploitation well. After testing, DDQN proved to outperform other methods in maze-like virtual RC car scenarios, making it the optimal choice for this application \hyperref[ref3]{[3]}.
+Double Deep Q-Network (DDQN) addresses the overestimation bias in DQN by decoupling action selection from value estimation, resulting in more accurate Q-value approximations and improved learning stability. It handles high-dimensional sensory inputs effectively and balances exploration and exploitation well. After testing, DDQN proved to outperform other methods in maze-like virtual RC car scenarios, making it the optimal choice for this application \hyperref[ref19]{[19]}.
 
 By selecting DDQN, the project leverages its strengths in stability, accuracy, and performance, ensuring effective navigation and learning in complex, sensor-driven environments.
 
@@ -1024,7 +1046,9 @@ Looking back on my research journey, I've learned a ton and grown a lot as a per
 
 ## Embracing Innovation and Adaptability
 
-One of the biggest takeaways from this project was the importance of staying open to new ideas and being flexible. Moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges pushed me to think creatively and be open to exploring new paths.
+One of the biggest takeaways from this project and my internship was the importance of staying open to new ideas and being flexible, this was a big challenge for me as I tend to get a bit stuck in my ways.
+
+In this project moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges forced me to think outside the box and come up with fast and effective solutions given the constraints of the hardware and environment.
 
 Wouter pointed out that while a 4WD setup could potentionally provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera on top of the car instead of the HC-SR04's might not improve performance because accurately determining the car’s position in the maze would still be a challenge.
 
@@ -1045,7 +1069,11 @@ Throughout the project, I constantly had to think ahead and anticipate potential
 
 ## Feedback and Continuous Improvement
 
-During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques. However, they also noted specific suggestions, such as the consistency of maze navigation in real-world applications. Their suggestions, including increasing wall distances and using a camera, offered possible solutions to these problems.
+During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques. 
+
+- **Practical Implementation:** The jury appreciated the practical implementation of the RC car and the efforts to address real-world challenges. They acknowledged the complexity of transitioning from simulations to real-world scenarios and commended the adaptability and problem-solving skills demonstrated throughout the project even though the car didn't completely work as intended.
+
+- **Suggestions for Improvement:** Hans Ameel suggested increasing the distance between the walls to reduce the impact of the car diviating from the path. This was based on the observation that the car had a tendency to slightly drift off course due to the narrow maze walls. 
 
 ## Methodological Rigor and Insights
 
@@ -1077,9 +1105,11 @@ Moving forward, I'm commited to life long learning, something that our school re
 
 ## A final reflection on this journey
 
-Reflecting on the entire project, I recognize areas where I could have approached things differently. Initially diving into complex simulations without fully considering practical constraints limited the scope of potential solutions. However, this journey has been incredibly rewarding, and I look forward to continuing this exploration, guided by the insights and experiences gained.
+Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three‑week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like limiting the action space and forcing me to try and replicate the exact movement. I also feel like I should have done more research on the hardware, especially on how the encoders for the motors work and how to use them.
 
-Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite receiving only three responses, the feedback was valuable and reconfirmed some of the thoughts I already had about improving the project.
+I doubt I would’ve been able to get as far as fast as I did if I had taken an alternative route like giving the agent full control over the motors like a Reddit user suggested, but I do think it would have been a lot more interesting and maybe even more rewarding. This also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do.
+
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot if responses, the feedback was did reconfirm some of the things I had been thinking about.
 
 # Advice for Students and Researchers
 <!-- TODO: Proof read from here on out-->
@@ -1312,8 +1342,6 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 \[2\]\label{ref2} A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," in Proceedings of the 1st Annual Conference on Robot Learning, 2017.
 
-\[3\]\label{ref3} H. Van Hasselt, A. Guez, and D. Silver, "Deep Reinforcement Learning with Double Q-learning," in Proceedings of the AAAI Conference on Artificial Intelligence, 2016.
-
 \[4\]\label{ref4} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017.
 
 \[5\]\label{ref5} J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," in 2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2017.
@@ -1350,7 +1378,7 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 \[21\]\label{ref21} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: <https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/>.
 
-\[22\]\label{ref22} H. van Hasselt, A. Guez, and D. Silver, "Deep reinforcement learning with double Q-learning," in _Proc. of AAAI Conf. on Artificial Intelligence_, 2016.
+<!-- \[22\]\label{ref22} H. van Hasselt, A. Guez, and D. Silver, "Deep reinforcement learning with double Q-learning," in _Proc. of AAAI Conf. on Artificial Intelligence_, 2016. -->
 
 \[23\]\label{ref23} V. Mnih et al., "Human-level control through deep reinforcement learning," _Nature_, vol. 518, no. 7540, pp. 529-533, 2015.
 
@@ -1743,7 +1771,7 @@ Drill holes and screw the wood pieces together to form the maze structure. Ensur
 \begin{figure}[H]
 \centering
 \includegraphics[width=2in]{./images/assembly_images/drilling_wood_frames.jpeg}
-\caption{Drilling Wood Frames for Maze (Image created by author)}
+\caption*{Drilling Wood Frames for Maze (Image created by author)}
 \end{figure}
 
 It should turn out like this; repeat this for all the blocks in the maze:
@@ -1755,396 +1783,3 @@ It should turn out like this; repeat this for all the blocks in the maze:
 \end{figure}
 
 By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
-
-<!-- ## Installation Guide
-
-This section outlines the required steps to install and set up the project environment. Following these instructions will ensure the successful deployment of the autonomous navigation system.
-
-### Prerequisites
-
-Before starting the setup process, make sure you have the following:
-
-- **Git:** For cloning the project repository.
-- **Docker:** To containerize the web application and ensure a consistent runtime environment.
-- **Python 3.11 and pip:** If you prefer running the project without Docker, use Python along with the dependencies listed in `/web_app/web/requirements.txt` to get the project running.
-
-### Repository Setup
-
-To clone the repository and navigate to the project directory, use these commands:
-
-```bash
-git clone https://github.com/driessenslucas/researchproject.git
-cd researchproject
-```
-
-### Hardware Setup and Assembly
-
-#### Introduction to Hardware Components
-
-Here’s an overview of the hardware components used in the project, including the RC car, sensors, and microcontrollers. Proper integration of these components is essential for the autonomous navigation system to function correctly.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/final_test/jp_final.jpeg}
-\caption{Final RC Car (Image created by author)}
-\end{figure}
-
-### Components List
-
-#### Core Components
-
-- **ESP32-WROOM-32 module**
-  - Available at Amazon.com
-- **3D printed parts**
-  - Available at Thingiverse.com
-    - HC-SR04 holders: <https://www.thingiverse.com/thing:3436448/files>
-    - Top plate + alternative for the robot kit: <https://www.thingiverse.com/thing:2544002>
-- **Motor Controller (L298N)**
-  - Available at DFRobot.com
-- **2WD miniQ Robot Chassis**
-  - Available at DFRobot.com
-- **Mini OLED screen**
-  - Available at Amazon.com
-- **Sensors (HC-SR04 and MPU6050)**
-  - Available at Amazon.com
-- **18650 Battery Shield for ESP32**
-  - Available at Amazon.com
-
-#### Supplementary Materials
-
-- **Screws, wires, and tools required for assembly**
-  - 4mm thick screws, 5mm long to hold the wood together
-    - Available at most hardware stores
-  - M3 bolts & nuts
-    - Available at most hardware stores
-  - Wood for the maze (planks cut to 10cm width by 120cm length)
-    - Available at most hardware stores
-
-#### Tools Required
-
-- Screwdriver
-- Wire cutter/stripper
-- Drill (for mounting the top plate)
-
-#### Assembly Instructions
-
-##### Step 1: Base Assembly
-
-To assemble the base, you can follow this YouTube video from the makers themselves:
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/yt_vid.png}
-\captionof{figure}{MiniQ 2WD Robot Chassis Quick Assembly Guide}
-\end{minipage}%
-\hfill
-\begin{minipage}{.2\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./thesis_helpers/qr_codes/qr_code_yt_vid.png}
-\captionof{figure}{QR code for MiniQ 2WD Robot Chassis Assembly Guide}
-\end{minipage}%
-\hfill
-\end{figure}
-
-##### Step 2: Attach Motor Driver
-
-Attach the motor driver to the base using the 2 screws that came with the kit. The motor driver should be positioned on the base such that it fits snugly without obstructing any other components.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/base.jpeg}
-\caption{Motor Driver Attached to the Base (Image created by author)}
-\end{figure}
-
-##### Step 3: Attach ESP32-WROOM-32 Module to the Motor Driver
-
-Connect the wires of the motor driver to the ESP32-WROOM-32 as shown in the electrical schematic below:
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-```
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=4in]{./images/schematics/esp_updated.png}
-\caption{ESP32 Wiring Schematic (Image created by author)}
-\end{figure}
-
-##### Step 4: Cut the Support Beams
-
-Cut the support beams so that we can securely attach the top plate to the base. I cut them to approximately 7cm.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/supports.jpeg}
-\caption{Cut Support Beams (Image created by author)}
-\end{figure}
-
-##### Step 5: Screw in the Supports on the Bottom of the Bottom Plate
-
-Secure the supports on the bottom of the bottom plate with screws.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/washers_underneath.jpeg}
-\caption{Supports Screwed on the Bottom Plate (Image created by author)}
-\end{figure}
-
-##### Step 6: Mount All the Supports on the Bottom Plate
-
-Mount all the supports on the bottom plate as shown.
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/supports_mounted.jpeg}
-\captionof{figure}{All Supports Mounted (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/all4_supports.jpeg}
-\captionof{figure}{Complete View of Mounted Supports (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-##### Step 7: Attach the Top Plate
-
-Drill holes in the top plate to fit the supports and attach it securely.
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/top_plate_assembly.jpeg}
-\captionof{figure}{Top Plate Assembly (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/jp_bottom.jpeg}
-\captionof{figure}{Bottom View with Supports and Top Plate (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-##### Step 8: Attach the Ultrasonic Sensor to the Top Plate
-
-Mount the ultrasonic sensor to the top plate.
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/hc-sr04.jpeg}
-\captionof{figure}{Ultrasonic Sensor Attached to the Top Plate (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/final_test/jp_sensors.jpeg}
-\captionof{figure}{Ultrasonic Sensors Attached (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-##### Step 9: Place the ESP32 on the Top Plate
-
-Place the ESP32 on the top plate together with a mini breadboard for the sensor wires. Secure the battery for the ESP32 to the top plate with zip ties.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/final_test/jp_final2.jpeg}
-\caption{ESP32 Placement on Top Plate (Image created by author)}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/final_test/jp_final.jpeg}
-\captionof{figure}{Final RC Car Assembly (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/final_test/jp_final3.jpeg}
-\captionof{figure}{Final Assembly with Sensors and Breadboard (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-### Wiring Guide
-
-#### ESP32 Wiring
-
-The wiring connections for the ESP32 microcontroller are shown in the diagram below. The pins are connected to the motor driver, sensors, OLED display, and MPU6050 gyroscope.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/schematics/esp_updated.png}
-\caption{Wiring Diagram for ESP32 (Image created by author)}
-\end{figure}
-
-##### ESP32 Pins
-
-Since the schematic might not be very clear, here is a list of the pins used on the ESP32:
-
-```c
-int E1 = 2; //PWM motor 1
-int M1 = 17; //GPIO motor 1
-
-
-int E2 = 19; //PWM motor 2
-int M2 = 4; //GPIO motor 2
-
-int sensor0Trig = 27; //GPIO right sensor
-int sensor0Echo = 26; //GPIO right sensor
-
-int sensor1Trig = 33; //GPIO left sensor
-int sensor1Echo = 32; //GPIO left sensor
-
-int sensor2Trig = 25; //GPIO front sensor
-int sensor2Echo = 35; //GPIO front sensor
-
-// OLED display pins
-#define SDA_PIN 21 // this is the default sda pin on the esp32
-#define SCL_PIN 22 // this is the default scl pin on the esp32
-```
-
-### Software Configuration
-
-1. **Arduino IDE Setup:** Install the Arduino IDE to program the ESP32 microcontroller. Follow Espressif Systems' instructions to add the ESP32 board to the Arduino IDE.
-2. **Library Installation:** Install the [ESP32_SSD1306](https://github.com/lexus2k/ssd1306/tree/master) library for the OLED display functionality.
-3. **Code Upload:** Transfer the scripts from the [esp32](./esp32) folder to the ESP32 device. Modify the WiFi settings in the script to match your local network configuration.
-
-### Web Application Setup
-
-#### Note
-
-To ensure a smooth setup of the virtual display, it’s recommended to run `docker-compose down` after each session.
-
-#### Steps
-
-1. Navigate to the web application's source code directory:
-
-   ```bash
-   cd ./web_app/
-   ```
-
-2. Launch the Docker containers with:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-### Usage Instructions
-
-1. Open your web browser and go to <http://localhost:8500> or <http://localhost:5000>.
-2. Enter the ESP32's IP address in the web app and select the desired model for deployment.
-3. You can also run a virtual demonstration without engaging the physical vehicle.
-4. Start the maze navigation by clicking the `Start Maze` button.
-
-A demonstration of the project is available (see Web App Demo in the Video References section).
-
-### Additional Information: Model Training
-
-- You can use a pre-trained model or train a new model using the script in [train](./training/train.py).
-- This training script is optimized for efficiency and can be run directly on the Raspberry Pi.
-- After training, you will be prompted to save the new model. If saved, it will be stored in the [models](./web_app/models) directory of the `web_app` folder.
-
-By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
-
-### Building the Maze
-
-#### Final Result
-
-The following images show the final build of the maze used in the project.
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/final_test/maze_build.jpeg}
-\captionof{figure}{Maze Build (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.45\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/final_test/final_maze_build.jpeg}
-\captionof{figure}{Final Maze Build (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-#### Prerequisites
-
-The materials and tools required for building the maze are listed below:
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.3\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/screws_used.jpeg}
-\captionof{figure}{Screws (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.3\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/m3_nuts.jpeg}
-\captionof{figure}{Nuts (Image created by author)}
-\end{minipage}%
-\hfill
-\begin{minipage}{.3\textwidth}
-\centering
-\includegraphics[width=\linewidth]{./images/assembly_images/m3_supports.jpeg}
-\captionof{figure}{Supports (Image created by author)}
-\end{minipage}%
-\hfill
-\end{figure}
-
-- Wood used:
-  - Planks cut to 10cm width by 120cm length
-  
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/wooden_planks.jpeg}
-\caption{Wood Planks (Image created by author)}
-\end{figure}
-
-#### Step 1: Calculations
-
-Where 1 cell is 25cm x 25cm.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/size_calculations.jpeg}
-\caption{Size Calculations for Maze (Image created by author)}
-\end{figure}
-
-#### Step 2: Cut the Wood
-
-I let the store cut the wooden planks for me to the correct size (10cm x 120cm).
-
-#### Step 3: Screw the Wood Together
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/drilling_wood_frames.jpeg}
-\caption{Drilling Wood Frames for Maze (Image created by author)}
-\end{figure}
-
-It should turn out like this, repeat this for all the blocks in the maze:
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=2in]{./images/assembly_images/wooden_frames.jpeg}
-\caption{Wooden Frames for Maze (Image created by author)}
-\end{figure} -->
