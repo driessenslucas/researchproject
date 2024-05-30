@@ -117,7 +117,7 @@ This thesis explores the intersection of reinforcement learning (RL) and Sim2Rea
 
 ## Sim‑to‑Real Transfer: Bridging the Gap
 
-Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. Rusu et al. demonstrated the effectiveness of progressive networks in bridging this gap, particularly in robot learning from pixels, highlighting the importance of adaptable architectures in overcoming environmental discrepancies \hyperref[ref8]{[8]}.
+Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. Rusu et al. demonstrated the effectiveness of progressive networks in bridging this gap, particularly in robot learning from pixels, highlighting the importance of adaptable architectures in overcoming environmental discrepancies \hyperref[ref6]{[6]}.
 
 ## The Maze Navigation Challenge: RC Cars and Algorithms
 
@@ -153,22 +153,22 @@ This investigation centers around the question: "Is it possible to transfer a tr
 
 ### Background on Reinforcement Learning
 
-The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref18]{[18]}; \hyperref[ref19]{[19]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref4]{[4]} and Soft Actor-Critic algorithms \hyperref[ref12]{[12]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref17]{[17]}, poses a major hurdle.
+The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref15]{[15]} \hyperref[ref16]{[16]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref3]{[3]} and Soft Actor-Critic algorithms \hyperref[ref23]{[23]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref14]{[14]}, poses a major hurdle.
 
-Several approaches have been proposed to bridge this gap. Domain randomization, for instance, involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref5]{[5]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref6]{[6]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref17]{[17]}.
+Several approaches have been proposed to bridge this gap. This involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref4]{[4]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref5]{[5]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref14]{[14]}.
 
-This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref19]{[19]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
+This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref16]{[16]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
 
-Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP), which includes:
+Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP) \hyperref[ref15]{[15]} , which includes:
 
 - **States ($S$)**: A definitive set of environmental conditions.
 - **Actions ($A$)**: A comprehensive set of possible actions for the agent.
 - **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
 - **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
 
-The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref18]{[18]}.
+The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref15]{[15]}.
 
-<!-- TODO: Proof read these section (beckground on algorihtms) -->
+<!-- TODO: Proof read these section (beckground on algorihtms)  starting from here also check references against new references-->
 ### Background on Double Deep Q-Network (DDQN)
 
 The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), a pivotal algorithm in the field of deep reinforcement learning that integrates deep neural networks with Q-learning. DQN itself was a significant advancement as it demonstrated the capability to approximate the Q-value function, which represents the expected reward for taking an action in a given state, using high-capacity neural networks.
@@ -177,10 +177,10 @@ The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), 
 
 **DQN Challenges**: While DQN substantially improved the stability and performance of Q-learning, it was susceptible to significant overestimations of Q-values due to the noise inherent in the approximation of complex functions by deep neural networks. This overestimation could lead to suboptimal policies and slower convergence during training.
 
-**DDQN Solution**: Introduced by Hado van Hasselt et al., DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
+**DDQN Solution**: Introduced by Hado van Hasselt et al., \hyperref[ref16]{[16]} DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
 
 - The **current network** determines the action with the highest Q-value for the current state.
-- A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state \hyperref[ref19]{[19]}.
+- A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state.
 
 #### The Decoupling Effect
 
@@ -192,7 +192,7 @@ DDQN has been shown to achieve better performance and faster convergence in comp
 
 ### Background on Deep Q-Network (DQN)
 
-The Deep Q-Network (DQN) algorithm represents a significant breakthrough in reinforcement learning by combining traditional Q-learning with deep neural networks. This approach was popularized by researchers at DeepMind with their notable success in training agents that could perform at human levels across various Atari games [23].
+The Deep Q-Network (DQN) algorithm represents a significant breakthrough in reinforcement learning by combining traditional Q-learning with deep neural networks. This approach was popularized by researchers at DeepMind with their notable success in training agents that could perform at human levels across various Atari games \hperref[ref27]{[27]}.
 
 **Core Mechanism**: DQN uses a deep neural network to approximate the Q-value function, which is the expected reward obtainable after taking an action in a given state and following a certain policy thereafter. The neural network inputs the state of the environment and outputs Q-values for each possible action, guiding the agent's decisions.
 
@@ -386,7 +386,7 @@ A web application was developed to serve as a control interface for the RC car, 
     \label{fig:web_app}
 \end{figure}
 
-### Agent Design (DDQNAgent)
+<!-- ### Agent Design (DDQNAgent)
 
 The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref19]{[19]}.
 
@@ -433,7 +433,57 @@ Where:
 - $\theta^-$ refers to the weights of the target network.
 - $\gamma$ represents the discount factor.
 
-To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973. This balance between exploration and exploitation contributes to the DDQN's overall performance.
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, we employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration (with $\epsilon$ set to 0.99), gradually reducing exploration as training progresses with a decay rate of 0.99973. This balance between exploration and exploitation contributes to the DDQN's overall performance. -->
+
+### Agent Design (DDQNAgent)
+
+The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref19]{[19]}.
+
+- **Policy Network**: Estimates the Q-value $Q(s, a; \theta)$ for taking action $a$ in state $s$, with weights $\theta$. This network selects actions based on the current policy.
+- **Target Network**: Independently parameterized by weights $\theta^-$, it estimates the target Q-value for updating the policy network. The target network mirrors the policy network's architecture but updates less frequently to provide stable target values.
+
+The DDQN update equation modifies the Q-function:
+$$
+Y_t^{DDQN} = R_{t+1} + \gamma Q\left(S_{t+1}, \underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta); \theta^-\right)
+$$
+
+Where:
+
+- $R_{t+1}$ is the reward received after taking action $a$ in state $s$.
+- $\gamma$ is the discount factor.
+- $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
+- $Q\left(S_{t+1}, a; \theta^-\right)$ evaluates the action using the target network.
+
+This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning \hyperref[ref23]{[23]}.
+
+The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches \hyperref[ref22]{[22]}.
+
+### Training Process
+
+The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
+$$
+L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(Y_t^{DDQN} - Q(s, a; \theta)\right)^2\right]
+$$
+
+Where:
+
+- $Y_t^{DDQN}$ is the target Q-value computed as:
+  $$
+  Y_t^{DDQN} = 
+  \begin{cases} 
+  r & \text{if done} \\
+  r + \gamma Q(s', \underset{a'}{\mathrm{argmax}}\, Q(s', a'; \theta); \theta^-) & \text{if not done}
+  \end{cases}
+  $$
+- $s$ represents the current state.
+- $a$ corresponds to the action taken.
+- $r$ denotes the received reward.
+- $s'$ signifies the subsequent state.
+- $\theta^-$ refers to the weights of the target network.
+- $\gamma$ represents the discount factor.
+
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, I employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration, gradually reducing exploration as training progresses with a decay rate. This balance between exploration and exploitation contributes to the DDQN's overall performance \hyperref[ref19]{[19]}\hyperref[ref23]{[23]}\hyperref[ref22]{[22]}.
+
 
 ### Detailed Steps in Code
 
@@ -1337,64 +1387,60 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 \pagebreak
 
 # References
-<!-- 7,14, 28 are unused -->
-\[1\]\label{ref1} G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016. [Online]. Available: arXiv. [Accessed: Jan. 29, 2024].
 
-\[2\]\label{ref2} A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," in Proceedings of the 1st Annual Conference on Robot Learning, 2017.
+[1] G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016. [Online]. Available: https://arxiv.org/abs/1606.01540. [Accessed: Jan. 29, 2024].
 
-\[4\]\label{ref4} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017.
+[2] A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," in Proc. 1st Annual Conf. Robot Learning, 2017.
 
-\[5\]\label{ref5} J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," in 2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2017.
+[3] J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: https://arxiv.org/abs/1707.06347. [Accessed: Jan. 29, 2024].
 
-\[6\]\label{ref6} K. Bousmalis et al., "Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping," in IEEE International Conference on Robotics and Automation (ICRA), 2018.
+[4] J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," in 2017 IEEE/RSJ Int. Conf. Intelligent Robots and Systems (IROS), 2017.
 
-\[7\]\label{ref7} Y. Pan and Q. Yang, "A Survey on Transfer Learning," IEEE Transactions on Knowledge and Data Engineering, vol. 22, no. 10, pp. 1345-1359, Oct. 2010.
+[5] K. Bousmalis et al., "Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping," in IEEE Int. Conf. Robotics and Automation (ICRA), 2018.
 
-\[8\]\label{ref8} A. A. Rusu et al., "Sim-to-Real Robot Learning from Pixels with Progressive Nets," in Proceedings of the Conference on Robot Learning, 2016.
+[6] A. A. Rusu et al., "Sim-to-Real Robot Learning from Pixels with Progressive Nets," in Proc. Conf. Robot Learning, 2016.
 
-\[9\]\label{ref9} S. James et al., "Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks," in Proceedings of the 2019 International Conference on Robotics and Automation (ICRA), 2019.
+[7] S. James et al., "Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks," in Proc. 2019 Int. Conf. Robotics and Automation (ICRA), 2019.
 
-\[10\]\label{ref10} F. Sadeghi and S. Levine, "(CAD)^2RL: Real Single-Image Flight without a Single Real Image," in Proceedings of Robotics: Science and Systems, 2016.
+[8] F. Sadeghi and S. Levine, "(CAD)^2RL: Real Single-Image Flight without a Single Real Image," in Proc. Robotics: Science and Systems, 2016.
 
-\[11\]\label{ref11} "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: <https://www.youtube.com/watch?v=U0-Jswwf0hw>. [Accessed: Jan. 29, 2024].
+[9] "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: https://www.youtube.com/watch?v=U0-Jswwf0hw. [Accessed: Jan. 29, 2024].
 
-\[12\]\label{ref12} Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," Applied Sciences, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: <https://www.mdpi.com/2076-3417/13/11/6400>. [Accessed: Jan. 29, 2024].
+[10] Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," Applied Sciences, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: https://www.mdpi.com/2076-3417/13/11/6400. [Accessed: Jan. 29, 2024].
 
-\[13\]\label{ref13} DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: <https://github.com/DailyL/Sim2Real_autonomous_vehicle>. [Accessed: Jan. 29, 2024].
+[11] DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: https://github.com/DailyL/Sim2Real_autonomous_vehicle. [Accessed: Jan. 29, 2024].
 
-\[14\]\label{ref14} "OpenGL inside Docker containers, this is how I did it," Reddit, r/docker. [Online]. Available: <https://www.reddit.com/r/docker/comments/8d3qox/opengl_inside_docker_containers_this_is_how_i_did/>. [Accessed: Jan. 29, 2024].
+[12] M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510. [Accessed: Jan. 29, 2024].
 
-\[15\]\label{ref15} M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: <https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510>. [Accessed: Jan. 29, 2024].
+[13] "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: https://www.youtube.com/watch?v=c_d0Is3bxXA. [Accessed: Jan. 29, 2024].
 
-\[16\]\label{ref16} "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: <https://www.youtube.com/watch?v=c_d0Is3bxXA>. [Accessed: Jan. 29, 2024].
+[14] W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in 2020 IEEE Symp. Series Computational Intelligence (SSCI), Dec. 2020, pp. 737–744. [Online]. Available: https://arxiv.org/pdf/2009.13303.pdf. [Accessed: Jan. 29, 2024].
 
-\[17\]\label{ref17} W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in 2020 IEEE Symposium Series on Computational Intelligence (SSCI), Dec. 2020, pp. 737–744. [Online]. Available: <https://arxiv.org/pdf/2009.13303.pdf>.
+[15] R. S. Sutton and A. G. Barto, Reinforcement Learning: An Introduction, 2nd ed. Cambridge, MA: The MIT Press, 2018.
 
-\[18\]\label{ref18} R. S. Sutton and A.G. Barto, Reinforcement Learning: An Introduction, 2nd ed. Cambridge, MA: The MIT Press, 2018.
+[16] H. van Hasselt, A. Guez, and D. Silver, "Deep Reinforcement Learning with Double Q-learning," arXiv preprint arXiv:1509.06461, 2015. [Online]. Available: https://arxiv.org/abs/1509.06461. [Accessed: Jan. 29, 2024].
 
-\[19\]\label{ref19} H. van Hasselt, A. Guez, D. Silver, et al., "Deep Reinforcement Learning with Double Q-learning," arXiv preprint arXiv:1509.06461, 2015.
+[17] "Double DQN Explained," Papers With Code, [Online]. Available: https://paperswithcode.com/method/double-dqn. [Accessed: Jan. 29, 2024].
 
-\[20\]\label{ref20} Papers With Code, "Double DQN Explained," [Online]. Available: <https://paperswithcode.com/method/double-dqn>.
+[18] D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/. [Accessed: Jan. 29, 2024].
 
-\[21\]\label{ref21} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: <https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/>.
+[19] D. Silver et al., "Deterministic Policy Gradient Algorithms," in Proc. 31st Int. Conf. Machine Learning, 2014.
 
-<!-- \[22\]\label{ref22} H. van Hasselt, A. Guez, and D. Silver, "Deep reinforcement learning with double Q-learning," in _Proc. of AAAI Conf. on Artificial Intelligence_, 2016. -->
+[20] V. Mnih et al., "Human-level control through deep reinforcement learning," Nature, vol. 518, no. 7540, pp. 529-533, 2015.
 
-\[23\]\label{ref23} V. Mnih et al., "Human-level control through deep reinforcement learning," _Nature_, vol. 518, no. 7540, pp. 529-533, 2015.
+[21] C. J. C. H. Watkins and P. Dayan, "Q-learning," Machine Learning, vol. 8, no. 3-4, pp. 279-292, 1992.
 
-\[24\]\label{ref24} C. J. C. H. Watkins and P. Dayan, "Q-learning," _Machine Learning_, vol. 8, no. 3-4, pp. 279-292, 1992.
+[22] J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: https://arxiv.org/abs/1707.06347. [Accessed: Jan. 29, 2024].
 
-\[25\]\label{ref25} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: [arXiv](https://arxiv.org/abs/1707.06347). [Accessed: Jan. 29, 2024].
+[23] V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in Proc. 13th Int. Conf. Neural Information Processing Systems, 2000, pp. 1008-1014.
 
-\[26\]\label{ref26} V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in _Proc. of the 13th International Conf. on Neural Information Processing Systems_, pp. 1008-1014, 2000.
+[24] T. Saanum, "Reinforcement Learning with Simple Sequence Priors," arXiv preprint arXiv:2305.17109, 2024. [Online]. Available: https://arxiv.org/abs/2305.17109. [Accessed: Jan. 29, 2024].
 
-\[27\]\label{ref27} T. Saanum, "Reinforcement Learning with Simple Sequence Priors," arXiv preprint arXiv:2305.17109, 2024.
+[25] "AirSim on Unity: Experiment with autonomous vehicle simulation," Unity Blog, 2018. [Online]. Available: https://blog.unity.com/engineering/airsim-on-unity-experiment-with-autonomous-vehicle-simulation. [Accessed: Jan. 29, 2024].
 
-\[28\]\label{ref28} W. Zhao et al., "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in IEEE SSCI, 2020.
+[26] "Introducing Unity Machine Learning Agents Toolkit," Unity Blog, 2018. [Online]. Available: https://blog.unity.com/machine-learning/introducing-unity-machine-learning-agents-toolkit. [Accessed: Jan. 29, 2024].
 
-\[29\]\label{ref29} Unity Technologies, "AirSim on Unity: Experiment with autonomous vehicle simulation," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/engineering/airsim-on-unity-experiment-with-autonomous-vehicle-simulation). [Accessed: Jan. 29, 2024].
-
-\[30\]\label{ref30} Unity Technologies, "Introducing Unity Machine Learning Agents Toolkit," Unity Blog, 2018. [Online]. Available: [Unity Blog](https://blog.unity.com/machine-learning/introducing-unity-machine-learning-agents-toolkit). [Accessed: Jan. 29, 2024].
+[27] A. Puigdomènech Badia, B. Piot, S. Kapturowski, P. Sprechmann, A. Vitvitskyi, D. Guo, and C. Blundell, "Agent57: Outperforming the Atari Human Benchmark," arXiv preprint arXiv:2003.13350, 2020. [Online]. Available: https://arxiv.org/pdf/2003.13350
 
 \pagebreak
 
