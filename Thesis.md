@@ -117,7 +117,7 @@ This thesis explores the intersection of reinforcement learning (RL) and Sim2Rea
 
 ## Sim‑to‑Real Transfer: Bridging the Gap
 
-Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. Rusu et al. demonstrated the effectiveness of progressive networks in bridging this gap, particularly in robot learning from pixels, highlighting the importance of adaptable architectures in overcoming environmental discrepancies \hyperref[ref6]{[6]}.
+Sim-to-real transfer involves translating learned behaviors from simulated environments to effective actions in the real world. Rusu et al. demonstrated the effectiveness of progressive networks in bridging this gap, particularly in robot learning from pixels, highlighting the importance of adaptable architectures in overcoming environmental discrepancies\hyperref[ref6]{[6]}.
 
 ## The Maze Navigation Challenge: RC Cars and Algorithms
 
@@ -153,31 +153,31 @@ This investigation centers around the question: "Is it possible to transfer a tr
 
 ### Background on Reinforcement Learning
 
-The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles \hyperref[ref15]{[15]} \hyperref[ref16]{[16]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization \hyperref[ref3]{[3]} and Soft Actor-Critic algorithms \hyperref[ref23]{[23]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap' \hyperref[ref14]{[14]}, poses a major hurdle.
+The challenge of Sim2Real transfer is pivotal in the deployment of autonomous systems, influencing applications ranging from robotic navigation to self-driving vehicles\hyperref[ref15]{[15]}\hyperref[ref16]{[16]}. Recent advancements in RL, such as the introduction of Proximal Policy Optimization\hyperref[ref3]{[3]} and Soft Actor-Critic algorithms\hyperref[ref23]{[23]}, have shown promise in various domains. However, the discrepancy between simulated and real environments, often referred to as the 'reality gap'\hyperref[ref14]{[14]}, poses a major hurdle.
 
-Several approaches have been proposed to bridge this gap. This involves training models on a variety of simulated environments with different parameters to improve their robustness \hyperref[ref4]{[4]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions \hyperref[ref5]{[5]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments \hyperref[ref14]{[14]}.
+Several approaches have been proposed to bridge this gap. This involves training models on a variety of simulated environments with different parameters to improve their robustness\hyperref[ref4]{[4]}. Another promising technique is domain adaptation, which seeks to align the simulated and real-world data distributions\hyperref[ref5]{[5]}. Despite these advancements, challenges remain, particularly in ensuring the transferability of learned behaviors in complex, dynamic environments\hyperref[ref14]{[14]}.
 
-This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias \hyperref[ref16]{[16]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
+This thesis builds on these foundations by exploring the feasibility of transferring RL agents trained in a simulated maze environment to a real-world RC car setup. By leveraging the Double Deep Q-Network (DDQN) architecture, known for its reduced overestimation bias\hyperref[ref16]{[16]}, this study aims to enhance the reliability of Sim2Real transfer in maze navigation tasks. The chosen approach addresses the limitations of prior methods by integrating robust policy development and comprehensive sensor calibration, providing a novel contribution to the field.
 
-Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP) \hyperref[ref15]{[15]} , which includes:
+Reinforcement Learning (RL) employs a computational approach where agents learn to optimize their action sequences through trials and errors, engaging with their environment to maximize rewards over time. This learning framework is built upon the foundation of Markov Decision Processes (MDP)\hyperref[ref15]{[15]} , which includes:
 
 - **States ($S$)**: A definitive set of environmental conditions.
 - **Actions ($A$)**: A comprehensive set of possible actions for the agent.
 - **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
 - **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
 
-The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms \hyperref[ref15]{[15]}.
+The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms\hyperref[ref15]{[15]}.
 
 <!-- TODO: Proof read these section (beckground on algorihtms)  starting from here also check references against new references-->
 ### Background on Double Deep Q-Network (DDQN)
 
-The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), a pivotal algorithm in the field of deep reinforcement learning that integrates deep neural networks with Q-learning. DQN itself was a significant advancement as it demonstrated the capability to approximate the Q-value function, which represents the expected reward for taking an action in a given state, using high-capacity neural networks.
+The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), a pivotal algorithm in the field of deep reinforcement learning that integrates deep neural networks with Q-learning. DQN itself was a significant advancement as it demonstrated the capability to approximate the Q-value function, which represents the expected reward for taking an action in a given state, using high-capacity neural networks\hyperref[ref17]{[17]}\hyperref[ref18]{[18]}.
 
 #### Evolution from DQN to DDQN
 
 **DQN Challenges**: While DQN substantially improved the stability and performance of Q-learning, it was susceptible to significant overestimations of Q-values due to the noise inherent in the approximation of complex functions by deep neural networks. This overestimation could lead to suboptimal policies and slower convergence during training.
 
-**DDQN Solution**: Introduced by Hado van Hasselt et al., \hyperref[ref16]{[16]} DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
+**DDQN Solution**: Introduced by Hado van Hasselt et al.,\hyperref[ref16]{[16]} DDQN addresses the overestimation problem of DQN by decoupling the action selection from the target Q-value generation—a technique termed "double learning." In traditional DQN, a single neural network is used both to select the best action and to evaluate its value. DDQN modifies this by employing two networks:
 
 - The **current network** determines the action with the highest Q-value for the current state.
 - A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state.
@@ -192,14 +192,14 @@ DDQN has been shown to achieve better performance and faster convergence in comp
 
 ### Background on Deep Q-Network (DQN)
 
-The Deep Q-Network (DQN) algorithm represents a significant breakthrough in reinforcement learning by combining traditional Q-learning with deep neural networks. This approach was popularized by researchers with their notable success in training agents that could perform at human levels across various Atari games \hyperref[ref27]{[27]}.
+The Deep Q-Network (DQN) algorithm represents a significant breakthrough in reinforcement learning by combining traditional Q-learning with deep neural networks. This approach was popularized by researchers with their notable success in training agents that could perform at human levels across various Atari games\hyperref[ref27]{[27]}.
 
 **Core Mechanism**: DQN uses a deep neural network to approximate the Q-value function, which is the expected reward obtainable after taking an action in a given state and following a certain policy thereafter. The neural network inputs the state of the environment and outputs Q-values for each possible action, guiding the agent's decisions.
 
 **Innovations Introduced**:
 
 - **Experience Replay**: DQN utilizes a technique called experience replay, where experiences collected during training are stored in a replay buffer. This allows the network to learn from past experiences, reducing the correlations between sequential observations and smoothing over changes in the data distribution.
-- **Fixed Q-Targets**: To further stabilize training, DQN employs a separate target network, whose weights are fixed for a number of steps and only periodically updated with the weights from the training network \hyperref[ref16]{[16]}
+- **Fixed Q-Targets**: To further stabilize training, DQN employs a separate target network, whose weights are fixed for a number of steps and only periodically updated with the weights from the training network\hyperref[ref16]{[16]}
 
 #### DQN Advantages and Applications
 
@@ -207,7 +207,7 @@ DQN's ability to handle high-dimensional sensory inputs directly with minimal do
 
 ### Background on Q-agent (Q-learning)
 
-Q-agent, based on the Q-learning algorithm, is one of the most fundamental types of reinforcement learning methods. It is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment \hyperref[ref21]{[21]}.
+Q-agent, based on the Q-learning algorithm, is one of the most fundamental types of reinforcement learning methods. It is a model-free algorithm that learns to estimate the values of actions at each state without requiring a model of the environment\hyperref[ref21]{[21]}.
 
 **Simplicity and Versatility**: Q-learning works by updating an action-value lookup table called the Q-table, which stores Q-values for each state-action pair. These values are updated using the Bellman equation during each step of training based on the reward received and the maximum predicted reward for the next state.
 
@@ -219,7 +219,7 @@ Q-learning has been foundational in teaching agents in environments with discret
 
 ### Background on Proximal Policy Optimization (PPO)
 
-Proximal Policy Optimization (PPO) is a policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach. PPO has become popular due to its effectiveness and ease of use \hyperref[ref3]{[3]} 
+Proximal Policy Optimization (PPO) is a policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach. PPO has become popular due to its effectiveness and ease of use\hyperref[ref3]{[3]}\hyperref[ref22]{[22]}.
 
 **Optimization Technique**: PPO seeks to take the largest possible improvement step on a policy while avoiding
 
@@ -233,7 +233,7 @@ PPO is favored in many modern RL applications due to its balance between efficie
 
 ### Background on Actor-Critic (AC)
 
-Actor-Critic methods form a broad class of algorithms in reinforcement learning that combine both policy-based (actor) and value-based (critic) approaches \hyperref[ref23]{[23]}.
+Actor-Critic methods form a broad class of algorithms in reinforcement learning that combine both policy-based (actor) and value-based (critic) approaches\hyperref[ref23]{[23]}.
 
 **Dual Components**:
 
@@ -388,7 +388,7 @@ A web application was developed to serve as a control interface for the RC car, 
 
 ### Agent Design (DDQNAgent)
 
-The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation \hyperref[ref16]{[16]}
+The agent uses a Double Deep Q-Network (DDQN) architecture to learn the optimal policy $\pi^*$. DDQN is an enhancement over the standard DQN, aiming to reduce overestimation of Q-values by separating action selection from evaluation\hyperref[ref16]{[16]}
 
 - **Policy Network**: Estimates the Q-value $Q(s, a; \theta)$ for taking action $a$ in state $s$, with weights $\theta$. This network selects actions based on the current policy.
 - **Target Network**: Independently parameterized by weights $\theta^-$, it estimates the target Q-value for updating the policy network. The target network mirrors the policy network's architecture but updates less frequently to provide stable target values.
@@ -405,9 +405,9 @@ Where:
 - $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
 - $Q\left(S_{t+1}, a; \theta^-\right)$ evaluates the action using the target network.
 
-This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning \hyperref[ref16]{[16]} 
+This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning\hyperref[ref16]{[16]} 
 
-The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches \hyperref[ref4]{[4]}.
+The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches\hyperref[ref4]{[4]}.
 
 ### Training Process
 
@@ -433,7 +433,7 @@ Where:
 - $\theta^-$ refers to the weights of the target network.
 - $\gamma$ represents the discount factor.
 
-To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, I employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration, gradually reducing exploration as training progresses with a decay rate. This balance between exploration and exploitation contributes to the DDQN's overall performance \hyperref[ref15]{[15]}.\hyperref[ref16]{[16]}.
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, I employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration, gradually reducing exploration as training progresses with a decay rate. This balance between exploration and exploitation contributes to the DDQN's overall performance\hyperref[ref15]{[15]}.\hyperref[ref16]{[16]}.
 
 
 ### Detailed Steps in Code
@@ -512,39 +512,39 @@ However, the exploration wasn't limited to indoor setups alone. I also aimed to 
 
 ## 1. Which Virtual Environments Exist to Train a Virtual RC-Car?
 
-Selecting the right virtual environment is crucial for effective RL training of a virtual RC car. Several platforms are available, including Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym. For this project, I chose OpenAI Gym due to its flexibility in creating custom environments and compatibility with Python. This choice supports seamless integration with advanced AI coursework and facilitates effective Sim2Real transfer practices \hyperref[ref1]{[1]}.
+Selecting the right virtual environment is crucial for effective RL training of a virtual RC car. Several platforms are available, including Unity 3D, AirSim, CARLA, OpenAI Gym, and ISAAC Gym. For this project, I chose OpenAI Gym due to its flexibility in creating custom environments and compatibility with Python. This choice supports seamless integration with advanced AI coursework and facilitates effective Sim2Real transfer practices\hyperref[ref1]{[1]}.
 
-Unity 3D, through its ML-Agents toolkit, offers highly realistic simulations and a user-friendly interface, making it a popular choice for training RL agents in various scenarios, including autonomous vehicle navigation \hyperref[ref26]{[26]}. However, its complexity and the need for substantial computing resources can pose challenges for beginners.
+Unity 3D, through its ML-Agents toolkit, offers highly realistic simulations and a user-friendly interface, making it a popular choice for training RL agents in various scenarios, including autonomous vehicle navigation\hyperref[ref26]{[26]}. However, its complexity and the need for substantial computing resources can pose challenges for beginners.
 
-AirSim, developed by Microsoft, provides highly realistic environments for both drones and cars, leveraging the Unreal Engine for superior visual fidelity and physics accuracy. It supports hardware-in-the-loop simulations and offers APIs for integrating with various AI and robotics frameworks \hyperref[ref25]{[25]}. Despite its strengths, the complexity of setup and resource requirements can be a drawback for some users.
+AirSim, developed by Microsoft, provides highly realistic environments for both drones and cars, leveraging the Unreal Engine for superior visual fidelity and physics accuracy. It supports hardware-in-the-loop simulations and offers APIs for integrating with various AI and robotics frameworks\hyperref[ref25]{[25]}. Despite its strengths, the complexity of setup and resource requirements can be a drawback for some users.
 
-CARLA is specifically designed for autonomous driving research and offers a wide range of features for simulating urban driving scenarios. It provides realistic traffic scenarios and supports various sensors, making it a strong choice for traditional vehicle simulations \hyperref[ref2]{[2]}. However, it is less tailored for RC cars, which might limit its applicability in this context.
+CARLA is specifically designed for autonomous driving research and offers a wide range of features for simulating urban driving scenarios. It provides realistic traffic scenarios and supports various sensors, making it a strong choice for traditional vehicle simulations\hyperref[ref2]{[2]}. However, it is less tailored for RC cars, which might limit its applicability in this context.
 
-ISAAC Gym, developed by NVIDIA, focuses on high-fidelity physics simulations and is optimized for GPU acceleration, making it ideal for robotics simulations. It offers extensive support for reinforcement learning algorithms, though its primary focus on robotics may not align perfectly with the goals of this project \hyperref[ref28]{[28]}.
+ISAAC Gym, developed by NVIDIA, focuses on high-fidelity physics simulations and is optimized for GPU acceleration, making it ideal for robotics simulations. It offers extensive support for reinforcement learning algorithms, though its primary focus on robotics may not align perfectly with the goals of this project\hyperref[ref28]{[28]}.
 
-OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit for this application. Additionally, OpenAI Gym's wide acceptance in the academic community and extensive documentation provide a robust foundation for developing custom environments tailored to specific research needs \hyperref[ref1]{[1]}.
+OpenAI Gym’s simplicity and reinforcement learning focus make it the ideal fit for this application. Additionally, OpenAI Gym's wide acceptance in the academic community and extensive documentation provide a robust foundation for developing custom environments tailored to specific research needs\hyperref[ref1]{[1]}.
 
 ## 2. Which Reinforcement Learning Techniques Can I Best Use in This Application?
 
 For the autonomous navigation of a virtual RC car in a maze, various reinforcement learning (RL) techniques were considered, including Deep Q-Network (DQN), Double Deep Q-Network (DDQN), Q-Learning, Proximal Policy Optimization (PPO), and Actor-Critic (AC). After careful consideration and testing, DDQN was selected as the most suitable technique for this project.
 
-Deep Q-Network (DQN) was initially considered due to its significant breakthrough in RL, effectively handling high-dimensional sensory inputs and achieving impressive performance in many tasks. However, DQN tends to overestimate Q-values, leading to instability and slower learning. Due to these overestimation issues, DQN was not as stable or reliable as DDQN for this project \hyperref[ref20]{[20]}.
+Deep Q-Network (DQN) was initially considered due to its significant breakthrough in RL, effectively handling high-dimensional sensory inputs and achieving impressive performance in many tasks. However, DQN tends to overestimate Q-values, leading to instability and slower learning. Due to these overestimation issues, DQN was not as stable or reliable as DDQN for this project\hyperref[ref20]{[20]}.
 
-Q-Learning, known for its simplicity and effectiveness in discrete and small state spaces, was also evaluated. While it is straightforward to implement and model-free, Q-Learning struggles with large or continuous state spaces, requiring a Q-table that grows exponentially, making it impractical for complex tasks. Given the complexity of maze navigation and high-dimensional sensory inputs, Q-Learning was not feasible for this application \hyperref[ref21]{[21]}.
+Q-Learning, known for its simplicity and effectiveness in discrete and small state spaces, was also evaluated. While it is straightforward to implement and model-free, Q-Learning struggles with large or continuous state spaces, requiring a Q-table that grows exponentially, making it impractical for complex tasks. Given the complexity of maze navigation and high-dimensional sensory inputs, Q-Learning was not feasible for this application\hyperref[ref21]{[21]}.
 
-Proximal Policy Optimization (PPO) offers robustness, efficiency, and the ability to handle both continuous and discrete action spaces, maintaining stable updates with its clipped objective function \hyperref[ref3]{[3]}. However, PPO’s policy optimization approach sometimes leads to less precise value estimations compared to DDQN, which focuses on accurate Q-value approximations. Although PPO is a powerful technique, the need for precise Q-value approximations in maze navigation made DDQN a better fit.
+Proximal Policy Optimization (PPO) offers robustness, efficiency, and the ability to handle both continuous and discrete action spaces, maintaining stable updates with its clipped objective function\hyperref[ref3]{[3]}. However, PPO’s policy optimization approach sometimes leads to less precise value estimations compared to DDQN, which focuses on accurate Q-value approximations. Although PPO is a powerful technique, the need for precise Q-value approximations in maze navigation made DDQN a better fit.
 
-Actor-Critic (AC) methods combine the strengths of policy-based and value-based methods, reducing variance in updates and generally converging faster. Despite these advantages, AC methods can be complex to implement and may not achieve the same level of stability and performance as DDQN in tasks requiring precise action evaluation. The complexity and less consistent performance of AC methods compared to DDQN led to the decision to not use AC for this project \hyperref[ref23]{[23]}.
+Actor-Critic (AC) methods combine the strengths of policy-based and value-based methods, reducing variance in updates and generally converging faster. Despite these advantages, AC methods can be complex to implement and may not achieve the same level of stability and performance as DDQN in tasks requiring precise action evaluation. The complexity and less consistent performance of AC methods compared to DDQN led to the decision to not use AC for this project\hyperref[ref23]{[23]}.
 
-Double Deep Q-Network (DDQN) addresses the overestimation bias in DQN by decoupling action selection from value estimation, resulting in more accurate Q-value approximations and improved learning stability. It handles high-dimensional sensory inputs effectively and balances exploration and exploitation well. After testing, DDQN proved to outperform other methods in maze-like virtual RC car scenarios, making it the optimal choice for this application \hyperref[ref16]{[16]}.
+Double Deep Q-Network (DDQN) addresses the overestimation bias in DQN by decoupling action selection from value estimation, resulting in more accurate Q-value approximations and improved learning stability. It handles high-dimensional sensory inputs effectively and balances exploration and exploitation well. After testing, DDQN proved to outperform other methods in maze-like virtual RC car scenarios, making it the optimal choice for this application\hyperref[ref16]{[16]}.
 
 By selecting DDQN, the project leverages its strengths in stability, accuracy, and performance, ensuring effective navigation and learning in complex, sensor-driven environments.
 
 ## 3. Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World.
 
-Transferring simulation-trained models to real-world applications requires addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics \hyperref[ref29]{[29]} \hyperref[ref30]{[30]}. Real-world sensors may introduce noise and inaccuracies not present in the simulation, and the car's physical dynamics, like friction and wheel slippage, can differ significantly from the idealized simulation\ hyperref[ref29]{[29]} \hyperref[ref30]{[30]}.
+Transferring simulation-trained models to real-world applications requires addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Real-world sensors may introduce noise and inaccuracies not present in the simulation, and the car's physical dynamics, like friction and wheel slippage, can differ significantly from the idealized simulation\ hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
 
-To mitigate these issues, implementing sensor data normalization and action synchronization mechanisms is essential to align simulation outcomes with real-world performance \hyperref[ref29]{[29]} \hyperref[ref30]{[30]}.Introducing failsafe mechanisms and adjusting motor control timings were crucial in reducing collision risks and movement inaccuracies \hyperref[ref29]{[29]} \hyperref[ref30]{[30]}. Iterative testing and adaptation were crucial in this process \hyperref[ref29]{[29]} \hyperref[ref30]{[30]}.
+To mitigate these issues, implementing sensor data normalization and action synchronization mechanisms is essential to align simulation outcomes with real-world performance\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.Introducing failsafe mechanisms and adjusting motor control timings were crucial in reducing collision risks and movement inaccuracies\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Iterative testing and adaptation were crucial in this process\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
 
 ## 4. Does the Simulation Have Any Useful Contributions? In Terms of Training Time or Performance.
 
@@ -575,20 +575,20 @@ In summary, simulation training improves employee performance by enhancing learn
 
 ## 5. How Can the Trained Model be Transferred to the Real RC Car? How Do We Need to Adjust the Agent and the Environment for It to Translate to the Real World?
 
-Applying a trained model to a physical RC car requires several adjustments. Effective Sim2Real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation \hyperref[ref6]{[6]}. These steps include:
+Applying a trained model to a physical RC car requires several adjustments. Effective Sim2Real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation\hyperref[ref6]{[6]}. These steps include:
 
 - **Sensor Calibration**: Ensuring the sensors used in the real RC car provide data in a format compatible with the trained model.
 - **Motor Control Adjustments**: Adjusting motor control timings to match the physical dynamics of the real car.
 - **Failsafe Mechanisms**: Introducing mechanisms to handle unexpected scenarios and reduce collision risks.
 - **Incremental Testing**: Conducting iterative tests in real environments to validate and refine the agent's performance.
 
-These adjustments are essential to ensure the successful application of the model in real-world scenarios, facilitating robust and reliable autonomous driving systems \hyperref[ref8]{[8]}. Additionally, implementing sensor fusion techniques can improve the robustness of the real-world model by combining data from multiple sensors to provide more accurate and reliable inputs \hyperref[ref12]{[12]}. This approach helps in mitigating the effects of sensor noise and inaccuracies, further aligning the simulation-trained model with real-world conditions.
+These adjustments are essential to ensure the successful application of the model in real-world scenarios, facilitating robust and reliable autonomous driving systems\hyperref[ref8]{[8]}. Additionally, implementing sensor fusion techniques can improve the robustness of the real-world model by combining data from multiple sensors to provide more accurate and reliable inputs\hyperref[ref12]{[12]}. This approach helps in mitigating the effects of sensor noise and inaccuracies, further aligning the simulation-trained model with real-world conditions.
 
 # Model Architecture and Training Insights
 
 To understand how our Double DQN model learns and makes decisions, let's examine its architecture. The model has four dense layers that output three actions tailored to the RC car's movement.
 
-Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization \hyperref[ref36]{[36]}. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies \hyperref[ref36]{[36]}\hyperref[ref37]{[37]}.
+Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization\hyperref[ref36]{[36]}. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies\hyperref[ref36]{[36]}\hyperref[ref37]{[37]}.
 
 With these insights in mind, I designed the Double DQN model to strike a balance between simplicity and effectiveness, ensuring optimal performance in maze navigation tasks. By leveraging the strengths of simpler models while addressing critical performance issues, the Double DQN maintains a robust and efficient architecture for reinforcement learning applications.
 
@@ -1230,15 +1230,15 @@ The inspiration for this research comes from a mix of technical documentation, d
 
 ## Micro Mouse Competitions and Reinforcement Learning
 
-Micro mouse competitions, where small robotic mice navigate mazes, served as a major inspiration. The use of RL in these competitions showed the potential for solving real-world problems and controlling autonomous systems. Insights from a Medium article by M. A. Dharmasiri on maze traversal algorithms and shortest path strategies provided practical algorithmic approaches relevant to this study \hyperref[ref12]{[12]}.
+Micro mouse competitions, where small robotic mice navigate mazes, served as a major inspiration. The use of RL in these competitions showed the potential for solving real-world problems and controlling autonomous systems. Insights from a Medium article by M. A. Dharmasiri on maze traversal algorithms and shortest path strategies provided practical algorithmic approaches relevant to this study\hyperref[ref12]{[12]}.
 
 ## Influential YouTube Demonstrations and GitHub Insights
 
-YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning" \hyperref[ref9]{[9]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car" \hyperref[ref13]{[13]} vividly demonstrated RL's real-world applicability and the feasibility of Sim2Real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project \hyperref[ref11]{[11]}, detailed the practical steps and challenges of implementing RL in physical systems.
+YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning"\hyperref[ref9]{[9]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car"\hyperref[ref13]{[13]} vividly demonstrated RL's real-world applicability and the feasibility of Sim2Real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project\hyperref[ref11]{[11]}, detailed the practical steps and challenges of implementing RL in physical systems.
 
 ## Technical Exploration and Academic Foundation
 
-Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control \hyperref[ref10]{[10]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on Sim2Real transfer in deep RL for robotics \hyperref[ref14]{[14]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
+Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control\hyperref[ref10]{[10]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on Sim2Real transfer in deep RL for robotics\hyperref[ref14]{[14]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
 
 ## Synthesis and Research Direction
 
@@ -1252,7 +1252,7 @@ This thesis has demonstrated the potential of transferring a trained reinforceme
 
 The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 10: Challenges and Solutions in RL Implementation** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
 
-The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 4.2: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
+The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 5.2: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
 
 This study confirms the feasibility of Sim2Real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
 
