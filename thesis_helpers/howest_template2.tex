@@ -1,9 +1,7 @@
-\documentclass{article} % Change the document's base font size
-
+\documentclass[12pt]{article}
 
 % Additional packages
 \usepackage{graphicx}
-% \usepackage{hyperref}
 \usepackage[lofdepth=1, lotdepth]{subfig}
 \usepackage{titlesec}
 \usepackage{changepage}
@@ -16,7 +14,6 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{placeins}
-\usepackage{float}
 \usepackage{scrlayer-scrpage}
 \usepackage{ragged2e}
 \usepackage{framed}
@@ -25,39 +22,24 @@
 \usepackage{silence} % Add the silence package
 \usepackage[hidelinks]{hyperref}
 \usepackage{geometry}
-% long table
 \usepackage{longtable}
+\usepackage{fontspec} % For custom fonts
+\usepackage{unicode-math} % For custom math fonts
 
-\usepackage{lmodern}
-% set font family to lmodern
-\renewcommand{\familydefault}{\sfdefault}
 
-%  import helvetica font
-% \usepackage[scaled]{helvet}
-% \renewcommand\familydefault{\sfdefault}
-
-% Euler for math and numbers
-% \usepackage[euler-digits,small]{eulervm}
-% \AtBeginDocument{\renewcommand{\hbar}{\hslash}}
-
-% reset font to default
-% \renewcommand{\familydefault}{\rmdefault}
-
-\geometry{a4paper, margin=1.25in}
-%  set default font size
-% \renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
-
-% Customize section titles
-\titleformat{\section}
-  {\normalfont\Large\bfseries} % Blue, large, bold section titles
-  {}{0pt}{\thesection\quad}
+% Set the font family to Helvetica for the title page
+\usepackage{helvet}
 
 $if(highlighting-macros)$
 $highlighting-macros$
-% disable highlighting in links
-\renewcommand{\href}[2]{#2}
-
 $endif$
+
+
+\geometry{a4paper, margin=1.25in}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {}{0pt}{\thesection\quad}
 
 % Filter out specific warnings
 \WarningFilter{latex}{Float too large for page}
@@ -80,16 +62,21 @@ $endif$
     \hspace{0.2em}% Add some space between the icon and text
     Bachelor Thesis Howest
   }
-  \chead*{} % Center header if needed
-  \ohead*{\today} % Replace with desired content
-  \ifoot*{Driessens Lucas} % Replace with your author name
-  \cfoot*{} % Center footer if needed
+  \chead*{}
+  \ohead*{\today}
+  \ifoot*{Driessens Lucas}
+  \cfoot*{}
   \ofoot*{\thepage}
   \addtokomafont{pageheadfoot}{\upshape}
 }
 
 % Apply the custom style
 \pagestyle{custom-header-footer}
+
+% Set fonts for the whole document
+\setmainfont{TeX Gyre Pagella} % Palatino equivalent
+\setmathfont{Asana Math}
+
 
 \begin{document}
 
@@ -136,8 +123,9 @@ $endif$
     \normalfont
 \end{titlepage}
 
-% set font family to default
-\fontfamily{phv}\selectfont
+% Set font family to lmodern for the rest of the document at 12pt
+\renewcommand{\familydefault}{\rmdefault}
+\fontsize{12pt}{14pt}\selectfont
 
 \newgeometry{margin=1.25in}
 
@@ -152,11 +140,10 @@ $if(beamer)$
 % \author{$author$}
 % \date{$date$}
 
-
 % don't generate the default title
 % $else$
 % \maketitle
-\pagenumbering{Roman} % set the numbering style to lowercase letter
+\pagenumbering{Roman}
 
 $endif$
 $if(abstract)$
@@ -175,11 +162,9 @@ $if(preface)$
  {\LARGE \textbf{\textsf{Preface}}}
 \end{center}
 
-% \begin{abstract}
 \begin{justify}
 $preface$
 \end{justify}
-% \end{abstract}
 \pagebreak
 $endif$
 
@@ -188,17 +173,15 @@ $if(acknowledgements)$
  {\LARGE \textbf{\textsf{Acknowledgements}}}
 \end{center}
 
-% \begin{abstract}
 \begin{justify}
 $acknowledgements$
 \end{justify}
-% \end{abstract}
 \pagebreak
 $endif$
 
 $endif$
-\pagenumbering{arabic} % set the numbering style to lowercase letter
-\setcounter{page}{0} % Set the page counter to 3
+\pagenumbering{arabic}
+\setcounter{page}{0}
 
 $if(first-chapter)$
 \setcounter{chapter}{$first-chapter$}
@@ -249,9 +232,8 @@ $if(has-frontmatter)$
 \mainmatter
 $endif$
 
-% force new line after each paragraph
+% Force new line after each paragraph
 \setlength{\parskip}{1em}
-
 
 $body$
 

@@ -542,40 +542,24 @@ By selecting DDQN, the project leverages its strengths in stability, accuracy, a
 
 ## 3. Can the Simulation be Transferred to the Real World? Explore the Difference Between How the Car Moves in the Simulation and in the Real World.
 
-Transferring simulation-trained models to real-world applications requires addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Real-world sensors may introduce noise and inaccuracies not present in the simulation, and the car's physical dynamics, like friction and wheel slippage, can differ significantly from the idealized simulation\ hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
+Transferring simulation-trained models to real-world applications involves addressing discrepancies in sensor data interpretation, action synchronization, and physical dynamics \hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Real-world sensors may introduce noise and inaccuracies not present in the simulation, and the car's physical dynamics, like friction and wheel slippage, can differ significantly from the idealized simulation \hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
 
-To mitigate these issues, implementing sensor data normalization and action synchronization mechanisms is essential to align simulation outcomes with real-world performance\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.Introducing failsafe mechanisms and adjusting motor control timings were crucial in reducing collision risks and movement inaccuracies\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Iterative testing and adaptation were crucial in this process\hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
+To mitigate these issues, implementing sensor data normalization and action synchronization mechanisms is essential to align simulation outcomes with real-world performance \hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Introducing failsafe mechanisms and adjusting motor control timings are crucial in reducing collision risks and movement inaccuracies \hyperref[ref29]{[29]}\hyperref[ref30]{[30]}. Iterative testing and adaptation play a significant role in this process \hyperref[ref29]{[29]}\hyperref[ref30]{[30]}.
 
 ## 4. Does the Simulation Have Any Useful Contributions? In Terms of Training Time or Performance.
 
-Simulation training offers several key benefits that improve employee performance:
+**Efficiency:** Simulations enable continuous and automated training sessions without interruptions, which greatly accelerates the development process. This efficiency allows developers to iterate and improve models faster than they could with real-world testing alone.
 
-### Enhanced Learning Retention and Contextual Understanding
+**Safety:** By eliminating real-world risks, simulations provide a safe environment for testing autonomous driving models. This safety aspect is crucial, as it allows for extensive testing without the potential for accidents or damage to property.
 
-Simulation-based training allows employees to learn by doing, combining different types of instruction like reading, listening to feedback, and hands-on practice. This holistic approach improves retention and speeds up understanding, as learners can ask questions and learn from mistakes in a risk-free environment[31][34].
+**Computational Advantages:** Using powerful computing resources, simulations can create high-fidelity environments that closely mimic real-world conditions. This capability accelerates training by allowing for more rapid and thorough testing of models under various scenarios.
 
-### Improved Decision-Making Abilities 
-
-By experiencing a variety of simulated scenarios, employees gain context and practice making decisions. This builds adaptability and the ability to think on their feet when facing real business challenges[34].
-
-### Boosted Confidence and Competence
-
-Simulation training allows employees to become proficient and work out any issues before encountering real-world situations. This added confidence enables them to feel secure in their abilities on the job[34].
-
-### Reduced Training Time and Costs
-
-While simulation training requires an initial investment, it can be cost-effective in the long run. Simulations can be used repeatedly without additional costs, and employees can learn faster and more efficiently compared to traditional training methods[31][33].
-
-### Measurable Outcomes
-
-Simulation training allows for data collection on learner performance, providing insights into areas needing additional support. This data-driven approach enables continuous improvement of the training program[31][33].
-
-In summary, simulation training improves employee performance by enhancing learning retention, decision-making, confidence, and efficiency, while providing a safe, measurable environment for skill development. The realistic scenarios and immediate feedback make simulation a powerful tool for employee training and development.
+Overall, simulations offer a practical and effective approach to Reinforcent Learning applications. They can significantly reduce training times and enhance performance, making them important tools in Sim2Real\hyperref[ref33]{[33]}.
 
 
 ## 5. How Can the Trained Model be Transferred to the Real RC Car? How Do We Need to Adjust the Agent and the Environment for It to Translate to the Real World?
 
-Applying a trained model to a physical RC car requires several adjustments. Effective Sim2Real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation\hyperref[ref6]{[6]}. These steps include:
+Applying a trained model to a physical RC car requires several adjustments. Effective Sim2Real adaptation involves fine-tuning sensor interpretations, implementing action synchronization measures, and adjusting physical dynamics to mirror the simulation. These steps include:
 
 - **Sensor Calibration**: Ensuring the sensors used in the real RC car provide data in a format compatible with the trained model.
 - **Motor Control Adjustments**: Adjusting motor control timings to match the physical dynamics of the real car.
@@ -588,7 +572,7 @@ These adjustments are essential to ensure the successful application of the mode
 
 To understand how our Double DQN model learns and makes decisions, let's examine its architecture. The model has four dense layers that output three actions tailored to the RC car's movement.
 
-Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization\hyperref[ref36]{[36]}. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies\hyperref[ref36]{[36]}\hyperref[ref37]{[37]}.
+Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization\hyperref[ref31]{[31]}. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies\hyperref[ref31]{[31]}\hyperref[ref32]{[32]}.
 
 With these insights in mind, I designed the Double DQN model to strike a balance between simplicity and effectiveness, ensuring optimal performance in maze navigation tasks. By leveraging the strengths of simpler models while addressing critical performance issues, the Double DQN maintains a robust and efficient architecture for reinforcement learning applications.
 
@@ -1038,13 +1022,27 @@ By focusing on these considerations, we can bridge the gap between simulations a
 
 Replicating vehicle movements from simulations in the real world is challenging due to various factors such as different ground surfaces, vehicle weight, and mechanical issues. These factors can cause unexpected changes in the way the car moves. Therefore, algorithms developed in simulations need to be tweaked and recalibrated to work effectively in real-world conditions. For instance, the vehicle's weight can affect acceleration and deceleration, impacting the timing of movement commands. Similarly, the surface the vehicle moves on can affect traction, influencing its ability to turn or stop.
 
-## Limitations
+<!-- ## Limitations
 
 **Insufficient Data for Exact Positioning**: One big limitation was that the RC car only had an estimated position in the maze, it it just stored the previous position and the direction it was moving in. So if the real car would make a mistake it would not be able to correct is, as in the agent's mind it was still in a corrent position.
 
 **Hardware Limitations**: The hardware used in the RC car, such as the ultrasonic sensors and motor encoders, over time the wheels would start to slip off of their axis, causing the movement to be less reliable. When this happened the encoder would also not get an accurate reading, causing a lot of issues.
 
-**Environmental Variability**: Real-world environments are not perfect. The different floor textures made the car move differently, the walls needed to be perfectly straight for the ultrasonic sensors to work properly.
+**Environmental Variability**: Real-world environments are not perfect. The different floor textures made the car move differently, the walls needed to be perfectly straight for the ultrasonic sensors to work properly. -->
+
+## Limitations
+
+**Insufficient Data for Exact Positioning**: One significant limitation was that the RC car only had an estimated position in the maze. This estimation was based solely on the car's previous position and the direction it was moving in. There was no absolute positioning system, such as GPS or visual markers, to verify the car's exact location within the maze. As a result, if the car encountered an obstacle, slipped, or deviated slightly from its intended path, it would not be able to correct its position accurately. The agent controlling the car operated under the assumption that the car was still in the correct position, leading to compounding errors. These positional inaccuracies could cause the car to make incorrect decisions, such as turning prematurely or missing turns, thereby failing to navigate the maze successfully. This limitation shows the need for more sophisticated localization techniques, such as integrating additional sensors or using advanced algorithms to better estimate the car's position and mitigate errors.
+
+**Hardware Limitations**: The hardware used in the RC car, such as the ultrasonic sensors and motor encoders, degraded over time. The wheels would start to slip off their axis, causing unreliable movement. When this occurred, the encoder readings became inaccurate, leading to numerous issues.
+
+**Environmental Variability**: Real-world environments are imperfect. Different floor textures caused the car to move inconsistently, and the walls needed to be perfectly straight for the ultrasonic sensors to work accurately. 
+
+**Sensor Calibration and Data Normalization**: Calibrating sensors like the MPU6050 gyroscope and HC-SR04 ultrasonic sensors required constant adjustments to maintain accuracy. Variability in sensor data between different environments added complexity, making the real-world performance inconsistent.
+
+**Mechanical Wear and Tear**: Over time, mechanical components, such as motor encoders and wheels, showed signs of wear. The wheels slipping off their axis affected movement precision, and encoder malfunctions led to inaccurate readings. This degradation impacted the overall reliability and performance of the RC car.
+
+**Sim2Real Transfer Challenges**: The discrepancy between simulated and real-world environments, known as the ‘reality gap,’ posed significant challenges. The behavior of the RC car in simulations did not always accurately translate to real-world scenarios, requiring extensive adjustments and recalibrations to achieve acceptable performance.
 
 ## Conclusion for Challenges and Limitations
 
@@ -1156,7 +1154,7 @@ Mechanical discrepancies are another challenge. Simulated environments often ass
 
 During my research, I found that picking the right simulation platform is super important. Tools like OpenAI Gym are great, but for more complex scenarios, you might need additional tools. I also discovered that Double Deep Q-Network (DDQN) outperforms other models like DQN and PPO by reducing overestimations and making learning more stable.
 
-A big takeaway was the value of starting with simple simulations. Initially, I jumped into complex simulations without considering the practical constraints of my RC car. Starting simpler would have saved a lot of headaches. I also learned the importance of iterative testing and adapting based on what you learn from each step.
+A big takeaway is that you shouldn't be afraid to change the simulation environment after you start testing in the real world. I Did not think about this at all, in my mind the environment was perfect but it turned out that it was not. By adjusting the simulation to better account for real-world conditions, you can save time and resources by not having to try to perfectly recreate the simulation in the real world.
 
 ## Methodological Advice
 
@@ -1164,7 +1162,7 @@ Use both qualitative and quantitative methods to thoroughly evaluate how well yo
 
 Documentation is your friend. Keep detailed logs of what works and what doesn’t, including all the tweaks and adjustments you make along the way. This not only helps you track progress but also provides a valuable resource for troubleshooting and future projects.
 
-Engage with the community. Platforms like Reddit or GitHub can provide valuable feedback and suggestions from other researchers and enthusiasts who have faced similar challenges. Their insights can be incredibly helpful in refining your approach.
+Engage with the community. Platforms like Reddit or GitHub projects of other people can provide valuable feedback and suggestions from other researchers and enthusiasts who have faced similar challenges. Their insights can be incredibly helpful in refining your approach.
 
 ## Practical Experiment Integration
 
@@ -1410,23 +1408,15 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 [28] V. Makoviychuk et al., "Isaac Gym: High Performance GPU-Based Physics Simulation For Robot Learning," arXiv:2108.10470 [cs.RO], 2021. [Online]. Available: https://arxiv.org/abs/2108.10470. [Accessed: Jan. 29, 2024].
 
-[29] "Top 5 Benefits of Simulation-Based Training," EMS Works, [Online]. Available: https://ems-works.com/blog/content/5-benefits-simulation-based-training/. [Accessed: 30-May-2024].
+[29] "Transfer from Simulation to Real World through Learning Deep Inverse Dynamics Model," arXiv.org, [Online]. Available: https://ar5iv.labs.arxiv.org/html/1610.03518
 
-[30] "Simulation Training: Key Benefits, Types and Best Practices," Program-Ace, [Online]. Available: https://program-ace.com/blog/simulation-training/. [Accessed: 30-May-2024].
+[30] "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," arXiv.org, [Online]. Available: https://ar5iv.labs.arxiv.org/html/1703.06907
 
-[31] "Simulate to Elevate: Unveiling the Power of Training Simulation," EI Design, [Online]. Available: https://www.eidesign.net/simulate-to-elevate-unveiling-the-power-of-training-simulation/. [Accessed: 30-May-2024].
+[31] F. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," in *Proc. 31st Int. Conf. Mach. Learn.*, vol. 48, pp. 1–9, 2016. [Online]. Available: http://proceedings.mlr.press/v48/wangf16.pdf
 
-[32] "The Benefits of Performance Simulation," BVS Performance Solutions, [Online]. Available: https://www.bvs.com/articles/the-benefits-of-performance-simulation.html. [Accessed: 30-May-2024].
+[32] Z. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," *arXiv preprint arXiv:1511.06581*, 2015. [Online]. Available: https://arxiv.org/abs/1511.06581
 
-[33] "Simulation-Based Learning: Benefits and Challenges for eLearning," Neovation, [Online]. Available: https://www.neovation.com/learn/90-simulation-based-learning-benefits-and-challenges-for-elearning. [Accessed: 30-May-2024].
-
-[34] "What Is Simulation Training? (+Benefits, Examples)," Whatfix, [Online]. Available: https://whatfix.com/blog/simulation-training/. [Accessed: 30-May-2024].
-
-[35] "Simulation Training: 6 Ways It Improves Employee Performance," eLearning Industry, [Online]. Available: https://elearningindustry.com/simulation-training-ways-improves-employee-performance. [Accessed: 30-May-2024].
-
-[36] F. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," in *Proc. 31st Int. Conf. Mach. Learn.*, vol. 48, pp. 1–9, 2016. [Online]. Available: http://proceedings.mlr.press/v48/wangf16.pdf
-
-[37] Z. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," *arXiv preprint arXiv:1511.06581*, 2015. [Online]. Available: https://arxiv.org/abs/1511.06581
+[33] C. Rizzardo, S. Katyara, M. Fernandes, and F. Chen, "The Importance and the Limitations of Sim2Real for Robotic Manipulation in Precision Agriculture," arXiv preprint arXiv:2008.03983, 2020. [Online]. Available: https://arxiv.org/abs/2008.03983
 
 \pagebreak
 
