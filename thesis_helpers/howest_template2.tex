@@ -97,17 +97,17 @@ $endif$
 
     \vspace{2em}
 
-    \noindent\MakeUppercase{\large{Internal promotor: Gevaert Wouter}} \\
+    \noindent\MakeUppercase{\large\textbf{Internal promotor: Gevaert Wouter}} \\
     \MakeUppercase{\large{External promotor: Sam De beuf}}
 
     \vspace{2em}
 
-    \noindent\MakeUppercase{\large{Research conducted by}} \\
-    \MakeUppercase{\Large\textbf{Lucas Driessens}}
+    \noindent\MakeUppercase{\large\textbf{Research conducted by}} \\
+    \MakeUppercase{\Large{Lucas Driessens}}
 
     \vspace{2em}
 
-    \noindent\MakeUppercase{\large{for obtaining a bachelor's degree in}} \\
+    \noindent\MakeUppercase{\large\textbf{for obtaining a bachelor's degree in}} \\
     \MakeUppercase{\Large\textbf{Multimedia \& Creative Technologies}}
 
     \vspace{1em}
@@ -118,6 +118,8 @@ $endif$
     % Restore original font for the rest of the document
     \normalfont
 \end{titlepage}
+
+
 
 % Set font family to lmodern for the rest of the document at 12pt
 \renewcommand{\familydefault}{\rmdefault}
@@ -149,10 +151,10 @@ $if(abstract)$
 \newgeometry{margin=1.25in}
 % add to toc
 % \addcontentsline{toc}{section}{Abstract}
-\section*{\centering Abstract} % Center the title
-\begin{justify}
+\begin{center} % Center the text
+\section{\centering Abstract}
+\end{center}
 $abstract$
-\end{justify}
 \thispagestyle{empty}
 \pagebreak
 \restoregeometry
@@ -162,10 +164,10 @@ $if(preface)$
 \newgeometry{margin=1.25in}
 % add to toc
 % \addcontentsline{toc}{section}{Preface}
-\section*{\centering Preface} % Center the title
-\begin{justify}
+\begin{center} % Center the text
+\section{\centering Preface}
+\end{center}
 $preface$
-\end{justify}
 \thispagestyle{empty}
 \pagebreak
 \restoregeometry
@@ -175,10 +177,10 @@ $if(acknowledgements)$
 \newgeometry{margin=1.25in}
 % add to toc
 %  center content
-\section*{\centering Acknowledgements} % Center the title
-\begin{justify}
+\begin{center} % Center the text
+\section{\centering Acknowledgements}
+\end{center}
 $acknowledgements$
-\end{justify}
 \thispagestyle{empty}
 \pagebreak
 \restoregeometry
@@ -209,6 +211,8 @@ $endif$
 $else$
 {
 \tableofcontents
+% add to toc
+\section{Table of Contents}
 $if(toc-own-page)$
 \newpage
 $endif$
@@ -220,6 +224,7 @@ $if(lof)$
 \listoffigures
 % add to toc
 % \addcontentsline{toc}{section}{List of Figures}
+\section{List of Figures}
 $if(lof-own-page)$
 \newpage
 $endif$
