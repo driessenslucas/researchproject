@@ -608,6 +608,7 @@ Non-trainable params: 0 (0.00 Byte)
 The training of the Double DQN agent was governed by the following parameters:
 
 - **Discount Factor (`DISCOUNT`)**: 0.90
+  - The discount factor applied to the policy network's Q-values during training.
 - **Batch Size**: 128
   - Number of steps (samples) used for training at a time.
 - **Update Target Interval (`UPDATE_TARGET_INTERVAL`)**: 2
