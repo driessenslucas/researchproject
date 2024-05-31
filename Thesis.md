@@ -1054,17 +1054,14 @@ A significant advancement was achieved by simplifying the robot's design to use 
 
 Although I made substantial progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments.
 
-# Discussion and Reflection
+<!-- # Discussion and Reflection
 
 Looking back on my research journey, I've learned a ton and grown a lot as a person. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
 
 ## Embracing Innovation and Adaptability
 
 One of the biggest takeaways from this project and my internship was the importance of staying open to new ideas and being flexible, this was a big challenge for me as I tend to get a bit stuck in my ways.
-
-In this project moving from simulation to real-world testing was tough, especially with sensor data discrepancies and movement control issues. These challenges forced me to think outside the box and come up with fast and effective solutions given the constraints of the hardware and environment.
-
-Wouter pointed out that while a 4WD setup could potentionally provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera on top of the car instead of the HC-SR04's might not improve performance because accurately determining the car’s position in the maze would still be a challenge.
+The challenges that I came across forced me to think outside the box and come up with quick solutions to keep the project moving forward, given the time and resource constraints.
 
 ## Bridging Theory and Practice
 
@@ -1077,23 +1074,25 @@ A Reddit user suggested expanding the action space in the virtual environment to
   - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different the real world and my simulation was bigger than expected. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings. This could also be avoided if my simulation would have been more advanced in terms of distance between the RC Car and walls being more than just a 2D array, never the less this was a pretty easy problem to solve.
   - **Motor Encoder Issues:** When I realised I couldn't move my RC Car as precicely as I wanted, I decided to get motor encoders to try and fix this issue. Now note: yes, I should have bought these from the beginning, I made a huge mistake when figuring out which hardware to use. Although the car did drive better than without encoders, one of my encoders sadly broke just as things started working and new ones would arrive too late. That's when I decided to use an MPU6050 to try and fix the motor control issues, which also sadly didn't work as intended.
 
+Wouter Gevaert pointed out that while a 4WD setup could potentionally provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera setup, where the camera would act as the eyes of the agent, would not solve the problem of the agent not knowing the exact position of the car in the maze.
+
 ## Anticipatory Thinking and Proactive Problem-Solving
 
 Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience, this is also something I learned during my internship, I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how planning and discussing my plans with others before starting could have saved me a lot of time and effort.
 
 ## Feedback and Continuous Improvement
 
-During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques. 
+During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques.
 
 - **Practical Implementation:** The jury appreciated the practical implementation of the RC car and the efforts to address real-world challenges. They acknowledged the complexity of transitioning from simulations to real-world scenarios and commended the adaptability and problem-solving skills demonstrated throughout the project even though the car didn't completely work as intended.
 
-- **Suggestions for Improvement:** Hans Ameel suggested increasing the distance between the walls to reduce the impact of the car diviating from the path. This was based on the observation that the car had a tendency to slightly drift off course due to the narrow maze walls. 
+- **Suggestions for Improvement:** Hans Ameel suggested increasing the distance between the walls to reduce the impact of the car diviating from the path. This was based on the observation that the car had a tendency to slightly drift off course due to the narrow maze walls.
 
 ## Methodological Rigor and Insights
 
 Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI` we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment.
 
-One thing that surprised me that how my virtual twin setup did not really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when the real car was stuck for example (or rather why it got stuck), Additionally, it could have been used as an additional input to the agent/environment.
+One thing that surprised me that how my virtual twin setup did not really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when or where the real car was stuck for example or rather, Additionally the top down camera could have been used as an additional input to the agent to help it navigate the maze along with the ultrasonic sensors.
 
 ## Educational Value
 
@@ -1109,21 +1108,84 @@ By making the project’s code and documentation open-source, it becomes an even
 
 ## Personal Growth and Aspirations
 
-This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and actually having to start from scratch and build something tailored to my needs was incredibly rewarding. I'm excited about the endless possibilities in AI and robotics, and I'm determined to keep learning and exploring in this dynamic field. This project was really an awakening for me and it made me just that much more excited to continue my journey in AI and robotics.
-
-## Commitment to Innovation and Continuous Learning
-
-Moving forward, I'm committed to fostering a culture of innovation and continuous improvement. This means creative problem-solving, interdisciplinary collaboration, and staying focused on the bigger picture. The lessons I've learned from this project have prepared me for the next stage of my journey, where I'll keep refining my methods and embracing new challenges.
+This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and actually having to start from scratch and build something tailored to my needs was incredibly rewarding. This project allowed me to see the potential of combining AI and robotics in practical applications.
 
 Moving forward, I'm commited to life long learning, something that our school really values and is continuously brought up. I'm excited to see where this journey will take me and I'm looking forward to the even bigger and more complex challenges that I will have the opportunity to solve.
 
 ## A final reflection on this journey
 
-Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three‑week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like limiting the action space and forcing me to try and replicate the exact movement. I also feel like I should have done more research on the hardware, especially on how the encoders for the motors work and how to use them.
+Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three‑week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like limiting the action space and forcing me to try and replicate the exact movement. I feel that I should have done more research on the hardware before starting this project, especially on how the encoders for the motors work and how to use them.
 
 I doubt I would’ve been able to get as far as fast as I did if I had taken an alternative route like giving the agent full control over the motors like a Reddit user suggested, but I do think it would have been a lot more interesting and maybe even more rewarding. This also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do.
 
-Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot if responses, the feedback was did reconfirm some of the things I had been thinking about.
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot if responses, the feedback was did reconfirm some of the things I had been thinking about. -->
+
+\pagebreak
+
+# Discussion and Reflection
+
+Looking back on my research journey, I've learned a ton and grown a lot as a person. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
+
+## Embracing Innovation and Adaptability
+
+One of the biggest takeaways from this project and my internship was the importance of staying open to new ideas and being flexible. This was a big challenge for me as I tend to get a bit stuck in my ways. The challenges I encountered forced me to think outside the box and come up with quick solutions to keep the project moving forward, given the time and resource constraints.
+
+## Bridging Theory and Practice
+
+The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including the possibility of using a more complex environment than just a 2D array as the representation of the maze, made me realize that I was too quick to believe that the environment I had was good enough.
+
+A Reddit user suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's ability to adapt to the environment better and eliminated the need for perfect movement replication. However, this would have required a longer training period and increased the risk of encountering different types of problems, like the HC-SR04's being practically useless in such an environment as it would need to have a more reliable way of determining the car's position to be able to adjust the movements accordingly.
+
+- **Highlighting Specific Problems**
+
+  - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between the real world and my simulation were bigger than expected. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings. This could also have been avoided if my simulation had been more advanced in terms of distance between the RC Car and walls being more than just a 2D array, nevertheless, this was a pretty easy problem to solve.
+  - **Motor Encoder Issues:** When I realized I couldn't move my RC Car as precisely as I wanted, I decided to get motor encoders to try and fix this issue. Now note: yes, I should have bought these from the beginning; I made a huge mistake when figuring out which hardware to use. Although the car did drive better than without encoders, one of my encoders sadly broke just as things started working, and new ones would arrive too late. That's when I decided to use an MPU6050 to try and fix the motor control issues, which also sadly didn't work as intended.
+
+Wouter Gevaert pointed out that while a 4WD setup could potentially provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera setup, where the camera would act as the eyes of the agent, would not solve the problem of the agent not knowing the exact position of the car in the maze.
+
+## Anticipatory Thinking and Proactive Problem-Solving
+
+Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience; this is also something I learned during my internship. I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how planning and discussing my plans with others before starting could have saved me a lot of time and effort.
+
+## Feedback and Continuous Improvement
+
+During the evaluation of the practical part of this research, the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques.
+
+- **Practical Implementation:** The jury appreciated the practical implementation of the RC car and the efforts to address real-world challenges. They acknowledged the complexity of transitioning from simulations to real-world scenarios and commended the adaptability and problem-solving skills demonstrated throughout the project, even though the car didn't completely work as intended.
+  
+- **Suggestions for Improvement:** Hans Ameel suggested increasing the distance between the walls to reduce the impact of the car deviating from the path. This was based on the observation that the car had a tendency to slightly drift off course due to the narrow maze walls.
+
+## Methodological Rigor and Insights
+
+Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI`, we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment.
+
+One thing that surprised me was how my virtual twin setup did not really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didn’t show when or where the real car was stuck. Additionally, the top-down camera could have been used as an additional input to the agent to help it navigate the maze along with the ultrasonic sensors.
+
+## Educational Value
+
+The educational value of this project is huge. By documenting the whole process and the challenges faced, this project becomes a fantastic learning tool for anyone interested in AI and robotics. It shows how to apply reinforcement learning in the real world, effectively bridging the gap between theory and practice.
+
+This project is all about hands-on learning. Students and researchers can set up their own experiments to see how reinforcement learning, sensor calibration, and robotic control work in real life. This kind of hands-on experience is invaluable for really understanding these complex concepts.
+
+For teachers, this project is a goldmine. The detailed steps and problem-solving approach make it a great resource for AI and robotics courses. It’s perfect for showing students how theoretical concepts apply in the real world. Plus, the documented challenges and solutions make for great case studies in class, helping students develop their critical thinking and problem-solving skills.
+
+The project’s mix of successes and setbacks can also inspire others to dive into their own AI and robotics projects. It shows that hitting roadblocks is just part of the journey and can lead to major breakthroughs. This can motivate students to keep pushing forward, even when things get tough.
+
+By making the project’s code and documentation open-source, it becomes an even more powerful educational tool. Other students and researchers can build on this work, make improvements, and adapt the methods for their own projects. This creates a collaborative learning environment where knowledge and resources are shared, promoting continuous learning and innovation in AI and robotics.
+
+## Personal Growth and Aspirations
+
+This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and starting from scratch to build something tailored to my needs was incredibly rewarding. This project allowed me to see the potential of combining AI and robotics in practical applications.
+
+Moving forward, I'm committed to lifelong learning, something that our school really values and continuously brings up. I'm excited to see where this journey will take me and I'm looking forward to the even bigger and more complex challenges that I will have the opportunity to solve.
+
+## A Final Reflection on This Journey
+
+Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three-week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like limiting the action space and forcing me to try and replicate the exact movement. I feel that I should have done more research on the hardware before starting this project, especially on how the encoders for the motors work and how to use them.
+
+I doubt I would’ve been able to get as far as fast as I did if I had taken an alternative route like giving the agent full control over the motors like a Reddit user suggested, but I do think it would have been a lot more interesting and maybe even more rewarding. This also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do.
+
+Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot of responses, the feedback did reconfirm some of the things I had been thinking about.
 
 # Advice for Students and Researchers
 <!-- TODO: Proof read from here on out-->
@@ -1214,13 +1276,13 @@ Use robust techniques to normalize sensor data between simulation and real-world
 
 Experiment with different normalization techniques to find what works best for your specific setup. Keep track of any anomalies and adjust your methods accordingly. Consistency checks should be part of your regular testing routine to catch issues early.
 
-## Conclusion for Future Research
+## Conclusion for my advice for students and researchers
 
 By following these steps, researchers can systematically improve their simulation-to-reality projects, ensuring more accurate and reliable outcomes. This methodical approach leverages continuous feedback, interdisciplinary collaboration, and iterative testing to bridge the gap between simulations and real-world applications effectively.
 
-Reflecting on my research journey, I realize I could have approached things differently. Starting with a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. This taught me the importance of iterative testing and continuous adaptation in research.
+Reflecting on my research journey, I realize I could have approached things differently. Starting with a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. I hope highlighting these challenges and solutions will help future researchers navigate similar projects more effectively.
 
-I also learned that the virtual twin setup I initially implemented didn’t add much value compared to a simple top-down view camera for real-time feedback. This experience showed me the importance of choosing the right tools and being open to simpler, more practical solutions when they offer better results. Moving forward, I’ll consider a more step-by-step approach: planning, building, testing, and refining in stages to avoid last-minute surprises and make sure each step is grounded in reality.
+Like I mentioned in my reflection I learned that the virtual twin setup I initially implemented didn’t add much value compared to a  top-down view camera for real-time feedback. This showed me the importance of choosing the right tools and being open to simpler, more practical solutions when they could offer better results, I ignored this suggestion at first since in my mind I thought it would be too much and not needed. Let this be a lesson to you, always be open to suggestions and feedback, even if you think you have the best solution, at the very least try it out before dismissing it.
 
 # Sources of Inspiration and Conceptual Framework
 
@@ -1350,7 +1412,7 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 \pagebreak
 
-# References
+<!-- # References
 
 [1] G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016. [Online]. Available: https://arxiv.org/abs/1606.01540. [Accessed: Jan. 29, 2024].
 
@@ -1418,7 +1480,77 @@ In conclusion, while transitioning a trained RL agent from simulation to a real 
 
 [33] C. Rizzardo, S. Katyara, M. Fernandes, and F. Chen, "The Importance and the Limitations of Sim2Real for Robotic Manipulation in Precision Agriculture," arXiv preprint arXiv:2008.03983, 2020. [Online]. Available: https://arxiv.org/abs/2008.03983
 
-\pagebreak
+\pagebreak -->
+
+# References
+
+\[1\]\label{ref1} G. Brockman et al., "OpenAI Gym," arXiv preprint arXiv:1606.01540, 2016. [Online]. Available: https://arxiv.org/abs/1606.01540. [Accessed: Jan. 29, 2024].
+
+\[2\]\label{ref2} A. Dosovitskiy et al., "CARLA: An Open Urban Driving Simulator," in Proc. 1st Annual Conf. Robot Learning, 2017.
+
+\[3\]\label{ref3} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: https://arxiv.org/abs/1707.06347. [Accessed: Jan. 29, 2024].
+
+\[4\]\label{ref4} J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," in 2017 IEEE/RSJ Int. Conf. Intelligent Robots and Systems (IROS), 2017.
+
+\[5\]\label{ref5} K. Bousmalis et al., "Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping," in IEEE Int. Conf. Robotics and Automation (ICRA), 2018.
+
+\[6\]\label{ref6} A. A. Rusu et al., "Sim-to-Real Robot Learning from Pixels with Progressive Nets," in Proc. Conf. Robot Learning, 2016.
+
+\[7\]\label{ref7} S. James et al., "Sim-to-Real via Sim-to-Sim: Data-efficient Robotic Grasping via Randomized-to-Canonical Adaptation Networks," in Proc. 2019 Int. Conf. Robotics and Automation (ICRA), 2019.
+
+\[8\]\label{ref8} F. Sadeghi and S. Levine, "(CAD)\(^2\)RL: Real Single-Image Flight without a Single Real Image," in Proc. Robotics: Science and Systems, 2016.
+
+\[9\]\label{ref9} "Self Driving and Drifting RC Car using Reinforcement Learning," YouTube, Aug. 19, 2019. [Online Video]. Available: https://www.youtube.com/watch?v=U0-Jswwf0hw. [Accessed: Jan. 29, 2024].
+
+\[10\]\label{ref10} Q. Song et al., "Autonomous Driving Decision Control Based on Improved Proximal Policy Optimization Algorithm," Applied Sciences, vol. 13, no. 11, Art. no. 11, Jan. 2023. [Online]. Available: https://www.mdpi.com/2076-3417/13/11/6400. [Accessed: Jan. 29, 2024].
+
+\[11\]\label{ref11} DailyL, "Sim2Real_autonomous_vehicle," GitHub repository, Nov. 14, 2023. [Online]. Available: https://github.com/DailyL/Sim2Real_autonomous_vehicle. [Accessed: Jan. 29, 2024].
+
+\[12\]\label{ref12} M. A. Dharmasiri, "Micromouse from scratch | Algorithm- Maze traversal | Shortest path | Floodfill," Medium, [Online]. Available: https://medium.com/@minikiraniamayadharmasiri/micromouse-from-scratch-algorithm-maze-traversal-shortest-path-floodfill-741242e8510. [Accessed: Jan. 29, 2024].
+
+\[13\]\label{ref13} "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car," YouTube, Dec. 30, 2014. [Online Video]. Available: https://www.youtube.com/watch?v=c_d0Is3bxXA. [Accessed: Jan. 29, 2024].
+
+\[14\]\label{ref14} W. Zhao, J. P. Queralta, and T. Westerlund, "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics: A Survey," in 2020 IEEE Symp. Series Computational Intelligence (SSCI), Dec. 2020, pp. 737–744. [Online]. Available: https://arxiv.org/pdf/2009.13303.pdf. [Accessed: Jan. 29, 2024].
+
+\[15\]\label{ref15} R. S. Sutton and A. G. Barto, Reinforcement Learning: An Introduction, 2nd ed. Cambridge, MA: The MIT Press, 2018.
+
+\[16\]\label{ref16} H. van Hasselt, A. Guez, and D. Silver, "Deep Reinforcement Learning with Double Q-learning," arXiv preprint arXiv:1509.06461, 2015. [Online]. Available: https://arxiv.org/abs/1509.06461. [Accessed: Jan. 29, 2024].
+
+\[17\]\label{ref17} "Double DQN Explained," Papers With Code, [Online]. Available: https://paperswithcode.com/method/double-dqn. [Accessed: Jan. 29, 2024].
+
+\[18\]\label{ref18} D. Jayakody, "Double Deep Q-Networks (DDQN) - A Quick Intro (with Code)," 2020. [Online]. Available: https://dilithjay.com/blog/2020/04/18/double-deep-q-networks-ddqn-a-quick-intro-with-code/. [Accessed: Jan. 29, 2024].
+
+\[19\]\label{ref19} D. Silver et al., "Deterministic Policy Gradient Algorithms," in Proc. 31st Int. Conf. Machine Learning, 2014.
+
+\[20\]\label{ref20} V. Mnih et al., "Human-level control through deep reinforcement learning," Nature, vol. 518, no. 7540, pp. 529-533, 2015.
+
+\[21\]\label{ref21} C. J. C. H. Watkins and P. Dayan, "Q-learning," Machine Learning, vol. 8, no. 3-4, pp. 279-292, 1992.
+
+\[22\]\label{ref22} J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv preprint arXiv:1707.06347, 2017. [Online]. Available: https://arxiv.org/abs/1707.06347. [Accessed: Jan. 29, 2024].
+
+\[23\]\label{ref23} V. R. Konda and J. N. Tsitsiklis, "Actor-critic algorithms," in Proc. 13th Int. Conf. Neural Information Processing Systems, 2000, pp. 1008-1014.
+
+\[24\]\label{ref24} T. Saanum, "Reinforcement Learning with Simple Sequence Priors," arXiv preprint arXiv:2305.17109, 2024. [Online]. Available: https://arxiv.org/abs/2305.17109. [Accessed: Jan. 29, 2024].
+
+\[25\]\label{ref25} "AirSim on Unity: Experiment with autonomous vehicle simulation," Unity Blog, 2018. [Online]. Available: https://blog.unity.com/engineering/airsim-on-unity-experiment-with-autonomous-vehicle-simulation. [Accessed: Jan. 29, 2024].
+
+\[26\]\label{ref26} "Introducing Unity Machine Learning Agents Toolkit," Unity Blog, 2018. [Online]. Available: https://blog.unity.com/machine-learning/introducing-unity-machine-learning-agents-toolkit. [Accessed: Jan. 29, 2024].
+
+\[27\]\label{ref27} A. Puigdomènech Badia, B. Piot, S. Kapturowski, P. Sprechmann, A. Vitvitskyi, D. Guo, and C. Blundell, "Agent57: Outperforming the Atari Human Benchmark," arXiv preprint arXiv:2003.13350, 2020. [Online]. Available: https://arxiv.org/pdf/2003.13350.
+
+\[28\]\label{ref28} V. Makoviychuk et al., "Isaac Gym: High Performance GPU-Based Physics Simulation For Robot Learning," arXiv:2108.10470 [cs.RO], 2021. [Online]. Available: https://arxiv.org/abs/2108.10470. [Accessed: Jan. 29, 2024].
+
+\[29\]\label{ref29} "Transfer from Simulation to Real World through Learning Deep Inverse Dynamics Model," arXiv.org, [Online]. Available: https://ar5iv.labs.arxiv.org/html/1610.03518.
+
+\[30\]\label{ref30} "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," arXiv.org, [Online]. Available: https://ar5iv.labs.arxiv.org/html/1703.06907.
+
+\[31\]\label{ref31} F. Wang, "Dueling Network
+
+ Architectures for Deep Reinforcement Learning," in *Proc. 31st Int. Conf. Mach. Learn.*, vol. 48, pp. 1–9, 2016. [Online]. Available: http://proceedings.mlr.press/v48/wangf16.pdf.
+
+\[32\]\label{ref32} Z. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," *arXiv preprint arXiv:1511.06581*, 2015. [Online]. Available: https://arxiv.org/abs/1511.06581.
+
+\[33\]\label{ref33} C. Rizzardo, S. Katyara, M. Fernandes, and F. Chen, "The Importance and the Limitations of Sim2Real for Robotic Manipulation in Precision Agriculture," arXiv preprint arXiv:2008.03983, 2020. [Online]. Available: https://arxiv.org/abs/2008.03983.
 
 # Appendices
 
