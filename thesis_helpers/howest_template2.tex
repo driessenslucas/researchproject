@@ -11,7 +11,6 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
-\usepackage{graphicx}
 \usepackage{caption}
 \usepackage{placeins}
 \usepackage{scrlayer-scrpage}
@@ -26,7 +25,6 @@
 \usepackage{fontspec} % For custom fonts
 \usepackage{unicode-math} % For custom math fonts
 
-
 % Set the font family to Helvetica for the title page
 \usepackage{helvet}
 
@@ -34,12 +32,11 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 
-
 \geometry{a4paper, margin=1.25in}
 
 \titleformat{\section}
   {\normalfont\Large\bfseries}
-  {}{0pt}{\thesection\quad}
+  {\thesection}{0.5em}{}
 
 % Filter out specific warnings
 \WarningFilter{latex}{Float too large for page}
@@ -76,7 +73,6 @@ $endif$
 % Set fonts for the whole document
 \setmainfont{TeX Gyre Pagella} % Palatino equivalent
 \setmathfont{Asana Math}
-
 
 \begin{document}
 
@@ -129,63 +125,65 @@ $endif$
 
 \newgeometry{margin=1.25in}
 
+% Use Roman numerals for the front matter
+\pagenumbering{Roman}
+
 $if(has-frontmatter)$
-\frontmatter
 $endif$
+
 $if(title)$
 $if(beamer)$
 \frame{\titlepage}
 
-% \title{$title$}
-% \author{$author$}
-% \date{$date$}
-
-% don't generate the default title
-% $else$
-% \maketitle
-\pagenumbering{Roman}
+% begin toc
+\tableofcontents
+%  init table of contents
 
 $endif$
-$if(abstract)$
-\begin{center}
- {\LARGE \textbf{\textsf{Abstract}}}
-\end{center}
 
+% Start numbering chapters from here
+\pagenumbering{arabic}
+\setcounter{section}{0}
+
+$if(abstract)$
+\newgeometry{margin=1.25in}
+% add to toc
+% \addcontentsline{toc}{section}{Abstract}
+\section*{\centering Abstract} % Center the title
 \begin{justify}
 $abstract$
 \end{justify}
+\thispagestyle{empty}
 \pagebreak
+\restoregeometry
 $endif$
 
 $if(preface)$
-\begin{center}
- {\LARGE \textbf{\textsf{Preface}}}
-\end{center}
-
+\newgeometry{margin=1.25in}
+% add to toc
+% \addcontentsline{toc}{section}{Preface}
+\section*{\centering Preface} % Center the title
 \begin{justify}
 $preface$
 \end{justify}
+\thispagestyle{empty}
 \pagebreak
+\restoregeometry
 $endif$
 
 $if(acknowledgements)$
-\begin{center}
- {\LARGE \textbf{\textsf{Acknowledgements}}}
-\end{center}
-
+\newgeometry{margin=1.25in}
+% add to toc
+%  center content
+\section*{\centering Acknowledgements} % Center the title
 \begin{justify}
 $acknowledgements$
 \end{justify}
+\thispagestyle{empty}
 \pagebreak
+\restoregeometry
 $endif$
 
-$endif$
-\pagenumbering{arabic}
-\setcounter{page}{0}
-
-$if(first-chapter)$
-\setcounter{chapter}{$first-chapter$}
-\addtocounter{chapter}{-1}
 $endif$
 
 $for(include-before)$
@@ -195,6 +193,8 @@ $endfor$
 $if(toc)$
 $if(toc-title)$
 \renewcommand*\contentsname{$toc-title$}
+% add to toc
+% \addcontentsline{toc}{section}{$toc-title$}
 $endif$
 $if(beamer)$
 \begin{frame}[allowframebreaks]
@@ -208,16 +208,18 @@ $if(toc-own-page)$
 $endif$
 $else$
 {
-\setcounter{tocdepth}{$toc-depth$}
 \tableofcontents
 $if(toc-own-page)$
 \newpage
 $endif$
 }
 $endif$
+
 $endif$
 $if(lof)$
 \listoffigures
+% add to toc
+% \addcontentsline{toc}{section}{List of Figures}
 $if(lof-own-page)$
 \newpage
 $endif$
@@ -228,9 +230,8 @@ $endif$
 $if(linestretch)$
 \setstretch{$linestretch$}
 $endif$
-$if(has-frontmatter)$
-\mainmatter
-$endif$
+% force text wrapping if it would go over the margin
+\sloppy
 
 % Force new line after each paragraph
 \setlength{\parskip}{0.5em}

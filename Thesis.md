@@ -29,7 +29,7 @@ abstract: |
 
   First, we explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
-  Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication. Practical solutions, including sensor calibration and algorithm adjustments, were implemented to improve real-world performance.
+  Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication.
 
   This study contributes to AI and robotics by providing insights and methodologies for Sim2Real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is beneficial.
 preface: |
@@ -1037,13 +1037,15 @@ Replicating vehicle movements from simulations in the real world is challenging 
 
 **Hardware Limitations**: The hardware used in the RC car, such as the ultrasonic sensors and motor encoders, degraded over time. The wheels would start to slip off their axis, causing unreliable movement. When this occurred, the encoder readings became inaccurate, leading to numerous issues.
 
-**Environmental Variability**: Real-world environments are imperfect. Different floor textures caused the car to move inconsistently, and the walls needed to be perfectly straight for the ultrasonic sensors to work accurately. 
+**Environmental Variability**: Real-world environments are imperfect. Different floor textures caused the car to move inconsistently, and the walls needed to be perfectly straight for the ultrasonic sensors to work accurately.
 
 **Sensor Calibration and Data Normalization**: Calibrating sensors like the MPU6050 gyroscope and HC-SR04 ultrasonic sensors required constant adjustments to maintain accuracy. Variability in sensor data between different environments added complexity, making the real-world performance inconsistent.
 
 **Mechanical Wear and Tear**: Over time, mechanical components, such as motor encoders and wheels, showed signs of wear. The wheels slipping off their axis affected movement precision, and encoder malfunctions led to inaccurate readings. This degradation impacted the overall reliability and performance of the RC car.
 
 **Sim2Real Transfer Challenges**: The discrepancy between simulated and real-world environments, known as the ‘reality gap,’ posed significant challenges. The behavior of the RC car in simulations did not always accurately translate to real-world scenarios, requiring extensive adjustments and recalibrations to achieve acceptable performance.
+
+**Synchronization of Motor Movements and Sensor Data**: Achieving precise synchronization between the agent's inputs and the RC car's motor movements was challenging. The delay between sending a command and the car's response, as well as the lack of immediate feedback from the motors, made it difficult to know if the car had executed the intended action. The agent could and would send commands to the car before it had finished its previous movement, leading to the agent having outdated sensor data.
 
 ## Conclusion for Challenges and Limitations
 
