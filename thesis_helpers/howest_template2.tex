@@ -25,6 +25,7 @@
 \usepackage{longtable}
 \usepackage{fontspec} % For custom fonts
 \usepackage{unicode-math} % For custom math fonts
+\usepackage{tikz}
 
 % Set the font family to Helvetica for the title page
 \usepackage{helvet}
@@ -68,8 +69,21 @@ $endif$
   \addtokomafont{pageheadfoot}{\upshape}
 }
 
+%  only for the header
+\newpairofpagestyles{custom-header}{
+  \clearpairofpagestyles
+  \ihead*{
+    \includegraphics[height=0.5cm]{./thesis_helpers/header_image.png} % Replace with your logo
+    \hspace{0.2em}% Add some space between the icon and text
+    Bachelor Thesis Howest
+  }
+  \chead*{}
+  \ohead*{\today}
+  \addtokomafont{pageheadfoot}{\upshape}
+}
+
 % Apply the custom style
-\pagestyle{custom-header-footer}
+\pagestyle{custom-header}
 
 % Set fonts for the whole document
 \setmainfont{TeX Gyre Pagella} % Palatino equivalent
@@ -78,40 +92,46 @@ $endif$
 \begin{document}
 
 % only set font different for title page
-\newgeometry{margin=1in}
+% \newgeometry{margin=1in}
 % set font for title page
 \begin{titlepage}
     \newgeometry{margin=0cm}
     % Change font to Helvetica for the title page
-    \fontfamily{phv}\selectfont
-    
+    % \fontfamily{phv}\selectfont
     \begin{center}
-        %%%%% Change the cover image here %%%%%
-        \includegraphics[width=18.5cm,height=18.5cm]{./thesis_helpers/cover_image.png}
+      \begin{tikzpicture}[      
+          every node/.style={anchor=north east,inner sep=0pt},
+          x=0mm, y=0mm,
+        ]   
+      \node (fig1) at (0,0)
+        {\includegraphics[width=21cm,height=19.5cm]{./thesis_helpers/cover_image.png}};
+      \node (fig2) at (3,3)
+        {\includegraphics[width=4.5cm,height=2.4cm]{./thesis_helpers/howest_logo.jpg}};
+      \end{tikzpicture}
     \end{center}
-    \begin{adjustwidth}{1.5cm}{1.5cm}
 
-    \vspace{0.5em}
+    \begin{adjustwidth}{1.5cm}{1.5cm}
+    % \vspace{0.5em}
 
     \MakeUppercase{\huge\textbf{Exploring the Feasibility of Sim2Real Transfer in Reinforcement Learning}} \\
     \MakeUppercase{\Large\textit{Application in Maze Navigation}}
 
-    \vspace{2em}
+    \vspace{1.25em}
 
     \noindent\MakeUppercase{\large\textbf{Internal promotor: Gevaert Wouter}} \\
     \MakeUppercase{\large{External promotor: Sam De beuf}}
 
-    \vspace{2em}
+    \vspace{1.25em}
 
     \noindent\MakeUppercase{\large\textbf{Research conducted by}} \\
     \MakeUppercase{\Large{Lucas Driessens}}
 
-    \vspace{2em}
+    \vspace{1.25em}
 
     \noindent\MakeUppercase{\large\textbf{for obtaining a bachelor's degree in}} \\
     \MakeUppercase{\Large\textbf{Multimedia \& Creative Technologies}}
 
-    \vspace{1em}
+    \vspace{0.75em}
 
     \noindent\MakeUppercase{\large{Howest | 2023-2024}}
     \end{adjustwidth}
@@ -120,6 +140,7 @@ $endif$
     \normalfont
 \end{titlepage}
 
+\newpage
 
 
 % Set font family to lmodern for the rest of the document at 12pt
@@ -130,7 +151,7 @@ $endif$
 \newgeometry{margin=1.25in}
 
 % Use Roman numerals for the front matter
-\pagenumbering{Roman}
+% \pagenumbering{Roman}
 
 $if(has-frontmatter)$
 $endif$
@@ -157,7 +178,7 @@ $if(abstract)$
 \end{center}
 \addcontentsline{toc}{section}{Abstract}
 $abstract$
-\thispagestyle{empty}
+% \thispagestyle{empty}
 \pagebreak
 \restoregeometry
 $endif$
@@ -170,9 +191,8 @@ $if(preface)$
 \end{center}
 % add to toc
 \addcontentsline{toc}{section}{Preface}
-
 $preface$
-\thispagestyle{empty}
+% \thispagestyle{empty}
 \pagebreak
 \restoregeometry
 $endif$
@@ -185,12 +205,15 @@ $if(acknowledgements)$
 \end{center}
 \addcontentsline{toc}{section}{Acknowledgements}
 $acknowledgements$
-\thispagestyle{empty}
 \pagebreak
 \restoregeometry
 $endif$
 
 $endif$
+
+
+% Apply the custom style
+\pagestyle{custom-header-footer}
 
 $for(include-before)$
 $include-before$
@@ -209,18 +232,12 @@ $if(toc-title)$
 $endif$
   \tableofcontents[hideallsubsections]
 \end{frame}
-$if(toc-own-page)$
-\newpage
-$endif$
 $else$
 {
 \tableofcontents
 % add to toc
 \addcontentsline{toc}{section}{Table of Contents}
 \newpage
-% $if(toc-own-page)$
-% % \newpage
-% $endif$
 }
 $endif$
 
@@ -231,9 +248,6 @@ $if(lof)$
 % add to toc
 \addcontentsline{toc}{section}{List of Figures}
 % \section{List of Figures}
-$if(lof-own-page)$
-% \newpage
-$endif$
 $endif$
 $if(lot)$
 \listoftables
@@ -246,7 +260,6 @@ $endif$
 
 % Force new line after each paragraph
 \setlength{\parskip}{0.5em}
-
 $body$
 
 \end{document}
