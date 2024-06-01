@@ -27,7 +27,7 @@ output:
 abstract: |
   This research explores the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective is to determine if and how an RL agent, specifically a Double Deep Q-Network (DDQN), can successfully navigate a physical maze after being trained in a virtual environment.
 
-  First, we explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
+  First, we will explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
   Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication.
 
@@ -135,11 +135,11 @@ This study focuses on maze navigation using a remote-controlled (RC) car equippe
 
 While this research focuses on maze navigation, its implications extend far beyond. The principles of Sim2Real transfer can be applied to autonomous drones in urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim2Real transfer is the key to making these scenarios feasible.
 
-So buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. In the following chapters, we will delve into how we arrived at these results. We will start with a literature review and the methodology, followed by the results and challenges encountered. Finally, we will discuss reflections and provide advice for future researchers embarking on a similar journey. Last but not least, you will find installation instructions to replicate the setup.
+So buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. In the following chapters, I will get into how I arrived at these results. We will start with a literature review and the methodology, followed by the results and challenges encountered. Finally, I will discuss reflections and provide advice for future researchers embarking on a similar journey. Last but not least, you will find installation instructions to replicate the setup.
 
 # Research Questions
 
-This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, we'll explore various aspects of RL training and implementation:
+This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, I will explore various aspects of RL training and implementation:
 
 1. **Which virtual environments exist to train a virtual RC-car?**: determine which virtual environments are most effective for RL training.
 2. **Which reinforcement learning techniques are best suited for this application?**: Identifying RL techniques suitable for autonomous navigation.
@@ -373,7 +373,7 @@ RCMazeEnv supports both virtual and real-world sensor data:
 
 #### Web Application Interface
 
-A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and allowing us to intervine if needed. The web app provides a visual representation of the maze, the agent's position, and sensor readings, enabling users to observe the agent's behavior and performance during training and testing.
+A web application was developed to serve as a control interface for the RC car, allowing real-time monitoring and allowing me to intervine if needed. The web app provides a visual representation of the maze, the agent's position, and sensor readings, enabling users to observe the agent's behavior and performance during training and testing.
 
 **Web App:**
 
@@ -405,13 +405,13 @@ Where:
 - $\underset{a}{\mathrm{argmax}}\, Q(S_{t+1}, a; \theta)$ selects the action using the policy network.
 - $Q\left(S_{t+1}, a; \theta^-\right)$ evaluates the action using the target network.
 
-This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning\hyperref[ref16]{[16]} 
+This approach reduces overestimation by separating the max operation in the target, mitigating overoptimism observed in Q-learning\hyperref[ref16]{[16]}.
 
 The action space $\mathcal{A}$ and other agent setup details remain consistent. DDQN significantly improves stability and performance by addressing Q-value overestimation, although its effectiveness varies depending on the task compared to traditional DQN approaches\hyperref[ref4]{[4]}.
 
 ### Training Process
 
-The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. Our objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
+The training process involves using experience replay, where transitions $(s, a, r, s')$ are stored in a replay buffer denoted as $D$. My objective is to train a Double Deep Q-Network (DDQN) by minimizing the loss function $L(\theta)$. This loss function quantifies the discrepancy between the current Q-values and the target Q-values:
 $$
 L(\theta) = \mathbb{E}_{(s,a,r,s') \sim U(D)}\left[\left(Y_t^{DDQN} - Q(s, a; \theta)\right)^2\right]
 $$
@@ -433,8 +433,7 @@ Where:
 - $\theta^-$ refers to the weights of the target network.
 - $\gamma$ represents the discount factor.
 
-To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, I employ an epsilon-greedy strategy for action selection. Initially, we prioritize exploration, gradually reducing exploration as training progresses with a decay rate. This balance between exploration and exploitation contributes to the DDQN's overall performance\hyperref[ref15]{[15]}.\hyperref[ref16]{[16]}.
-
+To enhance training stability, we periodically update the target network's weights with those of the policy network. Additionally, I employ an epsilon-greedy strategy for action selection. Initially, I prioritize exploration, gradually reducing exploration as training progresses with a decay rate. This balance between exploration and exploitation contributes to the DDQN's overall performance\hyperref[ref15]{[15]}.\hyperref[ref16]{[16]}.
 
 ### Detailed Steps in Code
 
@@ -555,7 +554,6 @@ To mitigate these issues, implementing sensor data normalization and action sync
 **Computational Advantages:** Using powerful computing resources, simulations can create high-fidelity environments that closely mimic real-world conditions. This capability accelerates training by allowing for more rapid and thorough testing of models under various scenarios.
 
 Overall, simulations offer a practical and effective approach to Reinforcent Learning applications. They can significantly reduce training times and enhance performance, making them important tools in Sim2Real\hyperref[ref33]{[33]}.
-
 
 ## 5. How Can the Trained Model be Transferred to the Real RC Car? How Do We Need to Adjust the Agent and the Environment for It to Translate to the Real World?
 
@@ -849,7 +847,7 @@ In this section, I explain the practical application of control algorithms which
 
 At the core of my RC car is the ESP32-WROOM-32 module, a small and powerful microcontroller with integrated Wi-Fi and Bluetooth capabilitie.
 
-The structure of the car is built on a 2WD miniQ robot chassis with a custom 3D printed top plate, which provides a sturdy base for mounting all components. To control the motors, an L298N dual H-Bridge motor controller was employed, allowing us to drive the motors in both directions and adjust their speed using pulse-width modulation (PWM) signals from the ESP32 microcontroller.
+The structure of the car is built on a 2WD miniQ robot chassis with a custom 3D printed top plate, which provides a sturdy base for mounting all components. To control the motors, an L298N dual H-Bridge motor controller was employed, allowing me to drive the motors in both directions and adjust their speed using pulse-width modulation (PWM) signals from the ESP32 microcontroller.
 
 For sensor integration, the system utilizes HC-SR04 ultrasonic sensors for distance measurement and an MPU6050 gyroscope for orientation and stabilization. These sensors are mounted using custom 3D printed parts, specifically designed to hold the HC-SR04 sensors securely in place. Additionally, a mini OLED screen is incorporated into the setup to provide real-time feedback on the robot’s status, such as its IP address and operational states, enhancing user interaction and debugging capabilities.
 
@@ -1620,6 +1618,8 @@ Thank you for joining me on this journey, and I hope this research inspires othe
 \[32\]\label{ref32} Z. Wang, "Dueling Network Architectures for Deep Reinforcement Learning," *arXiv preprint arXiv:1511.06581*, 2015. [Online]. Available: https://arxiv.org/abs/1511.06581.
 
 \[33\]\label{ref33} C. Rizzardo, S. Katyara, M. Fernandes, and F. Chen, "The Importance and the Limitations of Sim2Real for Robotic Manipulation in Precision Agriculture," arXiv preprint arXiv:2008.03983, 2020. [Online]. Available: https://arxiv.org/abs/2008.03983.
+
+\pagebreak
 
 # Appendices
 
