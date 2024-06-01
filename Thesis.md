@@ -1273,15 +1273,9 @@ Document each test and its results meticulously. This data will be invaluable fo
 
 Regularly calibrate your sensors to ensure accurate data collection in both simulations and real-world tests. Make sure the movement mechanics of the simulated and real RC cars are consistent, including motor speeds, wheel slippage, and turning radii.
 
-Develop a routine for sensor calibration and stick to it. Consistency is key to ensuring that your data remains reliable over time. Also, consider using calibration tools or software that can automate parts of this process.
+Develop a routine for sensor calibration and stick to it. Consistency is key to ensuring that your data remains reliable over time. Also, consider using calibration tools or software that can automate parts of this process. This counts for both the real-world and simulated sensors, sometimes the code for the sensors in the simulation can be off, after adjusting things in the real world, this is something that can be easily overlooked.
 
-**Step 5: Enhancing Data Accuracy and Normalization**
-
-Use robust techniques to normalize sensor data between simulation and real-world environments. Regularly perform consistency checks to ensure the normalized data stays accurate across different scenarios.
-
-Experiment with different normalization techniques to find what works best for your specific setup. Keep track of any anomalies and adjust your methods accordingly. Consistency checks should be part of your regular testing routine to catch issues early.
-
-### How I would Start if I Could
+### How I would start over if I Could
 
 If I could start over, I would begin by researching the hardware more thoroughly. I spend a lot more time deciding on the hardware I need and how to use it.
 
@@ -1317,12 +1311,13 @@ Or for a clearer image:
 <!-- \label{fig:topdowncamerafov} reference this image -->
 
 
-#### environment design
+#### alternative environment design
 
-As I mentioned before, A more complex environment could have helped a lot. Now this doesnt mean using a different library or software, but rather just a more complex maze. This would have made the agent have to learn more and give it the opportunity to have more flexibility in its movements.
+Note: this in my opinion is not entirely necessary, but it would be an alternative to existing environment design. I believe that with the previous suggestions, the current environment would be sufficient.
 
-You would need to adjust the agent to allow for diagonal movements, but this could be a lot of fun to implement.
-Python code to get you started can be found here in the Appendix: `listing: largermaze`:\ref{lst:largermaze}.
+As I mentioned before, A more complex environment could help, now this doesnt mean using a different library or software, but rather just a more complex action space or just a bigger maze. This would give the agent the opportunity to have more flexibility in its movements.
+
+You would potentionally need to adjust the agent to allow for diagonal movements, and adjust the training parameters to allow for longer training times and more exploration, adjust the termination conditions should also allow for more steps to be made.
 
 **Alternative maze layout:**
 
@@ -1336,9 +1331,9 @@ Python code to get you started can be found here in the Appendix: `listing: larg
 
 By following these steps, researchers can systematically improve their simulation-to-reality projects, ensuring more accurate and reliable outcomes. This methodical approach leverages continuous feedback, interdisciplinary collaboration, and iterative testing to bridge the gap between simulations and real-world applications effectively.
 
-Reflecting on my research journey, I realize I could have approached things differently. Starting with a simple simulation, then testing it with the RC car, and making necessary adjustments would have been more efficient. Instead, I began with a complex simulation without considering the practicalities of the real car. I hope highlighting these challenges and solutions will help future researchers navigate similar projects more effectively.
+I hope highlighting these challenges throughout my thesis and solutions will help future students and researchers navigate similar projects more effectively or at the very least give them some ideas on how to avoid some of the mistakes I made.
 
-Like I mentioned in my reflection I learned that the virtual twin setup I initially implemented didn’t add much value compared to a  top-down view camera for real-time feedback. This showed me the importance of choosing the right tools and being open to simpler, more practical solutions when they could offer better results, I ignored this suggestion at first since in my mind I thought it would be too much and not needed. Let this be a lesson to you, always be open to suggestions and feedback, even if you think you have the best solution, at the very least try it out before dismissing it.
+Like I mentioned in my reflection I learned that the virtual twin setup I initially implemented didn’t add much value, since it can't show us where or why the car is stuck. This showed me the importance of choosing the right tools and being open to simpler and alternative solutions, I ignored this suggestion from Wouter at first since in my mind the camera would be too much and not needed.... So let this be a lesson to you, always be open to suggestions and feedback, even if you think you have the `best` solution, at the very least try it out before dismissing it.
 
 # Sources of Inspiration and Conceptual Framework
 
@@ -1356,23 +1351,41 @@ YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learni
 
 Academic articles also significantly shaped this research. Notable works include Q. Song et al.'s article on autonomous driving decision control\hyperref[ref10]{[10]} and a survey by W. Zhao, J. P. Queralta, and T. Westerlund on Sim2Real transfer in deep RL for robotics\hyperref[ref14]{[14]}. These articles provided in-depth methodologies and highlighted the challenges of applying RL to autonomous systems.
 
-## Synthesis and Research Direction
+## Conclusion for sources of inspiration and conceptual framework
 
-These were some of the key sources that led me to explore the potential of RL in navigating mazes using an RC car. By synthesizing insights from micro mouse competitions, YouTube demonstrations, GitHub projects, and academic literature, I developed a conceptual framework for this research. This framework guided my experimental approach, helping me address the challenges of Sim2Real transfer and refine RL algorithms for real-world applications.
+These were some of the key sources that led me to explore the potential of RL in navigating mazes using an RC car. By combining insights from micro mouse competitions, YouTube demonstrations, GitHub projects, and academic literature, I was able to develop a comprehensive research framework that made all of this possible. Even if all of these sources didn't directly contribute to the final product, they all played a role in shaping the project and my understanding of the field.
 
 \pagebreak
 
-# General Conclusion
+<!-- # General Conclusion
 
 This thesis has demonstrated the potential of transferring a trained reinforcement learning (RL) agent from a simulated environment to a real-world setting, focusing on navigating a maze using a remote-controlled (RC) car. The detailed experiments and analyses provide a thorough exploration of this transition.
 
 The research shows that such a transfer is not only possible but also comes with significant challenges. The experiments highlighted in **Chapter 15: Challenges and Solutions in RL Implementation** emphasize the importance of normalizing sensor data and adapting control algorithms to handle the unpredictable dynamics of the real world. These adaptations were essential for aligning the simulated models with the real-world scenarios encountered during implementation.
 
-The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 10.2: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the complexities of practical applications.
+The choice of appropriate virtual environments and reinforcement learning techniques, as discussed in **Chapter 10.2: Methodology**, was crucial in shaping the experimental approach and ensuring effective simulation training. The Double Deep Q-Network (DDQN) proved to be the most suitable technique, providing a robust framework for navigating the maze in both simulated and real-world environments.
 
 This study confirms the feasibility of Sim2Real transfers and offers a detailed examination of the intricate mechanics involved in this process. This area is of growing importance in AI and robotics research. By integrating theoretical insights with practical applications, this thesis significantly contributes to the ongoing discussion on the viability and challenges of applying reinforcement learning in real-world scenarios.
 
-In conclusion, while transitioning a trained RL agent from simulation to a real environment is feasible, the process requires careful planning, adaptability, and continual refinement. The challenges highlighted throughout this research underscore the need for ongoing efforts to enhance the robustness and reliability of Sim2Real applications, ensuring they can meet the demands of real-world conditions.
+In conclusion, while transitioning a trained RL agent from simulation to a real environment is feasible, the process requires careful planning, adaptability, and continual refinement. The challenges highlighted throughout this research underscore the need for ongoing efforts to enhance the robustness and reliability of Sim2Real applications, ensuring they can meet the demands of real-world conditions. -->
+
+# General Conclusion
+
+This thesis journey has been about exploring if a reinforcement learning (RL) agent, trained in a simulation, can effectively navigate a real-world maze with a remote-controlled (RC) car. It turns out the answer is yes, but with a lot of effort and overcoming significant challenges.
+
+The biggest hurdle was making sure the data from sensors and the control algorithms worked as well in real life as they did in the simulation. It took a lot of tweaking to get things aligned properly. Picking the right virtual environments and RL techniques was crucial. The Double Deep Q-Network (DDQN) was the best fit for this project, offering the stability and performance needed for both the simulated and real-world maze navigation.
+
+When I moved from the simulation to the real world, I ran into issues like movement discrepancies and sensor alignment problems. I tackled these with motor encoders, power adjustments, and adding a gyroscope, which helped but didn't solve everything. The research showed that transferring from simulation to reality is possible but requires careful planning and continuous tweaking. This study dives deep into the nuts and bolts of making this transition work.
+
+This project highlights the need to blend theory with hands-on practice to make simulations work in the real world. Moving from a controlled environment to the unpredictable real world is challenging and needs constant adjustments. The reflections on the methodology and the importance of feedback and continual improvement were central to this project's success.
+
+Working on this thesis has been a significant learning experience. Early on, a deeper understanding of hardware would have saved a lot of headaches. The challenges faced and the solutions found have taught me a lot about the iterative nature of research and the importance of staying open to new ideas.
+
+For those venturing into this field, start with simpler simulations and gradually add complexity. Regular sensor calibration and consistency in movement mechanics between simulation and reality are key. Don’t hesitate to seek feedback from the research community; it can provide valuable insights and improve your work, I wish I had done this more before starting my project.
+
+In the end, making a trained RL agent work in the real world is doable, but it takes meticulous planning, flexibility, and ongoing refinement. This project underscores the need for continuous efforts to make Sim2Real applications robust and reliable. It contributes to the field by offering a detailed roadmap for future research, emphasizing the need for a systematic approach, continuous feedback, and practical experimentation to bring RL from simulation into the real world successfully.
+
+Thank you for joining me on this journey, and I hope this research inspires others to explore the exciting intersection of reinforcement learning and real-world robotics.
 
 \pagebreak
 
@@ -2022,39 +2035,3 @@ By following these steps, you can successfully set up and deploy the autonomous 
   \caption{Top Down Camera (Image drawn by author)}
   \label{fig:selfdrawntopdown}
 \end{figure}
-
-\pagebreak
-
-### Alternative maze design
-
-Here is code to generate a 3x larger maze layout, This could potentially by great for allowing the car to have more flexibility in its pathfinding.
-
-\begin{lstlisting}[language=Python, caption=Python code to generate a 3x larger maze layout, label=lst:largermaze]
-def multiply_layout(layout, factor):
-    new_layout = []
-    for row in layout:
-        new_row = []
-        for cell in row:
-            new_row.extend([cell] * factor)
-        for _ in range(factor):
-            new_layout.append(new_row)
-    return new_layout
-
-layout = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-    [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1],
-    [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
-
-new_layout = multiply_layout(layout, 3)
-
-\end{lstlisting}
