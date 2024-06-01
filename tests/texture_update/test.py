@@ -18,9 +18,7 @@ import numpy as np
 from PIL import Image
 from threading import Lock
 from flask_socketio import SocketIO
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
+
 from keras.models import load_model
 from tensorflow.keras.layers import Dense, Input
 from tensorflow.keras.models import Sequential
@@ -28,8 +26,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import mean_squared_error as mse
 
 import numpy as np
-from OpenGL.GL import *
-from OpenGL.GLUT import *
+
 
 
 maze_running = False
@@ -43,8 +40,8 @@ GREEN = (0, 255, 0)  # Goal
 class RCMazeEnv(gym.Env):
     def __init__(
         self,
-        maze_size_x=12,
-        maze_size_y=12,
+        maze_size_x=36,
+        maze_size_y=36,
         esp_ip="192.168.0.7",
         use_virtual_sensors=True,
     ):
@@ -58,13 +55,13 @@ class RCMazeEnv(gym.Env):
         self.maze_size_x = maze_size_x
         self.maze_size_y = maze_size_y
         self.maze = self.generate_maze()
-        self.car_position = (1, 1)
-        self.possible_actions = range(3)
+        self.car_position = (8, 8)
+        self.possible_actions = range(8)
         self.car_orientation = "E"
         self.sensor_readings = {"front": 0, "left": 0, "right": 0}
         self.steps = 0
         self.previous_distance = 0
-        self.goal = (10, 10)
+        self.goal = (30, 30)
         self.esp_ip = esp_ip
         self.previous_steps = 0
         self.visited_positions = set()
@@ -73,8 +70,8 @@ class RCMazeEnv(gym.Env):
 
         # Pygame initialization
         pygame.init()
-        self.window_width = 600
-        self.window_height = 600
+        self.window_width = 1200
+        self.window_height = 1200
         self.screen = pygame.display.set_mode((self.window_width, self.window_height))
         self.cell_width = self.window_width / maze_size_x
         self.cell_height = self.window_height / maze_size_y
@@ -118,18 +115,42 @@ class RCMazeEnv(gym.Env):
         @return A tuple containing the number of rows and the number of columns
         """
         layout = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
-            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-            [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],
-            [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1],
-            [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
-            [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ]
 
         maze = np.array(layout)
@@ -143,7 +164,7 @@ class RCMazeEnv(gym.Env):
 
         @return the current state of the environment ==> ['1.0' '1.0' 'N' '1.0' '1.0' '10.0'] // car position, car direction and the sensor readings
         """
-        self.car_position = (1, 1)
+        self.car_position = (4, 4)
         self.car_orientation = "E"
         await self.update_sensor_readings()
         self.steps = 0
@@ -163,8 +184,7 @@ class RCMazeEnv(gym.Env):
         """
         # Move the car to the right or forward
         if action == 0:
-            # dont allow to move forward if the car is too close to a wall
-            # Move forward or car if sensor readings of the front sensor is greater than 4 or 8 if the real sensors are used
+            # Move forward if front sensor reading is sufficient
             if not self.use_virtual_sensors and self.sensor_readings["front"] >= 8:
                 self.move_forward()
                 await self.move_car("forward")
@@ -178,6 +198,14 @@ class RCMazeEnv(gym.Env):
             self.turn_right()
             if not self.use_virtual_sensors:
                 await self.move_car("right")
+        elif action == 3:
+            self.move_diagonal_forward_left()
+        elif action == 4:
+            self.move_diagonal_forward_right()
+        elif action == 5:
+            self.move_diagonal_backward_left()
+        elif action == 6:
+            self.move_diagonal_backward_right()
 
         await self.update_sensor_readings()
 
@@ -194,39 +222,86 @@ class RCMazeEnv(gym.Env):
         Move car forward in maze.
         """
         x, y = self.car_position
-        # position of the car in the maze
         if self.car_orientation == "N" and y > 0 and self.maze[y - 1][x] != 1:
             self.car_position = (x, y - 1)
-        elif (
-            self.car_orientation == "S"
-            and y < self.maze_size_y - 1
-            and self.maze[y + 1][x] != 1
-        ):
+        elif self.car_orientation == "S" and y < self.maze_size_y - 1 and self.maze[y + 1][x] != 1:
             self.car_position = (x, y + 1)
-        elif (
-            self.car_orientation == "E"
-            and x < self.maze_size_x - 1
-            and self.maze[y][x + 1] != 1
-        ):
+        elif self.car_orientation == "E" and x < self.maze_size_x - 1 and self.maze[y][x + 1] != 1:
             self.car_position = (x + 1, y)
         elif self.car_orientation == "W" and x > 0 and self.maze[y][x - 1] != 1:
             self.car_position = (x - 1, y)
+
+    def move_diagonal_forward_left(self):
+        """
+        Move car diagonally forward-left in maze.
+        """
+        x, y = self.car_position
+        if self.car_orientation == "N" and y > 0 and x > 0 and self.maze[y - 1][x - 1] != 1:
+            self.car_position = (x - 1, y - 1)
+        elif self.car_orientation == "S" and y < self.maze_size_y - 1 and x < self.maze_size_x - 1 and self.maze[y + 1][x + 1] != 1:
+            self.car_position = (x + 1, y + 1)
+        elif self.car_orientation == "E" and y > 0 and x < self.maze_size_x - 1 and self.maze[y - 1][x + 1] != 1:
+            self.car_position = (x + 1, y - 1)
+        elif self.car_orientation == "W" and y < self.maze_size_y - 1 and x > 0 and self.maze[y + 1][x - 1] != 1:
+            self.car_position = (x - 1, y + 1)
+
+    def move_diagonal_forward_right(self):
+        """
+        Move car diagonally forward-right in maze.
+        """
+        x, y = self.car_position
+        if self.car_orientation == "N" and y > 0 and x < self.maze_size_x - 1 and self.maze[y - 1][x + 1] != 1:
+            self.car_position = (x + 1, y - 1)
+        elif self.car_orientation == "S" and y < self.maze_size_y - 1 and x > 0 and self.maze[y + 1][x - 1] != 1:
+            self.car_position = (x - 1, y + 1)
+        elif self.car_orientation == "E" and y < self.maze_size_y - 1 and x < self.maze_size_x - 1 and self.maze[y + 1][x + 1] != 1:
+            self.car_position = (x + 1, y + 1)
+        elif self.car_orientation == "W" and y > 0 and x > 0 and self.maze[y - 1][x - 1] != 1:
+            self.car_position = (x - 1, y - 1)
+
+    def move_diagonal_backward_left(self):
+        """
+        Move car diagonally backward-left in maze.
+        """
+        x, y = self.car_position
+        if self.car_orientation == "N" and y < self.maze_size_y - 1 and x > 0 and self.maze[y + 1][x - 1] != 1:
+            self.car_position = (x - 1, y + 1)
+        elif self.car_orientation == "S" and y > 0 and x < self.maze_size_x - 1 and self.maze[y - 1][x + 1] != 1:
+            self.car_position = (x + 1, y - 1)
+        elif self.car_orientation == "E" and y < self.maze_size_y - 1 and x > 0 and self.maze[y + 1][x - 1] != 1:
+            self.car_position = (x - 1, y + 1)
+        elif self.car_orientation == "W" and y > 0 and x < self.maze_size_x - 1 and self.maze[y - 1][x + 1] != 1:
+            self.car_position = (x + 1, y - 1)
+
+    def move_diagonal_backward_right(self):
+        """
+        Move car diagonally backward-right in maze.
+        """
+        x, y = self.car_position
+        if self.car_orientation == "N" and y < self.maze_size_y - 1 and x < self.maze_size_x - 1 and self.maze[y + 1][x + 1] != 1:
+            self.car_position = (x + 1, y + 1)
+        elif self.car_orientation == "S" and y > 0 and x > 0 and self.maze[y - 1][x - 1] != 1:
+            self.car_position = (x - 1, y - 1)
+        elif self.car_orientation == "E" and y > 0 and x < self.maze_size_x - 1 and self.maze[y - 1][x + 1] != 1:
+            self.car_position = (x + 1, y - 1)
+        elif self.car_orientation == "W" and y < self.maze_size_y - 1 and x > 0 and self.maze[y + 1][x - 1] != 1:
+            self.car_position = (x - 1, y + 1)
 
     def turn_left(self):
         """
         Turns the car to the left
         """
-        orientations = ["N", "W", "S", "E"]
+        orientations = ["N", "NW", "W", "SW", "S", "SE", "E", "NE"]
         idx = orientations.index(self.car_orientation)
-        self.car_orientation = orientations[(idx + 1) % 4]
+        self.car_orientation = orientations[(idx + 1) % 8]
 
     def turn_right(self):
         """
         Turns the car to the right
         """
-        orientations = ["N", "E", "S", "W"]
+        orientations = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
         idx = orientations.index(self.car_orientation)
-        self.car_orientation = orientations[(idx + 1) % 4]
+        self.car_orientation = orientations[(idx + 1) % 8]
 
     async def move_car(self, direction):
         """
@@ -439,10 +514,6 @@ class RCMazeEnv(gym.Env):
         return (
             self.car_position == self.goal
             or self.steps > 3000
-            or self.car_position[0] < 0
-            or self.car_position[1] < 0
-            or self.car_position[0] > 11
-            or self.car_position[1] > 11
         )
 
     def get_state(self):

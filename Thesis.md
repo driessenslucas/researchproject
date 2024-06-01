@@ -1190,6 +1190,8 @@ I doubt I would’ve been able to get as far as fast as I did if I had taken an 
 
 Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot of responses, the feedback did reconfirm some of the things I had been thinking about.
 
+\pagebreak
+
 # Advice for Students and Researchers
 <!-- TODO: Proof read from here on out-->
 
@@ -1278,6 +1280,57 @@ Develop a routine for sensor calibration and stick to it. Consistency is key to 
 Use robust techniques to normalize sensor data between simulation and real-world environments. Regularly perform consistency checks to ensure the normalized data stays accurate across different scenarios.
 
 Experiment with different normalization techniques to find what works best for your specific setup. Keep track of any anomalies and adjust your methods accordingly. Consistency checks should be part of your regular testing routine to catch issues early.
+
+### How I would Start if I Could
+
+If I could start over, I would begin by researching the hardware more thoroughly. I spend a lot more time deciding on the hardware I need and how to use it.
+
+
+#### RC Car Selection
+
+I would still use the same DFRobot 2wd MiniQ robot kit, but I would order the motor encoders at the same time as the car.Also take some stronger motors then the default kit, same goes for the wheels, the default wheels are not very good for the car.
+
+**Motor Encoders:** https://www.dfrobot.com/product-823.html
+
+**Wheel Kit:** https://www.dfrobot.com/product-1558.html
+
+**Motor Kit:** https://www.dfrobot.com/product-1487.html
+
+  - This alternative motor acts as 360-degree servo motor, which would be perfect for getting those precise movements. And it works with the arduino servo library, so it would be easy to implement.
+  This woul Definitely be a better choice than the motors I used in my project!!
+
+#### Sensor Selection
+
+I would still use the same HC-SR04 ultrasonic sensors, but I would also add a top down camera to the whole setup. This might be difficult to implement in the simulation, but it would be such a great addition to the real-world setup.
+
+As seen in this image: \ref{fig:selfdrawntopdown}
+
+Or for a clearer image:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./images/thesis/topdowncamera.png}
+  \caption{Top Down Camera (Image created by DALL-E)}
+  \label{fig:top-down-camera}
+\end{figure}
+
+<!-- \label{fig:topdowncamerafov} reference this image -->
+
+
+#### environment design
+
+As I mentioned before, A more complex environment could have helped a lot. Now this doesnt mean using a different library or software, but rather just a more complex maze. This would have made the agent have to learn more and give it the opportunity to have more flexibility in its movements.
+
+You would need to adjust the agent to allow for diagonal movements, but this could be a lot of fun to implement.
+Python code to get you started can be found here in the Appendix: `listing: largermaze`:\ref{lst:largermaze}.
+
+**Alternative maze layout:**
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./images/thesis/expanded_maze.png}
+  \caption{A 3-block wide path maze layout}
+\end{figure}
 
 ## Conclusion for my advice for students and researchers
 
@@ -1686,16 +1739,33 @@ Next, secure the motor driver to the base using the two screws provided in the k
 
 Now, connect the ESP32-WROOM-32 module to the motor driver. This involves wiring the motor driver to the appropriate pins on the ESP32 module. Follow the electrical schematic below carefully to ensure correct connections. The wires should be connected as follows:
 
-- **E1 to GPIO 2 (PWM motor 1)**
-- **M1 to GPIO 17 (motor 1 control)**
-- **E2 to GPIO 19 (PWM motor 2)**
-- **M2 to GPIO 4 (motor 2 control)**
+```c
+
+int E1 = 2; //PWM motor 1
+int M1 = 17; //GPIO motor 1
+int E2 = 19; //PWM motor 2
+int M2 = 4; //GPIO motor 2
+
+int sensor0Trig = 27; //GPIO right sensor
+int sensor0Echo = 26; //GPIO right sensor
+
+int sensor1Trig = 33; //GPIO left sensor
+int sensor1Echo = 32; //GPIO left sensor
+
+int sensor2Trig = 25; //GPIO front sensor
+int sensor2Echo = 35; //GPIO front sensor
+
+// OLED display pins
+#define SDA_PIN 21 // this is the default sda pin on the esp32
+#define SCL_PIN 22 // this is the default scl pin on the esp32
+
+```
 
 These connections allow the ESP32 to control the motor driver and, subsequently, the motors.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=4in]{./images/schematics/esp_updated.png}
+\includegraphics[width=6in]{./images/schematics/esp_updated.png}
 \caption{ESP32 Wiring Schematic (Image created by author)}
 \end{figure}
 
@@ -1940,3 +2010,51 @@ It should turn out like this; repeat this for all the blocks in the maze:
 \end{figure}
 
 By following these steps, you can successfully set up and deploy the autonomous navigation system, ensuring it runs smoothly both in simulations and real-world scenarios.
+
+
+## Extra Content
+
+### Top down camera view of the maze (self drawn)
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./images/thesis/topdowncamera_selfdrawn.png}
+  \caption{Top Down Camera (Image drawn by author)}
+  \label{fig:selfdrawntopdown}
+\end{figure}
+
+\pagebreak
+
+### Alternative maze design
+
+Here is code to generate a 3x larger maze layout, This could potentially by great for allowing the car to have more flexibility in its pathfinding.
+
+\begin{lstlisting}[language=Python, caption=Python code to generate a 3x larger maze layout, label=lst:largermaze]
+def multiply_layout(layout, factor):
+    new_layout = []
+    for row in layout:
+        new_row = []
+        for cell in row:
+            new_row.extend([cell] * factor)
+        for _ in range(factor):
+            new_layout.append(new_row)
+    return new_layout
+
+layout = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],
+    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+]
+
+new_layout = multiply_layout(layout, 3)
+
+\end{lstlisting}

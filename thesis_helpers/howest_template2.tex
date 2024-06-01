@@ -2,6 +2,7 @@
 
 % Additional packages
 \usepackage{graphicx}
+\usepackage{listings}
 \usepackage[lofdepth=1, lotdepth]{subfig}
 \usepackage{titlesec}
 \usepackage{changepage}
@@ -123,7 +124,8 @@ $endif$
 
 % Set font family to lmodern for the rest of the document at 12pt
 \renewcommand{\familydefault}{\rmdefault}
-\fontsize{12pt}{14pt}\selectfont
+\setmainfont{TeX Gyre Pagella} % Palatino equivalent
+\fontsize{11pt}{14pt}\selectfont
 
 \newgeometry{margin=1.25in}
 
@@ -150,10 +152,10 @@ $endif$
 $if(abstract)$
 \newgeometry{margin=1.25in}
 % add to toc
-% \addcontentsline{toc}{section}{Abstract}
 \begin{center} % Center the text
-\section{\centering Abstract}
+  {\LARGE \textbf{\textsf{Abstract}}}
 \end{center}
+\addcontentsline{toc}{section}{Abstract}
 $abstract$
 \thispagestyle{empty}
 \pagebreak
@@ -162,11 +164,13 @@ $endif$
 
 $if(preface)$
 \newgeometry{margin=1.25in}
-% add to toc
-% \addcontentsline{toc}{section}{Preface}
+
 \begin{center} % Center the text
-\section{\centering Preface}
+  {\LARGE \textbf{\textsf{Preface}}}
 \end{center}
+% add to toc
+\addcontentsline{toc}{section}{Preface}
+
 $preface$
 \thispagestyle{empty}
 \pagebreak
@@ -176,10 +180,10 @@ $endif$
 $if(acknowledgements)$
 \newgeometry{margin=1.25in}
 % add to toc
-%  center content
 \begin{center} % Center the text
-\section{\centering Acknowledgements}
+  {\LARGE \textbf{\textsf{Acknowledgements}}}
 \end{center}
+\addcontentsline{toc}{section}{Acknowledgements}
 $acknowledgements$
 \thispagestyle{empty}
 \pagebreak
@@ -212,21 +216,23 @@ $else$
 {
 \tableofcontents
 % add to toc
-\section{Table of Contents}
-$if(toc-own-page)$
+\addcontentsline{toc}{section}{Table of Contents}
 \newpage
-$endif$
+% $if(toc-own-page)$
+% % \newpage
+% $endif$
 }
 $endif$
 
 $endif$
 $if(lof)$
+\newpage
 \listoffigures
 % add to toc
-% \addcontentsline{toc}{section}{List of Figures}
-\section{List of Figures}
+\addcontentsline{toc}{section}{List of Figures}
+% \section{List of Figures}
 $if(lof-own-page)$
-\newpage
+% \newpage
 $endif$
 $endif$
 $if(lot)$
