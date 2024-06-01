@@ -25,11 +25,11 @@ output:
   markdown::pdf_document:
     fig_caption: yes
 abstract: |
-  This research explores the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective is to determine if and how an RL agent, specifically a Double Deep Q-Network (DDQN), can successfully navigate a physical maze after being trained in a virtual environment.
+  This research explored the feasibility of transferring a trained reinforcement learning (RL) agent from a simulation to the real world, focusing on maze navigation. The primary objective was to determine if and how an RL agent, specifically a Double Deep Q-Network (DDQN), could successfully navigate a physical maze after being trained in a virtual environment.
 
-  First, we will explore suitable virtual environments for training an RL agent and evaluate the most effective reinforcement learning techniques for this application. The study then addresses the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
+  First, suitable virtual environments for training an RL agent were explored and the most effective reinforcement learning techniques for this application were evaluated. The study then addressed the challenges in translating simulation-trained behaviors to real-world performance, such as sensor data interpretation and movement replication.
 
-  Results show that the DDQN agent, trained in a simulated maze, can navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication.
+  Results showed that the DDQN agent, trained in a simulated maze, could navigate a physical maze with some challenges in sensor data interpretation and, more importantly, movement replication.
 
   This study contributes to AI and robotics by providing insights and methodologies for Sim2Real transfer in RL, with potential applications extending beyond robotics to other fields where simulation-based training is beneficial.
 preface: |
@@ -42,9 +42,9 @@ preface: |
   \noindent \newline Lucas Driessens  
   \noindent \newline 01-06-2024
 acknowledgements: |
-  I extend heartfelt thanks to my supervisor, Gevaert Wouter, for his invaluable guidance and insights. His mentorship has been fundamental to my growth. I also thank Amaury Van Naemen for his technical support with 3D printing, which was crucial for my experiments.
+  I extend my heartfelt thanks to my supervisor, Gevaert Wouter, for his invaluable guidance and insights. His mentorship has been fundamental to my growth. I also thank Amaury Van Naemen for his technical support with 3D printing, which was crucial for my experiments.
 
-  I would also like to thank Sam De Beuf for not only being my internship supervisor but also my external promotor for this thesis, and for allowing me the freedom to conduct research within my internship. This opportunity helped me grow significantly as a person and gain valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
+  I would also like to thank Sam DeBeuf for not only being my internship supervisor but also my external promotor for this thesis, and for allowing me the opportunity to conduct more research within my internship. Through this internship, I gained valuable soft skills, such as learning to accept feedback, considering different solutions, and being flexible in problem-solving.
 
   Additional appreciation goes to the faculty and staff at Howest, whose commitment to fostering an innovative educational environment has profoundly influenced my development. Their dedication to excellence and support for student initiatives have been instrumental in shaping my academic journey.
 ---
@@ -60,7 +60,7 @@ acknowledgements: |
 6. **HC-SR04** - Ultrasonic Distance Sensor
 7. **MPU6050** - Motion Processing Unit (Gyroscope + Accelerometer)
 8. **MSE** - Mean Squared Error
-9.  **OTA** - Over the Air Updates
+9. **OTA** - Over the Air Updates
 10. **PPO** - Proximal Policy Optimization
 11. **PWM** - Pulse-Width Modulation
 12. **RC** - Remote Controlled
@@ -135,17 +135,19 @@ This study focuses on maze navigation using a remote-controlled (RC) car equippe
 
 While this research focuses on maze navigation, its implications extend far beyond. The principles of Sim2Real transfer can be applied to autonomous drones in urban landscapes, self-driving cars avoiding pedestrians, or medical robots operating in cluttered hospital rooms. Sim2Real transfer is the key to making these scenarios feasible.
 
-So, buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. In the following chapters, I will get into how I arrived at these results. We will start with a literature review and the methodology, followed by the results and challenges encountered. Finally, I will discuss reflections and provide advice for future researchers embarking on a similar journey. Last but not least, you will find installation instructions to replicate the setup.
+So, buckle up (or tighten your wheel nuts), as we embark on this thrilling expedition. In the following chapters, I will get into how I arrived at these results. We will start with a literature review and the methodology, followed by the results and challenges encountered. Finally, I will discuss reflections and provide advice for future researchers embarking on a similar journey. Last but not least, at the end of the document there are installation instructions to replicate the setup.
 
 # Research Questions
 
-This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, I will explore various aspects of RL training and implementation:
+This investigation centers around the question: "Is it possible to transfer a trained RL-agent from a simulation to the real world? (case: maze)" To address this question, I explored various aspects of RL training and implementation:
 
 1. **Which virtual environments exist to train a virtual RC-car?**: determine which virtual environments are most effective for RL training.
 2. **Which reinforcement learning techniques are best suited for this application?**: Identifying RL techniques suitable for autonomous navigation.
 3. **Can the simulation be transferred to the real world? Explore the difference between how the car moves in the simulation and in the real world.**: Assessing how well the agent adapts to real-world dynamics.
 4. **Does the simulation have any useful contributions? In terms of training time or performance.**: Evaluating training effectiveness and optimizing performance through simulation.
 5. **How can the trained model be transferred to the real RC car? How do we need to adjust the agent and the environment for it to translate to the real world?**: Discussing necessary adjustments for real-world application.
+
+\pagebreak
 
 # Literature Review and Methodology.
 
@@ -501,11 +503,13 @@ However, the exploration wasn't limited to indoor setups alone. I also aimed to 
 \begin{figure}[H]
     \centering
     \begin{minipage}{0.8\textwidth}
-        \includegraphics[width=5in]{./images/final_test/final_maze_build.jpeg}
+        \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
     \end{minipage}
     \caption{Real life Maze Build (Image created by author)}
     \label{fig:real_maze_build}
 \end{figure}
+
+\pagebreak
 
 # Addressing Research Questions
 
@@ -841,7 +845,7 @@ AC and PPO exhibit higher fluctuations in their performance metrics, indicating 
 
 ## Introduction to Real-World Implementation
 
-In this section, I explain the practical application of control algorithms which were developed through simulations, now being adapted to control a physical robot. This transition is pivotal for evaluating how simulated behaviors translate into real-world scenarios, thereby assessing the effectiveness and limitations of Sim2Real transfer.
+In this section, I will explain the practical application of control algorithms which were developed through simulations, now being adapted to control a physical robot. This transition is pivotal for evaluating how simulated behaviors translate into real-world scenarios, thereby assessing the effectiveness and limitations of Sim2Real transfer.
 
 ## System Overview
 
@@ -919,6 +923,8 @@ void calibrateSensors()
     Serial.println("Calibration Complete");
 }
 ```
+
+\pagebreak
 
 # Challenges and Limitations
 
@@ -1126,7 +1132,7 @@ The educational value of this project is huge. By documenting the whole process 
 
 This project is all about hands-on learning. Students and researchers can set up their own experiments to see how reinforcement learning, sensor calibration, and robotic control work in real life. This kind of hands-on experience is invaluable for understanding these complex concepts.
 
-For teachers, this project is a goldmine. The detailed steps and problem-solving approach make it a great resource for AI and robotics courses. It’s perfect for showing students how theoretical concepts apply in the real world. Plus, the documented challenges and solutions make for great case studies in class, helping students develop their critical thinking and problem-solving skills.
+For teachers, this project can serve as a useful resource. It can enhance AI and robotics courses by demonstrating how theoretical concepts apply in real-world scenarios. Additionally, the documented challenges can be used as case studies to help students with critical thinking.
 
 The project’s mix of successes and setbacks can also inspire others to dive into their own AI and robotics projects. It shows that hitting roadblocks is just part of the journey and can lead to major breakthroughs. This can motivate students to keep pushing forward, even when things get tough.
 
@@ -1287,7 +1293,7 @@ By following these steps, researchers can systematically improve their simulatio
 
 I hope highlighting these challenges throughout my thesis and solutions will help future students and researchers navigate similar projects more effectively or at the very least give them some ideas on how to avoid some of the mistakes I made.
 
-Like I mentioned in my reflection I learned that the virtual twin setup I initially implemented didn’t add much value, since it can't show us where or why the car is stuck. This showed me the importance of choosing the right tools and being open to simpler and alternative solutions, I ignored this suggestion from Wouter at first since in my mind the camera would be too much and not needed.... So let this be a lesson to you, always be open to suggestions and feedback, even if you think you have the `best` solution, at the very least try it out before dismissing it.
+Like I mentioned in my reflection I learned that the virtual twin setup I initially implemented didn’t add much value, since it can't show us where or why the car is stuck. This showed me the importance of choosing the right tools and being open to simpler and alternative solutions, I ignored this suggestion from Wouter at first, since in my mind the camera would be `too much` and a waste of time. So let this be a lesson to you, always be open to suggestions and feedback, even if you think you have the `best` solution, at the very least try it out before dismissing it.
 
 # Sources of Inspiration and Conceptual Framework
 
