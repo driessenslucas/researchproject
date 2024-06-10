@@ -5,7 +5,7 @@ toc: true
 toc-own-page: true
 author: "Lucas Driessens"
 date: "June 1, 2024"
-keywords: [Markdown, Example]
+keywords: ["Reinforcement Learning", "Sim2Real Transfer", "Maze Navigation", "Double Deep Q-Network", "RC Car", "Simulation", "Real World", "Transfer Learning"]
 titlepage-text-color: "000000"
 titlepage-rule-color: "FFFFFF"
 titlepage-rule-height: 0
@@ -1209,8 +1209,6 @@ Develop a routine for sensor calibration and stick to it. Consistency is key to 
 
 If I could start over, I would begin by researching the hardware more thoroughly. I spend a lot more time deciding on the hardware I need and how to use it.
 
-\pagebreak
-
 #### RC Car Selection
 \
 \
@@ -1230,20 +1228,17 @@ I would still use the same DFRobot 2WD MiniQ robot kit, but I would order the mo
 \
 As for the sensors, stay with the HC-SR04 ultrasonic sensors, but I consider adding a top down camera to the whole setup. This might be difficult to implement in the simulation, but it would be such a great addition to the real-world setup.
 
-As seen in this image: \ref{fig:selfdrawntopdown}
-
-Or for a more detailed view, this image: \ref{fig:top-down-camera}
+As seen in this image: Reference:\ref{fig:selfdrawntopdown} in the appendix
+Or for a more detailed view, this image: Reference:\ref{fig:top-down-camera} below.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{./images/thesis/topdowncamera.png}
+  \includegraphics[width=0.3\textwidth]{./images/thesis/topdowncamera.png}
   \caption{Top Down Camera (Image created by DALL-E)}
   \label{fig:top-down-camera}
 \end{figure}
 
-<!-- \label{fig:topdowncamerafov} reference this image -->
-
-#### alternative environment design
+#### Alternative environment design
 \
 \
 Note: This, in my opinion is not entirely necessary, but it would be an alternative to existing environment design. I believe that with the previous suggestions, the current environment would be sufficient.
@@ -1477,6 +1472,8 @@ The hardware setup involves several components, including an RC car, sensors, an
 
 - **18650 Battery Shield for ESP32**: Available at Amazon.com
 
+\pagebreak
+
 #### Supplementary Materials:
 
 - **Screws, wires, and tools required for assembly**:
@@ -1520,6 +1517,8 @@ Begin the assembly process by setting up the base of the robot chassis. The base
 \hfill
 \end{figure}
 
+\pagebreak
+
 ##### Step 2: Attach Motor Driver
 \
 \
@@ -1537,7 +1536,6 @@ Next, secure the motor driver to the base using the two screws provided in the k
 Now, connect the ESP32-WROOM-32 module to the motor driver. This involves wiring the motor driver to the appropriate pins on the ESP32 module. Follow the electrical schematic below carefully to ensure correct connections. The wires should be connected as follows:
 
 ```c
-
 int E1 = 2; //PWM motor 1
 int M1 = 17; //GPIO motor 1
 int E2 = 19; //PWM motor 2
@@ -1545,17 +1543,14 @@ int M2 = 4; //GPIO motor 2
 
 int sensor0Trig = 27; //GPIO right sensor
 int sensor0Echo = 26; //GPIO right sensor
-
 int sensor1Trig = 33; //GPIO left sensor
 int sensor1Echo = 32; //GPIO left sensor
-
 int sensor2Trig = 25; //GPIO front sensor
 int sensor2Echo = 35; //GPIO front sensor
 
 // OLED display pins
 #define SDA_PIN 21 // this is the default sda pin on the esp32
 #define SCL_PIN 22 // this is the default scl pin on the esp32
-
 ```
 
 These connections allow the ESP32 to control the motor driver and, subsequently, the motors.
@@ -1836,7 +1831,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 
 **Web App Demo**: A demonstration of the web application's functionality, showcasing the user interface and the autonomous navigation system's control features.
 
-- Click here to go to the video: [Web App Demo](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f)
+- Click here to go to the video or scan the QR code below: [Web App Demo](https://github.com/driessenslucas/researchproject/assets/91117911/b440b295-6430-4401-845a-a94186a9345f)
 
 \begin{figure}[H]
     \centering
@@ -1848,7 +1843,7 @@ By following these steps, you can successfully set up and deploy the autonomous 
 
 **DDQN Simulation test**: A simulation test of the DDQN model navigating a maze environment, demonstrating the model's learning capabilities and decision-making processes.
 
-- Click here to go to the video: [DDQN Simulation](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
+- Click here to go to the video or scan the QR code below: [DDQN Simulation](https://github.com/driessenslucas/researchproject/assets/91117911/66539a97-e276-430f-ab93-4a8a5138ee5e)
 
 \begin{figure}[H]
     \centering
@@ -1862,13 +1857,13 @@ By following these steps, you can successfully set up and deploy the autonomous 
 
 <https://github.com/driessenslucas/researchproject/tree/main/videos/>
 
-or by scanning the QR code below:
+Or by scanning the QR code below:
 
 \begin{figure}[H]
 \centering
 \begin{minipage}{0.2\textwidth}
 \centering
 \includegraphics[width=1in]{./thesis_helpers/qr_codes/github_test_videos.png}
-\caption{QR code for all test videos. (Videos by author.)}
+\caption{QR code for some test videos. (Videos by author.)}
 \end{minipage}
 \end{figure}
