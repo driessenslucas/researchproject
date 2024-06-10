@@ -277,9 +277,11 @@ $if(linestretch)$
 $endif$
 % force text wrapping if it would go over the margin
 \sloppy
+% no indent for new paragraphs
+\setlength{\parindent}{0pt}
 
 % Force new line after each paragraph
-\setlength{\parskip}{0.5em}
+\setlength{\parskip}{1em}
 
 $body$
 

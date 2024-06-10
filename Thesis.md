@@ -168,6 +168,8 @@ Reinforcement Learning (RL) employs a computational approach where agents learn 
 - **Transition Probabilities ($P(s_{t+1} | s_t, a_t)$)**: The likelihood of moving from state $s_t$ to state $s_{t+1}$ after the agent takes action $a_t$ at time $t$.
 - **Rewards ($R(s_t, a_t)$)**: The reward received when transitioning from state $s_t$ to state $s_{t+1}$ due to action $a_t$.
 
+\pagebreak
+
 The principles of Reinforcement Learning, particularly the dynamics of Markov Decision Processes involving states $S$, actions $A$, transition probabilities $P(s_{t+1} | s_t, a_t)$, and rewards $R(s_t, a_t)$, form the foundation of how agents learn from and interact with their environment to optimize decision-making over time. This understanding is crucial in the development of autonomous vehicles, improving navigational strategies, decision-making capabilities, and adaptation to real-time environmental changes. The seminal work by R.S. Sutton and A.G. Barto significantly elucidates these principles and complexities of RL algorithms\hyperref[ref15]{[15]}.
 
 <!-- TODO: Proof read these section (beckground on algorihtms)  starting from here also check references against new references-->
@@ -184,6 +186,8 @@ The Double Deep Q-Network (DDQN) is an enhancement of the Deep Q-Network (DQN), 
 
 - The **current network** determines the action with the highest Q-value for the current state.
 - A separate **target network**, which is a delayed copy of the current network, is used to estimate the Q-value of taking that action at the next state.
+
+\pagebreak
 
 #### The Decoupling Effect
 \
@@ -207,6 +211,7 @@ The Deep Q-Network (DQN) algorithm represents a significant breakthrough in rein
 
 - **Fixed Q-Targets**: To further stabilize training, DQN employs a separate target network, whose weights are fixed for a number of steps and only periodically updated with the weights from the training network\hyperref[ref16]{[16]}
 
+\pagebreak
 #### DQN Advantages and Applications
 \
 \
@@ -296,6 +301,8 @@ The agent in RCMazeEnv is equipped with three sensors that provide readings in t
 - **Left Sensor**: Measures the distance to the nearest wall to the agent's left.
 - **Right Sensor**: Measures the distance to the nearest wall to the agent's right.
 
+\pagebreak
+
 #### State Space Representation
 \
 \
@@ -311,7 +318,6 @@ The state space ($\mathcal{S}$) of the environment is a comprehensive representa
 In the context of maze navigation, designing an effective reward function is the bread and butter of any reinforcement learning task. The reward function guides the agent's behavior by providing feedback on its actions, encouraging desirable behaviors, and discouraging undesirable ones. The reward function in RCMazeEnv is designed to promote efficient navigation towards the goal while avoiding collisions and revisiting previously explored positions.
 
 ##### Reward Function Components
-\
 
 1. **Collision or Out of Bounds Penalty $(R_{\text{collision}})$**:
    - If the sensor detects a collision or out-of-bounds condition (front, left, or right), a penalty is applied:
@@ -334,6 +340,8 @@ In the context of maze navigation, designing an effective reward function is the
      $$
      R_{\text{proximity}} = \frac{50}{d_{\text{goal}} + 1}
      $$
+
+\pagebreak
 
 4. **Progress Reward $(R_{\text{progress}})$**:
    - Reward or penalty based on movement towards or away from the goal:
@@ -507,7 +515,7 @@ These steps explain how I implemented and applied the training process for the D
       \theta^- = \theta
       $$
 
-By following these steps in my code, I successfully trained the DDQN agent in the RCMazeEnv environment, ensuring effective learning and improved performance over time.
+\pagebreak
 
 ## Expanding on Real-World Testing
 
@@ -515,11 +523,11 @@ In this study, I conducted experiments indoors to closely replicate theoretical 
 
 However, the exploration wasn't limited to indoor setups alone. I also aimed to assess the adaptability and resilience of my proposed solutions in outdoor environments. Taking the experiments outdoors posed significant challenges due to the differences in ground conditions. Outdoor landscapes are diverse and unpredictable, which exposed limitations in my current method's ability to handle such variations. This highlighted the need for further research and improvements in the methods used, such as the hardware limitations.
 
-**The maze where the RC car was tested both indoors and outdoors is shown below:**
+**The outdoor tests were done in a wooden maze, as shown below:**
 
 \begin{figure}[H]
-    \centering
-    \begin{minipage}{0.8\textwidth}
+
+  \begin{minipage}{0.8\textwidth}
         \includegraphics[width=4in]{./images/final_test/final_maze_build.jpeg}
     \end{minipage}
     \caption{Real life Maze Build (Image created by author)}
@@ -593,6 +601,8 @@ To understand how our Double DQN model learns and makes decisions, let's examine
 
 Research has shown that, all things being equal, simpler models are often preferred in reinforcement learning. This is because they can lead to better performance, faster learning, and improved generalization\hyperref[ref31]{[31]}. However, finding the right balance of model complexity is crucial. Simplicity is not just about the number of layers or parameters but also about capturing temporal regularities, such as repetitions, in sequential strategies\hyperref[ref31]{[31]}\hyperref[ref32]{[32]}.
 
+\pagebreak
+
 With these insights in mind, I designed the Double DQN model to strike a balance between simplicity and effectiveness, ensuring optimal performance in maze navigation tasks. By leveraging the strengths of simpler models while addressing critical performance issues, the Double DQN maintains a robust and efficient architecture for reinforcement learning applications.
 
 **Model Architecture:**
@@ -630,6 +640,7 @@ The training of the Double DQN agent was governed by the following parameters:
   - The discount factor applied to the policy network's Q-values during training.
 - **Batch Size**: 128
   - Number of steps (samples) used for training at a time.
+\pagebreak
 - **Update Target Interval (`UPDATE_TARGET_INTERVAL`)**: 2
   - Frequency of updating the target network.
 - **Epsilon (`EPSILON`)**: 0.99
@@ -654,6 +665,8 @@ The training of the Double DQN agent was governed by the following parameters:
 5. **Target Network Update**: Every `UPDATE_TARGET_INTERVAL` episodes, update the weights of the target network with those of the policy network.
 6. **Epsilon Decay**: Gradually decrease the exploration rate (`EPSILON`) following the decay rate (`DECAY`), shifting the strategy from exploration to exploitation.
 7. **Performance Monitoring**: Continuously monitor the agent's performance in terms of rewards and success rate in navigating the maze.
+
+\pagebreak
 
 ## Evaluation Metrics Overview
 
@@ -815,8 +828,6 @@ In this analysis, I compare various reinforcement learning algorithms, namely Do
 **Commentary**:
 The MSE graphs track the learning accuracy and error management of DDQN and DQN over time. DDQN achieves the lowest and most stable MSE values, signifying its effective learning and strong capability in minimizing prediction errors. DQN also performs well with relatively stable MSE, though slightly higher than DDQN, indicating competent but less optimal error reduction. In contrast, AC shows higher and more variable MSE values, pointing to less effective learning and greater difficulties in managing prediction errors. These fluctuations suggest AC struggles to consistently reduce errors, impacting its overall performance. The comparison highlights DDQN’s superior accuracy and error management, with DQN as a strong contender, while AC requires further optimization to enhance its learning stability and efficiency.
 
-**Note on PPO and Q-Learning:**
-
 Unlike DDQN and DQN, Proximal Policy Optimization (PPO) and Q-learning do not utilize Mean Squared Error (MSE) for evaluating performance. Instead, PPO focuses on a loss function derived from the clipped surrogate objective, ensuring stable updates by constraining policy changes within a specified threshold. Q-learning relies on the difference between expected and received rewards to update its Q-values. Consequently, the performance and learning stability of PPO and Q-learning are gauged through their respective loss functions rather than MSE.
 
 ### 4. Mean Squared Error (MSE) Over Time
@@ -867,13 +878,13 @@ In this section, I will explain the practical application of control algorithms 
 
 ## System Overview
 
-At the core of my RC car is the ESP32-WROOM-32 module, a small and powerful microcontroller with integrated Wi-Fi and Bluetooth capabilitie.
+At the core of my RC car is the ESP32-WROOM-32 module, a small and powerful microcontroller with integrated Wi-Fi and Bluetooth capabilities, powered by a 18650 type battery.
 
 The structure of the car is built on a 2WD miniQ robot chassis with a custom 3D printed top plate, which provides a sturdy base for mounting all components. To control the motors, an L298N dual H-Bridge motor controller was employed, allowing me to drive the motors in both directions and adjust their speed using pulse-width modulation (PWM) signals from the ESP32 microcontroller.
 
-For sensor integration, the system utilizes HC-SR04 ultrasonic sensors for distance measurement and an MPU6050 gyroscope for orientation and stabilization. These sensors are mounted using custom 3D printed parts, specifically designed to hold the HC-SR04 sensors securely in place. Additionally, a OLED screen is incorporated into the setup to provide real-time feedback on the robot’s status, such as its IP address and operational states, enhancing user interaction and debugging capabilities.
+\pagebreak
 
-Powering the entire system is an 18650 battery, Providing a lightweight and portable energy source. The battery is connected to the ESP32 microcontroller using a battery shield.
+For sensor integration, the system utilizes HC-SR04 ultrasonic sensors for distance measurement and an MPU6050 gyroscope for orientation and stabilization. These sensors are mounted using custom 3D printed parts, specifically designed to hold the HC-SR04 sensors securely in place. Additionally, a OLED screen is incorporated into the setup to provide real-time feedback on the robot’s status, such as its IP address and operational states, enhancing user interaction and debugging capabilities.
 
 ## Code Architecture and Integration
 
@@ -900,7 +911,7 @@ Movement functions are implemented to help translating simulated navigation algo
   ```
 
   These variables dictate the motors' initial and minimum speeds, and the duration for turning, facilitating precise and controlled movements by adjusting the speed dynamically based on the robot's turning angle.
-
+\pagebreak
 - **Forward Movement**
 
   The `moveForward` function initiates rapid forward motion, with real-time checks for obstacles to ensure safe stops—mimicking the real-world need for dynamic responsiveness.
@@ -1003,13 +1014,7 @@ Transitioning from simulated environments to real-world applications introduces 
 
 **Solution**: The DDQN technique was more efficient than DQN, Q-agent, PPO, and ActorCritic approaches, highlighting the importance of selecting the right technique.
 
-<!-- ## Limitations
-
-**Insufficient Data for Exact Positioning**: One big limitation was that the RC car only had an estimated position in the maze, it it just stored the previous position and the direction it was moving in. So if the real car would make a mistake it would not be able to correct is, as in the agent's mind it was still in a corrent position.
-
-**Hardware Limitations**: The hardware used in the RC car, such as the ultrasonic sensors and motor encoders, over time the wheels would start to slip off of their axis, causing the movement to be less reliable. When this happened the encoder would also not get an accurate reading, causing a lot of issues.
-
-**Environmental Variability**: Real-world environments are not perfect. The different floor textures made the car move differently, the walls needed to be perfectly straight for the ultrasonic sensors to work properly. -->
+\pagebreak
 
 ## Limitations
 
@@ -1027,6 +1032,8 @@ Transitioning from simulated environments to real-world applications introduces 
 
 **Synchronization of Motor Movements and Sensor Data**: Achieving precise synchronization between the agent's inputs and the RC car's motor movements was challenging. The delay between sending a command and the car's response, as well as the lack of immediate feedback from the motors, made it difficult to know if the car had executed the intended action. The agent could and would send commands to the car before it had finished its previous movement, leading to the agent having outdated sensor data.
 
+\pagebreak
+
 ## Conclusion for Challenges and Limitations
 
 This section outlines the practical challenges encountered while applying reinforcement learning (RL) techniques to autonomous RC cars. My journey began with selecting OpenAI Gym as the virtual environment due to its simplicity and relevance to RL. The Double Deep Q-Network (DDQN) emerged as the most effective RL technique for navigating complex environments.
@@ -1036,72 +1043,6 @@ However, transitioning from simulations to real-world applications revealed sign
 A significant advancement was achieved by simplifying the robot's design to use only the ESP32 module instead of a Raspberry PI and the ESP32, making it lighter and more precise. This change marked a considerable step in overcoming the previous challenges.
 
 Although I made substantial progress in addressing these challenges, there is still room for improvement in achieving seamless Sim2Real transfer and ensuring consistent performance across different environments.
-
-<!-- # Discussion and Reflection
-
-Looking back on my research journey, I've learned a ton and grown a lot as a person. Here's a rundown of the key insights and lessons from working on my RC car project, especially around Sim2Real transfer in reinforcement learning.
-
-## Embracing Innovation and Adaptability
-
-One of the biggest takeaways from this project and my internship was the importance of staying open to new ideas and being flexible, this was a big challenge for me as I tend to get a bit stuck in my ways.
-The challenges that I came across forced me to think outside the box and come up with quick solutions to keep the project moving forward, given the time and resource constraints.
-
-## Bridging Theory and Practice
-
-The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including the possibility of using a more complex environment than just a 2 demensional array as a the representation of the maze, made me realize that I was too quick to believe that the environment I had was good enough.
-
-A Reddit user suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's ability to adapt to the environment better and eliminated the need for perfect movement replication since the agent would have full control over the movements. However, this would have required a longer training period and increased the risk of encountering different types of problems, like the HC-SR04's being practically useless in such an environment as it would need to have a more reliable way of determining the car's position to be able to adjust the movements accordingly.
-
-- **Highlighting specific problems**
-
-  - **Sensor Calibration and Data Normalization:** Early on, I figured out that sensor readings between different the real world and my simulation was bigger than expected. Getting them to match up meant a lot of trial and error with calibration steps and tweaking data normalization to get consistent readings. This could also be avoided if my simulation would have been more advanced in terms of distance between the RC Car and walls being more than just a 2D array, never the less this was a pretty easy problem to solve.
-  - **Motor Encoder Issues:** When I realised I couldn't move my RC Car as precicely as I wanted, I decided to get motor encoders to try and fix this issue. Now note: yes, I should have bought these from the beginning, I made a huge mistake when figuring out which hardware to use. Although the car did drive better than without encoders, one of my encoders sadly broke just as things started working and new ones would arrive too late. That's when I decided to use an MPU6050 to try and fix the motor control issues, which also sadly didn't work as intended.
-
-Wouter Gevaert pointed out that while a 4WD setup could potentionally provide better traction, it generally would not be better due to over time slippage and increased difficulty in controlling the movement. Additionally, switching from ultrasonic sensors to a camera setup, where the camera would act as the eyes of the agent, would not solve the problem of the agent not knowing the exact position of the car in the maze.
-
-## Anticipatory Thinking and Proactive Problem-Solving
-
-Throughout the project, I constantly had to think ahead and anticipate potential issues. This is one field where I lacked a lot of experience, this is also something I learned during my internship, I tend to get an idea and just go with it, which is definitely not the best approach. That being said, I'm lucky that most of the things I got stuck on were solvable, but I see how planning and discussing my plans with others before starting could have saved me a lot of time and effort.
-
-## Feedback and Continuous Improvement
-
-During the evaluation of the practical part of this research the jury provided positive feedback, recognizing the successful application of reinforcement learning techniques.
-
-- **Practical Implementation:** The jury appreciated the practical implementation of the RC car and the efforts to address real-world challenges. They acknowledged the complexity of transitioning from simulations to real-world scenarios and commended the adaptability and problem-solving skills demonstrated throughout the project even though the car didn't completely work as intended.
-
-- **Suggestions for Improvement:** Hans Ameel suggested increasing the distance between the walls to reduce the impact of the car diviating from the path. This was based on the observation that the car had a tendency to slightly drift off course due to the narrow maze walls.
-
-## Methodological Rigor and Insights
-
-Building the custom maze environment was by far one of the most fun parts of this project for me. It gave me a more solid understanding of the possibilities and limitations of reinforcement learning. In our course `Advanced AI` we did get to play with OpenAI Gym quite a bit, but it was always a pre-built environment. Building my own environment made me think about the actions I needed, the observations I wanted to make, the rewards I wanted to give, and how the sensors would work in the environment.
-
-One thing that surprised me that how my virtual twin setup did not really add much value. I thought it would be something nice and really useful, but it turned out that a 'simple' top-down view camera would be way more effective for real-time feedback, since the virtual twin didnt show when or where the real car was stuck for example or rather, Additionally the top down camera could have been used as an additional input to the agent to help it navigate the maze along with the ultrasonic sensors.
-
-## Educational Value
-
-The educational value of this project is huge. By documenting the whole process and the challenges faced, this project becomes a fantastic learning tool for anyone interested in AI and robotics. It shows how to apply reinforcement learning in the real world, effectively bridging the gap between theory and practice.
-
-This project is all about hands-on learning. Students and researchers can set up their own experiments to see how reinforcement learning, sensor calibration, and robotic control work in real life. This kind of hands-on experience is invaluable for really understanding these complex concepts.
-
-For teachers, this project is a goldmine. The detailed steps and problem-solving approach make it a great resource for AI and robotics courses. It’s perfect for showing students how theoretical concepts apply in the real world. Plus, the documented challenges and solutions make for great case studies in class, helping students develop their critical thinking and problem-solving skills.
-
-The project’s mix of successes and setbacks can also inspire others to dive into their own AI and robotics projects. It shows that hitting roadblocks is just part of the journey and can lead to major breakthroughs. This can motivate students to keep pushing forward, even when things get tough.
-
-By making the project’s code and documentation open-source, it becomes an even more powerful educational tool. Other students and researchers can build on this work, make improvements, and adapt the methods for their own projects. This creates a collaborative learning environment where knowledge and resources are shared, promoting continuous learning and innovation in AI and robotics.
-
-## Personal Growth and Aspirations
-
-This project made me realize how much I love research. Exploring new ideas, overcoming obstacles, and actually having to start from scratch and build something tailored to my needs was incredibly rewarding. This project allowed me to see the potential of combining AI and robotics in practical applications.
-
-Moving forward, I'm commited to life long learning, something that our school really values and is continuously brought up. I'm excited to see where this journey will take me and I'm looking forward to the even bigger and more complex challenges that I will have the opportunity to solve.
-
-## A final reflection on this journey
-
-Even though this was an incredible project to work on and I loved every second of it, I can’t help but feel like I limited myself by not actively researching before starting this project. I went into this (and many other projects before this) headfirst, starting to make a maze in Pygame even before the three‑week period began. However, by doing this, I limited myself by not exploring other methods of completing this maze, like limiting the action space and forcing me to try and replicate the exact movement. I feel that I should have done more research on the hardware before starting this project, especially on how the encoders for the motors work and how to use them.
-
-I doubt I would’ve been able to get as far as fast as I did if I had taken an alternative route like giving the agent full control over the motors like a Reddit user suggested, but I do think it would have been a lot more interesting and maybe even more rewarding. This also might be a good thing, as it shows that there is always room for improvement and that there is always something to learn from every project you do.
-
-Feedback from Reddit came from several people who filled in my Google form. I posted the link on the subreddit `r/reinforcementlearning`, a platform that has been helpful in the past. Despite not receiving a lot if responses, the feedback was did reconfirm some of the things I had been thinking about. -->
 
 \pagebreak
 
@@ -1118,6 +1059,8 @@ One of the biggest takeaways from this project and my internship was the importa
 The transition from theoretical knowledge to practical application proved to be more complex than anticipated. While virtual environments were manageable and controlled, real-world conditions introduced unforeseen variables. This experience underscored the gap between simulation and reality, highlighting the necessity for continuous adjustment and iterative testing. Practical engagements, such as calibrating sensors and adjusting control algorithms, reinforced my ability to balance theoretical insights with practical needs. Feedback from interviews, including the possibility of using a more complex environment than just a 2D array as the representation of the maze, made me realize that I was too quick to believe that the environment I had was good enough.
 
 A Reddit user suggested expanding the action space in the virtual environment to include direct motor control. This approach could have improved the agent's ability to adapt to the environment better and eliminated the need for perfect movement replication. However, this would have required a longer training period and increased the risk of encountering different types of problems, like the HC-SR04's being practically useless in such an environment as it would need to have a more reliable way of determining the car's position to be able to adjust the movements accordingly.
+
+\pagebreak
 
 - **Highlighting Specific Problems**
 
@@ -1194,6 +1137,8 @@ Another great strategy is to use hybrid testing environments where simulations a
 
 Making sure your simulations match real-world conditions can be tricky, especially with sensor data and mechanical operations. Regularly calibrating your sensors and ensuring that the physical movements match what the simulations expect is key to smooth transitions.
 
+\pagebreak
+
 For example, sensor noise can be a big issue. In simulations, you can control for noise, but real-world sensors will always have some level of unpredictability. Implementing noise models in your simulations can help your algorithms learn to handle real-world data more effectively.
 
 Mechanical discrepancies are another challenge. Simulated environments often assume perfect conditions, but real-world robots deal with friction, slippage, and wear and tear. Continuously comparing your simulation data with real-world results and adjusting accordingly can help mitigate these issues.
@@ -1211,6 +1156,8 @@ Use both qualitative and quantitative methods to thoroughly evaluate how well yo
 Documentation is your friend. Keep detailed logs of what works and what doesn’t, including all the tweaks and adjustments you make along the way. This not only helps you track progress but also provides a valuable resource for troubleshooting and future projects.
 
 Engage with the community. Platforms like Reddit or GitHub projects of other people can provide valuable feedback and suggestions from other researchers and enthusiasts who have faced similar challenges. Their insights can be incredibly helpful in refining your approach.
+
+\pagebreak
 
 ## Practical Experiment Integration
 
@@ -1256,14 +1203,18 @@ Regularly calibrate your sensors to ensure accurate data collection in both simu
 
 Develop a routine for sensor calibration and stick to it. Consistency is key to ensuring that your data remains reliable over time. Also, consider using calibration tools or software that can automate parts of this process. This counts for both the real-world and simulated sensors, sometimes the code for the sensors in the simulation can be off, after adjusting things in the real world, this is something that can be easily overlooked.
 
+\pagebreak
+
 ### How I would start over if I Could
 
 If I could start over, I would begin by researching the hardware more thoroughly. I spend a lot more time deciding on the hardware I need and how to use it.
 
+\pagebreak
+
 #### RC Car Selection
 \
 \
-I would still use the same DFRobot 2wd MiniQ robot kit, but I would order the motor encoders at the same time as the car. Also take some stronger motors then the default kit, same goes for the wheels, the default wheels are not very good for the car.
+I would still use the same DFRobot 2wd MiniQ robot kit, but I would order the motor encoders at the same time as the car. I would also take some stronger motors than the default ones in the kit, same thing for the wheels, I would get some stronger wheels, since the ones in the kit are quite flimsy.
 
 **Motor Encoders:** https://www.dfrobot.com/product-823.html
 
@@ -1277,11 +1228,11 @@ I would still use the same DFRobot 2wd MiniQ robot kit, but I would order the mo
 #### Sensor Selection
 \
 \
-I would still use the same HC-SR04 ultrasonic sensors, but I would also add a top down camera to the whole setup. This might be difficult to implement in the simulation, but it would be such a great addition to the real-world setup.
+As for the sensors stay with the HC-SR04 ultrasonic sensors, but I consider adding a top down camera to the whole setup. This might be difficult to implement in the simulation, but it would be such a great addition to the real-world setup.
 
 As seen in this image: \ref{fig:selfdrawntopdown}
 
-Or for a clearer image:
+Or for a more detailed view, this image: \ref{fig:top-down-camera}
 
 \begin{figure}[H]
   \centering
@@ -1325,6 +1276,8 @@ The inspiration for this research comes from a mix of technical documentation, d
 
 Micro mouse competitions, where small robotic mice navigate mazes, served as a major inspiration. The use of RL in these competitions showed the potential for solving real-world problems and controlling autonomous systems. Insights from a Medium article by M. A. Dharmasiri on maze traversal algorithms and shortest path strategies provided practical algorithmic approaches relevant to this study\hyperref[ref12]{[12]}.
 
+\pagebreak
+
 ## Influential YouTube Demonstrations and GitHub Insights
 
 YouTube videos like "Self Driving and Drifting RC Car using Reinforcement Learning"\hyperref[ref9]{[9]} and "Reinforcement Learning with Multi-Fidelity Simulators -- RC Car"\hyperref[ref13]{[13]} vividly demonstrated RL's real-world applicability and the feasibility of Sim2Real transfer. GitHub repositories, such as the "Sim2Real_autonomous_vehicle" project\hyperref[ref11]{[11]}, detailed the practical steps and challenges of implementing RL in physical systems.
@@ -1366,7 +1319,6 @@ Working on this thesis has been a significant learning experience. Early on, a d
 For those venturing into this field, start with simpler simulations and gradually add complexity. Regular sensor calibration and consistency in movement mechanics between simulation and reality are key. Don’t hesitate to seek feedback from the research community; it can provide valuable insights and improve your work. I wish I had done this more before starting my project.
 
 In the end, making a trained RL agent work in the real world is doable, but it takes meticulous planning, flexibility, and ongoing refinement. This project underscores the need for continuous efforts to make Sim2Real applications robust and reliable. It contributes to the field by offering a detailed roadmap for future research, emphasizing the need for a systematic approach, continuous feedback, and practical experimentation to bring RL from simulation into the real world successfully.
-
 Thank you for joining me on this journey, and I hope this research inspires others to explore the exciting intersection of reinforcement learning and real-world robotics.
 
 \pagebreak
@@ -1599,6 +1551,8 @@ The lecture further presented various practical AI applications across different
 
 Key points from Jeroen's talk included mastering data preprocessing and treating data as a dynamic asset to better tailor AI models to specific needs. He shared practical tips on enhancing operational efficiency, such as using host mounts for code integration and Streamlit for dashboard creation, to streamline development processes.
 
+\pagebreak
+
 In summary, Jeroen Boeye's lecture offered a comprehensive perspective on integrating AI technologies in real-world settings. His insights into the vital role of software engineering principles, alongside a deep understanding of AI capabilities and constraints, provided valuable guidance for developing effective and sustainable AI solutions. The lecture not only underscored current AI trends and future directions but also shared practical knowledge on navigating the complexities of AI project execution.
 
 ### Pioneering AI Solutions at Noest by Toon Vanhoutte
@@ -1614,8 +1568,6 @@ Toon also explored advancements in semantic search, discussing how different sea
 A key takeaway from Toon’s lecture was the importance of setting realistic client expectations regarding AI's capabilities and potential inaccuracies, highlighting the experimental nature of these technologies. The discussion on AI’s evolving landscape emphasized the need for prompt engineering, the challenges of navigating a developing field, and the importance of client education in managing expectations about AI technologies like GPT.
 
 In conclusion, Toon Vanhoutte’s presentation not only highlighted Noest’s innovative work in AI and software engineering but also imparted crucial lessons on innovation, adaptable problem-solving, and the necessity for ongoing learning in the dynamic field of AI. This presentation showcased Noest’s commitment to pushing technological boundaries to create impactful, pragmatic solutions that fully utilize AI’s potential.
-
-\pagebreak
 
 ## Installation Guide
 
