@@ -235,7 +235,6 @@ Q-learning has been foundational in teaching agents in environments with discret
 Proximal Policy Optimization (PPO) is a policy gradient method for reinforcement learning that simplifies and improves upon the Trust Region Policy Optimization (TRPO) approach. PPO has become popular due to its effectiveness and ease of use\hyperref[ref3]{[3]}.
 
 **Optimization Technique**: PPO seeks to take the largest possible improvement step on a policy while avoiding
-
 too large updates that might lead to performance collapse. It achieves this through an objective function that includes a clipped term, penalizing changes to the policy that move it too far from the previous policy.
 
 **Advantages**: PPO is robust to a variety of hyperparameters and can be used in both continuous and discrete action spaces. It has shown great success in environments ranging from simulated robotics to complex game environments.
